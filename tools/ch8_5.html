@@ -1,0 +1,140 @@
+
+<!-- ================= 8.5 HASÍTÁSI TECHNIKÁK ================= -->
+<header class="hero page" id="bo-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.5</div>
+    <h1>Hasítási technikák</h1>
+    <p class="lead">A hasítótábla a kulcsot egy függvénnyel rekeszbe képezi. Ha a kulcsok véletlenszerűen oszlanak el, az ütközések, a láncok hossza és a keresés költsége valószínűségi kérdés, és a várható érték linearitása eldönti.</p>
+    <div class="formula">\(\displaystyle E[\text{ütköző párok}]=\binom n2\frac1m\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bo-hero" role="img" aria-label="Kulcsok véletlen eloszlása 16 rekeszben, a láncok hossza oszlopokkal"></svg>
+    <div class="counter"><span id="bo-hero-a">kulcsok / ütköző párok</span><span id="bo-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>Egy \(m\) rekeszes táblába \(n\) kulcsot teszünk, mindegyiket egymástól függetlenül egyenletesen választott rekeszbe. Két kulcs \(\frac1m\) valószínűséggel kerül ugyanabba a rekeszbe, függetlenül attól, hogy mi történik a többivel. Ez az egyetlen tény elég az átlagos lánchossz és a keresési költség kiszámításához.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bo-lancolas">
+  <div class="body">
+    <div class="eyebrow">§1 · Láncolás</div>
+    <h2>Átlagos lánchossz és keresési költség</h2>
+    <p>Legyen \(X_{ij}=[h(i)=h(j)]\) az \(i\) és \(j\) kulcs ütközését jelző indikátor. Ekkor \(E[X_{ij}]=\frac1m\), és az ütköző párok számának várható értéke a linearitás miatt</p>
+    <div class="eq gold">\[E\Bigl[\sum_{i<j}X_{ij}\Bigr]=\binom n2\frac1m.\]</div>
+    <p>Egy rekesz lánchossza a rekeszbe eső kulcsok száma, várható értéke \(n\cdot\frac1m=\alpha\), a terhelési tényező. Sikertelen keresésnél a lánc minden elemét megvizsgáljuk: átlagosan \(\alpha\) összehasonlítás. Sikeres keresésnél tegyük fel, hogy az új kulcsot a lánc végére fűzzük. A \(j\)-edikként beszúrt kulcs keresése \(1+\sum_{i<j}X_{ij}\) összehasonlítás, várható értéke \(1+\frac{j-1}m\). Az \(n\) kulcs átlaga</p>
+    <div class="eq gold">\[\frac1n\sum_{j=1}^n\Bigl(1+\frac{j-1}m\Bigr)=1+\frac{n-1}{2m}\approx1+\frac\alpha2.\]</div>
+    <p>A kísérlet pontosan ellenőrzi az ütköző párok várható számát: kis \(m^n\) esetén az összes \(m^n\) hozzárendelést felsorolja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bo-l-m">m <input type="range" id="bo-l-m" min="2" max="7" value="5"> <span class="mono" id="bo-l-mv">5</span></label>
+        <label class="rng" for="bo-l-n">n <input type="range" id="bo-l-n" min="1" max="7" value="5"> <span class="mono" id="bo-l-nv">5</span></label>
+      </div>
+      <div class="info" id="bo-l-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A felsorolás \(m^n\le 1\,000\,000\) esetén fut le, ez a megadott tartományban mindig teljesül. A \(\binom n2/m\) pontos érték, nincs benne közelítés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-utkozes">
+  <div class="body">
+    <div class="eyebrow">§2 · Ütközések</div>
+    <h2>Mikor lesz az első ütközés?</h2>
+    <p>Az \(n\) kulcs közt akkor nincs ütközés, ha az \(i\)-edik kulcs az előző \(i\) foglalt rekesz egyikébe sem esik:</p>
+    <div class="eq gold">\[P(\text{nincs ütközés})=\prod_{i=0}^{n-1}\Bigl(1-\frac im\Bigr)=\frac{m!}{(m-n)!\,m^n}.\]</div>
+    <p>Egy adott rekesz üres marad \(\bigl(1-\frac1m\bigr)^n\) valószínűséggel, ezért az üres rekeszek várható száma \(m\bigl(1-\frac1m\bigr)^n\), a foglaltaké \(m-m\bigl(1-\frac1m\bigr)^n\). Az \(1-x\le e^{-x}\) miatt \(P(\text{nincs ütközés})\le e^{-n(n-1)/(2m)}\); a gyakorlatban ez jó közelítés is, így 50% körüli ütközési esély \(n\approx1{,}18\sqrt m\) kulcsnál van (születésnap-paradoxon, 8.6). Ez a közelítés itt nem bizonyított.</p>
+    <p>A kísérlet a három mennyiséget pontosan számolja, és kis \(m^n\)-re felsorolással, nagyobbra szimulációval (rögzített maggal) is megmutatja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bo-u-m">m <input type="range" id="bo-u-m" min="2" max="365" value="23"> <span class="mono" id="bo-u-mv">23</span></label>
+        <label class="rng" for="bo-u-n">n <input type="range" id="bo-u-n" min="1" max="60" value="10"> <span class="mono" id="bo-u-nv">10</span></label>
+      </div>
+      <div class="info" id="bo-u-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szimuláció átlagai csak közelítések, ezért nem kapnak ✓-jelet; a felsorolásos ellenőrzés pontos. Az utóbbi \(m^n\le 1\,000\,000\) esetén fut.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-linearis">
+  <div class="body">
+    <div class="eyebrow">§3 · Lineáris próbálás</div>
+    <h2>Nyílt címzés: a következő szabad rekesz</h2>
+    <p>Lineáris próbálásnál az ütköző kulcs a következő szabad rekeszbe kerül (körkörösen). A foglalt rekeszek összefüggő csomókat (klasztereket) alkotnak, és egy nagy csomó még nagyobbra nő, mert több kulcs esik rá. Knuth elemzése szerint \(m\to\infty\), terhelési tényező \(\alpha=n/m<1\) esetén a keresés átlagos próbaszáma</p>
+    <div class="eq">\[S\approx\frac12\Bigl(1+\frac1{1-\alpha}\Bigr)\ \text{(sikeres)},\qquad U\approx\frac12\Bigl(1+\frac1{(1-\alpha)^2}\Bigr)\ \text{(sikertelen)}.\]</div>
+    <p>Ezt a képletet itt nem bizonyítjuk (a bizonyítás a klaszterek elemzésén múlik). A kísérlet véletlen táblákat tölt, és az átlagos próbaszámot megméri: sikeres keresésnél a kulcs elmozdulása plusz egy, sikertelennél minden rekesz mint kiindulópont átlaga.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bo-p-m">m <select id="bo-p-m"><option value="101">101</option><option value="503" selected>503</option><option value="1009">1009</option></select></label>
+        <label class="rng" for="bo-p-a">α <input type="range" id="bo-p-a" min="10" max="90" value="50"> <span class="mono" id="bo-p-av">0,50</span></label>
+      </div>
+      <div class="info" id="bo-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(\alpha=0{,}9\) értéknél a sikertelen keresés már \(\approx50{,}5\) próbát kíván, a sikeres \(\approx5{,}5\)-öt. Kis \(m\)-nél a szimuláció eltér az \(m\to\infty\) képlettől.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Hány ütköző pár várható, ha 20 kulcsot 100 rekeszbe hasítunk?</span></summary>
+      <div class="ans">
+        <p>\(\binom{20}2/100=190/100=1{,}9\). <b>Ellenőrzés:</b> \(190\) pár, mindegyik \(\frac1{100}\) valószínűséggel. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mekkora az üres rekeszek várható száma, ha 3 kulcsot 4 rekeszbe teszünk?</span></summary>
+      <div class="ans">
+        <p>\(4\cdot\bigl(\frac34\bigr)^3=\frac{27}{16}=1{,}6875\). <b>Ellenőrzés:</b> 64 hozzárendelés van, 3 kulcs legfeljebb 3 rekeszt foglal, tehát legalább egy rekesz üres; a foglalt rekeszek várható száma \(4-\frac{27}{16}=\frac{37}{16}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mi a valószínűsége, hogy 3 kulcs 4 rekeszben ütközés nélkül elfér?</span></summary>
+      <div class="ans">
+        <p>\(1\cdot\frac34\cdot\frac24=\frac{3}{8}\). <b>Ellenőrzés:</b> \(\frac{4!}{1!\cdot4^3}=\frac{24}{64}=\frac38\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Átlagosan hány összehasonlítás kell sikeres keresésnél \(n=10\), \(m=5\) esetén (láncolás)?</span></summary>
+      <div class="ans">
+        <p>\(1+\frac{n-1}{2m}=1+\frac9{10}=1{,}9\). <b>Ellenőrzés:</b> a \(j\)-edik kulcsra \(1+\frac{j-1}5\), \(j=1..10\) átlaga \(1+\frac{45}{50}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladatban a foglalt rekeszek száma 1 és 3 között változik, az átlag \(\frac{37}{16}\approx2{,}31\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Hasítás valószínűségi szemmel</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Mennyiség</th><th>Érték</th></tr>
+      <tr><th>ütköző párok</th><td>\(\binom n2/m\)</td></tr>
+      <tr><th>üres rekeszek</th><td>\(m(1-\frac1m)^n\)</td></tr>
+      <tr><th>nincs ütközés</th><td>\(\prod(1-\frac im)\)</td></tr>
+      <tr><th>sikeres keresés (lánc)</th><td>\(1+\frac{n-1}{2m}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Indikátor</b><span>Párok ütközése.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Linearitás</b><span>Várható érték.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Felsorolás, szimuláció.</span></div>
+    </div>
+    <p>A következő téma a 8.6, a klasszikus feladatok.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

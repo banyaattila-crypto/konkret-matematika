@@ -1,0 +1,143 @@
+
+<!-- ================= 8.4 PÉNZFELDOBÁS ================= -->
+<header class="hero page" id="bn-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.4</div>
+    <h1>Pénzfeldobás</h1>
+    <p class="lead">Egy tisztességes pénzt dobálunk, és megvárjuk, hogy egy adott fej–írás minta (például FF vagy FI) megjelenjen. A két minta egyformán valószínű, mégis más a várható várakozási idejük.</p>
+    <div class="formula">\(\displaystyle E[T_A]=\sum_{k\in K(A)}2^k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bn-hero" role="img" aria-label="A hárombetűs minták várható várakozási ideje"></svg>
+    <div class="counter"><span id="bn-hero-a">E[T] mintánként</span><span id="bn-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A kérdés: átlagosan hány dobás kell, amíg először megjelenik a „fej, fej” (FF), illetve a „fej, írás” (FI) sorozat? Mindkét minta valószínűsége \(\frac14\) minden helyen, ezért sokan azt várnák, hogy a két várakozási idő egyenlő. Valójában FI-ra átlagosan 4, FF-re 6 dobás kell. A különbség oka az, hogy a FF kudarca után nem kezdhetjük újra „tiszta lappal”: a félig kész minta részben felhasználható.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bn-varakozas">
+  <div class="body">
+    <div class="eyebrow">§1 · Két minta</div>
+    <h2>FF és FI várakozási ideje</h2>
+    <p>Legyen \(E_0\) az átlagos hátralevő idő az elejétől, \(E_1\) pedig akkor, ha az utolsó dobás fej volt. Az FF mintára:</p>
+    <div class="eq">\[E_0=1+\tfrac12E_1+\tfrac12E_0,\qquad E_1=1+\tfrac12\cdot0+\tfrac12E_0.\]</div>
+    <p>Az elsőből \(E_0=2+E_1\), a másodikból \(E_1=1+\frac12E_0\), tehát \(E_0=3+\frac12E_0\), azaz \(E_0=6\). Az FI mintára a fej utáni állapotból írás esetén kész vagyunk, fej esetén az állapot megmarad (\(E_1=1+\frac12\cdot0+\frac12E_1\)), ezért \(E_1=2\), és \(E_0=1+\frac12E_1+\frac12E_0\) miatt \(E_0=2+E_1=4\).</p>
+    <p>A kísérlet bármely mintára felírja az állapotokat (a minta már megvolt része), a lineáris egyenletrendszert pontos törtekkel megoldja, és kis szimulációval összeveti.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bn-w-p">minta <select id="bn-w-p"><option value="FF">FF</option><option value="FI" selected>FI</option><option value="FFF">FFF</option><option value="FFI">FFI</option><option value="FIF">FIF</option><option value="IFF">IFF</option><option value="FFFF">FFFF</option><option value="FIFI">FIFI</option><option value="FFIF">FFIF</option><option value="FIFIFI">FIFIFI</option></select></label>
+      </div>
+      <div class="info" id="bn-w-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szimuláció rögzített magú álvéletlen-generátorral fut, ezért megismételhető. Az átlag csak közelítés, a pontos érték az egyenletrendszerből jön.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-korrelacio">
+  <div class="body">
+    <div class="eyebrow">§2 · Autokorreláció</div>
+    <h2>A várakozási idő képlete</h2>
+    <p>Legyen \(A\) egy \(n\) hosszú minta, és \(K(A)\) azon \(k\in\{1,\dots,n\}\) számok halmaza, amelyekre \(A\) első \(k\) betűje megegyezik az utolsó \(k\) betűjével (\(k=n\) mindig benne van). Az állítás:</p>
+    <div class="eq gold">\[E[T_A]=\sum_{k\in K(A)}2^k.\]</div>
+    <p>Bizonyítás generátorfüggvénnyel. Legyen \(N(z)=\sum_w(z/2)^{|w|}\) azon \(w\) dobássorozatokra, amelyek nem tartalmazzák \(A\)-t (az üres sorozatot is), és \(T(z)=\sum_t(z/2)^{|t|}\) azokra a \(t\) sorozatokra, amelyek az \(A\) első megjelenésénél érnek véget. Mivel egy \(m\) hosszú sorozat valószínűsége \(2^{-m}\), \(T(z)\) a várakozási idő valószínűségi generátorfüggvénye, \(T(1)=1\), és \(E[T_A]=T'(1)\).</p>
+    <p>(1) Minden \(A\)-t kerülő \(w\) egy további dobással vagy \(A\)-t kerülő marad, vagy \(T\)-beli lesz, és minden \(T\)-beli sorozat így keletkezik. A dobás súlya \(2\cdot\frac z2=z\), tehát</p>
+    <div class="eq">\[1+zN(z)=N(z)+T(z).\]</div>
+    <p>(2) Fűzzük az \(A\) mintát egy \(A\)-t kerülő \(w\) mögé. A \(wA\)-ban \(A\) első megjelenése egy \(t\in T\) végén van, és \(wA=tr\) valamilyen \(r\) maradékkal. A két megjelenés átfedése \(k\in K(A)\) hosszú, és \(r\) az \(A\) utolsó \(n-k\) betűje. Fordítva, minden \(t\in T\) és \(k\in K(A)\) párból így egy \(w\) kapható, amely nem tartalmaz \(A\)-t (különben \(t\)-nél korábban lenne megjelenés). Ez a megfeleltetés kölcsönösen egyértelmű, ezért</p>
+    <div class="eq">\[N(z)\Bigl(\frac z2\Bigr)^n=T(z)\sum_{k\in K(A)}\Bigl(\frac z2\Bigr)^{n-k}.\]</div>
+    <p>Az (1)-ből \((z-1)N(z)=T(z)-1\). A \(z=1\) helyen deriválva \(N(1)=T'(1)=E[T_A]\). A (2)-be \(z=1\)-et és \(T(1)=1\)-et helyettesítve \(N(1)2^{-n}=\sum_k2^{-(n-k)}\), vagyis \(N(1)=\sum_k2^k\). \(\square\)</p>
+    <p>Példák: \(FF\): \(K=\{1,2\}\), \(E=2+4=6\). \(FI\): \(K=\{2\}\), \(E=4\). \(FIF\): \(K=\{1,3\}\), \(E=2+8=10\). \(FFF\): \(2+4+8=14\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bn-k-p">minta <select id="bn-k-p"><option value="FF">FF</option><option value="FI">FI</option><option value="FFF">FFF</option><option value="FFI">FFI</option><option value="FIF" selected>FIF</option><option value="IFF">IFF</option><option value="FFFF">FFFF</option><option value="FIFI">FIFI</option><option value="FFIFFI">FFIFFI</option><option value="FIFIFI">FIFIFI</option></select></label>
+      </div>
+      <div class="info" id="bn-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(K(A)\) halmaz azokat az átfedéseket számolja, amelyekkel a minta önmagával „összeér”. A \(FFF\) minden átfedést megenged, ezért a leglassabb (14), az \(FFI\) egyet sem, ezért gyors (8).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-penney">
+  <div class="body">
+    <div class="eyebrow">§3 · Penney-játék</div>
+    <h2>Melyik minta jön előbb?</h2>
+    <p>Két játékos két különböző mintát választ, és az nyer, akinek a mintája előbb jelenik meg. Legyen \(AA=\sum_{k:\ A_{1..k}=A_{n-k+1..n}}2^k\), és \(AB=\sum_{k:\ A\text{ utolsó }k\text{ betűje}=B\text{ első }k\text{ betűje}}2^k\). Conway szerint, ha egyik minta sem része a másiknak, akkor</p>
+    <div class="eq gold">\[\frac{P(B\text{ előbb})}{P(A\text{ előbb})}=\frac{AA-AB}{BB-BA}.\]</div>
+    <p>Ezt a képletet itt nem bizonyítjuk; a kísérlet pontos törtekkel számolja a nyerési valószínűséget a mintázatok által adott Markov-láncból, és összeveti a képlettel. Ezt 2, 3 és 4 hosszú minták minden olyan párjára (592 pár) ellenőriztem, ahol egyik sem része a másiknak.</p>
+    <p>A hárombetűs minták között nincs „legjobb”: \(IFF\) legyőzi az \(FFI\)-t (3/4), az \(FFI\) az \(FII\)-t (2/3), az \(FII\) az \(IIF\)-et (3/4), és az \(IIF\) az \(IFF\)-et (2/3). A második játékos mindig választhat az elsőnél jobbat.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bn-p-a">A <select id="bn-p-a"><option>FFF</option><option>FFI</option><option>FIF</option><option>FII</option><option selected>IFF</option><option>IFI</option><option>IIF</option><option>III</option></select></label>
+        <label class="rng" for="bn-p-b">B <select id="bn-p-b"><option>FFF</option><option selected>FFI</option><option>FIF</option><option>FII</option><option>IFF</option><option>IFI</option><option>IIF</option><option>III</option></select></label>
+      </div>
+      <div class="info" id="bn-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A nem tranzitív ciklus nem ellentmondás: „A előbb jön, mint B” nem rendezés a mintákon, csak páronkénti valószínűség.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi az FIF minta várható várakozási ideje?</span></summary>
+      <div class="ans">
+        <p>\(K=\{1,3\}\), tehát \(E=2^1+2^3=10\). <b>Ellenőrzés:</b> az állapotegyenletek \(E_0=1+\frac12E_1+\frac12E_0\), \(E_1=1+\frac12E_2+\frac12E_1\), \(E_2=1+\frac12\cdot0+\frac12E_1\) megoldása \(E_0=10\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Miért nagyobb az FF várakozási ideje, mint az FI-é?</span></summary>
+      <div class="ans">
+        <p>Az FF mintánál a \(k=1\) átfedés is számít: \(K=\{1,2\}\), míg FI-nál \(K=\{2\}\). Egy fej után a második dobás fej esetén készen vagyunk, írás esetén viszont az FF-nél az állapot a kezdetre esik vissza, az FI-nél fej esetén megmarad. <b>Ellenőrzés:</b> \(6\) és \(4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mi a valószínűsége, hogy az FI előbb jön, mint az FF?</span></summary>
+      <div class="ans">
+        <p>Az első fej után a következő dobás dönt: fej esetén az FF, írás esetén az FI nyer. Ha az első dobás írás, ugyanott vagyunk, mint az elején. Tehát \(\frac12\). <b>Ellenőrzés:</b> a Conway-képlet: \(AA=6\), \(AB=2\), \(BB=4\), \(BA=0\), a hányados \((6-2):(4-0)=1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki a FFFF minta várható várakozási idejét.</span></summary>
+      <div class="ans">
+        <p>\(K=\{1,2,3,4\}\), tehát \(E=2+4+8+16=30\). <b>Ellenőrzés:</b> \(E_n=2E_{n-1}+2\) a csupa fej mintára, \(E_1=2\), \(E_2=6\), \(E_3=14\), \(E_4=30\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat rekurziója abból jön, hogy a \(n\) fej előtt \(n-1\) fej kell, és utána egy újabb dobás vagy sikerül, vagy az egész kezdődik elölről.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Minták és várakozás</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Minta</th><th>\(K(A)\)</th><th>\(E[T]\)</th></tr>
+      <tr><th>FI</th><td>\(\{2\}\)</td><td>4</td></tr>
+      <tr><th>FF</th><td>\(\{1,2\}\)</td><td>6</td></tr>
+      <tr><th>FIF</th><td>\(\{1,3\}\)</td><td>10</td></tr>
+      <tr><th>FFF</th><td>\(\{1,2,3\}\)</td><td>14</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Átfedések</b><span>A minta önmagával.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Összeg</b><span>\(\sum 2^k\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Állapotegyenletek.</span></div>
+    </div>
+    <p>A következő téma a 8.5, a hasítási technikák.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

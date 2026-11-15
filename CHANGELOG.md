@@ -7,6 +7,12 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-11-15
+
+### Hozzáadva
+- 8.4 Pénzfeldobás: minták várható várakozási ideje (autokorrelációs képlet generátorfüggvénnyel bizonyítva), Penney-játék (Conway-képlet ellenőrizve, nem bizonyítva).
+- 8.5 Hasítási technikák: láncolás, ütközések, lineáris próbálás (Knuth-képletek szimulációval, bizonyítás nélkül).
+
 ## [1.7.0] - 2026-11-15
 
 ### Hozzáadva

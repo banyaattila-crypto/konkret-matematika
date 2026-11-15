@@ -2,8 +2,8 @@ MODS8=[
  ("valalap","8.1","Definíciók","an-","ch81",[["bevezeto","Bevezető"],["kocka","Kockadobások"],["feltetel","Feltételes valószínűség"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."),
  ("varhato","8.2","Várható érték és szórásnégyzet","ao-","ch82",[["bevezeto","Bevezető"],["linearis","A várható érték linearitása"],["szoras","Szórásnégyzet"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Várható érték, indikátorváltozók, variancia, függetlenek összege."),
  ("valgf","8.3","A valószínűségek generátorfüggvényei","ap-","ch83",[["bevezeto","Bevezető"],["pgf","Várható érték és variancia a deriváltból"],["osszeg","Független változók összege"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."),
- ("ph8_4","8.4","Pénzfeldobás","","ph8_4",[],"Mintázatok pénzfeldobásban, várható várakozási idő."),
- ("ph8_5","8.5","Hasítási technikák","","ph8_5",[],"Hash-táblák és ütközések valószínűségi elemzése."),
+ ("penzfeldobas","8.4","Pénzfeldobás","bn-","ch8_4",[["bevezeto","Bevezető"],["varakozas","Két minta"],["korrelacio","Autokorreláció"],["penney","Penney-játék"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Mintázatok pénzfeldobásban, várható várakozási idő."),
+ ("hasitas","8.5","Hasítási technikák","bo-","ch8_5",[["bevezeto","Bevezető"],["lancolas","Láncolás"],["utkozes","Ütközések"],["linearis","Lineáris próbálás"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Hash-táblák és ütközések valószínűségi elemzése."),
  ("klasszikus","8.6","Klasszikus feladatok (kiegészítés)","aq-","ch84",[["bevezeto","Bevezető"],["szulinap","Születésnap-paradoxon"],["kupon","Kupongyűjtő"],["ruin","Bolyongás és csőd"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."),
  ("feladatokval","8.7","Feladatok","ar-","ch85",[["bevezeto","Bevezető"],["bemelegito","Bemelegítő"],["halado","Alap és haladó"],["kutatas","Kutatás"]],"Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."),
 ]

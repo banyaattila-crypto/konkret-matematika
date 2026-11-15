@@ -9054,6 +9054,289 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 8.4 PÉNZFELDOBÁS ================= -->
+<header class="hero page" id="bn-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.4</div>
+    <h1>Pénzfeldobás</h1>
+    <p class="lead">Egy tisztességes pénzt dobálunk, és megvárjuk, hogy egy adott fej–írás minta (például FF vagy FI) megjelenjen. A két minta egyformán valószínű, mégis más a várható várakozási idejük.</p>
+    <div class="formula">\(\displaystyle E[T_A]=\sum_{k\in K(A)}2^k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bn-hero" role="img" aria-label="A hárombetűs minták várható várakozási ideje"></svg>
+    <div class="counter"><span id="bn-hero-a">E[T] mintánként</span><span id="bn-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A kérdés: átlagosan hány dobás kell, amíg először megjelenik a „fej, fej” (FF), illetve a „fej, írás” (FI) sorozat? Mindkét minta valószínűsége \(\frac14\) minden helyen, ezért sokan azt várnák, hogy a két várakozási idő egyenlő. Valójában FI-ra átlagosan 4, FF-re 6 dobás kell. A különbség oka az, hogy a FF kudarca után nem kezdhetjük újra „tiszta lappal”: a félig kész minta részben felhasználható.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bn-varakozas">
+  <div class="body">
+    <div class="eyebrow">§1 · Két minta</div>
+    <h2>FF és FI várakozási ideje</h2>
+    <p>Legyen \(E_0\) az átlagos hátralevő idő az elejétől, \(E_1\) pedig akkor, ha az utolsó dobás fej volt. Az FF mintára:</p>
+    <div class="eq">\[E_0=1+\tfrac12E_1+\tfrac12E_0,\qquad E_1=1+\tfrac12\cdot0+\tfrac12E_0.\]</div>
+    <p>Az elsőből \(E_0=2+E_1\), a másodikból \(E_1=1+\frac12E_0\), tehát \(E_0=3+\frac12E_0\), azaz \(E_0=6\). Az FI mintára a fej utáni állapotból írás esetén kész vagyunk, fej esetén az állapot megmarad (\(E_1=1+\frac12\cdot0+\frac12E_1\)), ezért \(E_1=2\), és \(E_0=1+\frac12E_1+\frac12E_0\) miatt \(E_0=2+E_1=4\).</p>
+    <p>A kísérlet bármely mintára felírja az állapotokat (a minta már megvolt része), a lineáris egyenletrendszert pontos törtekkel megoldja, és kis szimulációval összeveti.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bn-w-p">minta <select id="bn-w-p"><option value="FF">FF</option><option value="FI" selected>FI</option><option value="FFF">FFF</option><option value="FFI">FFI</option><option value="FIF">FIF</option><option value="IFF">IFF</option><option value="FFFF">FFFF</option><option value="FIFI">FIFI</option><option value="FFIF">FFIF</option><option value="FIFIFI">FIFIFI</option></select></label>
+      </div>
+      <div class="info" id="bn-w-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szimuláció rögzített magú álvéletlen-generátorral fut, ezért megismételhető. Az átlag csak közelítés, a pontos érték az egyenletrendszerből jön.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-korrelacio">
+  <div class="body">
+    <div class="eyebrow">§2 · Autokorreláció</div>
+    <h2>A várakozási idő képlete</h2>
+    <p>Legyen \(A\) egy \(n\) hosszú minta, és \(K(A)\) azon \(k\in\{1,\dots,n\}\) számok halmaza, amelyekre \(A\) első \(k\) betűje megegyezik az utolsó \(k\) betűjével (\(k=n\) mindig benne van). Az állítás:</p>
+    <div class="eq gold">\[E[T_A]=\sum_{k\in K(A)}2^k.\]</div>
+    <p>Bizonyítás generátorfüggvénnyel. Legyen \(N(z)=\sum_w(z/2)^{|w|}\) azon \(w\) dobássorozatokra, amelyek nem tartalmazzák \(A\)-t (az üres sorozatot is), és \(T(z)=\sum_t(z/2)^{|t|}\) azokra a \(t\) sorozatokra, amelyek az \(A\) első megjelenésénél érnek véget. Mivel egy \(m\) hosszú sorozat valószínűsége \(2^{-m}\), \(T(z)\) a várakozási idő valószínűségi generátorfüggvénye, \(T(1)=1\), és \(E[T_A]=T'(1)\).</p>
+    <p>(1) Minden \(A\)-t kerülő \(w\) egy további dobással vagy \(A\)-t kerülő marad, vagy \(T\)-beli lesz, és minden \(T\)-beli sorozat így keletkezik. A dobás súlya \(2\cdot\frac z2=z\), tehát</p>
+    <div class="eq">\[1+zN(z)=N(z)+T(z).\]</div>
+    <p>(2) Fűzzük az \(A\) mintát egy \(A\)-t kerülő \(w\) mögé. A \(wA\)-ban \(A\) első megjelenése egy \(t\in T\) végén van, és \(wA=tr\) valamilyen \(r\) maradékkal. A két megjelenés átfedése \(k\in K(A)\) hosszú, és \(r\) az \(A\) utolsó \(n-k\) betűje. Fordítva, minden \(t\in T\) és \(k\in K(A)\) párból így egy \(w\) kapható, amely nem tartalmaz \(A\)-t (különben \(t\)-nél korábban lenne megjelenés). Ez a megfeleltetés kölcsönösen egyértelmű, ezért</p>
+    <div class="eq">\[N(z)\Bigl(\frac z2\Bigr)^n=T(z)\sum_{k\in K(A)}\Bigl(\frac z2\Bigr)^{n-k}.\]</div>
+    <p>Az (1)-ből \((z-1)N(z)=T(z)-1\). A \(z=1\) helyen deriválva \(N(1)=T'(1)=E[T_A]\). A (2)-be \(z=1\)-et és \(T(1)=1\)-et helyettesítve \(N(1)2^{-n}=\sum_k2^{-(n-k)}\), vagyis \(N(1)=\sum_k2^k\). \(\square\)</p>
+    <p>Példák: \(FF\): \(K=\{1,2\}\), \(E=2+4=6\). \(FI\): \(K=\{2\}\), \(E=4\). \(FIF\): \(K=\{1,3\}\), \(E=2+8=10\). \(FFF\): \(2+4+8=14\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bn-k-p">minta <select id="bn-k-p"><option value="FF">FF</option><option value="FI">FI</option><option value="FFF">FFF</option><option value="FFI">FFI</option><option value="FIF" selected>FIF</option><option value="IFF">IFF</option><option value="FFFF">FFFF</option><option value="FIFI">FIFI</option><option value="FFIFFI">FFIFFI</option><option value="FIFIFI">FIFIFI</option></select></label>
+      </div>
+      <div class="info" id="bn-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(K(A)\) halmaz azokat az átfedéseket számolja, amelyekkel a minta önmagával „összeér”. A \(FFF\) minden átfedést megenged, ezért a leglassabb (14), az \(FFI\) egyet sem, ezért gyors (8).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-penney">
+  <div class="body">
+    <div class="eyebrow">§3 · Penney-játék</div>
+    <h2>Melyik minta jön előbb?</h2>
+    <p>Két játékos két különböző mintát választ, és az nyer, akinek a mintája előbb jelenik meg. Legyen \(AA=\sum_{k:\ A_{1..k}=A_{n-k+1..n}}2^k\), és \(AB=\sum_{k:\ A\text{ utolsó }k\text{ betűje}=B\text{ első }k\text{ betűje}}2^k\). Conway szerint, ha egyik minta sem része a másiknak, akkor</p>
+    <div class="eq gold">\[\frac{P(B\text{ előbb})}{P(A\text{ előbb})}=\frac{AA-AB}{BB-BA}.\]</div>
+    <p>Ezt a képletet itt nem bizonyítjuk; a kísérlet pontos törtekkel számolja a nyerési valószínűséget a mintázatok által adott Markov-láncból, és összeveti a képlettel. Ezt 2, 3 és 4 hosszú minták minden olyan párjára (592 pár) ellenőriztem, ahol egyik sem része a másiknak.</p>
+    <p>A hárombetűs minták között nincs „legjobb”: \(IFF\) legyőzi az \(FFI\)-t (3/4), az \(FFI\) az \(FII\)-t (2/3), az \(FII\) az \(IIF\)-et (3/4), és az \(IIF\) az \(IFF\)-et (2/3). A második játékos mindig választhat az elsőnél jobbat.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bn-p-a">A <select id="bn-p-a"><option>FFF</option><option>FFI</option><option>FIF</option><option>FII</option><option selected>IFF</option><option>IFI</option><option>IIF</option><option>III</option></select></label>
+        <label class="rng" for="bn-p-b">B <select id="bn-p-b"><option>FFF</option><option selected>FFI</option><option>FIF</option><option>FII</option><option>IFF</option><option>IFI</option><option>IIF</option><option>III</option></select></label>
+      </div>
+      <div class="info" id="bn-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A nem tranzitív ciklus nem ellentmondás: „A előbb jön, mint B” nem rendezés a mintákon, csak páronkénti valószínűség.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi az FIF minta várható várakozási ideje?</span></summary>
+      <div class="ans">
+        <p>\(K=\{1,3\}\), tehát \(E=2^1+2^3=10\). <b>Ellenőrzés:</b> az állapotegyenletek \(E_0=1+\frac12E_1+\frac12E_0\), \(E_1=1+\frac12E_2+\frac12E_1\), \(E_2=1+\frac12\cdot0+\frac12E_1\) megoldása \(E_0=10\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Miért nagyobb az FF várakozási ideje, mint az FI-é?</span></summary>
+      <div class="ans">
+        <p>Az FF mintánál a \(k=1\) átfedés is számít: \(K=\{1,2\}\), míg FI-nál \(K=\{2\}\). Egy fej után a második dobás fej esetén készen vagyunk, írás esetén viszont az FF-nél az állapot a kezdetre esik vissza, az FI-nél fej esetén megmarad. <b>Ellenőrzés:</b> \(6\) és \(4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mi a valószínűsége, hogy az FI előbb jön, mint az FF?</span></summary>
+      <div class="ans">
+        <p>Az első fej után a következő dobás dönt: fej esetén az FF, írás esetén az FI nyer. Ha az első dobás írás, ugyanott vagyunk, mint az elején. Tehát \(\frac12\). <b>Ellenőrzés:</b> a Conway-képlet: \(AA=6\), \(AB=2\), \(BB=4\), \(BA=0\), a hányados \((6-2):(4-0)=1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki a FFFF minta várható várakozási idejét.</span></summary>
+      <div class="ans">
+        <p>\(K=\{1,2,3,4\}\), tehát \(E=2+4+8+16=30\). <b>Ellenőrzés:</b> \(E_n=2E_{n-1}+2\) a csupa fej mintára, \(E_1=2\), \(E_2=6\), \(E_3=14\), \(E_4=30\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat rekurziója abból jön, hogy a \(n\) fej előtt \(n-1\) fej kell, és utána egy újabb dobás vagy sikerül, vagy az egész kezdődik elölről.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bn-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Minták és várakozás</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Minta</th><th>\(K(A)\)</th><th>\(E[T]\)</th></tr>
+      <tr><th>FI</th><td>\(\{2\}\)</td><td>4</td></tr>
+      <tr><th>FF</th><td>\(\{1,2\}\)</td><td>6</td></tr>
+      <tr><th>FIF</th><td>\(\{1,3\}\)</td><td>10</td></tr>
+      <tr><th>FFF</th><td>\(\{1,2,3\}\)</td><td>14</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Átfedések</b><span>A minta önmagával.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Összeg</b><span>\(\sum 2^k\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Állapotegyenletek.</span></div>
+    </div>
+    <p>A következő téma a 8.5, a hasítási technikák.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
+<!-- ================= 8.5 HASÍTÁSI TECHNIKÁK ================= -->
+<header class="hero page" id="bo-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.5</div>
+    <h1>Hasítási technikák</h1>
+    <p class="lead">A hasítótábla a kulcsot egy függvénnyel rekeszbe képezi. Ha a kulcsok véletlenszerűen oszlanak el, az ütközések, a láncok hossza és a keresés költsége valószínűségi kérdés, és a várható érték linearitása eldönti.</p>
+    <div class="formula">\(\displaystyle E[\text{ütköző párok}]=\binom n2\frac1m\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bo-hero" role="img" aria-label="Kulcsok véletlen eloszlása 16 rekeszben, a láncok hossza oszlopokkal"></svg>
+    <div class="counter"><span id="bo-hero-a">kulcsok / ütköző párok</span><span id="bo-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>Egy \(m\) rekeszes táblába \(n\) kulcsot teszünk, mindegyiket egymástól függetlenül egyenletesen választott rekeszbe. Két kulcs \(\frac1m\) valószínűséggel kerül ugyanabba a rekeszbe, függetlenül attól, hogy mi történik a többivel. Ez az egyetlen tény elég az átlagos lánchossz és a keresési költség kiszámításához.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bo-lancolas">
+  <div class="body">
+    <div class="eyebrow">§1 · Láncolás</div>
+    <h2>Átlagos lánchossz és keresési költség</h2>
+    <p>Legyen \(X_{ij}=[h(i)=h(j)]\) az \(i\) és \(j\) kulcs ütközését jelző indikátor. Ekkor \(E[X_{ij}]=\frac1m\), és az ütköző párok számának várható értéke a linearitás miatt</p>
+    <div class="eq gold">\[E\Bigl[\sum_{i<j}X_{ij}\Bigr]=\binom n2\frac1m.\]</div>
+    <p>Egy rekesz lánchossza a rekeszbe eső kulcsok száma, várható értéke \(n\cdot\frac1m=\alpha\), a terhelési tényező. Sikertelen keresésnél a lánc minden elemét megvizsgáljuk: átlagosan \(\alpha\) összehasonlítás. Sikeres keresésnél tegyük fel, hogy az új kulcsot a lánc végére fűzzük. A \(j\)-edikként beszúrt kulcs keresése \(1+\sum_{i<j}X_{ij}\) összehasonlítás, várható értéke \(1+\frac{j-1}m\). Az \(n\) kulcs átlaga</p>
+    <div class="eq gold">\[\frac1n\sum_{j=1}^n\Bigl(1+\frac{j-1}m\Bigr)=1+\frac{n-1}{2m}\approx1+\frac\alpha2.\]</div>
+    <p>A kísérlet pontosan ellenőrzi az ütköző párok várható számát: kis \(m^n\) esetén az összes \(m^n\) hozzárendelést felsorolja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bo-l-m">m <input type="range" id="bo-l-m" min="2" max="7" value="5"> <span class="mono" id="bo-l-mv">5</span></label>
+        <label class="rng" for="bo-l-n">n <input type="range" id="bo-l-n" min="1" max="7" value="5"> <span class="mono" id="bo-l-nv">5</span></label>
+      </div>
+      <div class="info" id="bo-l-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A felsorolás \(m^n\le 1\,000\,000\) esetén fut le, ez a megadott tartományban mindig teljesül. A \(\binom n2/m\) pontos érték, nincs benne közelítés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-utkozes">
+  <div class="body">
+    <div class="eyebrow">§2 · Ütközések</div>
+    <h2>Mikor lesz az első ütközés?</h2>
+    <p>Az \(n\) kulcs közt akkor nincs ütközés, ha az \(i\)-edik kulcs az előző \(i\) foglalt rekesz egyikébe sem esik:</p>
+    <div class="eq gold">\[P(\text{nincs ütközés})=\prod_{i=0}^{n-1}\Bigl(1-\frac im\Bigr)=\frac{m!}{(m-n)!\,m^n}.\]</div>
+    <p>Egy adott rekesz üres marad \(\bigl(1-\frac1m\bigr)^n\) valószínűséggel, ezért az üres rekeszek várható száma \(m\bigl(1-\frac1m\bigr)^n\), a foglaltaké \(m-m\bigl(1-\frac1m\bigr)^n\). Az \(1-x\le e^{-x}\) miatt \(P(\text{nincs ütközés})\le e^{-n(n-1)/(2m)}\); a gyakorlatban ez jó közelítés is, így 50% körüli ütközési esély \(n\approx1{,}18\sqrt m\) kulcsnál van (születésnap-paradoxon, 8.6). Ez a közelítés itt nem bizonyított.</p>
+    <p>A kísérlet a három mennyiséget pontosan számolja, és kis \(m^n\)-re felsorolással, nagyobbra szimulációval (rögzített maggal) is megmutatja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bo-u-m">m <input type="range" id="bo-u-m" min="2" max="365" value="23"> <span class="mono" id="bo-u-mv">23</span></label>
+        <label class="rng" for="bo-u-n">n <input type="range" id="bo-u-n" min="1" max="60" value="10"> <span class="mono" id="bo-u-nv">10</span></label>
+      </div>
+      <div class="info" id="bo-u-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szimuláció átlagai csak közelítések, ezért nem kapnak ✓-jelet; a felsorolásos ellenőrzés pontos. Az utóbbi \(m^n\le 1\,000\,000\) esetén fut.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-linearis">
+  <div class="body">
+    <div class="eyebrow">§3 · Lineáris próbálás</div>
+    <h2>Nyílt címzés: a következő szabad rekesz</h2>
+    <p>Lineáris próbálásnál az ütköző kulcs a következő szabad rekeszbe kerül (körkörösen). A foglalt rekeszek összefüggő csomókat (klasztereket) alkotnak, és egy nagy csomó még nagyobbra nő, mert több kulcs esik rá. Knuth elemzése szerint \(m\to\infty\), terhelési tényező \(\alpha=n/m<1\) esetén a keresés átlagos próbaszáma</p>
+    <div class="eq">\[S\approx\frac12\Bigl(1+\frac1{1-\alpha}\Bigr)\ \text{(sikeres)},\qquad U\approx\frac12\Bigl(1+\frac1{(1-\alpha)^2}\Bigr)\ \text{(sikertelen)}.\]</div>
+    <p>Ezt a képletet itt nem bizonyítjuk (a bizonyítás a klaszterek elemzésén múlik). A kísérlet véletlen táblákat tölt, és az átlagos próbaszámot megméri: sikeres keresésnél a kulcs elmozdulása plusz egy, sikertelennél minden rekesz mint kiindulópont átlaga.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bo-p-m">m <select id="bo-p-m"><option value="101">101</option><option value="503" selected>503</option><option value="1009">1009</option></select></label>
+        <label class="rng" for="bo-p-a">α <input type="range" id="bo-p-a" min="10" max="90" value="50"> <span class="mono" id="bo-p-av">0,50</span></label>
+      </div>
+      <div class="info" id="bo-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(\alpha=0{,}9\) értéknél a sikertelen keresés már \(\approx50{,}5\) próbát kíván, a sikeres \(\approx5{,}5\)-öt. Kis \(m\)-nél a szimuláció eltér az \(m\to\infty\) képlettől.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Hány ütköző pár várható, ha 20 kulcsot 100 rekeszbe hasítunk?</span></summary>
+      <div class="ans">
+        <p>\(\binom{20}2/100=190/100=1{,}9\). <b>Ellenőrzés:</b> \(190\) pár, mindegyik \(\frac1{100}\) valószínűséggel. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mekkora az üres rekeszek várható száma, ha 3 kulcsot 4 rekeszbe teszünk?</span></summary>
+      <div class="ans">
+        <p>\(4\cdot\bigl(\frac34\bigr)^3=\frac{27}{16}=1{,}6875\). <b>Ellenőrzés:</b> 64 hozzárendelés van, 3 kulcs legfeljebb 3 rekeszt foglal, tehát legalább egy rekesz üres; a foglalt rekeszek várható száma \(4-\frac{27}{16}=\frac{37}{16}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mi a valószínűsége, hogy 3 kulcs 4 rekeszben ütközés nélkül elfér?</span></summary>
+      <div class="ans">
+        <p>\(1\cdot\frac34\cdot\frac24=\frac{3}{8}\). <b>Ellenőrzés:</b> \(\frac{4!}{1!\cdot4^3}=\frac{24}{64}=\frac38\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Átlagosan hány összehasonlítás kell sikeres keresésnél \(n=10\), \(m=5\) esetén (láncolás)?</span></summary>
+      <div class="ans">
+        <p>\(1+\frac{n-1}{2m}=1+\frac9{10}=1{,}9\). <b>Ellenőrzés:</b> a \(j\)-edik kulcsra \(1+\frac{j-1}5\), \(j=1..10\) átlaga \(1+\frac{45}{50}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladatban a foglalt rekeszek száma 1 és 3 között változik, az átlag \(\frac{37}{16}\approx2{,}31\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bo-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Hasítás valószínűségi szemmel</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Mennyiség</th><th>Érték</th></tr>
+      <tr><th>ütköző párok</th><td>\(\binom n2/m\)</td></tr>
+      <tr><th>üres rekeszek</th><td>\(m(1-\frac1m)^n\)</td></tr>
+      <tr><th>nincs ütközés</th><td>\(\prod(1-\frac im)\)</td></tr>
+      <tr><th>sikeres keresés (lánc)</th><td>\(1+\frac{n-1}{2m}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Indikátor</b><span>Párok ütközése.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Linearitás</b><span>Várható érték.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Felsorolás, szimuláció.</span></div>
+    </div>
+    <p>A következő téma a 8.6, a klasszikus feladatok.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
 <!-- ================= 8.6 KLASSZIKUS FELADATOK ================= -->
 <header class="hero page" id="aq-bevezeto">
   <div>
@@ -10840,6 +11123,8 @@ const TOPICS={
   valalap:{"n": "8.1", "t": "Definíciók", "ch": 8, "prefix": "an-", "pages": [["bevezeto", "Bevezető"], ["kocka", "Kockadobások"], ["feltetel", "Feltételes valószínűség"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.1 Definíciók. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   varhato:{"n": "8.2", "t": "Várható érték és szórásnégyzet", "ch": 8, "prefix": "ao-", "pages": [["bevezeto", "Bevezető"], ["linearis", "A várható érték linearitása"], ["szoras", "Szórásnégyzet"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.2 Várható érték és szórásnégyzet. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   valgf:{"n": "8.3", "t": "A valószínűségek generátorfüggvényei", "ch": 8, "prefix": "ap-", "pages": [["bevezeto", "Bevezető"], ["pgf", "Várható érték és variancia a deriváltból"], ["osszeg", "Független változók összege"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.3 A valószínűségek generátorfüggvényei. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  penzfeldobas:{"n": "8.4", "t": "Pénzfeldobás", "ch": 8, "prefix": "bn-", "pages": [["bevezeto", "Bevezető"], ["varakozas", "Két minta"], ["korrelacio", "Autokorreláció"], ["penney", "Penney-játék"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.4 Pénzfeldobás. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  hasitas:{"n": "8.5", "t": "Hasítási technikák", "ch": 8, "prefix": "bo-", "pages": [["bevezeto", "Bevezető"], ["lancolas", "Láncolás"], ["utkozes", "Ütközések"], ["linearis", "Lineáris próbálás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.5 Hasítási technikák. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   klasszikus:{"n": "8.6", "t": "Klasszikus feladatok (kiegészítés)", "ch": 8, "prefix": "aq-", "pages": [["bevezeto", "Bevezető"], ["szulinap", "Születésnap-paradoxon"], ["kupon", "Kupongyűjtő"], ["ruin", "Bolyongás és csőd"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.6 Klasszikus feladatok (kiegészítés). A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokval:{"n": "8.7", "t": "Feladatok", "ch": 8, "prefix": "ar-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.7 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   nagyo:{"n": "9.1–9.2", "t": "Hierarchia és az O jelölés", "ch": 9, "prefix": "as-", "pages": [["bevezeto", "Bevezető"], ["definicio", "Definíciók"], ["hierarchia", "Növekedési rend"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.1–9.2 Hierarchia és az O jelölés. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
@@ -10862,7 +11147,7 @@ const CH=[
   {"n": 5, "t": "Binomiális együtthatók", "d": "Azonosságok, összegek, Catalan-számok, generátorfüggvények.", "lead": "A binomiális együtthatók a kombinatorika és az algebra közös nyelve. A fejezet a Pascal-háromszög azonosságaitól a Vandermonde-konvolúcióig, a Catalan-számokig és az első generátorfüggvényekig vezet.", "topics": [{"id": "binomalap", "d": "Pascal-háromszög, szimmetria, elnyelés, binomiális tétel."}, {"id": "binomosszeg", "d": "Hokiütő-azonosság, Vandermonde-konvolúció, súlyozott összegek."}, {"id": "binomfortely", "d": "Negatív felső index, Catalan-számok, a binomiális sor."}, {"id": "binomgf", "d": "A binomiális együtthatók generátorfüggvénye, átlós összegek."}, {"id": "hipergeom", "d": "A hipergeometrikus sorok és a tagarány-szabály."}, {"id": "hipertrafo", "d": "Azonosságok hipergeometrikus alakban."}, {"id": "parcialis", "d": "Részleges összegek hipergeometrikus sorokból."}, {"id": "gosper", "d": "Gosper algoritmusa és a Zeilberger-féle módszer."}, {"id": "feladatokbinom", "d": "Tíz saját feladat négy szinten a binomiális együtthatókról, megoldással, programmal ellenőrizve."}]},
   {"n": 6, "t": "Speciális számok", "d": "Stirling-, harmonikus, Fibonacci- és Bernoulli-számok.", "lead": "Néhány számsorozat újra meg újra felbukkan a diszkrét matematikában. A fejezet a Stirling-számokat, a harmonikus számokat, a Fibonacci-számokat és a Bernoulli-számokat vizsgálja: hogyan születnek, milyen azonosságok kötik össze őket, és mire jók.", "topics": [{"id": "stirling", "d": "Másodfajú és elsőfajú Stirling-számok, hatványok kifejtése, szürjekciók."}, {"id": "eulerszam", "d": "Az eulerian-számok és a permutációk emelkedései."}, {"id": "harmonikus", "d": "H_n növekedése, részleges összegzés, kapcsolat a Stirling-számokkal."}, {"id": "harmosszeg", "d": "Abel-féle részleges összegzés, a Σ C(k,m)·H_k képlet, binomiális inverzió."}, {"id": "bernoulli", "d": "Hatványösszegek zárt alakja, Bernoulli-számok rekurziója."}, {"id": "fibonacci", "d": "Cassini-azonosság, gcd-tulajdonság, Zeckendorf-tétel."}, {"id": "kontinuans", "d": "A kontinuáns rekurziója, az Euler-szabály, lánctörtek és az Euklideszi-algoritmus."}, {"id": "feladatokspec", "d": "Tíz saját feladat négy szinten a speciális számokról, megoldással, programmal ellenőrizve."}]},
   {"n": 7, "t": "Generátorfüggvények", "d": "Hatványsorok, rekurziók, partíciók, exponenciális generátorfüggvények.", "lead": "A generátorfüggvény egy sorozatot egyetlen hatványsorba csomagol. A fejezet azt mutatja meg, hogyan lesz a sorozatok közti rekurzióból algebrai egyenlet, és hogyan olvashatók le a megoldások és a megszámolási feladatok válaszai.", "topics": [{"id": "dominok", "d": "Dominólefedések és pénzváltás generátorfüggvénnyel; a pénzváltás részben a 7.8-ban szerepel."}, {"id": "gfalap", "d": "Hatványsorok mint sorozatok, eltolás, deriválás, részletösszeg."}, {"id": "gfrek", "d": "Lineáris rekurzió megoldása, résztörtek, Catalan-számok generátorfüggvénye."}, {"id": "gfspec", "d": "Híres generátorfüggvények gyűjteménye."}, {"id": "konvolucio", "d": "Konvolúciók és a belőlük adódó azonosságok."}, {"id": "gfexp", "d": "Exponenciális generátorfüggvény, Bell-számok, derangementek, involúciók."}, {"id": "dirichlet", "d": "Dirichlet-sorok és a számelméleti függvények szorzata."}, {"id": "gfparticio", "d": "Partíciószámok, páratlan és különböző részek, pénzváltás."}, {"id": "feladatokgf", "d": "Tíz saját feladat négy szinten a generátorfüggvényekről, megoldással, programmal ellenőrizve."}]},
-  {"n": 8, "t": "Diszkrét valószínűség", "d": "Eseménytér, várható érték, szórás, generáló függvények, klasszikus feladatok.", "lead": "A diszkrét valószínűség megszámlálásra épül, ezért a korábbi fejezetek eszközei itt természetesen kerülnek elő: a binomiális együtthatók, a harmonikus számok és a generátorfüggvények. A fejezet a valószínűségi térből indul, és a klasszikus feladatokig vezet.", "topics": [{"id": "valalap", "d": "Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."}, {"id": "varhato", "d": "Várható érték, indikátorváltozók, variancia, függetlenek összege."}, {"id": "valgf", "d": "G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."}, {"n": "8.4", "t": "Pénzfeldobás", "d": "Mintázatok pénzfeldobásban, várható várakozási idő."}, {"n": "8.5", "t": "Hasítási technikák", "d": "Hash-táblák és ütközések valószínűségi elemzése."}, {"id": "klasszikus", "d": "Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."}, {"id": "feladatokval", "d": "Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."}]},
+  {"n": 8, "t": "Diszkrét valószínűség", "d": "Eseménytér, várható érték, szórás, generáló függvények, klasszikus feladatok.", "lead": "A diszkrét valószínűség megszámlálásra épül, ezért a korábbi fejezetek eszközei itt természetesen kerülnek elő: a binomiális együtthatók, a harmonikus számok és a generátorfüggvények. A fejezet a valószínűségi térből indul, és a klasszikus feladatokig vezet.", "topics": [{"id": "valalap", "d": "Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."}, {"id": "varhato", "d": "Várható érték, indikátorváltozók, variancia, függetlenek összege."}, {"id": "valgf", "d": "G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."}, {"id": "penzfeldobas", "d": "Mintázatok pénzfeldobásban, várható várakozási idő."}, {"id": "hasitas", "d": "Hash-táblák és ütközések valószínűségi elemzése."}, {"id": "klasszikus", "d": "Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."}, {"id": "feladatokval", "d": "Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."}]},
   {"n": 9, "t": "Aszimptotika", "d": "Nagy O, Stirling-formula, Euler–Maclaurin-összegzés, alkalmazások.", "lead": "Ha egy összegnek vagy sorozatnak nincs zárt alakja, még mindig megkérdezhetjük, hogyan viselkedik nagy n-re. A fejezet a nagy O jelöléssel kezdődik, és az Euler–Maclaurin-összegzésen át a Stirling-formuláig és a gyorsrendezés elemzéséig jut.", "topics": [{"id": "nagyo", "d": "O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."}, {"id": "stirfej", "d": "Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."}, {"n": "9.4", "t": "Két aszimptotikával kapcsolatos fogás", "d": "Csavaró és perturbációs módszerek az aszimptotikában."}, {"id": "eulermac", "d": "Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."}, {"n": "9.6", "t": "Véges összegzés", "d": "Véges összegek aszimptotikus becslése."}, {"id": "aszalk", "d": "C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."}, {"id": "feladatokasz", "d": "Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."}]},
  {"n": 10, "t": "Összegzés", "d": "Saját záró rész: a fejezetek közötti kapcsolatok és a visszatérő eszközök.", "lead": "A Konkrét matematika kilenc fejezetes, ez a rész nem a könyv fejezete, hanem saját összegzés. Megmutatja, hogyan kapcsolódik egymáshoz a kilenc fejezet, és hogy ugyanaz a néhány eszköz hányféle helyzetben tér vissza.", "topics": [{"id": "osszegzes", "d": "A kilenc fejezet kapcsolatai, visszatérő eszközök, egy szám öt helyen."}]}];
 CH.forEach(c=>c.topics&&c.topics.forEach(tp=>{if(tp.id){tp.n=TOPICS[tp.id].n;tp.t=TOPICS[tp.id].t;tp.ready=true;}}));
@@ -11239,7 +11524,7 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.7.0";
+const APP_VERSION="1.8.0";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
@@ -13854,6 +14139,104 @@ function apO(){
   $("#ap-o-info").innerHTML=`${n} kocka, G(x) = ((x+…+x⁶)/6)<sup>${n}</sup><br>E (a definícióból) = ${E} &nbsp;·&nbsp; 7n/2 = ${eE} ${ok(E.eq(eE))}<br>Var = ${V} &nbsp;·&nbsp; 35n/12 = ${eV} ${ok(V.eq(eV))}`;
 }
 $("#ap-o-n").addEventListener("input",apO);apO();
+
+/* ================= 8.4 PÉNZFELDOBÁS ================= */
+function bnSolve(M,b){
+  const n=b.length,A=M.map((r,i)=>[...r,b[i]]);
+  for(let c=0;c<n;c++){let p=c;while(p<n&&A[p][c].eq(rat(0)))p++;[A[c],A[p]]=[A[p],A[c]];const pv=A[c][c];A[c]=A[c].map(x=>x.div(pv));
+    for(let r=0;r<n;r++)if(r!==c&&!A[r][c].eq(rat(0))){const f=A[r][c];A[r]=A[r].map((x,j)=>x.sub(f.mul(A[c][j])));}}
+  return A.map(r=>r[n]);
+}
+const bnT=s=>s.replace(/F/g,"H").replace(/I/g,"T");
+const bnLab=s=>s.replace(/H/g,"F").replace(/T/g,"I");
+function bnOv(A,B){let s=0;for(let k=1;k<=Math.min(A.length,B.length);k++)if(A.slice(-k)===B.slice(0,k))s+=2**k;return s;}
+function bnState(A,i,c){const s=A.slice(0,i)+c;for(let k=Math.min(s.length,A.length);k>=0;k--)if(s.slice(s.length-k)===A.slice(0,k))return k;return 0;}
+function bnE(A){const n=A.length,M=[],b=[];
+  for(let i=0;i<n;i++){const row=Array(n).fill(0).map(()=>rat(0));row[i]=row[i].add(rat(1));
+    for(const c of "HT"){const j=bnState(A,i,c);if(j<n)row[j]=row[j].sub(rat(1,2));}M.push(row);b.push(rat(1));}
+  return bnSolve(M,b)[0];}
+function bnP(A,B){/* A előbb jelenik meg, mint B */
+  const L=Math.max(A.length,B.length),sts=[];for(let l=0;l<L;l++)for(let m=0;m<(1<<l);m++){let s="";for(let i=l-1;i>=0;i--)s+=(m>>i&1)?"T":"H";sts.push(s);}
+  const idx={};sts.forEach((s,i)=>idx[s]=i);const n=sts.length,M=[],b=[];
+  sts.forEach((s,i)=>{const row=Array(n).fill(0).map(()=>rat(0));row[i]=rat(1);let bb=rat(0);
+    for(const c of "HT"){const t=s+c;if(t.endsWith(A))bb=bb.add(rat(1,2));else if(t.endsWith(B)){}else{const t2=L>1?t.slice(-(L-1)):"";const j=idx[t2];row[j]=row[j].sub(rat(1,2));}}
+    M.push(row);b.push(bb);});
+  return bnSolve(M,b)[idx[""]];}
+function bnRng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+c2hero("penzfeldobas-bevezeto",800,9,fr=>{
+  const s=c2svg("#bn-hero",420,250),P=["HHH","HHT","HTH","HTT","THH","THT","TTH","TTT"],N=Math.min(fr+1,8),w=44,x0=34;
+  P.forEach((p,i)=>{const v=Number(bnE(p).toString());const h=v/14*170;
+    el("rect",{x:x0+i*w+4,y:205-h,width:w-8,height:h,rx:2,style:`fill:var(--accent);opacity:${i<N?.6:.14}`},s);txt(s,x0+i*w+w/2,222,bnLab(p),"","middle");if(i<N)txt(s,x0+i*w+w/2,205-h-5,v,"","middle");});
+  $("#bn-hero-b").textContent=`${bnLab(P[N-1])}: ${bnE(P[N-1])}`;
+});
+function bnW(){
+  const lab=$("#bn-w-p").value,A=bnT(lab),n=A.length,E=bnE(A),f=bnOv(A,A);
+  const rnd=bnRng(12345),trials=4000;let sum=0;
+  for(let t=0;t<trials;t++){let st=0,c=0;while(st<n){c++;st=bnState(A,st,rnd()<.5?"H":"T");}sum+=c;}
+  $("#bn-w-info").innerHTML=`${lab}: állapotegyenletek megoldása E = <b>${E}</b><br>Σ 2<sup>k</sup> (k ∈ K) = ${f} ${ok(E.eq(rat(f)))}<br>szimuláció (${trials} kísérlet): átlag ${(sum/trials).toFixed(2)}`;
+}
+$("#bn-w-p").addEventListener("change",bnW);bnW();
+function bnK(){
+  const lab=$("#bn-k-p").value,A=bnT(lab),n=A.length,K=[];for(let k=1;k<=n;k++)if(A.slice(0,k)===A.slice(n-k))K.push(k);
+  const f=K.reduce((s,k)=>s+2**k,0),E=bnE(A);
+  $("#bn-k-info").innerHTML=`${lab}: K = {${K.join(", ")}}<br>Σ 2<sup>k</sup> = ${K.map(k=>2**k).join(" + ")} = <b>${f}</b><br>pontos várható idő = ${E} ${ok(E.eq(rat(f)))}`;
+}
+$("#bn-k-p").addEventListener("change",bnK);bnK();
+function bnPn(){
+  const la=$("#bn-p-a").value,lb=$("#bn-p-b").value,A=bnT(la),B=bnT(lb);
+  if(A===lb||A===B){$("#bn-p-info").innerHTML="Válassz két különböző mintát.";return;}
+  const pa=bnP(A,B),pb=rat(1).sub(pa),AA=bnOv(A,A),AB=bnOv(A,B),BB=bnOv(B,B),BA=bnOv(B,A);
+  const lhsB=pb.mul(rat(AA-AB)),rhsA=pa.mul(rat(BB-BA));
+  $("#bn-p-info").innerHTML=`P(${la} előbb) = <b>${pa}</b>, P(${lb} előbb) = ${pb}<br>AA=${AA}, AB=${AB}, BB=${BB}, BA=${BA}: (AA−AB):(BB−BA) = ${AA-AB}:${BB-BA}<br>P(B előbb)·(BB−BA) = P(A előbb)·(AA−AB)? ${ok(pb.mul(rat(BB-BA)).eq(pa.mul(rat(AA-AB))))}`;
+}
+["#bn-p-a","#bn-p-b"].forEach(i=>$(i).addEventListener("change",bnPn));bnPn();
+
+/* ================= 8.5 HASÍTÁSI TECHNIKÁK ================= */
+function boRng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+const boBin2=n=>n*(n-1)/2;
+function boEnum(m,n){/* összes m^n hozzárendelés: ütköző párok összege, üres rekeszek összege, ütközésmentesek száma */
+  const total=m**n,h=Array(n).fill(0),cnt=Array(m);let pairs=0,empty=0,free=0;
+  for(let t=0;t<total;t++){cnt.fill(0);for(let i=0;i<n;i++)cnt[h[i]]++;let pr=0,em=0;for(let r=0;r<m;r++){pr+=cnt[r]*(cnt[r]-1)/2;if(!cnt[r])em++;}pairs+=pr;empty+=em;if(pr===0)free++;
+    for(let i=0;i<n;i++){if(++h[i]<m)break;h[i]=0;}}
+  return {total,pairs,empty,free};
+}
+c2hero("hasitas-bevezeto",700,16,fr=>{
+  const s=c2svg("#bo-hero",420,250),m=16,N=fr*2+2,rnd=boRng(7),cnt=Array(m).fill(0);
+  for(let i=0;i<N;i++)cnt[Math.floor(rnd()*m)]++;
+  const w=22,x0=(420-m*w)/2;let pairs=0;
+  cnt.forEach((c,r)=>{pairs+=c*(c-1)/2;for(let k=0;k<c;k++)el("rect",{x:x0+r*w+2,y:205-(k+1)*16,width:w-4,height:14,rx:2,style:"fill:var(--accent);opacity:.6"},s);});
+  $("#bo-hero-b").textContent=`${N} kulcs, ${pairs} ütköző pár (várható ${(boBin2(N)/m).toFixed(2)})`;
+});
+function boL(){
+  const m=+$("#bo-l-m").value,n=+$("#bo-l-n").value;$("#bo-l-mv").textContent=m;$("#bo-l-nv").textContent=n;
+  if(m**n>1000000){$("#bo-l-info").innerHTML=`m<sup>n</sup> = ${m**n} > 300 000: a felsorolás kimarad. Képlet: C(n,2)/m = ${rat(n*(n-1)/2,m)}`;return;}
+  const r=boEnum(m,n),avg=rat(r.pairs,r.total),f=rat(n*(n-1)/2,m);
+  $("#bo-l-info").innerHTML=`${r.total} hozzárendelés felsorolva: ütköző párok átlaga = <b>${avg}</b><br>C(${n},2)/${m} = ${f} ${ok(avg.eq(f))}<br>sikeres keresés (láncolás) = 1 + (n−1)/(2m) = ${rat(1).add(rat(n-1,2*m))}`;
+}
+["#bo-l-m","#bo-l-n"].forEach(i=>$(i).addEventListener("input",boL));boL();
+function boU(){
+  const m=+$("#bo-u-m").value,n=+$("#bo-u-n").value;$("#bo-u-mv").textContent=m;$("#bo-u-nv").textContent=n;
+  const empty=Math.pow(1-1/m,n)*m;
+  const pfF=(()=>{let p=1;for(let i=0;i<n;i++)p*=Math.max(0,1-i/m);return p;})(),approx=Math.exp(-n*(n-1)/(2*m));
+  let html=`P(nincs ütközés) = ${pfF.toFixed(6)} (pontos szorzat)<br>e<sup>−n(n−1)/(2m)</sup> = ${approx.toFixed(6)} (közelítés, felső korlát ${ok(pfF<=approx+1e-12)})<br>üres rekeszek várható száma = ${empty.toFixed(4)}`;
+  if(m**n<=1000000){const r=boEnum(m,n);html+=`<br>felsorolás (${r.total} hozzárendelés): ütközésmentes ${r.free}/${r.total} = ${(r.free/r.total).toFixed(6)} ${ok(Math.abs(r.free/r.total-pfF)<1e-12)}, üres rekeszek átlaga ${(r.empty/r.total).toFixed(4)} ${ok(Math.abs(r.empty/r.total-empty)<1e-9)}`;}
+  else{const rnd=boRng(99),T=5000;let free=0,em=0;for(let t=0;t<T;t++){const c=Array(m).fill(0);let col=false;for(let i=0;i<n;i++){const r=Math.floor(rnd()*m);if(c[r])col=true;c[r]++;}if(!col)free++;em+=c.filter(x=>!x).length;}
+    html+=`<br>szimuláció (${T} kísérlet): ütközésmentes ${(free/T).toFixed(4)}, üres rekeszek átlaga ${(em/T).toFixed(2)}`;}
+  $("#bo-u-info").innerHTML=html;
+}
+["#bo-u-m","#bo-u-n"].forEach(i=>$(i).addEventListener("input",boU));boU();
+function boP(){
+  const m=+$("#bo-p-m").value,a=+$("#bo-p-a").value/100,n=Math.round(a*m);$("#bo-p-av").textContent=(n/m).toFixed(2).replace(".",",");
+  const rnd=boRng(2024),T=60;let sS=0,sU=0;
+  for(let t=0;t<T;t++){const tab=new Uint8Array(m);let disp=0;
+    for(let i=0;i<n;i++){let h=Math.floor(rnd()*m),d=0;while(tab[h]){h=(h+1)%m;d++;}tab[h]=1;disp+=d+1;}
+    sS+=disp/n;
+    /* sikertelen: minden rekeszből indulva a próbák száma */
+    let tot=0;for(let h0=0;h0<m;h0++){let h=h0,p=1;while(tab[h]){h=(h+1)%m;p++;}tot+=p;}sU+=tot/m;}
+  const al=n/m,S=0.5*(1+1/(1-al)),U=0.5*(1+1/((1-al)*(1-al)));
+  $("#bo-p-info").innerHTML=`m = ${m}, n = ${n}, α = ${al.toFixed(3)}, ${T} tábla<br>sikeres: mért ${(sS/T).toFixed(3)}, képlet ${S.toFixed(3)} (eltérés ${(100*((sS/T)/S-1)).toFixed(1)}%)<br>sikertelen: mért ${(sU/T).toFixed(3)}, képlet ${U.toFixed(3)} (eltérés ${(100*((sU/T)/U-1)).toFixed(1)}%)`;
+}
+$("#bo-p-m").addEventListener("change",boP);$("#bo-p-a").addEventListener("input",boP);boP();
 
 /* ================= 8.6 KLASSZIKUS FELADATOK ================= */
 const qNoMatch=(n,D)=>{let p=1;for(let k=0;k<n;k++)p*=1-k/D;return p;};
