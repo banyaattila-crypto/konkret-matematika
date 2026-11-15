@@ -1,6 +1,6 @@
 # Fejezetszínek generálása: minden szín WCAG-kontrasztra ellenőrizve (>= 4.5:1 szövegként használt színeknél)
 import colorsys
-H=[232,165,285,22,335,95,195,48,262];H2=[42,18,150,200,60,300,330,265,160]
+H=[232,165,285,22,335,95,195,48,262,118];H2=[42,18,150,200,60,300,330,265,160,285]
 def rgb(h,s,l):return colorsys.hls_to_rgb((h%360)/360,l/100,s/100)
 def lum(c):
     f=lambda v:v/12.92 if v<=.03928 else((v+.055)/1.055)**2.4

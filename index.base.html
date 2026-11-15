@@ -1970,14 +1970,14 @@ const side=$("#side"),mb=$("#menuBtn");
 function closeMenu(){side.classList.remove("open");mb.setAttribute("aria-expanded","false");}
 mb.onclick=()=>{const o=side.classList.toggle("open");mb.setAttribute("aria-expanded",o);};
 function renderTree(r){
-  let h="";
+  let h=`<div class="mini" role="navigation" aria-label="Fejezetek gyorsan">`+CH.map(c=>c.topics?`<a data-c="${c.n}" class="${r.ch===c.n?"on":""}" href="#fejezet-${c.n}" title="${c.n}. ${c.t}">${c.n}</a>`:`<span data-c="${c.n}" class="dis" title="${c.n}. ${c.t} (hamarosan)">${c.n}</span>`).join("")+`</div>`;
   CH.forEach(c=>{
     const has=!!c.topics,on=r.ch===c.n;
-    h+=has?`<a class="chh${on&&!r.topic?" on":""}" data-c="${c.n}" href="#fejezet-${c.n}"><span class="num">${c.n}</span>${c.t}</a>`:`<span class="chh dis" data-c="${c.n}"><span class="num">${c.n}</span>${c.t}</span>`;
+    h+=has?`<a class="chh${on&&!r.topic?" on":""}${on?" cur":""}" data-c="${c.n}" href="#fejezet-${c.n}"><span class="num">${c.n}</span>${c.t}</a>`:`<span class="chh dis" data-c="${c.n}"><span class="num">${c.n}</span>${c.t}</span>`;
     if(has&&on)c.topics.forEach(tp=>{
-      if(tp.ready){h+=`<a class="tp${r.topic===tp.id?" on":""}" href="#${tp.id}-bevezeto"><span>${tp.n} ${tp.t}</span></a>`;
-        if(r.topic===tp.id)TOPICS[tp.id].pages.forEach(([id,tt],i)=>{h+=`<a class="pg${r.page===id?" on":""}" href="#${tp.id}-${id}">${i===0?"":"§"+i+" "}${tt}</a>`;});}
-      else h+=`<span class="tp dis"><span>${tp.n} ${tp.t}</span><em>hamarosan</em></span>`;});
+      if(tp.ready){h+=`<a class="tp${r.topic===tp.id?" on":""}" style="--cn:var(--cc${c.n})" href="#${tp.id}-bevezeto"><span>${tp.n} ${tp.t}</span></a>`;
+        if(r.topic===tp.id)TOPICS[tp.id].pages.forEach(([id,tt],i)=>{h+=`<a class="pg${r.page===id?" on":""}" style="--cn:var(--cc${c.n})" href="#${tp.id}-${id}">${i===0?"":"§"+i+" "}${tt}</a>`;});}
+      else h+=`<span class="tp dis" style="--cn:var(--cc${c.n})"><span>${tp.n} ${tp.t}</span><em>hamarosan</em></span>`;});
   });
   $("#tree").innerHTML=h;
 }

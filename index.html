@@ -322,8 +322,10 @@ footer{padding:36px clamp(16px,4vw,56px) 60px;color:var(--muted);font-size:.9rem
 :root[data-theme="light"][data-ch="8"]{--accent:hsl(48 72% 26%);--accent-2:hsl(265 90% 47%);--accent-2-ink:hsl(265 90% 38%);--accent-soft:hsl(48 80% 93%);--bg1:hsl(48 80% 55% / .16);--bg2:hsl(265 90% 50% / .13);--bg3:hsl(168 60% 45% / .12);--hue:48;--hue2:265}
 :root[data-theme="dark"][data-ch="9"]{--accent:hsl(262 90% 73%);--accent-2:hsl(160 90% 60%);--accent-2-ink:hsl(160 90% 60%);--accent-soft:hsl(262 42% 20%);--bg1:hsl(262 90% 62% / .20);--bg2:hsl(160 90% 55% / .12);--bg3:hsl(22 70% 55% / .12);--hue:262;--hue2:160}
 :root[data-theme="light"][data-ch="9"]{--accent:hsl(262 72% 42%);--accent-2:hsl(160 90% 47%);--accent-2-ink:hsl(160 90% 24%);--accent-soft:hsl(262 80% 93%);--bg1:hsl(262 80% 55% / .16);--bg2:hsl(160 90% 50% / .13);--bg3:hsl(22 60% 45% / .12);--hue:262;--hue2:160}
-:root[data-theme="dark"]{--cc1:hsl(232 90% 73%);--cc2:hsl(165 90% 72%);--cc3:hsl(285 90% 72%);--cc4:hsl(22 90% 72%);--cc5:hsl(335 90% 72%);--cc6:hsl(95 90% 72%);--cc7:hsl(195 90% 72%);--cc8:hsl(48 90% 72%);--cc9:hsl(262 90% 73%)}
-:root[data-theme="light"]{--cc1:hsl(232 72% 42%);--cc2:hsl(165 72% 25%);--cc3:hsl(285 72% 42%);--cc4:hsl(22 72% 36%);--cc5:hsl(335 72% 42%);--cc6:hsl(95 72% 25%);--cc7:hsl(195 72% 31%);--cc8:hsl(48 72% 26%);--cc9:hsl(262 72% 42%)}
+:root[data-theme="dark"][data-ch="10"]{--accent:hsl(118 90% 72%);--accent-2:hsl(285 90% 61%);--accent-2-ink:hsl(285 90% 61%);--accent-soft:hsl(118 42% 20%);--bg1:hsl(118 90% 62% / .20);--bg2:hsl(285 90% 55% / .12);--bg3:hsl(238 70% 55% / .12);--hue:118;--hue2:285}
+:root[data-theme="light"][data-ch="10"]{--accent:hsl(118 72% 26%);--accent-2:hsl(285 90% 47%);--accent-2-ink:hsl(285 90% 38%);--accent-soft:hsl(118 80% 93%);--bg1:hsl(118 80% 55% / .16);--bg2:hsl(285 90% 50% / .13);--bg3:hsl(238 60% 45% / .12);--hue:118;--hue2:285}
+:root[data-theme="dark"]{--cc1:hsl(232 90% 73%);--cc2:hsl(165 90% 72%);--cc3:hsl(285 90% 72%);--cc4:hsl(22 90% 72%);--cc5:hsl(335 90% 72%);--cc6:hsl(95 90% 72%);--cc7:hsl(195 90% 72%);--cc8:hsl(48 90% 72%);--cc9:hsl(262 90% 73%);--cc10:hsl(118 90% 72%)}
+:root[data-theme="light"]{--cc1:hsl(232 72% 42%);--cc2:hsl(165 72% 25%);--cc3:hsl(285 72% 42%);--cc4:hsl(22 72% 36%);--cc5:hsl(335 72% 42%);--cc6:hsl(95 72% 25%);--cc7:hsl(195 72% 31%);--cc8:hsl(48 72% 26%);--cc9:hsl(262 72% 42%);--cc10:hsl(118 72% 26%)}
 
 /* ================= DESIGN-RENDSZER ================= (a fejezetszínek: design.gen.css) */
 /* --- témaváltó, logó, oldalsáv --- */
@@ -453,6 +455,44 @@ a.spine:hover{transform:translateY(-4px);box-shadow:0 22px 40px -26px var(--cn)}
 .jc{display:grid;text-align:center;font-family:var(--f-mono);font-size:.84rem;font-variant-numeric:tabular-nums;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:2px 0 3px}
 .jc i{font-style:normal;font-size:.62rem;color:var(--muted)}
 .jc.dr{border-color:var(--accent-2);background:color-mix(in srgb,var(--accent-2) 20%,var(--paper));font-weight:600}
+
+/* ---- oldalsáv: élő háttér, színes fa ---- */
+.tree .chh[data-c="10"],.spine[data-c="10"]{--cn:var(--cc10)}
+.app .side{
+  background:
+    radial-gradient(130% 55% at 0% 0%,hsl(var(--hue,250) 90% 60%/.22),transparent 62%),
+    radial-gradient(110% 50% at 100% 100%,hsl(var(--hue2,160) 90% 55%/.18),transparent 62%),
+    radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--ink) 12%,transparent) 1px,transparent 1.6px) 0 0/16px 16px,
+    color-mix(in srgb,var(--paper) 80%,transparent);
+  scrollbar-width:thin;scrollbar-color:color-mix(in srgb,var(--accent) 45%,transparent) transparent}
+.brand{padding-bottom:16px;border-bottom:2px solid transparent;border-image:linear-gradient(90deg,var(--accent),var(--accent-2),transparent) 1}
+.tree .mini{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px;margin:0 5px 14px}
+.tree .mini a,.tree .mini span{--cn:var(--accent);height:22px;border-radius:6px;display:grid;place-items:center;font:600 .62rem var(--f-mono);text-decoration:none;color:var(--paper);background:color-mix(in srgb,var(--cn) 62%,transparent);transition:transform .15s,background .15s}
+.tree .mini [data-c="1"]{--cn:var(--cc1)}.tree .mini [data-c="2"]{--cn:var(--cc2)}.tree .mini [data-c="3"]{--cn:var(--cc3)}.tree .mini [data-c="4"]{--cn:var(--cc4)}.tree .mini [data-c="5"]{--cn:var(--cc5)}
+.tree .mini [data-c="6"]{--cn:var(--cc6)}.tree .mini [data-c="7"]{--cn:var(--cc7)}.tree .mini [data-c="8"]{--cn:var(--cc8)}.tree .mini [data-c="9"]{--cn:var(--cc9)}.tree .mini [data-c="10"]{--cn:var(--cc10)}
+.tree .mini a:hover{transform:translateY(-2px);background:var(--cn)}
+.tree .mini a.on{background:var(--cn);box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--cn)}
+.tree .mini span.dis{background:transparent;border:1px dashed var(--line);color:var(--muted);font-weight:400}
+.tree .chh{border-left:3px solid transparent;transition:background .15s,transform .15s}
+.tree .chh:not(.dis):hover{background:color-mix(in srgb,var(--cn) 11%,transparent);transform:translateX(3px)}
+.tree .chh.cur{border-left-color:var(--cn);background:linear-gradient(90deg,color-mix(in srgb,var(--cn) 16%,transparent),transparent)}
+.tree .chh.on{border-left-color:var(--cn);background:linear-gradient(90deg,color-mix(in srgb,var(--cn) 26%,transparent),transparent);color:var(--ink)}
+.tree .chh.cur .num{box-shadow:0 0 0 4px color-mix(in srgb,var(--cn) 24%,transparent)}
+.tree .tp{position:relative;margin:2px 0 2px 19px;padding:5px 10px 5px 16px;border-left:2px solid color-mix(in srgb,var(--cn) 38%,transparent);border-radius:0 8px 8px 0;transition:background .15s}
+.tree .tp::before{content:"";position:absolute;left:-6px;top:50%;width:8px;height:8px;border-radius:50%;background:var(--paper);border:2px solid var(--cn);transform:translateY(-50%)}
+.tree .tp:not(.dis):hover{background:color-mix(in srgb,var(--cn) 9%,transparent)}
+.tree .tp.on{color:var(--ink);font-weight:600;background:color-mix(in srgb,var(--cn) 13%,transparent)}
+.tree .tp.on::before{background:var(--cn)}
+.tree .tp.dis::before{border-color:var(--line)}
+.tree .pg{margin-left:35px}
+.tree .pg.on{color:var(--cn,var(--accent));border-left-color:var(--cn,var(--accent))}
+.side::after{content:"∑   ∫   π   φ   ∞";display:block;position:sticky;bottom:-8px;margin-top:26px;padding:26px 0 6px;text-align:center;font:1.15rem var(--f-display);letter-spacing:.35em;color:color-mix(in srgb,var(--accent) 38%,transparent);pointer-events:none;background:linear-gradient(transparent,color-mix(in srgb,var(--paper) 94%,transparent) 45%)}
+@media (prefers-reduced-motion:reduce){.tree .chh,.tree .mini a,.tree .tp{transition:none}.tree .chh:not(.dis):hover{transform:none}}
+@media (max-width:900px){.app .side{background:
+    radial-gradient(130% 55% at 0% 0%,hsl(var(--hue,250) 90% 60%/.20),transparent 62%),
+    radial-gradient(110% 50% at 100% 100%,hsl(var(--hue2,160) 90% 55%/.16),transparent 62%),
+    radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--ink) 12%,transparent) 1px,transparent 1.6px) 0 0/16px 16px,
+    var(--paper)}}
 
 </style>
 <script>
@@ -11074,14 +11114,14 @@ const side=$("#side"),mb=$("#menuBtn");
 function closeMenu(){side.classList.remove("open");mb.setAttribute("aria-expanded","false");}
 mb.onclick=()=>{const o=side.classList.toggle("open");mb.setAttribute("aria-expanded",o);};
 function renderTree(r){
-  let h="";
+  let h=`<div class="mini" role="navigation" aria-label="Fejezetek gyorsan">`+CH.map(c=>c.topics?`<a data-c="${c.n}" class="${r.ch===c.n?"on":""}" href="#fejezet-${c.n}" title="${c.n}. ${c.t}">${c.n}</a>`:`<span data-c="${c.n}" class="dis" title="${c.n}. ${c.t} (hamarosan)">${c.n}</span>`).join("")+`</div>`;
   CH.forEach(c=>{
     const has=!!c.topics,on=r.ch===c.n;
-    h+=has?`<a class="chh${on&&!r.topic?" on":""}" data-c="${c.n}" href="#fejezet-${c.n}"><span class="num">${c.n}</span>${c.t}</a>`:`<span class="chh dis" data-c="${c.n}"><span class="num">${c.n}</span>${c.t}</span>`;
+    h+=has?`<a class="chh${on&&!r.topic?" on":""}${on?" cur":""}" data-c="${c.n}" href="#fejezet-${c.n}"><span class="num">${c.n}</span>${c.t}</a>`:`<span class="chh dis" data-c="${c.n}"><span class="num">${c.n}</span>${c.t}</span>`;
     if(has&&on)c.topics.forEach(tp=>{
-      if(tp.ready){h+=`<a class="tp${r.topic===tp.id?" on":""}" href="#${tp.id}-bevezeto"><span>${tp.n} ${tp.t}</span></a>`;
-        if(r.topic===tp.id)TOPICS[tp.id].pages.forEach(([id,tt],i)=>{h+=`<a class="pg${r.page===id?" on":""}" href="#${tp.id}-${id}">${i===0?"":"§"+i+" "}${tt}</a>`;});}
-      else h+=`<span class="tp dis"><span>${tp.n} ${tp.t}</span><em>hamarosan</em></span>`;});
+      if(tp.ready){h+=`<a class="tp${r.topic===tp.id?" on":""}" style="--cn:var(--cc${c.n})" href="#${tp.id}-bevezeto"><span>${tp.n} ${tp.t}</span></a>`;
+        if(r.topic===tp.id)TOPICS[tp.id].pages.forEach(([id,tt],i)=>{h+=`<a class="pg${r.page===id?" on":""}" style="--cn:var(--cc${c.n})" href="#${tp.id}-${id}">${i===0?"":"§"+i+" "}${tt}</a>`;});}
+      else h+=`<span class="tp dis" style="--cn:var(--cc${c.n})"><span>${tp.n} ${tp.t}</span><em>hamarosan</em></span>`;});
   });
   $("#tree").innerHTML=h;
 }
