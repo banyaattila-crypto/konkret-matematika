@@ -7,6 +7,13 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-11-15
+
+### Hozzáadva
+- 6.2 Euler-számok: rekurzió beszúrásos bizonyítással, zárt képlet (ellenőrzött), Worpitzky-azonosság indukcióval, két kísérlet.
+- 6.4 Harmonikus számok összegzése: részleges összegzés, a Σ C(k,m)·H_k képlet, binomiális inverzió, két kísérlet.
+- 6.7 Kontinuánsok: rekurzió, Euler-szabály, lánctörtek és Euklideszi-algoritmus, determináns-azonosság, három kísérlet.
+
 ## [1.5.0] - 2026-11-15
 
 ### Hozzáadva

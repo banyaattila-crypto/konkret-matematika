@@ -1,0 +1,126 @@
+
+<!-- ================= 6.4 HARMONIKUS SZÁMOK ÖSSZEGZÉSE ================= -->
+<header class="hero page" id="bh-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.4</div>
+    <h1>Harmonikus számok összegzése</h1>
+    <p class="lead">A 6.3 a felcseréléssel összegezte a \(H_k\)-kat. Itt a második eszköz jön: a részleges összegzés (Abel), amellyel egy egész család, a \(\sum\binom kmH_k\) kezelhető, és a binomiális inverzió, amely a \(H_n\)-t és az \(1/n\)-et köti össze.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{n-1}\binom kmH_k=\binom n{m+1}\Bigl(H_n-\frac1{m+1}\Bigr)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bh-hero" role="img" aria-label="A \(\sum_{k<n}\binom{k}{m}H_k\) részletösszegei és a zárt alak értékei"></svg>
+    <div class="counter"><span id="bh-hero-a">m = 1</span><span id="bh-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A \(\sum kH_k\) a 6.3-ban a szummák cseréjével adódott. Ugyanaz az eredmény egyetlen sorban jön ki, ha a \(H_k\)-t „deriváljuk”: a \(H_{k+1}-H_k=\tfrac1{k+1}\) különbség egyszerű. A képen az összeg részletösszegei és a zárt alak egymás mellett: az oszlopok ugyanolyan magasak. A módszer megmutatja azt is, miért épp a \(\binom nm\) a természetes súly: a \(\Delta\binom k{m+1}=\binom km\) szabály olyan, mint a \(\int x^m=x^{m+1}/(m+1)\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bh-reszleges">
+  <div class="body">
+    <div class="eyebrow">§1 · Részleges összegzés</div>
+    <h2>A különbség-operátor és a szorzat szabálya</h2>
+    <p>Legyen \(\Delta f(k)=f(k+1)-f(k)\) és \(Ef(k)=f(k+1)\). A szorzat különbsége \(\Delta(uv)=u\,\Delta v+Ev\,\Delta u\), ezt összegezve a „részleges összegzés” képletét kapjuk:</p>
+    <div class="eq gold">\[\sum_{k=0}^{n-1}u(k)\,\Delta v(k)=u(n)v(n)-u(0)v(0)-\sum_{k=0}^{n-1}v(k+1)\,\Delta u(k).\]</div>
+    <p>Alkalmazzuk \(u=H_k\)-ra, \(v=\binom k{m+1}\)-re. Itt \(\Delta v=\binom km\) (Pascal-szabály), \(\Delta u=\dfrac1{k+1}\), és \(\binom{k+1}{m+1}\dfrac1{k+1}=\dfrac1{m+1}\binom km\). Az \(u(0)v(0)\) tag nulla (\(H_0=0\)). Így</p>
+    <div class="eq">\[S=\sum_{k<n}\binom kmH_k=H_n\binom n{m+1}-\frac1{m+1}\sum_{k<n}\binom km=H_n\binom n{m+1}-\frac1{m+1}\binom n{m+1},\]</div>
+    <p>mert \(\sum_{k<n}\binom km=\binom n{m+1}\) (hoki-ütő). Ez a kiemelt képlet. Speciális esetek: \(m=0\): \(\sum_{k<n}H_k=nH_n-n\); \(m=1\): \(\sum_{k<n}kH_k=\binom n2\bigl(H_n-\tfrac12\bigr)\). A kísérlet pontos törtekkel számol.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bh-p-m">m <input type="range" id="bh-p-m" min="0" max="6" value="1"> <span class="mono" id="bh-p-mv">1</span></label>
+        <label class="rng" for="bh-p-n">n <input type="range" id="bh-p-n" min="1" max="16" value="8"> <span class="mono" id="bh-p-nv">8</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bh-p-t"></table></div>
+      <div class="info" id="bh-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szummák cseréje (6.3) és a részleges összegzés ugyanazt a tényt két oldalról mutatják: az \(m=0\) esetben mindkettő \(nH_n-n\)-t ad. A részleges összegzés előnye az, hogy a \(\binom km\) súlyra is egyszerre működik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bh-inverzio">
+  <div class="body">
+    <div class="eyebrow">§2 · Binomiális inverzió</div>
+    <h2>H<sub>n</sub> és 1/n, egymás tükörképe</h2>
+    <p>Állítás:</p>
+    <div class="eq gold">\[H_n=\sum_{k=1}^n(-1)^{k-1}\binom nk\frac1k.\]</div>
+    <p>Bizonyítás \(n\)-re szóló indukcióval. Az összeget \(a_n\)-nel jelölve a \(\binom nk=\binom{n-1}k+\binom{n-1}{k-1}\) szabály szerint</p>
+    <div class="eq">\[\begin{aligned}a_n&=a_{n-1}+\sum_{k\ge1}(-1)^{k-1}\binom{n-1}{k-1}\frac1k,\\\binom{n-1}{k-1}\frac1k&=\binom nk\frac1n.\end{aligned}\]</div>
+    <p>A hozzáadott tag \(\dfrac1n\sum_{k\ge1}(-1)^{k-1}\binom nk=\dfrac1n\bigl(1-(1-1)^n\bigr)=\dfrac1n\). Tehát \(a_n=a_{n-1}+\tfrac1n\), \(a_1=1\), vagyis \(a_n=H_n\). \(\square\)</p>
+    <p>A binomiális inverzió szerint</p>
+    <div class="eq">\[a_n=\sum_k(-1)^k\binom nkb_k\iff b_n=\sum_k(-1)^k\binom nka_k.\]</div>
+    <p>Bizonyítás: a \(\binom nk\binom kj=\binom nj\binom{n-j}{k-j}\) azonossággal az alternáló összeg \((-1)^j[n=j]\)-t ad. Alkalmazva a fenti képletre:</p>
+    <div class="eq gold">\[\frac1n=\sum_{k=1}^n(-1)^{k-1}\binom nkH_k.\]</div>
+    <p>A kísérlet mindkettőt pontos törtekkel ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bh-i-n">n <input type="range" id="bh-i-n" min="1" max="20" value="6"> <span class="mono" id="bh-i-nv">6</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bh-i-t"></table></div>
+      <div class="info" id="bh-i-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az inverzió miatt az \(1/n\) és a \(H_n\) „ugyanannak a sornak” két olvasata: az egyik a másik binomiális transzformáltja. Ez a minta a Stirling- és az Euler-számoknál is megjelenik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bh-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Összegek és inverzió</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\sum_{k<5}H_k\)-t a képlettel és közvetlenül.</span></summary>
+      <div class="ans">
+        <p>\(m=0\): \(\binom51\bigl(H_5-1\bigr)=5\cdot\tfrac{77}{60}=\tfrac{77}{12}\). Közvetlenül \(H_1+H_2+H_3+H_4=1+\tfrac32+\tfrac{11}6+\tfrac{25}{12}=\tfrac{77}{12}\). <b>Ellenőrzés:</b> a két érték egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_{k<4}kH_k\)-t az \(m=1\) képlettel.</span></summary>
+      <div class="ans">
+        <p>\(\binom42\bigl(H_4-\tfrac12\bigr)=6\cdot\tfrac{19}{12}=\tfrac{19}2\). <b>Ellenőrzés:</b> közvetlenül \(1\cdot1+2\cdot\tfrac32+3\cdot\tfrac{11}6=1+3+\tfrac{11}2=\tfrac{19}2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Írd fel \(H_4\)-et az alternáló binomiális összeggel.</span></summary>
+      <div class="ans">
+        <p>\(4-\tfrac62+\tfrac43-\tfrac14=1+\tfrac43-\tfrac14=\tfrac{25}{12}\). <b>Ellenőrzés:</b> \(H_4=1+\tfrac12+\tfrac13+\tfrac14=\tfrac{25}{12}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Ellenőrizd az inverz képletet \(n=4\)-re.</span></summary>
+      <div class="ans">
+        <p>\(\sum_{k=1}^4(-1)^{k-1}\binom4kH_k=4\cdot1-6\cdot\tfrac32+4\cdot\tfrac{11}6-\tfrac{25}{12}\). Ez \(4-9+\tfrac{22}3-\tfrac{25}{12}=\tfrac{3}{12}\). <b>Ellenőrzés:</b> \(\tfrac3{12}=\tfrac14\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt mutatja, hogy a nagy előjeles tagok (4, −9, \(7\tfrac13\), …) majdnem kioltják egymást: a végeredmény kicsi. Ezért az ilyen összegekhez pontos törtek kellenek, lebegőpontos számolással az eredmény megbízhatatlan.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bh-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Két eszköz, három eredmény</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Eszköz</th><th>Eredmény</th></tr>
+      <tr><th>részleges összegzés</th><td>\(\sum_{k<n}\binom kmH_k=\binom n{m+1}(H_n-\tfrac1{m+1})\)</td></tr>
+      <tr><th>indukció</th><td>\(H_n=\sum(-1)^{k-1}\binom nk/k\)</td></tr>
+      <tr><th>binomiális inverzió</th><td>\(1/n=\sum(-1)^{k-1}\binom nkH_k\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Válassz</b><span>\(u\) és \(\Delta v\) úgy, hogy \(\Delta u\) egyszerű legyen.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Összegezz részekre</b><span>A maradék összeg rövidebb.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrizz</b><span>Pontos törtekkel.</span></div>
+    </div>
+    <p>A következő téma a 6.5, a Bernoulli-számok.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

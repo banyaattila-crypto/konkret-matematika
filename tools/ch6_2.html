@@ -1,0 +1,123 @@
+
+<!-- ================= 6.2 EULER-SZÁMOK ================= -->
+<header class="hero page" id="bg-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.2</div>
+    <h1>Euler-számok</h1>
+    <p class="lead">Hány permutációban van pontosan \(k\) emelkedés? A válasz egy háromszög, amelynek sorai szimmetrikusak, összegük \(n!\), és amely a hatványokat binomiális együtthatókkal fejezi ki.</p>
+    <div class="formula">\(\displaystyle x^n=\sum_{k}A(n,k)\binom{x+k}{n}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bg-hero" role="img" aria-label="Az Euler-féle számok háromszögének n-edik sora oszlopdiagramként"></svg>
+    <div class="counter"><span id="bg-hero-a">A(n,k)</span><span id="bg-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Egy permutációban emelkedésnek nevezzük azt a helyet, ahol az egymás melletti elemek közül a második nagyobb. Az \(1,2,3\)-nak 2 emelkedése van, a \(3,2,1\)-nek 0. A képen az \(n\) elemű permutációk eloszlása látható az emelkedések száma szerint: középen sok permutáció van, a két szélén egy-egy. A név a Pascal-háromszöghöz hasonló háromszögre utal, de nem keverendő az Euler-féle \(E_n\) számokkal (a szekáns sor együtthatóival), amelyek mások. Itt az „Euler-számok” az eulerian numbers magyar neve a könyv szóhasználata szerint.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bg-rekurzio">
+  <div class="body">
+    <div class="eyebrow">§1 · Rekurzió</div>
+    <h2>A legnagyobb elem beszúrása</h2>
+    <p>Jelölje \(A(n,k)\) az \(1,\dots,n\) permutációinak számát, amelyekben pontosan \(k\) emelkedés van. Építsünk \(n\) elemű permutációt úgy, hogy az \(n\)-et beszúrjuk egy \(n-1\) elemű, \(j\) emelkedésű permutációba. Az \(n\)-et nyolc helyre tehetjük, de csak a következő szempont számít:</p>
+    <p>A legelejére téve az \(n\) utáni elem kisebb, ez új csökkenés, az emelkedések száma \(j\) marad. Ugyanez igaz, ha egy emelkedés helyére tesszük (\(a<b\) helyett \(a<n>b\)): az \(a<n\) emelkedés megvan, a \(b\) elé csökkenés került. A legvégére téve, vagy egy csökkenés helyére (\(a>b\) helyett \(a<n>b\)), eggyel nő az emelkedések száma. Ha az \(n-1\) elemű permutációnak \(j\) emelkedése van, akkor \(n-2-j\) csökkenése van, tehát a \(j\) szinten maradó beszúrás \(1+j\) féle, a \(j+1\)-re növelő pedig \(1+(n-2-j)=n-1-j\) féle. A \(k\) emelkedéses eredmény vagy \(j=k\)-ból szinten maradva, vagy \(j=k-1\)-ből növelve jön létre:</p>
+    <div class="eq gold">\[A(n,k)=(k+1)\,A(n-1,k)+(n-k)\,A(n-1,k-1).\]</div>
+    <p>A kísérlet az \(n\) elemű permutációkat mind végigszámolja (\(n\le8\)), és összeveti a rekurzióval és a zárt képlettel</p>
+    <div class="eq">\[A(n,k)=\sum_{j=0}^{k+1}(-1)^j\binom{n+1}{j}(k+1-j)^n.\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bg-r-n">n <input type="range" id="bg-r-n" min="1" max="8" value="5"> <span class="mono" id="bg-r-nv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bg-r-t"></table></div>
+      <div class="info" id="bg-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A zárt képletet itt nem vezettük le (szita-formulával kapható); a kísérlet \(n\le8\)-ra összeveti a számlálással. A rekurzió és a szimmetria \(A(n,k)=A(n,n-1-k)\) (a permutáció megfordítása az emelkedéseket csökkenésekké teszi) viszont bizonyított.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bg-worpitzky">
+  <div class="body">
+    <div class="eyebrow">§2 · Worpitzky</div>
+    <h2>A hatvány kifejtése binomiális együtthatókkal</h2>
+    <p>A központi azonosság:</p>
+    <div class="eq gold">\[x^n=\sum_{k=0}^{n-1}A(n,k)\binom{x+k}{n}.\]</div>
+    <p>Bizonyítás \(n\)-re szóló indukcióval. Jelölje \(W_n(x)\) a jobb oldalt; \(W_1=\binom x1=x\). A rekurzióval és a második összegben \(k\)-t \(k+1\)-re cserélve</p>
+    <div class="eq">\[W_n=\sum_kA(n-1,k)\Bigl[(k+1)\tbinom{x+k}n+(n-k-1)\tbinom{x+k+1}n\Bigr].\]</div>
+    <p>A \(\binom{x+k+1}n=\binom{x+k}n+\binom{x+k}{n-1}\) és az \(n\binom{x+k}n=(x+k-n+1)\binom{x+k}{n-1}\) azonosságokkal a zárójel \(x\binom{x+k}{n-1}\)-gyel egyenlő. Tehát \(W_n=x\,W_{n-1}\), és az indukció lezárul. \(\square\)</p>
+    <p>Próba: \(x=1\)-re csak a \(k=n-1\) tag nem nulla (\(\binom{k+1}n=1\)), tehát \(1=A(n,n-1)\), ami a szimmetria miatt \(A(n,0)=1\)-gyel egyezik. A kísérlet tetszőleges \(x\)-re pontos számokkal ellenőrzi az azonosságot.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bg-w-n">n <input type="range" id="bg-w-n" min="1" max="8" value="4"> <span class="mono" id="bg-w-nv">4</span></label>
+        <label class="rng" for="bg-w-x">x <input type="range" id="bg-w-x" min="0" max="14" value="5"> <span class="mono" id="bg-w-xv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bg-w-t"></table></div>
+      <div class="info" id="bg-w-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az azonosság a Stirling-számos \(x^n=\sum_k\genfrac\{\}{0pt}{}nk x^{\underline k}\) kifejtés (6.1) párja: ott a „csökkenő faktoriális” az alap, itt a \(\binom{x+k}n\). Az Euler-számok és a Stirling-számok kapcsolata ezen a két kifejtésen át mutatkozik meg.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bg-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Sorok, összegek, kifejtés</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki az \(n=5\) sort a rekurzióval az \(n=4\) sorból (\(1,11,11,1\)).</span></summary>
+      <div class="ans">
+        <p>\(A(5,1)=2\cdot11+4\cdot1=26\), \(A(5,2)=3\cdot11+3\cdot11=66\), \(A(5,3)=4\cdot1+2\cdot11=26\), \(A(5,0)=A(5,4)=1\). <b>Ellenőrzés:</b> \(1+26+66+26+1=120=5!\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki az \(A(4,2)\)-t a zárt képlettel.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\sum_{j=0}^3(-1)^j\tbinom5j(3-j)^4=81-80+10-0=11.\]</div><p>A tagok: \(3^4=81\), \(5\cdot2^4=80\), \(10\cdot1^4=10\), \(10\cdot0^4=0\). <b>Ellenőrzés:</b> az \(n=4\) sor közepe 11. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Ellenőrizd a Worpitzky-azonosságot \(n=3\), \(x=3\)-ra.</span></summary>
+      <div class="ans">
+        <p>\(A(3,\cdot)=1,4,1\):</p><div class="eq">\[\begin{aligned}1\cdot\tbinom33+4\tbinom43+1\cdot\tbinom53&=1+16+10\\&=27=3^3.\end{aligned}\]</div><p><b>Ellenőrzés:</b> \(1+16+10=27\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány 5 elemű permutációnak van pontosan 2 emelkedése, és hánynak 0?</span></summary>
+      <div class="ans">
+        <p>\(A(5,2)=66\); 0 emelkedése csak a csökkenő sorozatnak van, \(A(5,0)=1\). <b>Ellenőrzés:</b> a 66 szimmetrikus a középső elemre: \(A(5,2)=A(5,5-1-2)\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat mutatja, hogy a háromszög középső elemei dominálnak: az 5 elemű permutációk több mint fele (\(66/120\)) 2 emelkedésű.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bg-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Az Euler-háromszög</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Tulajdonság</th><th>Képlet</th></tr>
+      <tr><th>rekurzió</th><td>\(A(n,k)=(k+1)A(n-1,k)+(n-k)A(n-1,k-1)\)</td></tr>
+      <tr><th>szimmetria</th><td>\(A(n,k)=A(n,n-1-k)\)</td></tr>
+      <tr><th>sorösszeg</th><td>\(\sum_kA(n,k)=n!\)</td></tr>
+      <tr><th>kifejtés</th><td>\(x^n=\sum_kA(n,k)\binom{x+k}n\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Számolj</b><span>A rekurzióval sorról sorra.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Ellenőrizz</b><span>Sorösszeg \(n!\), szimmetria.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Alkalmazd</b><span>Hatványok kifejtése és összegzés.</span></div>
+    </div>
+    <p>A következő téma a 6.3, a harmonikus számok.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

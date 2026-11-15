@@ -1,0 +1,147 @@
+
+<!-- ================= 6.7 KONTINUÁNSOK ================= -->
+<header class="hero page" id="bi-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.7</div>
+    <h1>Kontinuánsok</h1>
+    <p class="lead">A kontinuáns az a polinom, amely a láncműveletek (lánctörtek) számlálóit és nevezőit adja. Az Euklideszi-algoritmus lépései, a Fibonacci-számok és a Stern–Brocot-fa mind ugyanazt a rekurziót követik.</p>
+    <div class="formula">\(\displaystyle K(x_1,\dots,x_n)=K(x_1,\dots,x_{n-1})\,x_n+K(x_1,\dots,x_{n-2})\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bi-hero" role="img" aria-label="Egy téglalap lefedése négyzetekkel az euklideszi algoritmus szerint"></svg>
+    <div class="counter"><span id="bi-hero-a">p / q</span><span id="bi-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen egy \(p\times q\) téglalapot négyzetekkel fedünk le mohón: mindig a legnagyobb négyzetet vágjuk le. A négyzetek csoportjai egyenlő méretűek, és a csoportok mérete a lánctört együtthatóit adja. A \(43\times19\) téglalapra két \(19\)-es, három \(5\)-ös, egy \(4\)-es és négy \(1\)-es négyzet kell, az együtthatók tehát \(2,3,1,4\). Ez ugyanaz a számolás, mint az Euklideszi-algoritmus. A kontinuáns a számolás „könyvelése”: a lánctört számlálóját és nevezőjét adja.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bi-definicio">
+  <div class="body">
+    <div class="eyebrow">§1 · Definíció és az Euler-szabály</div>
+    <h2>Mit számol a kontinuáns?</h2>
+    <p>A definíció: \(K()=1\), \(K(x_1)=x_1\), és</p>
+    <div class="eq">\[K(x_1,\dots,x_n)=K(x_1,\dots,x_{n-1})\,x_n+K(x_1,\dots,x_{n-2}).\]</div>
+    <p>Az első értékek:</p>
+    <div class="eq">\[K(x_1,x_2)=x_1x_2+1,\quad K(x_1,x_2,x_3)=x_1x_2x_3+x_1+x_3.\]</div>
+    <p> A mintát az Euler-szabály adja: a \(K(x_1,\dots,x_n)\) azon szorzatok összege, amelyeket úgy kapunk, hogy az \(x_1,\dots,x_n\) sorból tetszőleges számú, páronként diszjunkt szomszédos párt kihúzunk, és a megmaradtakat összeszorozzuk.</p>
+    <p>Bizonyítás \(n\)-re szóló indukcióval. Az utolsó elem \(x_n\) vagy megmarad (ekkor az előző \(n-1\) elemből húzunk ki párokat: \(K(x_1..x_{n-1})\,x_n\)), vagy az \(x_{n-1}\)-gyel együtt kihúzott pár (a maradék \(K(x_1..x_{n-2})\)). Ez éppen a rekurzió. \(\square\)</p>
+    <p>Az Euler-szabály szimmetrikus: ha a sort megfordítjuk, a szomszédos párok halmaza ugyanaz, ezért \(K(x_1,\dots,x_n)=K(x_n,\dots,x_1)\). Ebből a rekurzió az elejéről is fut: \(K(x_1,\dots,x_n)=x_1K(x_2,\dots,x_n)+K(x_3,\dots,x_n)\). Ha minden \(x_i=1\), a rekurzió a Fibonacci-rekurzió: \(K(1,\dots,1)=F_{n+1}\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bi-d-s">sorozat <select id="bi-d-s"><option value="2,3,4">2, 3, 4</option><option value="1,1,1,1,1,1">1, 1, 1, 1, 1, 1</option><option value="3,1,4,1,5">3, 1, 4, 1, 5</option><option value="2,7,1,8,2,8">2, 7, 1, 8, 2, 8</option><option value="5,2,2,3,1,1,4">5, 2, 2, 3, 1, 1, 4</option></select></label>
+      </div>
+      <div class="info" id="bi-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kontinuáns úgy viselkedik, mint a „hosszúságra” érzékeny szorzat: a páros hosszú sorokban az \(x_i\)-k páronként ki is eshetnek. Az \(x_1x_2x_3+x_1+x_3\) három tagja a három megengedett kihúzás (semmi, az első pár, a második pár).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bi-euklidesz">
+  <div class="body">
+    <div class="eyebrow">§2 · Euklidész és a lánctört</div>
+    <h2>A konvergensek a kontinuánsokból jönnek</h2>
+    <p>Az Euklideszi-algoritmus \(p/q\)-ra a hányadosok \(a_0,a_1,\dots,a_n\) sorozatát adja: \(p=a_0q+r_1\), \(q=a_1r_1+r_2\), és így tovább a 0 maradékig. Ekkor</p>
+    <div class="eq gold">\[\frac pq=a_0+\cfrac1{a_1+\cfrac1{a_2+\cdots}}=\frac{K(a_0,a_1,\dots,a_n)}{K(a_1,\dots,a_n)}.\]</div>
+    <p>Bizonyítás \(n\)-re szóló indukcióval. Az indukciós feltevés szerint \([a_1;a_2,\dots]=K(a_1..a_n)/K(a_2..a_n)\), tehát</p>
+    <div class="eq">\[a_0+\frac{K(a_2..a_n)}{K(a_1..a_n)}=\frac{a_0K(a_1..a_n)+K(a_2..a_n)}{K(a_1..a_n)}=\frac{K(a_0..a_n)}{K(a_1..a_n)}.\]</div>
+    <p>Az utolsó lépés az elejéről futó rekurzió. \(\square\) A tört mindig irreducibilis (lásd a §3-ban a determináns-azonosságot), tehát a számláló és a nevező \(p/g\) és \(q/g\), ahol \(g=\gcd(p,q)\).</p>
+    <p>A \(k\)-adik konvergens az első \(k+1\) hányados lánctörtje, \(K(a_0..a_k)/K(a_1..a_k)\). A kísérlet \(p\) és \(q\) választásával kiszámolja az Euklideszi-algoritmust, a kontinuánsokat és a konvergenseket.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bi-e-p">p <input type="range" id="bi-e-p" min="1" max="233" value="43"> <span class="mono" id="bi-e-pv">43</span></label>
+        <label class="rng" for="bi-e-q">q <input type="range" id="bi-e-q" min="1" max="233" value="19"> <span class="mono" id="bi-e-qv">19</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bi-e-t"></table></div>
+      <div class="info" id="bi-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A konvergensek váltakozva a pozitív szám alatt és fölött vannak, és egyre közelebb. A Stern–Brocot-fában (4.5) a \(p/q\) elérési útja pontosan a hányadosok szerint \(a_0\) jobbra, \(a_1\) balra, … lépés. A kontinuáns ennek a számolása.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bi-determinans">
+  <div class="body">
+    <div class="eyebrow">§3 · Determináns</div>
+    <h2>Mátrixszorzat és a ±1 azonosság</h2>
+    <p>Legyen \(M(x)=\begin{pmatrix}x&1\\1&0\end{pmatrix}\). Ekkor</p>
+    <div class="eq">\[M(x_1)\cdots M(x_n)=\begin{pmatrix}K(x_1..x_n)&K(x_1..x_{n-1})\\K(x_2..x_n)&K(x_2..x_{n-1})\end{pmatrix}.\]</div>
+    <p>Indukció: jobbról szorozva \(M(x_{n+1})\)-gyel az első oszlop \(K_nx_{n+1}+K_{n-1}\)-et, vagyis \(K_{n+1}\)-et ad, a második oszlop az előző első oszlop. A determináns \(\det M(x)=-1\) multiplikatív, ezért</p>
+    <div class="eq gold">\[\begin{aligned}&K(x_1..x_n)\,K(x_2..x_{n-1})\\&\quad-K(x_1..x_{n-1})\,K(x_2..x_n)=(-1)^n.\end{aligned}\]</div>
+    <p>Következmény: \(K(x_1..x_n)\) és \(K(x_2..x_n)\) legnagyobb közös osztója osztja az \((-1)^n\)-t, tehát relatív prímek. Ezért a §2 törtje irreducibilis. Az \(x_i=1\) esetben az azonosság a Cassini-azonosság (6.6). A kísérlet véletlenszerűen választott pozitív egész sorozatokra pontos számokkal ellenőrzi az azonosságot.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bi-m-n">n <input type="range" id="bi-m-n" min="2" max="9" value="5"> <span class="mono" id="bi-m-nv">5</span></label>
+        <label class="rng" for="bi-m-r">kezdőérték <input type="range" id="bi-m-r" min="1" max="99" value="7"> <span class="mono" id="bi-m-rv">7</span></label>
+      </div>
+      <div class="info" id="bi-m-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet sorozatát a kezdőértékből egy rögzített képlet generálja (nem valódi véletlen), hogy a próba megismételhető legyen. A bizonyítás minden sorozatra érvényes, a kísérlet csak a számolást mutatja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bi-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás, felbontás, azonosság</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(K(2,3,4)\)-t a rekurzióval és az Euler-szabállyal.</span></summary>
+      <div class="ans">
+        <p>Rekurzió: \(K(2,3)=7\), \(K(2,3,4)=7\cdot4+2=30\). Euler-szabály: nincs kihúzás \(2\cdot3\cdot4=24\), az \((2,3)\) pár \(4\), a \((3,4)\) pár \(2\). Összeg \(24+4+2=30\). <b>Ellenőrzés:</b> a két érték egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Bontsd lánctörtre a \(43/19\)-et, és számold ki a kontinuánsokat.</span></summary>
+      <div class="ans">
+        <p>\(43=2\cdot19+5\), \(19=3\cdot5+4\), \(5=1\cdot4+1\), \(4=4\cdot1\), tehát \(a=(2,3,1,4)\). \(K(2,3,1,4)=43\), \(K(3,1,4)=19\). <b>Ellenőrzés:</b> \(K(3,1,4)=(3\cdot1+1)\cdot4+3=19\), és az elejéről futó rekurzióval \(K(2,3,1,4)=2\cdot19+K(1,4)=38+5=43\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Ellenőrizd a determináns-azonosságot a \((2,3,4)\) sorozatra.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\begin{aligned}K(2,3,4)K(3)-K(2,3)K(3,4)&=30\cdot3-7\cdot13\\&=-1=(-1)^3.\end{aligned}\]</div>
+        <p><b>Ellenőrzés:</b> \(K(3,4)=3\cdot4+1=13\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi \(K(1,1,1,1,1)\)?</span></summary>
+      <div class="ans">
+        <p>Az \(x_i=1\) esetben a rekurzió \(K_n=K_{n-1}+K_{n-2}\), \(K_0=1\), \(K_1=1\): az értékek \(1,1,2,3,5,8\), tehát \(K(1,1,1,1,1)=8=F_6\). <b>Ellenőrzés:</b> általában \(K(1^n)=F_{n+1}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt is mutatja, hogy a legrosszabb eset az Euklideszi-algoritmusnak a Fibonacci-számok: minden hányados 1, tehát a lépésszám a lehető legnagyobb. Ezt (Lamé tétele) itt nem bizonyítjuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bi-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A kontinuáns szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Tény</th><th>Képlet</th></tr>
+      <tr><th>rekurzió</th><td>\(K_n=K_{n-1}x_n+K_{n-2}\)</td></tr>
+      <tr><th>Euler-szabály</th><td>szomszédos párok kihúzása</td></tr>
+      <tr><th>lánctört</th><td>\(\dfrac{K(a_0..a_n)}{K(a_1..a_n)}\)</td></tr>
+      <tr><th>determináns</th><td>\(\pm1\), a tört irreducibilis</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Euklidész</b><span>A hányadosok sorozata.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Kontinuáns</b><span>A rekurzióval a számláló és nevező.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrizd</b><span>\(\pm1\) determináns, gcd.</span></div>
+    </div>
+    <p>A következő téma a 6.8, a feladatok.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
