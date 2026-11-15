@@ -7,6 +7,11 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.9.1] - 2026-11-15
+
+### Módosítva
+- 10.1 A kötet térképe: két új kapcsolat (2–3: egészes összegek, 6–7: Fibonacci-számok és generátorfüggvény), tizenöt kapcsolat összesen; az eszköztár táblázat a 9.6-ra is hivatkozik; a 4. gyakorlat a 9.6 korlátaira utal.
+
 ## [1.9.0] - 2026-11-15
 
 ### Hozzáadva

@@ -10532,7 +10532,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </div>
   <aside class="story">
     <div class="tag">Történet</div>
-    <p>A képen a fejezetek számozott pontok, a vonalak pedig azt jelölik, hogy az egyik fejezet eszköze a másikban visszatér. A tizenhárom kapcsolat egyénileg válogatott: saját szerkesztésű térkép, nem a könyv hivatalos felépítése. Az ötlet az, hogy a tananyag kevesebb, mint amilyennek látszik. A rekurzió, az összegzés, a binomiális együtthatók, a generátorfüggvények és a harmonikus számok kilenc fejezeten át ismétlődnek. Ha valamelyiket értjük, a többi fejezetben is kéznél van.</p>
+    <p>A képen a fejezetek számozott pontok, a vonalak pedig azt jelölik, hogy az egyik fejezet eszköze a másikban visszatér. A tizenöt kapcsolat egyénileg válogatott: saját szerkesztésű térkép, nem a könyv hivatalos felépítése. Az ötlet az, hogy a tananyag kevesebb, mint amilyennek látszik. A rekurzió, az összegzés, a binomiális együtthatók, a generátorfüggvények és a harmonikus számok kilenc fejezeten át ismétlődnek. Ha valamelyiket értjük, a többi fejezetben is kéznél van.</p>
   </aside>
 </header>
 
@@ -10607,7 +10607,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
     <details>
       <summary><span class="sq">4. Melyik a legkisebb \(n\), amelyre \(\sum_{k>n}1/k^2<10^{-6}\)?</span></summary>
       <div class="ans">
-        <p>A 9.5 szerint \(\sum_{k>n}\tfrac1{k^2}=\tfrac1n-\tfrac1{2n^2}+\tfrac1{6n^3}-\dots\). Az \(n=10^6\)-nál ez \(10^{-6}-5\cdot10^{-13}<10^{-6}\), az \(n=999\,999\)-nél \(1{,}0000005\cdot10^{-6}>10^{-6}\). Tehát \(n=10^6\).</p>
+        <p>A 9.5 szerint (a 9.6 teleszkópos korlátai \(\tfrac1{n+1}\) és \(\tfrac1n\) csak a nagyságrendet adják) \(\sum_{k>n}\tfrac1{k^2}=\tfrac1n-\tfrac1{2n^2}+\tfrac1{6n^3}-\dots\). Az \(n=10^6\)-nál ez \(10^{-6}-5\cdot10^{-13}<10^{-6}\), az \(n=999\,999\)-nél \(1{,}0000005\cdot10^{-6}>10^{-6}\). Tehát \(n=10^6\).</p>
         <p><b>Ellenőrzés:</b> a hiba nagyságrendje \(1/n\), ezért a küszöb \(10^6\) körül adódik, és a \(-\tfrac1{2n^2}\) tag dönti el a pontos helyet. \(\checkmark\)</p>
       </div>
     </details>
@@ -10624,7 +10624,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
     <div class="tbl-wrap"><table class="vals cmp">
       <tr><th>Eszköz</th><th>Hol tanultuk</th><th>Hol tért vissza</th></tr>
       <tr><td>rekurzió zárt alakra</td><td>1., 2. fejezet</td><td>7.3, 8.6, 9.7</td></tr>
-      <tr><td>teleszkópos összegzés</td><td>2. fejezet</td><td>9.7</td></tr>
+      <tr><td>teleszkópos összegzés</td><td>2. fejezet</td><td>9.6, 9.7</td></tr>
       <tr><td>binomiális tétel</td><td>5. fejezet</td><td>7., 8.2, 9.1</td></tr>
       <tr><td>generátorfüggvény</td><td>7. fejezet</td><td>8.1, 8.3</td></tr>
       <tr><td>harmonikus számok</td><td>6.3</td><td>8.2, 8.6, 9.5, 9.7</td></tr>
@@ -11788,7 +11788,7 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.9.0";
+const APP_VERSION="1.9.1";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
@@ -14757,7 +14757,7 @@ $("#aw-s-n").addEventListener("input",awS);awS();
 
 /* ================= 10.1 A KÖTET TÉRKÉPE ================= */
 const axCh=["","Rekurziós problémák","Összegek","Egész függvények","Számelmélet","Binomiális együtthatók","Speciális számok","Generátorfüggvények","Diszkrét valószínűség","Aszimptotika"];
-const axE=[[1,2,"rekurzió és összeg kölcsönös átírása"],[1,7,"rekurzió megoldása hatványsorral"],[2,6,"teleszkópos összeg és perturbáció: harmonikus és Bernoulli-számok"],[2,9,"összeg közelítése integrállal (Euler–Maclaurin)"],[3,4,"egészrész és mod a számelméletben"],[4,5,"oszthatóság és paritás a binomiális együtthatókban"],[5,7,"binomiális tétel és generátorfüggvény"],[5,8,"binomiális eloszlás"],[5,9,"a C(2n,n) aszimptotikája"],[6,8,"harmonikus és Stirling-számok a valószínűségben"],[6,9,"Bernoulli-számok az Euler–Maclaurin-sorban"],[7,8,"generátorfüggvény és valószínűség-generáló függvény"],[8,9,"a kupongyűjtő aszimptotikája"]];
+const axE=[[1,2,"rekurzió és összeg kölcsönös átírása"],[1,7,"rekurzió megoldása hatványsorral"],[2,6,"teleszkópos összeg és perturbáció: harmonikus és Bernoulli-számok"],[2,9,"összeg közelítése integrállal (Euler–Maclaurin)"],[2,3,"alsó és felső egészes összegek (3.5)"],[6,7,"Fibonacci-számok generátorfüggvénnyel (6.6, 7.3)"],[3,4,"egészrész és mod a számelméletben"],[4,5,"oszthatóság és paritás a binomiális együtthatókban"],[5,7,"binomiális tétel és generátorfüggvény"],[5,8,"binomiális eloszlás"],[5,9,"a C(2n,n) aszimptotikája"],[6,8,"harmonikus és Stirling-számok a valószínűségben"],[6,9,"Bernoulli-számok az Euler–Maclaurin-sorban"],[7,8,"generátorfüggvény és valószínűség-generáló függvény"],[8,9,"a kupongyűjtő aszimptotikája"]];
 function axDraw(svg,sel,upto){
   const W=420,H=300,cx=W/2,cy=H/2,R=110,P=i=>[cx+R*Math.sin(2*Math.PI*(i-1)/9),cy-R*Math.cos(2*Math.PI*(i-1)/9)];
   clear(svg);svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
@@ -14767,7 +14767,7 @@ function axDraw(svg,sel,upto){
     const c=el("circle",{cx:p[0],cy:p[1],r:on?17:14,style:`fill:${on?"var(--accent-2)":"var(--accent)"};opacity:.92;cursor:${sel!==undefined?"pointer":"default"}`},svg);
     const t=txt(svg,p[0],p[1]+4,i,"","middle");if(t&&t.style){t.style.fill="#fff";t.style.fontWeight="700";t.style.pointerEvents="none";}if(sel!==undefined)c.addEventListener("click",()=>{$("#ax-m-c").value=i;axM();});}
 }
-c2hero("osszegzes-bevezeto",700,13,fr=>{
+c2hero("osszegzes-bevezeto",700,15,fr=>{
   axDraw($("#ax-hero"),undefined,fr);const e=axE[fr];
   $("#ax-hero-a").textContent=`${fr+1}. kapcsolat`;$("#ax-hero-b").textContent=`${e[0]} → ${e[1]}`;
 });

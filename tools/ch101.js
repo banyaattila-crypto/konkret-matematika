@@ -1,6 +1,6 @@
 /* ================= 10.1 A KÖTET TÉRKÉPE ================= */
 const axCh=["","Rekurziós problémák","Összegek","Egész függvények","Számelmélet","Binomiális együtthatók","Speciális számok","Generátorfüggvények","Diszkrét valószínűség","Aszimptotika"];
-const axE=[[1,2,"rekurzió és összeg kölcsönös átírása"],[1,7,"rekurzió megoldása hatványsorral"],[2,6,"teleszkópos összeg és perturbáció: harmonikus és Bernoulli-számok"],[2,9,"összeg közelítése integrállal (Euler–Maclaurin)"],[3,4,"egészrész és mod a számelméletben"],[4,5,"oszthatóság és paritás a binomiális együtthatókban"],[5,7,"binomiális tétel és generátorfüggvény"],[5,8,"binomiális eloszlás"],[5,9,"a C(2n,n) aszimptotikája"],[6,8,"harmonikus és Stirling-számok a valószínűségben"],[6,9,"Bernoulli-számok az Euler–Maclaurin-sorban"],[7,8,"generátorfüggvény és valószínűség-generáló függvény"],[8,9,"a kupongyűjtő aszimptotikája"]];
+const axE=[[1,2,"rekurzió és összeg kölcsönös átírása"],[1,7,"rekurzió megoldása hatványsorral"],[2,6,"teleszkópos összeg és perturbáció: harmonikus és Bernoulli-számok"],[2,9,"összeg közelítése integrállal (Euler–Maclaurin)"],[2,3,"alsó és felső egészes összegek (3.5)"],[6,7,"Fibonacci-számok generátorfüggvénnyel (6.6, 7.3)"],[3,4,"egészrész és mod a számelméletben"],[4,5,"oszthatóság és paritás a binomiális együtthatókban"],[5,7,"binomiális tétel és generátorfüggvény"],[5,8,"binomiális eloszlás"],[5,9,"a C(2n,n) aszimptotikája"],[6,8,"harmonikus és Stirling-számok a valószínűségben"],[6,9,"Bernoulli-számok az Euler–Maclaurin-sorban"],[7,8,"generátorfüggvény és valószínűség-generáló függvény"],[8,9,"a kupongyűjtő aszimptotikája"]];
 function axDraw(svg,sel,upto){
   const W=420,H=300,cx=W/2,cy=H/2,R=110,P=i=>[cx+R*Math.sin(2*Math.PI*(i-1)/9),cy-R*Math.cos(2*Math.PI*(i-1)/9)];
   clear(svg);svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
@@ -10,7 +10,7 @@ function axDraw(svg,sel,upto){
     const c=el("circle",{cx:p[0],cy:p[1],r:on?17:14,style:`fill:${on?"var(--accent-2)":"var(--accent)"};opacity:.92;cursor:${sel!==undefined?"pointer":"default"}`},svg);
     const t=txt(svg,p[0],p[1]+4,i,"","middle");if(t&&t.style){t.style.fill="#fff";t.style.fontWeight="700";t.style.pointerEvents="none";}if(sel!==undefined)c.addEventListener("click",()=>{$("#ax-m-c").value=i;axM();});}
 }
-c2hero("osszegzes-bevezeto",700,13,fr=>{
+c2hero("osszegzes-bevezeto",700,15,fr=>{
   axDraw($("#ax-hero"),undefined,fr);const e=axE[fr];
   $("#ax-hero-a").textContent=`${fr+1}. kapcsolat`;$("#ax-hero-b").textContent=`${e[0]} → ${e[1]}`;
 });
