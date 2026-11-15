@@ -11,3 +11,6 @@
 .ctrl label.rng{max-width:100%;min-width:0}
 .ctrl select{max-width:100%;min-width:0;text-overflow:ellipsis}
 #b-tn-p{width:100%}
+
+.ctrl label.rng:has(select){display:block;width:100%}
+#u-t-r{width:100%}

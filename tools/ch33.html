@@ -1,0 +1,143 @@
+
+<!-- ================= 3.3 REKURZIÓK ================= -->
+<header class="hero page" id="r-bevezeto">
+  <div>
+    <div class="eyebrow">3. fejezet · Egészrész-függvények · 3.3</div>
+    <h1>Rekurziók padlóval és plafonnal</h1>
+    <p class="lead">Ha egy feladatot két közel egyenlő részre bontunk, a méretek \(\lfloor n/2\rfloor\) és \(\lceil n/2\rceil\) lesznek. Így írhatók le a keresés, a rendezés és a Josephus-probléma általánosításának költségei.</p>
+    <div class="formula">\(\displaystyle M(n)=M(\lceil n/2\rceil)+M(\lfloor n/2\rfloor)+n-1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="r-hero" role="img" aria-label="Egy n hosszú lista felezése, a részek mérete lefelé és felfelé kerekítve"></svg>
+    <div class="counter"><span id="r-hero-a">n = 13</span><span>szintek: <b id="r-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A felezés a számítástudomány alapfogása: a telefonkönyvben nem lapozunk végig, hanem a közepére nyitunk, a rendezést két félre bontjuk, és mindkettőt külön oldjuk meg. Ha a méret páros, mindkét fél \(n/2\), ha páratlan, az egyik \(\lfloor n/2\rfloor\), a másik \(\lceil n/2\rceil\) elemű. A költséget ezért olyan rekurzió írja le, amelyben mindkét kerekítés megjelenik. A téma azt mutatja, hogy az ilyen rekurziók zárt alakja gyakran szép, és az \(\lceil\lg n\rceil\) (a kettes alapú logaritmus plafonja) a főszereplő. Utolsó példánk a Josephus-probléma (1.3) olyan változata, ahol nem minden második, hanem minden \(q\)-adik ember esik ki. <i>Saját bevezető, a Konkrét matematika 3.3 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="r-binker">
+  <div class="body">
+    <div class="eyebrow">§1 · Bináris keresés</div>
+    <h2>Hány lépés egy rendezett listában?</h2>
+    <p>Egy rendezett, \(n\) elemű listában a keresett elemet úgy találjuk meg, hogy a középsőt megvizsgáljuk, és a maradék felében folytatjuk. A legrosszabb esetben a próbák száma \(B(n)\):</p>
+    <div class="eq">\[B(0)=0,\qquad B(n)=B\bigl(\lfloor n/2\rfloor\bigr)+1\quad(n\ge1).\]</div>
+    <p>Minden lépés felezi a listát (lefelé kerekítve), és ez addig megy, amíg el nem fogy. Ez pontosan az \(n\) bináris jegyeinek a száma, vagyis</p>
+    <div class="eq gold">\[B(n)=\lfloor\lg n\rfloor+1=\lceil\lg(n+1)\rceil.\]</div>
+    <div class="fig">
+      <svg id="r-b-svg" role="img" aria-label="B(n) értékei"></svg>
+      <div class="info" id="r-b-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="r-b-n">n <input type="range" id="r-b-n" min="1" max="200" value="37"> <span class="mono" id="r-b-nv">37</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(n=7\) elemnél 3 próba elég, 8 elemnél kell a negyedik: a lépcső mindig a 2 hatványainál ugrik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="r-osszefesules">
+  <div class="body">
+    <div class="eyebrow">§2 · Összefésülő rendezés</div>
+    <h2>Két fél, egy összefésülés</h2>
+    <p>Az összefésülő rendezés [merge sort] a listát kettéosztja, mindkét felét rendezi, és a két rendezett felet összefésüli. Két, összesen \(n\) elemű rendezett lista összefésülése a legrosszabb esetben \(n-1\) összehasonlítás, ezért</p>
+    <div class="eq">\[M(1)=0,\qquad M(n)=M\bigl(\lceil n/2\rceil\bigr)+M\bigl(\lfloor n/2\rfloor\bigr)+n-1.\]</div>
+    <p>A megoldás zárt alakban:</p>
+    <div class="eq gold">\[M(n)=n\lceil\lg n\rceil-2^{\lceil\lg n\rceil}+1.\]</div>
+    <p>Az \(n=2^k\) esetben \(M(n)=k\,2^k-2^k+1\). A bizonyítás indukcióval megy: a két fél \(\lceil\lg\rceil\)-ja legfeljebb eggyel tér el az egészétől, és az \(n\) és az \(n-1\) közt a \(2\)-hatvány határán a képlet folytonosan megy át. A program ellenőrzi a zárt alakot az összes \(n\)-re az \(1\ldots N\) tartományban.</p>
+    <div class="fig">
+      <svg id="r-m-svg" role="img" aria-label="M(n) értékei oszlopokként"></svg>
+      <div class="info" id="r-m-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="r-m-n">n <input type="range" id="r-m-n" min="1" max="128" value="20"> <span class="mono" id="r-m-nv">20</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(M(n)/(n\lg n)\) hányados 1-hez tart: az összefésülő rendezés lényegében \(n\lg n\) összehasonlítást igényel. A függvény nem egyenletesen növekszik, hanem a 2 hatványai után „lassabban nő”.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="r-josephusq">
+  <div class="body">
+    <div class="eyebrow">§3 · A Josephus-probléma általánosítása</div>
+    <h2>Minden \(q\)-adik ember kiesik</h2>
+    <p>Az 1.3-ban a körön minden <i>második</i> embert kivégezték. Általánosítva: \(n\) ember áll körben, és minden \(q\)-adik esik ki, amíg egy marad. A túlélő helye \(J_q(n)\), és a szimuláció a következő rekurzióra vezet: \(J_q(1)=1\), \(J_q(n)=\bigl((J_q(n-1)+q-1)\bmod n\bigr)+1\). A zárt alakhoz egy segédsorozat kell:</p>
+    <div class="eq gold">\[D_0=1,\ \ D_{k+1}=\Bigl\lceil\tfrac{q}{q-1}D_k\Bigr\rceil;\qquad J_q(n)=qn+1-D_k,\ \ k=\min\{k: D_k>(q-1)n\}.\]</div>
+    <p>A \(q=2\) esetben \(D_k=2^k\), és a képlet az 1.3 ismerős alakját adja. A kör mutatja a kiesés sorrendjét (a számok a kiesés sorszámai), a túlélő sárga.</p>
+    <div class="fig">
+      <svg id="r-j-svg" role="img" aria-label="Körben álló emberek a kiesés sorszámával"></svg>
+      <div class="info" id="r-j-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="r-j-q">q <input type="range" id="r-j-q" min="2" max="6" value="3"> <span class="mono" id="r-j-qv">3</span></label>
+        <label class="rng" for="r-j-n">n <input type="range" id="r-j-n" min="2" max="40" value="10"> <span class="mono" id="r-j-nv">10</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A zárt alakot minden \(n\le 500\)-ra és \(q\le7\)-re számítással ellenőriztem, a levezetése hosszabb, és itt nem szerepel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="r-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Felezések</h2>
+    <details>
+      <summary><span class="sq">1. Legfeljebb hány próba kell 1000 elemű rendezett listában?</span></summary>
+      <div class="ans">
+        <p>\(B(1000)=\lfloor\lg1000\rfloor+1\). Mivel \(2^9=512\le1000<1024=2^{10}\), \(\lfloor\lg1000\rfloor=9\), tehát 10 próba.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(M(8)\)-at a rekurzióval és a zárt alakkal.</span></summary>
+      <div class="ans">
+        <p>\(M(1)=0\), \(M(2)=0+0+1=1\), \(M(4)=2\cdot1+3=5\), \(M(8)=2\cdot5+7=17\). Zárt alak: \(8\cdot3-8+1=17\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mi a túlélő helye \(n=10\)-nél \(q=2\) és \(q=3\) esetén?</span></summary>
+      <div class="ans">
+        <p>\(q=2\): a küszöb \((q-1)n=10\), \(D=1,2,4,8,16\), az első 10-nél nagyobb a 16, így \(J=21-16=5\).</p>
+        <p>\(q=3\): a küszöb \(2n=20\), és \(D=1,2,3,5,8,12,18,27\) (a lépés: \(\lceil1{,}5D\rceil\)). Az első 20-nál nagyobb a 27, így \(J=31-27=4\). A csúszkákkal (\(q=3\), \(n=10\)) ez a 4. helyet adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Igazold: \(M(2^k)=k\,2^k-2^k+1\).</span></summary>
+      <div class="ans">
+        <p>Indukcióval: \(M(1)=0=0-1+1\). Ha \(M(2^k)\) igaz, akkor</p>
+        <div class="eq">\[M(2^{k+1})=2M(2^k)+2^{k+1}-1=(k+1)2^{k+1}-2^{k+1}+1.\]</div>
+        <p>\(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladatban a \(D\) sorozat hosszát érdemes az ábrán követni: minden lépésben a \(\tfrac q{q-1}\)-szeresére nő, ezért \(k\) kb. \(\log_{q/(q-1)}n\) nagyságrendű.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="r-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Felezős rekurziók</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Rekurzió</th><th>Zárt alak</th></tr>
+      <tr><th>\(B(n)=B(\lfloor n/2\rfloor)+1\)</th><td>\(\lfloor\lg n\rfloor+1\)</td></tr>
+      <tr><th>\(M(n)=M(\lceil n/2\rceil)+M(\lfloor n/2\rfloor)+n-1\)</th><td>\(n\lceil\lg n\rceil-2^{\lceil\lg n\rceil}+1\)</td></tr>
+      <tr><th>\(J_q(n)\)</th><td>\(qn+1-D_k\), \(D_{k+1}=\lceil\tfrac q{q-1}D_k\rceil\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Felez</b><span>\(\lfloor n/2\rfloor\) és \(\lceil n/2\rceil\) a két rész.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Kicsi \(n\)-ek</b><span>Táblázat, minta keresése.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Sejtés a 2-hatványoknál, indukció.</span></div>
+    </div>
+    <p>A következő téma (3.4) a mod műveletet vezeti be: a \(\lfloor\cdot\rfloor\) segítségével definiált maradékképzést, és az igazságos felosztást.</p>
+  </div>
+  <aside class="margo">
+    <p>A \(2^{\lceil\lg n\rceil}\) az \(n\)-nél nem kisebb legkisebb 2-hatvány, ezért ez a kifejezés a bináris felezés „kerekítési maradékát” méri.</p>
+  </aside>
+</section>

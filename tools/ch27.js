@@ -52,9 +52,10 @@ function hAtr(){
   for(let j=1;j<=K;j++){const m=Math.max(1,Math.round(j*M/K));
     while(iPos<p*m){iPos++;sPos+=1/(2*iPos-1);}while(iNeg<q*m){iNeg++;sNeg+=1/(2*iNeg);}
     pts.push(sPos-sNeg);}
-  c2bars(c2svg("#h-a-svg",640,210),pts,{H:210,label:false,xl:i=>Math.round((i+1)*M/K),color:(i)=>i===K-1?"var(--accent-2)":"var(--accent)"});
+  const lo=Math.min(...pts),hi=Math.max(...pts),pad=(hi-lo||0.01)*0.15+0.002;
+  c2bars(c2svg("#h-a-svg",640,210),pts,{H:210,ymin:lo-pad,label:false,xl:i=>Math.round((i+1)*M/K),color:(i)=>i===K-1?"var(--accent-2)":"var(--accent)"});
   const T=Math.log(2)+0.5*Math.log(p/q),S=pts[K-1];
-  $("#h-a-info").innerHTML=`${M} blokk (${p*M} pozitív + ${q*M} negatív tag): S = ${fm(S)} &nbsp;·&nbsp; ln2 + ½·ln(p/q) = ${fm(T)} &nbsp;·&nbsp; eltérés ${fm(Math.abs(S-T))}<br>képlettel: H<sub>2pm</sub> − ½H<sub>pm</sub> − ½H<sub>qm</sub> = ${fm(hPs(p,q,M))} ${ok(Math.abs(hPs(p,q,M)-S)<1e-9)} &nbsp;·&nbsp; az eredeti sor összege: ${fm(Math.log(2))}`;
+  $("#h-a-info").innerHTML=`${M} blokk (${p*M} pozitív + ${q*M} negatív tag): S = ${fm(S)} &nbsp;·&nbsp; ln2 + ½·ln(p/q) = ${fm(T)} &nbsp;·&nbsp; eltérés ${fm(Math.abs(S-T))}<br>képlettel: H<sub>2pm</sub> − ½H<sub>pm</sub> − ½H<sub>qm</sub> = ${fm(hPs(p,q,M))} ${ok(Math.abs(hPs(p,q,M)-S)<1e-9)} &nbsp;·&nbsp; az eredeti sor összege: ${fm(Math.log(2))}<br><i>A függőleges tengely csonkolt: így látszik, hogy az oszlopok hova közelítenek.</i>`;
 }
 ["#h-a-p","#h-a-q","#h-a-m"].forEach(id=>$(id).addEventListener("input",hAtr));hAtr();
 

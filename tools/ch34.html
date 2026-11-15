@@ -1,0 +1,145 @@
+
+<!-- ================= 3.4 A MOD MŰVELET ================= -->
+<header class="hero page" id="u-bevezeto">
+  <div>
+    <div class="eyebrow">3. fejezet · Egészrész-függvények · 3.4</div>
+    <h1>A „mod” művelet</h1>
+    <p class="lead">Az osztás maradékát a padlóval definiáljuk, és így valós számokra és negatív osztóra is értelmes marad. A „mod” nem kapcsolat, hanem kétváltozós művelet, amellyel számolni lehet.</p>
+    <div class="formula">\(x\bmod y=x-y\lfloor x/y\rfloor\qquad(y\ne0)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="u-hero" role="img" aria-label="Egy óralap, amelyen a mutató a maradékot jelzi"></svg>
+    <div class="counter"><span id="u-hero-a">x = 0</span><span>x mod 12 = <b id="u-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az óra a legismertebb „mod” művelet: ha most 9 óra van, 100 óra múlva 13 óra lesz, mert a 109-et 24-gyel osztva a maradék 13. A hagyományos tankönyvek a maradékot pozitív egészekre értelmezik, de a gyakorlatban negatív számokkal és tizedes törtekkel is dolgozunk: egy szög (mod 360), egy hét napja, egy hash-tábla indexe. A padlós definíció ezt egységesen megoldja: \(x\bmod y\) az az érték, amely \(x\)-ből marad, ha \(y\)-nal annyiszor lépünk vissza, ahányszor csak lehet, anélkül hogy a nulla alá mennénk. Egy fontos figyelmeztetés: a programnyelvek „%” művelete nem mind ezt számolja, a negatív számoknál sok nyelven más az eredmény. <i>Saját bevezető, a Konkrét matematika 3.4 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="u-definicio">
+  <div class="body">
+    <div class="eyebrow">§1 · Definíció</div>
+    <h2>Maradék valós és negatív számokra</h2>
+    <p>Az \(y\ne0\) esetén \(x\bmod y=x-y\lfloor x/y\rfloor\), és \(x\bmod0=x\). Az \(y>0\) esetén az eredmény a \([0,y)\) intervallumba esik, az \(y<0\) esetén az \((y,0]\)-ba: a maradék <i>mindig az osztó előjelét követi</i>. Állítsd be az \(x\)-et és az \(y\)-t:</p>
+    <div class="fig">
+      <svg id="u-d-svg" role="img" aria-label="Az x mod y a [0,y) szakaszon"></svg>
+      <div class="info" id="u-d-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="u-d-x">x <input type="range" id="u-d-x" min="-80" max="80" value="-37"> <span class="mono" id="u-d-xv">−18,5</span></label>
+        <label class="rng" for="u-d-y">y <input type="range" id="u-d-y" min="-9" max="9" value="5"> <span class="mono" id="u-d-yv">5</span></label>
+      </div>
+    </div>
+    <p>A kalkulátor a \(x\) értéket fél lépésekben (\(x=v/2\)) használja, így tört értékeket is kipróbálhatsz. Az utolsó sor a hagyományos „levágó” maradékot (a nulla felé kerekítő osztás maradékát) mutatja: negatív számoknál ez eltér a mod értékétől.</p>
+  </div>
+  <aside class="margo">
+    <p>Az \(y=0\) csúszkaállásnál \(x\bmod0=x\): a definíció „nem osztunk” esetét a padlós képlet nem fedi, ezért külön megállapodás.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="u-tulajdonsag">
+  <div class="body">
+    <div class="eyebrow">§2 · Azonosságok</div>
+    <h2>A mod szabályai</h2>
+    <p>A definícióból következik, hogy a mod a szorzással és az eltolással szépen viselkedik:</p>
+    <div class="eq gold">\[c\,(x\bmod y)=(cx)\bmod(cy),\qquad (x+ky)\bmod y=x\bmod y\ \ (k\in\mathbb Z),\qquad 0\le x\bmod y\lt y\ \ (y>0).\]</div>
+    <p>Az első azonosság a „szorzási” (disztributív) szabály: az \(x\bmod y\) arányosan skálázódik. Az összeadásra viszont <b>nincs</b> ilyen szabály: \((x+y)\bmod z\) általában nem \(x\bmod z+y\bmod z\). A tesztelő az \(x=j/12\) racionális számokon, \(y\in[-7,7]\) osztókon és \(c\in[-3,3]\) szorzókon ellenőrzi az állítást.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="u-t-r">állítás <select id="u-t-r"></select></label>
+      </div>
+      <div class="info" id="u-t-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az „(x+ky) mod y = x mod y” azonosság teszi lehetővé, hogy nagy számokat előbb kicsire csökkentsünk: \(1\,000\,003\bmod7\) kiszámolható a 7-szeres levonásával, vagy lépésenként kisebb számokkal.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="u-felosztas">
+  <div class="body">
+    <div class="eyebrow">§3 · Igazságos felosztás</div>
+    <h2>\(n\) tárgy \(m\) csoportba, a lehető legegyenletesebben</h2>
+    <p>Ha \(n\) tárgyat \(m\) csoportba osztunk úgy, hogy a csoportméretek legfeljebb eggyel térjenek el, akkor a \(k\)-adik csoport mérete \(\lfloor(n+k)/m\rfloor\) lehet (\(k=0,\dots,m-1\)), és ezek összege pontosan \(n\). Ugyanezt Hermite azonossága általánosítja, tetszőleges valós \(x\)-re:</p>
+    <div class="eq gold">\[\sum_{k=0}^{m-1}\Bigl\lfloor x+\frac km\Bigr\rfloor=\lfloor mx\rfloor.\]</div>
+    <p>Az \(x=n\) egész esetén a jobb oldal \(mn\), és ez a felosztásra a \(\sum_{k=0}^{m-1}\lfloor n/m\ldots\rfloor\) alakot adja. Az első eszköz az egész \(n\)-re ad csoportméreteket, a második az \(x=a/12\) alakú racionálisokra ellenőrzi Hermite azonosságát, pontosan.</p>
+    <div class="fig">
+      <svg id="u-f-svg" role="img" aria-label="A csoportméretek oszlopai"></svg>
+      <div class="info" id="u-f-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="u-f-n">n <input type="range" id="u-f-n" min="0" max="60" value="23"> <span class="mono" id="u-f-nv">23</span></label>
+        <label class="rng" for="u-f-m">m <input type="range" id="u-f-m" min="1" max="12" value="5"> <span class="mono" id="u-f-mv">5</span></label>
+      </div>
+      <div class="info" id="u-h-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="u-h-a">x = a/12, a <input type="range" id="u-h-a" min="-30" max="60" value="17"> <span class="mono" id="u-h-av">17</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A csoportméretek: \(n\bmod m\) darab \(\lceil n/m\rceil\) méretű és \(m-(n\bmod m)\) darab \(\lfloor n/m\rfloor\) méretű csoport. Például 23 tárgy 5 csoportba: 4, 5, 5, 5, 4 vagy más sorrendben \(3\times5+2\times4\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="u-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Maradékok</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(17\bmod5\), \(-17\bmod5\), \(17\bmod-5\), \(-17\bmod-5\).</span></summary>
+      <div class="ans">
+        <div class="eq">\[\begin{aligned}17\bmod5&=17-5\cdot3=2\\-17\bmod5&=-17-5\cdot(-4)=3\\17\bmod-5&=17+5\cdot(-4)=-3\\-17\bmod-5&=-17+5\cdot3=-2\end{aligned}\]</div>
+        <p>A maradék az osztó előjelét követi.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki: \(5{,}7\bmod2\) és \(-5{,}7\bmod2\).</span></summary>
+      <div class="ans">
+        <p>\(5{,}7-2\lfloor2{,}85\rfloor=1{,}7\). \(-5{,}7-2\lfloor-2{,}85\rfloor=-5{,}7+6=0{,}3\).</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Bizonyítsd: ha \(y>0\), akkor \(0\le x\bmod y\lt y\).</span></summary>
+      <div class="ans">
+        <p>\(x\bmod y=y\bigl(\tfrac xy-\lfloor\tfrac xy\rfloor\bigr)=y\{x/y\}\), és a törtrész a \([0,1)\)-be esik, ezért az \(y\)-nal szorzott érték a \([0,y)\)-ba.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány óra lesz 100 órával 9:00 után (24 órás számítással)?</span></summary>
+      <div class="ans">
+        <div class="eq">\[(9+100)\bmod24=109-24\cdot4=13\]</div>
+        <p>Tehát 13:00. A mod azonosságaival: \(100\bmod24=4\), így \(9+4=13\).</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat négy értéke mutatja, hogy a „mod” műveletet nem lehet a nulla felé kerekítő osztással számolni: negatív számoknál a két módszer eltér.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="u-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A mod szótára</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Tulajdonság</th><th>Képlet</th></tr>
+      <tr><th>definíció</th><td>\(x\bmod y=x-y\lfloor x/y\rfloor\), \(x\bmod0=x\)</td></tr>
+      <tr><th>előjel</th><td>az eredmény az \(y\) előjelét követi</td></tr>
+      <tr><th>tartomány</th><td>\(y>0\): \([0,y)\); \(y<0\): \((y,0]\)</td></tr>
+      <tr><th>szorzás</th><td>\(c(x\bmod y)=(cx)\bmod(cy)\)</td></tr>
+      <tr><th>eltolás</th><td>\((x+ky)\bmod y=x\bmod y\)</td></tr>
+      <tr><th>felosztás</th><td>\(\sum_{k=0}^{m-1}\lfloor x+k/m\rfloor=\lfloor mx\rfloor\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Definíció</b><span>A maradék a padlóból jön.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szabályok</b><span>Szorzás és eltolás igen, összeadás nem.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Alkalmazás</b><span>Óra, ciklus, igazságos osztás.</span></div>
+    </div>
+    <p>A következő téma (3.5) a padlót összegekben használja: rácspontok számolása és a \(\lfloor\sqrt k\rfloor\) összege.</p>
+  </div>
+  <aside class="margo">
+    <p>Programozási nyelvekben ellenőrizd, hogy a „%” művelet melyik változatot adja negatív számokra: a padlós (Python) és a levágó (C, Java, JavaScript) eltér.</p>
+  </aside>
+</section>

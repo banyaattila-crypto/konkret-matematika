@@ -1,0 +1,117 @@
+
+<!-- ================= 3.5 ÖSSZEGEK ================= -->
+<header class="hero page" id="t-bevezeto">
+  <div>
+    <div class="eyebrow">3. fejezet · Egészrész-függvények · 3.5</div>
+    <h1>Összegek padlóval</h1>
+    <p class="lead">Az egészrészes összegek rácspontokat számolnak: \(\lfloor ak/b\rfloor\) pontosan az \(x=k\) függőleges egyenesen az \(y=ax/b\) egyenes alatt (vagy rajta) fekvő pozitív egész pontok száma.</p>
+    <div class="formula">\(\displaystyle\sum_{k=1}^{b-1}\Bigl\lfloor\frac{ak}{b}\Bigr\rfloor=\frac{(a-1)(b-1)+\gcd(a,b)-1}{2}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="t-hero" role="img" aria-label="Rácspontok az y=ax/b egyenes alatt"></svg>
+    <div class="counter"><span id="t-hero-a">a/b = 3/5</span><span>pontok: <b id="t-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az összeg \(\sum\lfloor ak/b\rfloor\) elsőre számelméleti kuriózumnak látszik, de geometriailag egyszerű: oszloponként megszámoljuk, hány rácspont esik az egyenes alá. A szimmetria adja a trükköt: az \((a,b)\) téglalapot az átlója két egybevágó háromszögre vágja, ezért a két oldal pontjai egyenlő számúak, és az összeg közel a téglalap pontjainak felével egyenlő. Ugyanezt a felcserélést használja a reciprocitási tétel, amely Dedekind-összegekhez és a kvadratikus reciprocitáshoz vezet. A második példa, a \(\sum\lfloor\sqrt k\rfloor\), azt mutatja, hogy a szintvonalakat megszámolva (nem az oszlopokat) egy négyzetes összeg adódik. <i>Saját bevezető, a Konkrét matematika 3.5 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="t-racspont">
+  <div class="body">
+    <div class="eyebrow">§1 · Rácspontok az egyenes alatt</div>
+    <h2>\(\sum\lfloor ak/b\rfloor\) rácspontokkal</h2>
+    <p>Az \(a,b\) természetes számokra az \(y=ax/b\) egyenes az \(x=1,\dots,b-1\) helyeken \(\lfloor ak/b\rfloor\) egész pontot hagy maga alatt. Ha \(g=\gcd(a,b)\), az egyenes pontosan \(g-1\) belső rácspontot érint, ezért a téglalap \((a-1)(b-1)\) belső pontját az átló <i>két egyenlő részre</i> osztja, az átlón lévőket külön számolva:</p>
+    <div class="eq gold">\[\sum_{k=1}^{b-1}\Bigl\lfloor\frac{ak}b\Bigr\rfloor=\frac{(a-1)(b-1)+g-1}{2}.\]</div>
+    <p>Az ábra a pontokat színezi: kék az egyenes alatt, sárga az egyenesen, szürke fölötte. A reciprocitás (a két összeg felcserélése) \(\sum\lfloor ak/b\rfloor+\sum\lfloor bk/a\rfloor=(a-1)(b-1)+g-1\) pontosan az, hogy a két háromszög együtt kitölti a téglalapot.</p>
+    <div class="fig">
+      <svg id="t-r-svg" role="img" aria-label="Rácspontok az egyenes alatt, rajta és fölötte"></svg>
+      <div class="info" id="t-r-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="t-r-a">a <input type="range" id="t-r-a" min="1" max="14" value="7"> <span class="mono" id="t-r-av">7</span></label>
+        <label class="rng" for="t-r-b">b <input type="range" id="t-r-b" min="1" max="14" value="10"> <span class="mono" id="t-r-bv">10</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(a=b\) esetben az átló az egész téglalap „átlója”: \(\sum_{k\lt a}(k)=a(a-1)/2\), a képlet \(((a-1)^2+a-1)/2\) ugyanezt adja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="t-gyokok">
+  <div class="body">
+    <div class="eyebrow">§2 · Gyökök egészrésze</div>
+    <h2>\(\sum_{k=1}^n\lfloor\sqrt k\rfloor\) szintenként</h2>
+    <p>Legyen \(m=\lfloor\sqrt n\rfloor\). A \(\lfloor\sqrt k\rfloor\ge j\) pontosan akkor teljesül, ha \(k\ge j^2\), tehát az \(1\ldots n\) közt \(n-j^2+1\) ilyen \(k\) van (\(j=1,\dots,m\)). Az összeg a szintek összege:</p>
+    <div class="eq gold">\[\sum_{k=1}^{n}\lfloor\sqrt k\rfloor=\sum_{j=1}^{m}(n+1-j^2)=m(n+1)-\frac{m(m+1)(2m+1)}6.\]</div>
+    <p>Az \(n=m^2-1\) esetben ez \(\tfrac{m(m-1)(4m+1)}{6}\)-ra egyszerűsödik. A számláló az összeg közvetlen számolását ellenőrzi.</p>
+    <div class="fig">
+      <svg id="t-g-svg" role="img" aria-label="A ⌊√k⌋ lépcsője és az összeg"></svg>
+      <div class="info" id="t-g-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="t-g-n">n <input type="range" id="t-g-n" min="1" max="100" value="30"> <span class="mono" id="t-g-nv">30</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szintenkénti számolás a „felcserélés” általános módszere: ahelyett hogy minden \(k\)-ra az értéket adjuk össze, minden értékre megszámoljuk a \(k\)-kat.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="t-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Rácspontok és gyökök</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(\sum_{k=1}^{6}\lfloor 4k/7\rfloor\).</span></summary>
+      <div class="ans">
+        <p>Az értékek \(k=1\ldots6\) esetén: 0, 1, 1, 2, 2, 3, összegük 9. Képlet: \(\gcd=1\), \((3\cdot6+0)/2=9\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki: \(\sum_{k=1}^{6}\lfloor 4k/6\rfloor\) (itt \(g=2\)).</span></summary>
+      <div class="ans">
+        <p>Az \(a=4\), \(b=6\) és \(k=1\ldots5\): \(0,1,2,2,3\), összeg 8. Képlet: \((3\cdot5+2-1)/2=16/2=8\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki: \(\sum_{k=1}^{20}\lfloor\sqrt k\rfloor\).</span></summary>
+      <div class="ans">
+        <p>\(m=\lfloor\sqrt{20}\rfloor=4\). \(4\cdot21-\tfrac{4\cdot5\cdot9}{6}=84-30=54\). Közvetlenül: \(1\cdot3+2\cdot5+3\cdot7+4\cdot5=3+10+21+20=54\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Miért egyenlő a két háromszög pontszáma?</span></summary>
+      <div class="ans">
+        <p>A téglalap középpontja körüli 180°-os forgatás a rácsot önmagába viszi, és az átló alatti részt az átló fölöttibe képezi. Az átlón lévő \(g-1\) pont fixen marad (önmagukra vagy egymásra képződnek), ezért a maradék \((a-1)(b-1)-(g-1)\) pont két egyenlő részre oszlik.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat mutatja, hogy a közös osztó számít: \(4/6=2/3\), az egyenes átmegy a \((3,2)\) rácsponton.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="t-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Összegek geometriai szemmel</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Összeg</th><th>Zárt alak</th></tr>
+      <tr><th>\(\sum_{k=1}^{b-1}\lfloor ak/b\rfloor\)</th><td>\(\tfrac{(a-1)(b-1)+g-1}2\)</td></tr>
+      <tr><th>reciprocitás</th><td>\(\sum\lfloor ak/b\rfloor+\sum\lfloor bk/a\rfloor=(a-1)(b-1)+g-1\)</td></tr>
+      <tr><th>\(\sum_{k=1}^n\lfloor\sqrt k\rfloor\)</th><td>\(m(n+1)-\tfrac{m(m+1)(2m+1)}6\), \(m=\lfloor\sqrt n\rfloor\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Rajzolj</b><span>Az összeg rácspontok száma.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Cseréld fel</b><span>Oszlopok helyett szintek.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Szimmetria</b><span>Az átló két egyenlő részre vág.</span></div>
+    </div>
+    <p>A 3. fejezet itt zárul. A következő (4.) fejezet a számelméletet tárgyalja: oszthatóság, prímek, kongruenciák.</p>
+  </div>
+  <aside class="margo">
+    <p>A fejezetcím és a szakaszok listája emlékezetből készült: ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>

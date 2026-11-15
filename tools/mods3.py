@@ -1,0 +1,8 @@
+MODS3=[
+ ("padlo","3.1","Padló és plafon","p-","ch31",[["bevezeto","Bevezető"],["definicio","Definíció"],["szabalyok","A szabályok"],["integralitas","Az integralitási tétel"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"⌊x⌋ és ⌈x⌉, a szabályok és az integralitási tétel."),
+ ("alkalmazasok","3.2","Alkalmazások","q-","ch32",[["bevezeto","Bevezető"],["intervallum","Egészek száma egy intervallumban"],["beatty","Spektrumok"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Egészek intervallumban, Beatty-sorozatok."),
+ ("padlorek","3.3","Rekurziók","r-","ch33",[["bevezeto","Bevezető"],["binker","Bináris keresés"],["osszefesules","Összefésülő rendezés"],["josephusq","A Josephus-probléma általánosítása"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Padlós rekurziók: keresés, rendezés, általánosított Josephus."),
+ ("mod","3.4","A „mod” művelet","u-","ch34",[["bevezeto","Bevezető"],["definicio","Definíció"],["tulajdonsag","Azonosságok"],["felosztas","Igazságos felosztás"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"A mod mint kétváltozós művelet, igazságos felosztás."),
+ ("padloosszeg","3.5","Összegek","t-","ch35",[["bevezeto","Bevezető"],["racspont","Rácspontok"],["gyokok","Négyzetgyökök összege"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Padlós összegek: rácspontok, reciprocitás, ⌊√k⌋ összege."),
+]
+CH3={"n":3,"t":"Egészrész-függvények","d":"Alsó és felső egészrész, mod, spektrumok.","lead":"A padló és a plafon az egész és a valós számok közti híd. A fejezet a szabályaikat, a rekurziókban és összegekben való használatukat, valamint a mod műveletet tárgyalja.","old":'{n:3,t:"Egészrész-függvények",d:"Alsó és felső egészrész, mod, spektrumok."},'}

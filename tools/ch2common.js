@@ -26,14 +26,14 @@ function c2hero(page,ms,nFrames,draw){
 }
 /* oszlopdiagram (negatív értékekkel is) */
 function c2bars(s,vals,o){
-  o=Object.assign({W:640,H:220,l:38,r:10,t:18,b:26,color:()=>"var(--accent)",label:true,fmt:v=>fm(v),xl:i=>i+1,alpha:()=>1},o||{});
+  o=Object.assign({ymin:null,W:640,H:220,l:44,r:10,t:18,b:26,color:()=>"var(--accent)",label:true,fmt:v=>fm(v),xl:i=>i+1,alpha:()=>1},o||{});
   const {W,H,l,r,t,b}=o,n=vals.length;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
-  const ymin=Math.min(0,...vals),ymax=Math.max(0,...vals),span=(ymax-ymin)||1;
+  const ymin=o.ymin!==null?o.ymin:Math.min(0,...vals),ymax=Math.max(o.ymin!==null?-Infinity:0,...vals),span=(ymax-ymin)||1;
   const Y=v=>H-b-(H-b-t)*(v-ymin)/span,bw=(W-l-r)/n;
-  for(let g=0;g<=3;g++){const v=ymin+span*g/3;el("line",{x1:l,x2:W-r,y1:Y(v),y2:Y(v),class:"grid-l"},s);txt(s,l-6,Y(v)+4,fm(v),"","end");}
+  for(let g=0;g<=3;g++){const v=ymin+span*g/3;el("line",{x1:l,x2:W-r,y1:Y(v),y2:Y(v),class:"grid-l"},s);txt(s,l-6,Y(v)+4,fm(+v.toPrecision(3)),"","end");}
   el("line",{x1:l,x2:W-r,y1:Y(0),y2:Y(0),class:"axis"},s);
   vals.forEach((v,i)=>{
-    const x=l+i*bw,y0=Y(0),y1=Y(v);
+    const x=l+i*bw,y0=o.ymin!==null?Y(ymin):Y(0),y1=Y(v);
     el("rect",{x:x+bw*.12,y:Math.min(y0,y1),width:bw*.76,height:Math.max(1,Math.abs(y1-y0)),rx:2,style:`fill:${o.color(i,v)};opacity:${o.alpha(i,v)}`},s);
     if(o.label&&n<=16)txt(s,x+bw/2,(v>=0?y1-4:y1+12),o.fmt(v),"");
     if(n<=20||i%Math.ceil(n/12)===0)txt(s,x+bw/2,H-8,o.xl(i),"");

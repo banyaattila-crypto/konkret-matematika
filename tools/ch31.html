@@ -1,0 +1,153 @@
+
+<!-- ================= 3.1 PADLÓ ÉS PLAFON ================= -->
+<header class="hero page" id="p-bevezeto">
+  <div>
+    <div class="eyebrow">3. fejezet · Egészrész-függvények · 3.1</div>
+    <h1>Padló és plafon</h1>
+    <p class="lead">Az alsó egészrész a valós számot a nála nem nagyobb egészek közül a legnagyobbra, a felső egészrész a nála nem kisebb egészek közül a legkisebbre kerekíti. Két egyszerű függvény, amelyből sok szép azonosság következik.</p>
+    <div class="formula">\(\lfloor x\rfloor=\max\{n\in\mathbb Z: n\le x\}\)<br>\(\lceil x\rceil=\min\{n\in\mathbb Z: n\ge x\}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="p-hero" role="img" aria-label="A padló és plafon lépcsőgrafikonja, rajta egy mozgó pont"></svg>
+    <div class="counter"><span id="p-hero-a">x = 0</span><span>⌊x⌋ = <b id="p-hero-b">0</b>, ⌈x⌉ = <b id="p-hero-c">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A programozók mindennap kerekítenek: egy lista felének indexe, egy oldalszám, hány dobozba fér a készlet. Az egész számokra ritkán van gond, a hányadosoknál viszont minden alkalommal el kell dönteni, hogy lefelé vagy felfelé kerekítünk, és ezt a döntést jól szeretnénk leírni. A „padló” és „plafon” elnevezés és a \(\lfloor x\rfloor\), \(\lceil x\rceil\) jelölés a szakirodalom szerint Kenneth Iversontól származik (ahogy az Iverson-zárójel is). A jelölés előnye, hogy a kerekítésről szóló állításokat egyenlőtlenségekké lehet fordítani, és azokkal már lehet számolni. Ez a téma a definíciót, a szabályokat és a legfontosabb tételt gyűjti össze, az integralitási tételt, amely sok függvényben megengedi, hogy a belső kerekítést elhagyjuk. <i>Saját bevezető, a Konkrét matematika 3.1 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="p-definicio">
+  <div class="body">
+    <div class="eyebrow">§1 · Definíció</div>
+    <h2>A lépcső két fokozata</h2>
+    <p>A \(\lfloor x\rfloor\) grafikonja lépcső: minden egész helyen ugrik egyet, és az ugrás után a lépcsőfok bal végpontja zárt. A \(\lceil x\rceil\) ugyanennek a tükörképe: a lépcsőfok jobb végpontja zárt. Ha \(x\) egész, a kettő megegyezik, különben \(\lceil x\rceil=\lfloor x\rfloor+1\). Állítsd az \(x\)-et:</p>
+    <div class="fig">
+      <svg id="p-d-svg" role="img" aria-label="A padló és a plafon grafikonja"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">⌊x⌋</div><div class="v" id="p-d-fl">0</div></div>
+        <div class="stat"><div class="k">⌈x⌉</div><div class="v" id="p-d-cl">0</div></div>
+        <div class="stat"><div class="k">törtrész {x}</div><div class="v" id="p-d-fr">0</div></div>
+      </div>
+      <div class="info" id="p-d-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="p-d-x">x <input type="range" id="p-d-x" min="-500" max="500" step="5" value="237"> <span class="mono" id="p-d-xv">2,37</span></label>
+      </div>
+    </div>
+    <p>A <b>törtrész</b> \(\{x\}=x-\lfloor x\rfloor\) mindig a \([0,1)\) félig nyílt szakaszba esik. A hagyományos kerekítés „fél felfelé” változata \(\lfloor x+\tfrac12\rfloor\) (itt \(x=2{,}5\) a 3-ra, \(x=-2{,}5\) a \(-2\)-re kerekedik).</p>
+  </div>
+  <aside class="margo">
+    <p>A negatív számoknál ügyelj: \(\lfloor -2{,}37\rfloor=-3\) (nem \(-2\)), mert a \(-3\) a legnagyobb egész, amely nem nagyobb \(-2{,}37\)-nél. Sok programozási nyelv „egészre vágása” (truncate) ettől eltérően a nulla felé kerekít.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="p-szabalyok">
+  <div class="body">
+    <div class="eyebrow">§2 · A szabályok</div>
+    <h2>Kerekítés helyett egyenlőtlenség</h2>
+    <p>A definícióból négy ekvivalencia következik. Ezek a legfontosabb munkaeszközök, mert a kerekítést egyenlőtlenséggé alakítják (\(n\) egész):</p>
+    <div class="eq gold">\[x\lt n\iff\lfloor x\rfloor\lt n,\qquad n\lt x\iff n<\lceil x\rceil,\qquad x\le n\iff\lceil x\rceil\le n,\qquad n\le x\iff n\le\lfloor x\rfloor.\]</div>
+    <p>További azonosságok: \(\lfloor x+n\rfloor=\lfloor x\rfloor+n\) (egészet szabad kivinni), \(\lceil x\rceil=-\lfloor -x\rfloor\), és \(\lceil x\rceil-\lfloor x\rfloor=[x\notin\mathbb Z]\). Azt viszont <b>nem</b> szabad feltételezni, hogy \(\lfloor x+y\rfloor=\lfloor x\rfloor+\lfloor y\rfloor\).</p>
+    <p>A tesztelő az \(x=j/12\) racionális számokon (\(-5\le x\le5\)) és az \(n\in[-6,6]\) egészeken végigellenőrzi az állítást, egész számokkal számolva. A hamis állításnál megmutatja az első ellenpéldát.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="p-s-r">állítás <select id="p-s-r"></select></label>
+      </div>
+      <div class="info" id="p-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A véges teszt nem bizonyítás: egy 121 × 13 rácson ellenőrzi az állítást. A bizonyítás a definíció átírásából jön, a teszt a hibákat szűri ki.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="p-integralitas">
+  <div class="body">
+    <div class="eyebrow">§3 · Az integralitási tétel</div>
+    <h2>Mikor szabad a belső kerekítést elhagyni?</h2>
+    <p>Legyen \(f\) folytonos, szigorúan növekvő függvény, amelyre \(f(x)\in\mathbb Z\) esetén \(x\in\mathbb Z\). Ekkor</p>
+    <div class="eq gold">\[\lfloor f(x)\rfloor=\bigl\lfloor f(\lfloor x\rfloor)\bigr\rfloor,\qquad \lceil f(x)\rceil=\bigl\lceil f(\lceil x\rceil)\bigr\rceil.\]</div>
+    <p>Az ötlet: ha \(\lfloor x\rfloor\lt x\), akkor \(f(\lfloor x\rfloor)\le f(x)\) miatt a jobb oldal legfeljebb akkora. Ha szigorúan kisebb lenne, volna egy \(m\) egész, amelyre \(f(\lfloor x\rfloor)\lt m\le f(x)\), és a közbülső érték tétele szerint volna egy \(y\in(\lfloor x\rfloor,x]\) helyen \(f(y)=m\), így az integralitás miatt \(y\) egész. Ez ellentmond annak, hogy \(\lfloor x\rfloor\) a legnagyobb egész \(x\)-ig. Ezért egyenlő.</p>
+    <p>Az alábbi tesztelő a tételt kipróbálja a \(\lfloor f(x)\rfloor=\lfloor f(\lfloor x\rfloor)\rfloor\) alakra, \(x=j/12\), \(0\le x\le50\) racionális értékeken, pontos számolással. Az első három függvény teljesíti a feltételt, az utolsó kettő nem.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="p-i-f">f(x) <select id="p-i-f">
+          <option value="half">x/2 (teljesíti)</option>
+          <option value="lin">(x+3)/5 (teljesíti)</option>
+          <option value="sqrt">√x (teljesíti)</option>
+          <option value="dbl">2x (nem: f(½)=1)</option>
+          <option value="sq">x² (nem: f(√2)=2)</option>
+        </select></label>
+      </div>
+      <div class="info" id="p-i-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A leghíresebb következmény: \(\lfloor\sqrt{\lfloor x\rfloor}\rfloor=\lfloor\sqrt x\rfloor\) és \(\bigl\lfloor\frac{\lfloor x/m\rfloor}{n}\bigr\rfloor=\bigl\lfloor\frac{x}{mn}\bigr\rfloor\) (a belső kerekítés elhagyható).</p>
+    <p>A tétel feltétele a lényeg: a \(2x\) és az \(x^2\) ellenpélda.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="p-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Kerekítési feladatok</h2>
+    <details>
+      <summary><span class="sq">1. Igazold az integralitási tétellel, hogy \(\lfloor\sqrt{\lfloor x\rfloor}\rfloor=\lfloor\sqrt x\rfloor\).</span></summary>
+      <div class="ans">
+        <p>\(f(x)=\sqrt x\) folytonos és szigorúan növekvő \(x\ge0\)-ra, és \(\sqrt x\in\mathbb Z\) esetén \(x=(\sqrt x)^2\) egész. A tétel miatt az állítás igaz. Próba: \(x=17{,}9\): \(\lfloor17{,}9\rfloor=17\), \(\sqrt{17}\approx4{,}12\), padlója 4; \(\sqrt{17{,}9}\approx4{,}23\), padlója 4. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Bizonyítsd: \(\lceil x\rceil-\lfloor x\rfloor=[x\notin\mathbb Z]\).</span></summary>
+      <div class="ans">
+        <p>Ha \(x\) egész, \(\lceil x\rceil=\lfloor x\rfloor=x\), a különbség 0. Ha nem egész, akkor \(\lfloor x\rfloor\lt x<\lfloor x\rfloor+1\), így a legkisebb \(x\)-nél nem kisebb egész \(\lfloor x\rfloor+1\), a különbség 1.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mely \(x\ge0\)-ra igaz \(\lfloor x^2\rfloor=\lfloor x\rfloor^2\)?</span></summary>
+      <div class="ans">
+        <p>Legyen \(n=\lfloor x\rfloor\). Az \(x\ge n\) miatt \(x^2\ge n^2\) mindig igaz, az egyenlőséghez pedig \(x^2\lt n^2+1\) kell. Tehát</p>
+        <div class="eq">\[n\le x<\sqrt{n^2+1}\quad(n=0,1,2,\dots).\]</div>
+        <p>Próba: \(n=2\): \(x\in[2;\,2{,}236)\): \(x=2{,}2\) esetén \(4{,}84\to4=2^2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi \(\lfloor x+\tfrac12\rfloor\) értéke \(x=-2{,}5\) és \(x=2{,}5\) esetén?</span></summary>
+      <div class="ans">
+        <p>\(x=2{,}5\): \(\lfloor3\rfloor=3\). \(x=-2{,}5\): \(\lfloor-2\rfloor=-2\). A „fél felfelé” kerekítés tehát mindkét esetben a nagyobbik szomszédra kerekít, ezért nem szimmetrikus a nullára. A szimmetrikus változat (nullától távolodva) külön szabály.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat megoldásaiban a \(\sqrt{n^2+1}\) alig nagyobb \(n\)-nél, így a megoldáshalmaz a számegyenesen apró, egyre keskenyebb szigetekből áll.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="p-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A padló-plafon szótár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Átírás</th></tr>
+      <tr><th>\(\lfloor x\rfloor=n\)</th><td>\(n\le x\lt n+1\)</td></tr>
+      <tr><th>\(\lceil x\rceil=n\)</th><td>\(n-1\lt x\le n\)</td></tr>
+      <tr><th>\(x\lt n\)</th><td>\(\lfloor x\rfloor\lt n\)</td></tr>
+      <tr><th>\(n\le x\)</th><td>\(n\le\lfloor x\rfloor\)</td></tr>
+      <tr><th>\(\lfloor x+n\rfloor\)</th><td>\(\lfloor x\rfloor+n\) (\(n\) egész)</td></tr>
+      <tr><th>\(\lceil x\rceil\)</th><td>\(-\lfloor -x\rfloor\)</td></tr>
+      <tr><th>\(\lfloor f(x)\rfloor\)</th><td>\(\lfloor f(\lfloor x\rfloor)\rfloor\), ha \(f\) teljesíti az integralitást</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd át</b><span>\(\lfloor x\rfloor=n\) helyett \(n\le x\lt n+1\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Egyszerűsíts</b><span>Egész kivitele, integralitás.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrizd</b><span>Törtrészű és negatív \(x\)-szel.</span></div>
+    </div>
+    <p>A következő téma (3.2) az egészrész gyakorlati alkalmazásait mutatja: hány egész esik egy intervallumba, és hogyan osztják szét a pozitív egészeket a Beatty-sorozatok.</p>
+  </div>
+  <aside class="margo">
+    <p>Tipikus hiba: a negatív számok kerekítése, és a \(\lfloor x+y\rfloor=\lfloor x\rfloor+\lfloor y\rfloor\) hamis „azonosság”.</p>
+  </aside>
+</section>

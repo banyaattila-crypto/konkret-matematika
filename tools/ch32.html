@@ -1,0 +1,130 @@
+
+<!-- ================= 3.2 ALKALMAZÁSOK ================= -->
+<header class="hero page" id="q-bevezeto">
+  <div>
+    <div class="eyebrow">3. fejezet · Egészrész-függvények · 3.2</div>
+    <h1>Alkalmazások</h1>
+    <p class="lead">Két kérdés, amelyre a padló és a plafon pontos választ ad: hány egész szám esik egy intervallumba, és hogyan oszthatók szét a pozitív egészek két sorozatba úgy, hogy mindegyik pontosan egyszer szerepeljen.</p>
+    <div class="formula">\(\#\bigl(\mathbb Z\cap[\alpha,\beta]\bigr)=\lfloor\beta\rfloor-\lceil\alpha\rceil+1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="q-hero" role="img" aria-label="Számegyenes, rajta egy intervallum és a benne lévő egészek"></svg>
+    <div class="counter"><span id="q-hero-a">[α, β]</span><span>egészek: <b id="q-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Hány 3-mal osztható szám van 10 és 100 között? Hány számjegyű az \(n\) szám? Hányadik szám lesz az \(\alpha\)-ra kerekített \(n\)-edik tag? Ezek mind egész számokat számlálnak, és mindegyiknél ugyanaz a nehézség: a határokon a pontos érték eldöntése. A padló és a plafon pontosan ebben segít, mert a „nem kisebb” és „nem nagyobb” határokat a legközelebbi egészre fordítja. A téma második felében a kerekítés egy szép szerkezetet is előállít: két irracionális szám többszöröseinek egészrészei együtt pontosan egyszer fedik le a pozitív egészeket. Ez a Beatty-tétel, és a sorozatpárt spektrumnak is hívják. <i>Saját bevezető, a Konkrét matematika 3.2 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="q-intervallum">
+  <div class="body">
+    <div class="eyebrow">§1 · Egészek száma egy intervallumban</div>
+    <h2>Határok: zárt, nyílt, félig nyílt</h2>
+    <p>Az \(\alpha\le\beta\) valós számok által határolt intervallumban lévő egészek száma attól függ, hogy a végpontok beleszámítanak-e:</p>
+    <div class="eq gold">\[\begin{aligned}
+      [\alpha,\beta]&:\ \lfloor\beta\rfloor-\lceil\alpha\rceil+1, &\qquad (\alpha,\beta)&:\ \lceil\beta\rceil-\lfloor\alpha\rfloor-1,\\
+      [\alpha,\beta)&:\ \lceil\beta\rceil-\lceil\alpha\rceil, &\qquad (\alpha,\beta]&:\ \lfloor\beta\rfloor-\lfloor\alpha\rfloor.\end{aligned}\]</div>
+    <p>A képletek a félig nyílt esetnél a legegyszerűbbek (két azonos jellegű egészrész különbsége), a többit ebből lehet kapni. A nyílt intervallumnál \(\alpha<\beta\) kell. Állítsd a két végpontot, a program megszámolja az egészeket felsorolással is.</p>
+    <div class="fig">
+      <svg id="q-i-svg" role="img" aria-label="Számegyenes az intervallummal és az egészekkel"></svg>
+      <div class="tbl-wrap"><table class="vals" id="q-i-tbl"></table></div>
+      <div class="ctrl">
+        <label class="rng" for="q-i-a">α <input type="range" id="q-i-a" min="-500" max="500" step="5" value="-135"> <span class="mono" id="q-i-av">−1,35</span></label>
+        <label class="rng" for="q-i-b">β <input type="range" id="q-i-b" min="-500" max="500" step="5" value="320"> <span class="mono" id="q-i-bv">3,2</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Ha \(\alpha=\beta\) egész, a zárt intervallumban 1 egész van, a nyíltban 0, de a nyílt képlet \(-1\)-et adna. Ezért követeli meg a nyílt eset az \(\alpha<\beta\) feltételt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="q-beatty">
+  <div class="body">
+    <div class="eyebrow">§2 · Spektrumok</div>
+    <h2>A pozitív egészek két sorozata</h2>
+    <p>Az \(\alpha\) szám <b>spektruma</b> az \(\lfloor\alpha\rfloor,\lfloor2\alpha\rfloor,\lfloor3\alpha\rfloor,\dots\) sorozat. A <b>Beatty-tétel</b> szerint, ha \(\alpha>1\) irracionális, és \(\beta\) olyan, hogy</p>
+    <div class="eq gold">\[\frac1\alpha+\frac1\beta=1\ \Longleftrightarrow\ \beta=\frac{\alpha}{\alpha-1},\]</div>
+    <p>akkor az \(\alpha\) és a \(\beta\) spektruma <i>szétosztja</i> a pozitív egészeket: minden pozitív egész pontosan az egyik sorozatban fordul elő, pontosan egyszer. Vázlatos ok: az első \(N\) egész között az egyik sorozat kb. \(N/\alpha\), a másik kb. \(N/\beta\) tagot ad, ez együtt \(N\). Az irracionalitás zárja ki, hogy egy-egy egész kétszer vagy sehol ne szerepeljen. (A teljes bizonyítás az egyenlőtlenség-átírásokkal készül, itt a számítás ellenőrzi.)</p>
+    <p>Válassz egy számot. A rács az \(1,\dots,N\) egészeket mutatja: kék, ha az \(\alpha\)-spektrumban van, sárga, ha a \(\beta\)-spektrumban; ha egy szám kétszer vagy egyszer sem fordul elő, piros keret jelzi.</p>
+    <div class="fig">
+      <div class="cellrow" id="q-b-grid"></div>
+      <div class="info" id="q-b-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="q-b-a">α <select id="q-b-a">
+          <option value="sqrt2">√2 ≈ 1,4142</option>
+          <option value="phi">φ = (1+√5)/2 ≈ 1,6180</option>
+          <option value="pi">π ≈ 3,1416</option>
+          <option value="rat">3/2 (racionális!)</option>
+        </select></label>
+        <label class="rng" for="q-b-n">N <input type="range" id="q-b-n" min="10" max="60" value="40"> <span class="mono" id="q-b-nv">40</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(3/2\) esetben \(\beta=3\): az \(\lfloor3n/2\rfloor\) sorozat 1, 3, 4, 6, 7, 9, 10, …, a 3, 6, 9, … sorozat pedig sokszor ugyanazt a számot adja, miközben például a 2 egyikben sincs.</p>
+    <p>A két sorozat az \(\alpha=\varphi\) esetben a Fibonacci-szavakhoz és a Wythoff-játékhoz is kapcsolódik, ezt itt nem tárgyaljuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="q-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Számlálás padlóval</h2>
+    <details>
+      <summary><span class="sq">1. Hány 3-mal osztható szám van a \([10,100]\) intervallumban?</span></summary>
+      <div class="ans">
+        <p>Az \(m\) többszörösei 1-től \(n\)-ig: \(\lfloor n/m\rfloor\). Itt \(\lfloor100/3\rfloor-\lfloor9/3\rfloor=33-3=30\). Próba: a 12, 15, …, 99 sorozatban \((99-12)/3+1=30\) tag van. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány számjegye van a 12345-nek, és általában az \(n\geq1\) számnak (tízes számrendszerben)?</span></summary>
+      <div class="ans">
+        <p>Az \(n\) pontosan akkor \(d\) számjegyű, ha \(10^{d-1}\le n<10^d\), azaz \(d-1\le\log_{10}n\lt d\). Ez \(d=\lfloor\log_{10}n\rfloor+1\). A 12345-nél \(\log_{10}\approx4{,}09\), tehát 5 számjegy.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány egész van a \([\tfrac13,\tfrac{100}{7}]\) intervallumban?</span></summary>
+      <div class="ans">
+        <p>\(\lfloor100/7\rfloor-\lceil1/3\rceil+1=14-1+1=14\) (az egészek 1-től 14-ig).</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Írd fel az \(\lfloor n\sqrt2\rfloor\) sorozat első tagjait, és a hozzá tartozó \(\beta\) spektrum első négy tagját.</span></summary>
+      <div class="ans">
+        <p>\(\alpha=\sqrt2\): 1, 2, 4, 5, 7, 8, 9, 11, 12, 14, … A \(\beta=\dfrac{\sqrt2}{\sqrt2-1}=2+\sqrt2\) spektruma: \(\lfloor3{,}414\rfloor=3\), \(\lfloor6{,}83\rfloor=6\), \(\lfloor10{,}24\rfloor=10\), \(\lfloor13{,}66\rfloor=13\), … Együtt: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, …, minden egész pontosan egyszer.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat szerint a számjegyek száma egy padló-képlet. Ugyanezzel számolható a bináris hossz is: \(\lfloor\log_2n\rfloor+1\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="q-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Számlálási receptek</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Mit számlálunk</th><th>Képlet</th></tr>
+      <tr><th>\(m\) többszörösei \(1\ldots n\)-ig</th><td>\(\lfloor n/m\rfloor\)</td></tr>
+      <tr><th>egészek a \([\alpha,\beta]\)-ban</th><td>\(\lfloor\beta\rfloor-\lceil\alpha\rceil+1\)</td></tr>
+      <tr><th>egészek az \((\alpha,\beta)\)-ban</th><td>\(\lceil\beta\rceil-\lfloor\alpha\rfloor-1\) (\(\alpha<\beta\))</td></tr>
+      <tr><th>egészek a \([\alpha,\beta)\)-ban</th><td>\(\lceil\beta\rceil-\lceil\alpha\rceil\)</td></tr>
+      <tr><th>egészek az \((\alpha,\beta]\)-ban</th><td>\(\lfloor\beta\rfloor-\lfloor\alpha\rfloor\)</td></tr>
+      <tr><th>számjegyek száma</th><td>\(\lfloor\log_{10}n\rfloor+1\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Határok</b><span>Zárt, nyílt vagy félig nyílt?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Képlet</b><span>A megfelelő padló-plafon különbség.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Próba</b><span>Kicsi példa felsorolva.</span></div>
+    </div>
+    <p>A következő téma (3.3) a padlót és plafont rekurziókban használja: a bináris keresés, az összefésülő rendezés és az általánosított Josephus-probléma költsége így fejezhető ki.</p>
+  </div>
+  <aside class="margo">
+    <p>Ha a határok nem egész számok, mindig érdemes egy kis példát felsorolni: a hibák többnyire a határon, az „egyel több vagy kevesebb” eseteknél jönnek.</p>
+  </aside>
+</section>
