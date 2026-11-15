@@ -1,0 +1,166 @@
+
+<!-- ================= 4.7 FÜGGETLEN MARADÉKOK ================= -->
+<header class="hero page" id="az-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.7</div>
+    <h1>Független maradékok</h1>
+    <p class="lead">Ha két modulus relatív prím, a maradékok egymástól függetlenek: egy szám pontosan akkor van meghatározva, ha mindkét maradékát ismerjük. Ez a kínai maradéktétel mélyebb tartalma.</p>
+    <div class="formula">\(\displaystyle x\ \longmapsto\ (x\bmod m,\ x\bmod n),\qquad\gcd(m,n)=1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="az-hero" role="img" aria-label="A 0…mn−1 számok elhelyezése az (x mod m, x mod n) rácson; relatív prím modulusoknál minden cellába pontosan egy szám kerül"></svg>
+    <div class="counter"><span id="az-hero-a">(m, n) = (3, 5)</span><span id="az-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A kínai maradéktétel egy feladvány: keress olyan számot, amely 3-mal osztva 2, 5-tel osztva 3, 7-tel osztva 2 maradékot ad. Az elnevezés a régi kínai matematikai hagyományra utal, a pontos forrást nem idézem, mert nem ellenőriztem. A tartalma egyszerű: ha a modulusok relatív prímek, a maradékok egymástól függetlenül választhatók, és együtt egyetlen számot határoznak meg. A képen a 3 és az 5 esetén minden rácspont pontosan egyszer telik meg. A 4 és a 6 esetén ez nem igaz: hamar ütközések lesznek, mert a két modulus nem független.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="az-tetel">
+  <div class="body">
+    <div class="eyebrow">§1 · A tétel</div>
+    <h2>Egy szám, két maradék</h2>
+    <p>Legyen \(\gcd(m,n)=1\). Tekintsük az \(x\mapsto(x\bmod m,\ x\bmod n)\) leképezést a \(\{0,1,\dots,mn-1\}\) halmazról az \(m\times n\) rácsra. Két szám akkor ad azonos párt, ha különbségük osztható \(m\)-mel és \(n\)-nel is. Relatív prím modulusoknál ez \(mn\)-nel való oszthatóságot jelent, hiszen a közös többszörösök mind a legkisebb közös többszörösnek, vagyis \(mn\)-nek a többszörösei. A \(0\ldots mn-1\) tartományban két különböző szám különbsége nem lehet osztható \(mn\)-nel, tehát a leképezés kölcsönösen egyértelmű. Mivel mindkét halmaznak \(mn\) eleme van, szükségképpen minden pár pontosan egyszer fordul elő:</p>
+    <div class="eq gold">\[\mathbb Z_{mn}\ \cong\ \mathbb Z_m\times\mathbb Z_n.\]</div>
+    <p>Az azonosítás az összeadást és a szorzást is megőrzi, mert \((x+y)\bmod m\) és \((xy)\bmod m\) csak az \(x\bmod m\), \(y\bmod m\) értéktől függ. Ha a modulusok nem relatív prímek, a leképezés nem kölcsönösen egyértelmű: a képek száma \(\operatorname{lcm}(m,n)\), mert a pár \(\operatorname{lcm}\)-enként ismétlődik. A kísérletben beállítható \(m\) és \(n\), a rács minden cellájába az első beleeső szám kerül.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="az-t-m">m <input type="range" id="az-t-m" min="2" max="9" value="4"> <span class="mono" id="az-t-mv">4</span></label>
+        <label class="rng" for="az-t-n">n <input type="range" id="az-t-n" min="2" max="9" value="5"> <span class="mono" id="az-t-nv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="az-t-t"></table></div>
+      <div class="info" id="az-t-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tétel struktúratétel: \(\mathbb Z_{60}\cong\mathbb Z_4\times\mathbb Z_3\times\mathbb Z_5\). Egy 60 elemű gyűrű három kisebbre esik szét, és ezeken külön-külön lehet számolni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="az-szamol">
+  <div class="body">
+    <div class="eyebrow">§2 · Számolás párokban</div>
+    <h2>Kis modulusokon számolni, nagyot visszaállítani</h2>
+    <p>Az azonosítás gyakorlati haszna, hogy egy nagy modulus szerinti számolás kis modulusokra bontható. A \(2^{100}\bmod1001\) például a \(1001=7\cdot11\cdot13\) felbontásával számolható: \(2^3\equiv1\pmod7\), így \(2^{100}=2^{3\cdot33+1}\equiv2\); \(2^{10}\equiv1\pmod{11}\), így \(2^{100}\equiv1\); \(2^{12}\equiv1\pmod{13}\), így \(2^{100}\equiv2^4=16\equiv3\). Az eredményt a három maradékból kell visszaállítani.</p>
+    <p>A visszaállításhoz kényelmes a vegyes számrendszeres alak (Garner módszere). Legyenek a modulusok \(m_1,\dots,m_k\), a maradékok \(r_i\). Keressük az \(x\)-et</p>
+    <div class="eq">\[x=x_1+x_2m_1+x_3m_1m_2+\cdots,\qquad 0\le x_i\lt m_i\]</div>
+    <p>alakban. Az első jegy \(x_1=r_1\). Az \(i\)-edik jegyet úgy kapjuk, hogy az előző tagok összegét kivonjuk \(r_i\)-ből, és elosztjuk a \(m_1\cdots m_{i-1}\) szorzattal modulo \(m_i\). Ez megtehető, mert a szorzat relatív prím \(m_i\)-hez, tehát invertálható:</p>
+    <div class="eq gold">\[x_i\equiv\bigl(r_i-(x_1+x_2m_1+\cdots+x_{i-1}m_1\cdots m_{i-2})\bigr)\,(m_1\cdots m_{i-1})^{-1}\pmod{m_i}.\]</div>
+    <p>Minden lépés egyetlen lineáris kongruencia, és a végén \(0\le x\lt m_1\cdots m_k\). A kísérlet a hatványt külön-külön kiszámolja minden modulusra, Garner módszerével összerakja, és összeveti a közvetlen számolással.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="az-s-a">a <input type="range" id="az-s-a" min="2" max="20" value="2"> <span class="mono" id="az-s-av">2</span></label>
+        <label class="rng" for="az-s-e">e <input type="range" id="az-s-e" min="1" max="500" value="100"> <span class="mono" id="az-s-ev">100</span></label>
+        <label class="rng" for="az-s-m">modulusok <select id="az-s-m"><option>7,11,13</option><option>5,7,9</option><option>8,9,25</option><option>3,5,7,11</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="az-s-t"></table></div>
+      <div class="info" id="az-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(1001=7\cdot11\cdot13\) azért népszerű példa, mert \(1000\equiv-1\pmod{1001}\): ebből jön az a próba, amely a számjegyek hármas csoportjainak váltakozó összegével vizsgálja a 7-, 11- és 13-mal való oszthatóságot. Ez a 4.8-ban szerepel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="az-gyok">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyökök száma</div>
+    <h2>Hány megoldása van az \(x^2\equiv1\)-nek?</h2>
+    <p>Az azonosítás miatt egy \(f(x)\equiv0\) kongruencia megoldásainak száma \(mn\) szerint a két szám szorzata, ha \(m,n\) relatív prímek: a megoldásokat külön-külön kell megválasztani az \(m\) és az \(n\) szerinti maradéknál. Így elég prímhatvány modulusra megoldani.</p>
+    <p>Legyen \(p\) páratlan prím. Ha \(p^e\mid x^2-1=(x-1)(x+1)\), akkor \(p\) nem oszthatja mindkét tényezőt, mert a különbségük 2. Ezért \(p^e\) osztja \(x-1\)-et vagy \(x+1\)-et, és a megoldások pontosan \(x\equiv\pm1\): két megoldás. A kettőhatványoknál más a kép: \(2^1\)-re egy, \(2^2\)-re kettő (\(\pm1\)), \(2^e\)-re \(e\ge3\) esetén négy megoldás van: \(\pm1\) és \(2^{e-1}\pm1\). Ezekből</p>
+    <div class="eq gold">\[N(n)=c(e)\cdot2^{\omega(n')},\qquad n=2^en',\ n'\ \text{páratlan},\]</div>
+    <p>ahol \(\omega\) a különböző prímek száma, és \(c(0)=c(1)=1\), \(c(2)=2\), \(c(e)=4\) \(e\ge3\)-ra. Az \(x^2\equiv x\) (idempotensek) esete egyszerűbb: \(p^e\mid x(x-1)\)-ből \(x\equiv0\) vagy \(1\), tehát \(2^{\omega(n)}\) megoldás van.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="az-g-n">n <input type="range" id="az-g-n" min="2" max="400" value="105"> <span class="mono" id="az-g-nv">105</span></label>
+        <label class="rng" for="az-g-q">kongruencia <select id="az-g-q"><option value="1">x² ≡ 1</option><option value="x">x² ≡ x</option></select></label>
+      </div>
+      <div class="info" id="az-g-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(105=3\cdot5\cdot7\) esetén \(x^2\equiv1\)-nek \(2\cdot2\cdot2=8\) megoldása van, miközben a \(\bmod 8\) esetben négy. A „két megoldás” tehát csak prímek és páratlan prímhatványok szerint igaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="az-altalanos">
+  <div class="body">
+    <div class="eyebrow">§4 · Nem relatív prímek</div>
+    <h2>Ha a modulusoknak van közös osztójuk</h2>
+    <p>Legyen \(g=\gcd(m,n)\). Az \(x\equiv a\pmod m\), \(x\equiv b\pmod n\) rendszernek pontosan akkor van megoldása, ha \(a\equiv b\pmod g\). A szükségesség egyszerű: \(x\) mindkét maradékát ugyanaz a \(g\)-vel való maradék viszi. Az elégségességhez írjuk \(x=a+mt\)-t. Ekkor \(mt\equiv b-a\pmod n\), és ez osztással \(g\)-vel</p>
+    <div class="eq">\[\tfrac mg\,t\equiv\tfrac{b-a}g\pmod{\tfrac ng}.\]</div>
+    <p>Mivel \(m/g\) és \(n/g\) relatív prímek, az \(m/g\) invertálható modulo \(n/g\), tehát \(t\) egyértelmű \(n/g\) szerint, vagyis \(x\) egyértelmű \(m\cdot n/g=\operatorname{lcm}(m,n)\) szerint. A megoldás modulusa az \(\operatorname{lcm}\), az \(mn\)-es tartományban \(g\) darab megoldás van.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="az-a-m">m <input type="range" id="az-a-m" min="2" max="40" value="12"> <span class="mono" id="az-a-mv">12</span></label>
+        <label class="rng" for="az-a-n">n <input type="range" id="az-a-n" min="2" max="40" value="18"> <span class="mono" id="az-a-nv">18</span></label>
+        <label class="rng" for="az-a-a">a <input type="range" id="az-a-a" min="0" max="39" value="3"> <span class="mono" id="az-a-av">3</span></label>
+        <label class="rng" for="az-a-b">b <input type="range" id="az-a-b" min="0" max="39" value="9"> <span class="mono" id="az-a-bv">9</span></label>
+      </div>
+      <div class="info" id="az-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(x\equiv3\pmod{12}\), \(x\equiv7\pmod{18}\) rendszernek nincs megoldása, mert \(\gcd=6\), és \(3\not\equiv7\pmod6\). Egy közös számot csak akkor lehet találni, ha a két feltétel a közös osztónál nem mond ellent egymásnak.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="az-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Párok, gyökök, ellentmondások</h2>
+    <details>
+      <summary><span class="sq">1. Hány megoldása van az \(x^2\equiv1\)-nek modulo 105? Add meg őket.</span></summary>
+      <div class="ans">
+        <p>\(105=3\cdot5\cdot7\), mindegyiknél \(x\equiv\pm1\), tehát \(2\cdot2\cdot2=8\) megoldás. A maradékpárokból: \(1,29,34,41,64,71,76,104\). <b>Ellenőrzés:</b> \(29^2=841=8\cdot105+1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki a \(3^{100}\bmod1001\)-et a \(7,11,13\) felbontásával.</span></summary>
+      <div class="ans">
+        <p>Modulo 7: \(3^6\equiv1\), \(100\equiv4\pmod6\), \(3^4=81\equiv4\). Modulo 11: \(3^5=243\equiv1\), \(100\equiv0\pmod5\), tehát \(1\). Modulo 13: \(3^3=27\equiv1\), \(100\equiv1\pmod3\), tehát \(3\). Az \(x\equiv4\ (7)\), \(x\equiv1\ (11)\), \(x\equiv3\ (13)\) megoldása modulo 1001 \(x=991\). <b>Ellenőrzés:</b> \(991=7\cdot141+4=11\cdot90+1=13\cdot76+3\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Oldd meg: (a) \(x\equiv3\ (12)\), \(x\equiv7\ (18)\); (b) \(x\equiv3\ (12)\), \(x\equiv9\ (18)\).</span></summary>
+      <div class="ans">
+        <p>\(\gcd(12,18)=6\). (a) \(3\not\equiv7\pmod6\), tehát nincs megoldás. (b) \(3\equiv9\pmod6\), van megoldás, modulo \(\operatorname{lcm}=36\). A \(3,15,27\) közül \(x=27\) ad 9-et modulo 18. <b>Ellenőrzés:</b> \(27=2\cdot12+3=1\cdot18+9\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány megoldása van az \(x^2\equiv x\)-nek modulo 6, és melyek ezek?</span></summary>
+      <div class="ans">
+        <p>Modulo 2 és modulo 3 is kettő van (0 és 1), tehát \(2\cdot2=4\). A párok \((0,0),(1,1),(1,0),(0,1)\) a \(0,1,3,4\)-et adják. <b>Ellenőrzés:</b> \(3^2=9\equiv3\), \(4^2=16\equiv4\pmod6\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat megoldásai a \(0,1,3,4\) a 6-os gyűrű idempotensei, vagyis a szétesés: a 3 és a 4 az, amely az egyik komponensben 1, a másikban 0. Ezek a gyűrű felbontásának „projekciói”.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="az-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>Mit tudunk a maradékok függetlenségéről?</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Helyzet</th><th>Eredmény</th></tr>
+      <tr><th>\(\gcd(m,n)=1\)</th><td>\(\mathbb Z_{mn}\cong\mathbb Z_m\times\mathbb Z_n\)</td></tr>
+      <tr><th>megoldások száma</th><td>\(N(mn)=N(m)N(n)\)</td></tr>
+      <tr><th>visszaállítás</th><td>Garner: vegyes számrendszer</td></tr>
+      <tr><th>\(\gcd(m,n)=g\)</th><td>megoldható \(\iff a\equiv b\ (g)\), modulus \(\operatorname{lcm}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Bontsd fel</b><span>Relatív prímek szorzatára.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Számolj külön</b><span>Minden komponensen.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Állítsd vissza</b><span>Garner vagy a Bézout-formula.</span></div>
+    </div>
+    <p>A következő téma, a 4.8, a további alkalmazások: gyors hatványozás, prímteszt, RSA és ellenőrző számjegyek.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

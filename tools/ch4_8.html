@@ -1,0 +1,150 @@
+
+<!-- ================= 4.8 TOVÁBBI ALKALMAZÁSOK ================= -->
+<header class="hero page" id="ba-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.8</div>
+    <h1>További alkalmazások</h1>
+    <p class="lead">A kongruenciák három hétköznapi területen dolgoznak: gyors hatványozás és prímteszt, nyilvános kulcsú titkosítás, valamint az ellenőrző számjegyek. Mindháromban a modulus a lényeg: a számok mérete nem nő.</p>
+    <div class="formula">\(\displaystyle a^{\,p-1}\equiv1\pmod p,\qquad c^{\,d}\equiv m\pmod n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ba-hero" role="img" aria-label="A 3 hatványainak pályája modulo 17 egy körön"></svg>
+    <div class="counter"><span id="ba-hero-a">3ᵏ mod 17</span><span id="ba-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Egy 300 jegyű szám hatványát nem lehet kiszámolni, a maradékát viszont igen: a kongruencia mindig a modulus alatt tartja a számokat. A képen a 3 hatványai járják be modulo 17 a körön a 16 nem nulla maradékot, és a 16. lépés után visszaérnek az 1-be. Ez a szabályosság teszi lehetővé a prímtesztet, és ebből épül a titkosítás is. Az ellenőrző számjegyek ugyanennek a számelméletnek a szerényebb, de mindennapos alkalmazásai.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ba-hatvany">
+  <div class="body">
+    <div class="eyebrow">§1 · Gyors hatványozás és prímteszt</div>
+    <h2>Négyzetre emelés és a Fermat-teszt</h2>
+    <p>Az \(a^e\bmod m\) kiszámításához nem kell \(e\) szorzás. Az \(e\) kettes számrendszerbeli jegyeit használjuk: \(a^{2k}=(a^k)^2\) és \(a^{2k+1}=a\cdot(a^k)^2\). Így a szorzások száma legfeljebb \(2\lfloor\log_2e\rfloor\), tehát \(e=10^{18}\) esetén is körülbelül 120. Minden lépés után modulo \(m\) redukálunk, a számok nem lépik túl \(m^2\)-et.</p>
+    <p>A kis Fermat-tétel (4.6) szerint prím \(p\)-re és \(p\nmid a\)-ra \(a^{p-1}\equiv1\pmod p\). Megfordítva: ha valamely \(a\) mellett \(a^{n-1}\not\equiv1\pmod n\), akkor \(n\) biztosan összetett, és az \(a\) „tanú”. A megfordítás nem igaz: létezik összetett \(n\), amelyre az \(a^{n-1}\equiv1\) minden \(n\)-hez relatív prím \(a\)-ra teljesül. Ezek a Carmichael-számok, a legkisebb 561\(=3\cdot11\cdot17\). Ezeknél a Fermat-teszt csak az \(n\)-nel közös osztóval bíró \(a\) alapokon árulja el az összetettséget.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ba-h-a">a <input type="range" id="ba-h-a" min="2" max="30" value="3"> <span class="mono" id="ba-h-av">3</span></label>
+        <label class="rng" for="ba-h-e">e <input type="range" id="ba-h-e" min="1" max="1000" value="100"> <span class="mono" id="ba-h-ev">100</span></label>
+        <label class="rng" for="ba-h-m">m <input type="range" id="ba-h-m" min="3" max="1100" value="1001"> <span class="mono" id="ba-h-mv">1001</span></label>
+      </div>
+      <div class="info" id="ba-h-info"></div>
+    </div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ba-f-n">n <input type="range" id="ba-f-n" min="3" max="3000" value="561"> <span class="mono" id="ba-f-nv">561</span></label>
+      </div>
+      <div class="info" id="ba-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>3000 alatt öt Carmichael-szám van: 561, 1105, 1729, 2465, 2821. Végtelen sok van belőlük, ez az Alford–Granville–Pomerance-tétel (1994), forrást nem ellenőriztem. A gyakorlatban a Fermat-tesztet a Miller–Rabin-teszt váltja fel, amely a Carmichael-számokat is leleplezi; itt nem tárgyaljuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ba-rsa">
+  <div class="body">
+    <div class="eyebrow">§2 · Nyilvános kulcs</div>
+    <h2>Az RSA lényege játékpéldán</h2>
+    <p>Legyen \(n=pq\) két különböző prím szorzata, \(\varphi(n)=(p-1)(q-1)\), és \(e\) relatív prím \(\varphi(n)\)-hez. Legyen \(d\) az \(e\) inverze modulo \(\varphi(n)\), vagyis \(ed=1+k\varphi(n)\). A titkosítás \(c=m^e\bmod n\), a visszafejtés \(c^d\bmod n\). Miért kapjuk vissza az \(m\)-et? Ha \(\gcd(m,n)=1\), Euler tétele szerint \(m^{\varphi(n)}\equiv1\), tehát</p>
+    <div class="eq gold">\[c^d=m^{ed}=m\cdot\bigl(m^{\varphi(n)}\bigr)^k\equiv m\pmod n.\]</div>
+    <p>A \(\gcd(m,n)\ne1\) esetben (\(p\mid m\)) a visszaállítás a 4.7 szerint prímenként igazolható: modulo \(p\) mindkét oldal 0, modulo \(q\) pedig az előző érvelés érvényes. Az RSA biztonsága azon alapul, hogy \(n\)-ből \(p\) és \(q\), így \(d\) kiszámítása nehéznek hitt feladat (faktorizáció). Ez a nehézség feltevés, nem bizonyított tény.</p>
+    <p>A kísérlet kis prímekkel dolgozik, <b>kizárólag szemléltetésre</b>: ekkora kulcs egy pillanat alatt feltörhető, és az itt látható „tankönyvi” RSA kitöltés (padding) nélkül valódi használatra nem alkalmas.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ba-r-k">prímpár <select id="ba-r-k"><option value="61,53">61 · 53</option><option value="11,13">11 · 13</option><option value="101,103">101 · 103</option><option value="1009,1013">1009 · 1013</option></select></label>
+        <label class="rng" for="ba-r-m">üzenet m <input type="range" id="ba-r-m" min="2" max="3000" value="65"> <span class="mono" id="ba-r-mv">65</span></label>
+      </div>
+      <div class="info" id="ba-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(d\) kiszámításához a \(\varphi(n)\) ismerete kell, ahhoz pedig a faktorizáció. A nyilvános kulcs \((n,e)\), a titkos \(d\). Aki \(n\)-et nem tudja felbontani, \(d\)-t sem tudja előállítani, legalábbis ismert módon.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ba-ellenor">
+  <div class="body">
+    <div class="eyebrow">§3 · Ellenőrző számjegyek</div>
+    <h2>Oszthatósági próbák és ISBN</h2>
+    <p>A \(10\equiv1\pmod9\) miatt egy szám ugyanolyan maradékot ad 9-cel osztva, mint a számjegyeinek összege („kilencpróba”). A \(10\equiv-1\pmod{11}\) miatt a 11-es maradékot a számjegyek váltakozó összege adja. A \(1000\equiv-1\pmod{1001}\) miatt a hármas csoportok váltakozó összege ad maradékot 1001-gyel, így 7-tel, 11-gyel és 13-mal is, mert \(1001=7\cdot11\cdot13\).</p>
+    <p>Az ISBN-10 utolsó jegye ellenőrző jegy: a \(\sum_{i=1}^{10}(11-i)\,d_i\) súlyozott összegnek oszthatónak kell lennie 11-gyel (az „X” jelentése 10). Ez minden egyetlen hibás jegyet és két szomszédos jegy felcserélését is észreveszi, mert a 11 prím: egy jegy megváltoztatása \(w\cdot\Delta\) eltérést ad, ahol \(w\) és \(\Delta\) is relatív prím 11-hez. Az ISBN-13 súlyai felváltva 1 és 3, a modulus 10: itt egyes szomszédos cserék nem derülnek ki, mert két szomszédos jegy cseréje \(2\Delta\) eltérést okoz, és ez osztható 10-zel, ha \(\Delta=\pm5\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ba-i-s">ISBN <input type="text" id="ba-i-s" value="0306406152" inputmode="text" autocomplete="off" style="width:11em"></label>
+      </div>
+      <div class="info" id="ba-i-info"></div>
+    </div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ba-d-n">szám <input type="number" id="ba-d-t" value="123456789" min="0" max="999999999999" style="width:11em"></label>
+      </div>
+      <div class="info" id="ba-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 9-es próba hibát jelez, de nem fogja meg a számjegyek felcserélését, mert az összeg ugyanaz marad. Ezért használnak az azonosítókban súlyozott összeget.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ba-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Hatvány, titkosítás, ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Hány szorzás kell az \(a^{100}\bmod m\)-hez négyzetre emeléssel?</span></summary>
+      <div class="ans">
+        <p>\(100=1100100_2\), hét jegy, tehát 6 négyzetre emelés és 2 szorzás (a 100-ban három egyes van, az első jegyet nem számítjuk): összesen 8 szorzás a 99 helyett. <b>Ellenőrzés:</b> \(\lfloor\log_2100\rfloor=6\), és a 100 bináris alakjában 3 egyes van, vagyis 6+2. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mutasd meg, hogy a 561 Fermat-teszttel nem leplezhető le a 2 alappal, de a 3 alappal igen.</span></summary>
+      <div class="ans">
+        <p>\(561=3\cdot11\cdot17\). A 2 relatív prím hozzá, és minden prímre \(560\) osztható \(p-1\)-gyel (2, 10, 16), így \(2^{560}\equiv1\) mod 3, 11 és 17, tehát mod 561 is. A 3 alappal \(\gcd(3,561)=3\), ezért \(3^{560}\equiv0\pmod3\), nem lehet 1. <b>Ellenőrzés:</b> a kísérlet 561-re a relatív prím alapokra mindenütt teljesülést mutat. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. RSA: \(p=61\), \(q=53\), \(e=17\). Add meg \(n\)-et, \(\varphi(n)\)-et, \(d\)-t, és titkosítsd az \(m=65\)-öt.</span></summary>
+      <div class="ans">
+        <p>\(n=3233\), \(\varphi=60\cdot52=3120\). A \(17d\equiv1\pmod{3120}\) megoldása \(d=2753\) (\(17\cdot2753=46801=15\cdot3120+1\)). A titkosított érték \(65^{17}\bmod3233=2790\), és \(2790^{2753}\bmod3233=65\). <b>Ellenőrzés:</b> a kísérlet a (61, 53) párra ezeket adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számítsd ki a 030640615 ISBN-10 ellenőrző jegyét.</span></summary>
+      <div class="ans">
+        <p>A súlyok 10, 9, …, 2 a \(0,3,0,6,4,0,6,1,5\) jegyekre:</p>
+        <div class="eq">\[0\cdot10+3\cdot9+0\cdot8+6\cdot7+4\cdot6+0\cdot5+6\cdot4+1\cdot3+5\cdot2=130.\]</div>
+        <p>A \(130\equiv9\pmod{11}\), a tizedik jegyre \(9+d_{10}\equiv0\), tehát \(d_{10}=2\). <b>Ellenőrzés:</b> \(132=12\cdot11\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat azt mutatja, hogy a hatványozás költsége a kitevő jegyeinek számával arányos, nem a kitevővel. Az RSA ezért használhat több száz jegyű kitevőket.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ba-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Mit visz tovább a modulus?</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Feladat</th><th>Eszköz</th><th>Megjegyzés</th></tr>
+      <tr><th>\(a^e\bmod m\)</th><td>négyzetre emelés</td><td>\(O(\log e)\) szorzás</td></tr>
+      <tr><th>prímteszt</th><td>Fermat: \(a^{n-1}\equiv1\)</td><td>Carmichael-számok kivételek</td></tr>
+      <tr><th>titkosítás</th><td>Euler-tétel, \(ed\equiv1\ (\varphi)\)</td><td>biztonság: faktorizáció</td></tr>
+      <tr><th>hibajelzés</th><td>súlyozott összeg mod 11 vagy 10</td><td>a modulus prím legyen</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Redukálj</b><span>Minden lépés után a modulus alatt maradj.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Használd a rendet</b><span>Fermat, Euler: a kitevő redukálható.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrizd</b><span>Kis esetre vagy a másik úton.</span></div>
+    </div>
+    <p>A következő téma, a 4.9, az Euler-féle \(\varphi\) és a Möbius-féle \(\mu\) függvény.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

@@ -1,0 +1,155 @@
+
+<!-- ================= 4.3 PRÍM PÉLDÁK ================= -->
+<header class="hero page" id="ay-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.3</div>
+    <h1>Prím példák</h1>
+    <p class="lead">Híres prímek és híres tévedések. A Mersenne-, a Fermat- és az Euklidész-féle számok megmutatják, mit lehet bebizonyítani a prímekről, és mit nem.</p>
+    <div class="formula">\(\displaystyle M_p=2^p-1,\qquad F_n=2^{2^n}+1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ay-hero" role="img" aria-label="Az M_p = 2^p − 1 számok p = 2…31 kitevőre: zöld, ha prím; piros, ha p prím, de M_p összetett; szürke, ha p összetett"></svg>
+    <div class="counter"><span id="ay-hero-a">p ≤ 5</span><span id="ay-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A prímek vizsgálatának régi módja, hogy valamilyen szép alakú számokról kérdezzük, prímek-e. A \(2^p-1\) alakúakat a XVII. században Marin Mersenne nyomán nevezzük Mersenne-számoknak, a \(2^{2^n}+1\) alakúak Pierre de Fermat nevét viselik. Fermat feltételezte, hogy az utóbbiak mind prímek. Az első öt valóban az, a hatodikat Euler 1732-ben felbontotta. A képen az látszik, hogy a \(2^p-1\) szám prímsége nem következik abból, hogy \(p\) prím: a piros négyzetek éppen ezek a kivételek.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ay-mersenne">
+  <div class="body">
+    <div class="eyebrow">§1 · Mersenne-számok</div>
+    <h2>Mikor lehet a \(2^n-1\) prím?</h2>
+    <p>Az első szűrés egyszerű. Ha \(n=ab\) és \(a,b\ge2\), akkor \(x=2^a\) jelöléssel</p>
+    <div class="eq">\[2^{ab}-1=x^b-1=(x-1)\bigl(1+x+x^2+\cdots+x^{b-1}\bigr).\]</div>
+    <p>Itt \(x-1=2^a-1\ge3\), és a második tényező legalább \(1+x\gt1\), tehát a szorzat nem prím. Vagyis a \(2^n-1\) csak prímkitevőnél lehet prím. A megfordítás hamis: \(2^{11}-1=2047=23\cdot89\).</p>
+    <p>A második kérdés az, hogyan lehet gyorsan osztót keresni. Legyen \(p\) páratlan prím, és \(q\) prím osztója \(2^p-1\)-nek. Ekkor \(2^p\equiv1\pmod q\), így a 2 rendje (a legkisebb \(k\), amelyre \(2^k\equiv1\)) osztja \(p\)-t. A rend nem 1, mert \(q\nmid 2^1-1=1\), tehát pontosan \(p\). A kis Fermat-tétel szerint \(2^{q-1}\equiv1\), ezért a rend, vagyis \(p\), osztja \(q-1\)-et. Mivel \(q-1\) páros, \(2p\mid q-1\):</p>
+    <div class="eq gold">\[q\mid 2^p-1\ \Longrightarrow\ q=2kp+1.\]</div>
+    <p>Az osztókeresésben tehát csak a \(2kp+1\) alakú számokat kell kipróbálni, ez \(p\)-szer kevesebb próba az összes páratlan osztóhoz képest. Az \(M_{11}\) osztói \(23=2\cdot1\cdot11+1\) és \(89=2\cdot4\cdot11+1\). A kísérlet mindkét keresést lefuttatja, és összeveti a próbák számát.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ay-m-p">p <select id="ay-m-p"></select></label>
+      </div>
+      <div class="info" id="ay-m-info"></div>
+    </div>
+    <p>A Mersenne-számok prímségét ma a Lucas–Lehmer-próba dönti el. Az állítás: páratlan prím \(p\)-re az \(s_0=4\), \(s_{k+1}=s_k^2-2\) sorozat mellett \(M_p\) akkor és csak akkor prím, ha \(s_{p-2}\equiv0\pmod{M_p}\). Ezt itt bizonyítás nélkül használjuk, és a kísérlet a kis kitevőkre összeveti az osztókereséssel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ay-l-n">p legfeljebb <input type="range" id="ay-l-n" min="3" max="127" value="127"> <span class="mono" id="ay-l-nv">127</span></label>
+      </div>
+      <div class="info" id="ay-l-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Mersenne-prímek párosítva vannak a páros tökéletes számokkal: ha \(2^p-1\) prím, akkor \(2^{p-1}(2^p-1)\) tökéletes szám, vagyis egyenlő a nála kisebb osztóinak összegével. A \(p=3\) a 28-at adja, a \(p=5\) a 496-ot. Ez Euklidész tétele, a fordítottja Euleré. Ezt itt nem vezetjük le.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ay-fermat">
+  <div class="body">
+    <div class="eyebrow">§2 · Fermat-számok</div>
+    <h2>Egy szép sejtés, és ahogy megdőlt</h2>
+    <p>Itt is van szűrés: ha \(2^m+1\) prím, akkor \(m\) kettőhatvány. Valóban, ha \(m=ab\) és \(b\gt1\) páratlan, akkor \(x=2^a\) mellett \(x+1\) osztja \(x^b+1\)-et (mert \(-1\) gyöke az \(x^b+1\) polinomnak páratlan \(b\)-re), és ez a tényező \(2^a+1\), amely \(2\)-nél nagyobb és kisebb a számnál. Innen jön a \(F_n=2^{2^n}+1\) alak.</p>
+    <p>Az \(F_0,\dots,F_4=3,5,17,257,65537\) prím. Fermat ebből arra következtetett, hogy minden \(F_n\) az. Euler 1732-ben megmutatta, hogy \(F_5=641\cdot6700417\). A \(641\)-gyel való oszthatóság egy sorban belátható. Mivel \(641=5\cdot2^7+1=2^4+5^4\), modulo 641</p>
+    <div class="eq">\[5\cdot2^7\equiv-1,\qquad 2^4\equiv-5^4.\]</div>
+    <p>Ezért</p>
+    <div class="eq gold">\[\begin{aligned}2^{32}&=2^4\cdot(2^7)^4\equiv-5^4\cdot(2^7)^4\\&=-(5\cdot2^7)^4\equiv-1\pmod{641},\end{aligned}\]</div>
+    <p>azaz \(641\mid2^{32}+1=F_5\). Ma már több \(F_n\)-ről tudjuk, hogy összetett, és az \(F_5\) fölött egyetlen Fermat-prímet sem ismerünk (ez a jelenlegi tudás szerint nyitott kérdés, forrás nélkül idézem).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ay-f-n">n <input type="range" id="ay-f-n" min="0" max="6" value="5"> <span class="mono" id="ay-f-nv">5</span></label>
+      </div>
+      <div class="info" id="ay-f-info"></div>
+    </div>
+    <p>A Fermat-számokban van egy szerkezet, amely másik bizonyítást ad a prímek végtelenségére. Teljes indukcióval</p>
+    <div class="eq">\[F_n-2=F_0F_1\cdots F_{n-1}.\]</div>
+    <p>Az indukciós lépés:</p>
+    <div class="eq">\[(F_n-2)F_n=(2^{2^n}-1)(2^{2^n}+1)=F_{n+1}-2.\]</div>
+    <p>Ha egy \(d\) osztja \(F_m\)-et és \(F_n\)-et (\(m\lt n\)), akkor osztja a \(2=F_n-\prod_{k\lt n}F_k\)-t is, vagyis \(d\mid2\). Mivel minden \(F_n\) páratlan, \(d=1\): a Fermat-számok páronként relatív prímek. Így minden \(F_n\)-nek van olyan prímosztója, amely a korábbiakat nem osztja, tehát végtelen sok prím létezik.</p>
+  </div>
+  <aside class="margo">
+    <p>Gauss egy tétele szerint a szabályos \(n\)-szög akkor szerkeszthető körzővel és vonalzóval, ha \(n\) egy kettőhatvány és különböző Fermat-prímek szorzata. Innen a 17-szög és a 257-szög. Ezt a tételt itt csak megemlítem, a bizonyítása Galois-elméletet igényel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ay-hezag">
+  <div class="body">
+    <div class="eyebrow">§3 · Euklidész-számok és hézagok</div>
+    <h2>A bizonyítás nem mindig keres</h2>
+    <p>Euklidész bizonyítása az első \(n\) prím szorzatához egyet ad hozzá: \(E_n=p_1p_2\cdots p_n+1\). Egyik \(p_i\) sem osztja \(E_n\)-et, tehát \(E_n\) minden prímosztója új. Gyakori tévhit, hogy \(E_n\) maga is prím. A kísérletben látszik, hogy \(E_6=30031=59\cdot509\) már összetett, a legkisebb prímosztó mindig nagyobb \(p_n\)-nél, ahogy az érvelés megköveteli.</p>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals cmp" id="ay-e-t"></table></div>
+      <div class="info" id="ay-e-info"></div>
+    </div>
+    <p>Hasonló a helyzet a prímhézagokkal. Az \(n!+2,\ n!+3,\ \dots,\ n!+n\) számok egymás után következnek, és \(n!+k\) osztható \(k\)-val (hiszen \(k\mid n!\)), tehát mind összetett: bármilyen hosszú prímmentes szakasz létezik. A konstrukció azonban nem mutatja meg, hol az első ilyen szakasz, és az messze korábban van, mint \(n!\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ay-g-n">hézag g <input type="range" id="ay-g-n" min="2" max="114" value="34"> <span class="mono" id="ay-g-nv">34</span></label>
+      </div>
+      <div class="info" id="ay-g-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tényleges rekordhézagok így nőnek: 1 a 2 után, 2 a 3 után, 4 a 7 után, 6 a 23 után, 8 a 89 után, 14 a 113 után. A \(114\) hosszú hézag az \(492113\) után az első, ezt a kísérlet 1 000 000-ig keresi, és nem több.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ay-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Mersenne, Fermat, Euklidész</h2>
+    <details>
+      <summary><span class="sq">1. Mutasd meg, hogy \(M_{13}=8191\) prím, csak \(2kp+1\) alakú osztókat próbálva.</span></summary>
+      <div class="ans">
+        <p>Egy osztó \(26k+1\) alakú, és \(\sqrt{8191}\approx90{,}5\). A \(27,53,79\) jöhet szóba (\(k=1,2,3\)). A 27 nem prím, \(8191=53\cdot154+29\) és \(8191=79\cdot103+54\), tehát egyik sem osztó. Több jelölt nincs, így \(8191\) prím. <b>Ellenőrzés:</b> \(\checkmark\) a kísérlet a 13-nál nem talál osztót.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(F_4\)-et \(F_0F_1F_2F_3\)-ból.</span></summary>
+      <div class="ans">
+        <p>\(F_0F_1F_2F_3=3\cdot5\cdot17\cdot257=65535\), és \(F_4=65535+2=65537\). <b>Ellenőrzés:</b> \(2^{16}+1=65537\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Bontsd fel az \(E_6=30031\)-et, és magyarázd meg, miért nem cáfolja ez Euklidészt.</span></summary>
+      <div class="ans">
+        <p>\(30031=59\cdot509\). Az 59 és az 509 is prím, és egyik sem az első hat prím (2, 3, 5, 7, 11, 13) egyike. Euklidész érve azt állítja, hogy \(E_n\) prímosztói újak, nem azt, hogy \(E_n\) prím. <b>Ellenőrzés:</b> \(59\cdot509=30031\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Adj meg öt egymás utáni összetett számot, először a faktoriális-konstrukcióval, aztán rövidebben.</span></summary>
+      <div class="ans">
+        <p>\(6!=720\) esetén \(722,723,724,725,726\) osztható \(2,3,4,5,6\)-tal. Rövidebben a 24, 25, 26, 27, 28 is öt összetett szám egymás után (a 23 és a 29 prím). <b>Ellenőrzés:</b> \(722=2\cdot361\), \(723=3\cdot241\), \(724=4\cdot181\), \(725=5\cdot145\), \(726=6\cdot121\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat a prímek szabálytalan eloszlására mutat rá: a 24–28 között öt összetett szám áll, a két szomszédos prím (23 és 29) különbsége 6.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ay-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Szép alakú számok és prímek</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Szám</th><th>Mikor prím?</th><th>Osztói</th></tr>
+      <tr><th>\(2^n-1\)</th><td>csak ha \(n\) prím</td><td>\(2kp+1\) alakúak</td></tr>
+      <tr><th>\(2^m+1\)</th><td>csak ha \(m\) kettőhatvány</td><td>\(F_5=641\cdot6700417\)</td></tr>
+      <tr><th>\(p_1\cdots p_n+1\)</th><td>nem mindig</td><td>új prímek, \(E_6=59\cdot509\)</td></tr>
+      <tr><th>\(n!+2,\dots,n!+n\)</th><td>mind összetett</td><td>\(k\mid n!+k\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Szűrj alakkal</b><span>Szorzattá bomló kitevő: összetett.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szűkítsd az osztókat</b><span>Rend és kis Fermat-tétel.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Számolj</b><span>Lucas–Lehmer, osztókeresés.</span></div>
+    </div>
+    <p>A következő téma, a 4.4, a faktoriális prímkitevői: hányszor osztja a \(p\) prím az \(n!\)-t.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

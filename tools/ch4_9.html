@@ -1,0 +1,163 @@
+
+<!-- ================= 4.9 FI ÉS MŰ ================= -->
+<header class="hero page" id="bb-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.9</div>
+    <h1>Fi és Mű</h1>
+    <p class="lead">Két számelméleti függvény, amely a számok osztóiról beszél: az Euler-féle \(\varphi\) a relatív prím maradékokat számolja, a Möbius-féle \(\mu\) pedig az osztók összegzését fordítja vissza.</p>
+    <div class="formula">\(\displaystyle\sum_{d\mid n}\varphi(d)=n,\qquad g(n)=\sum_{d\mid n}f(d)\iff f(n)=\sum_{d\mid n}\mu\!\left(\tfrac nd\right)g(d)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bb-hero" role="img" aria-label="A φ(n) értéke n = 1…40-re; a prímeknél φ(n) = n − 1"></svg>
+    <div class="counter"><span id="bb-hero-a">φ(n), n = 1…40</span><span id="bb-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A \(\varphi\)-vel már a 4.6-ban találkoztunk: ez a relatív prím maradékosztályok száma, és az Euler-tétel kitevője. Most a szerkezetét nézzük. A képen \(\varphi(n)\) szabálytalanul ugrál, a prímeknél éri el a legnagyobb értékét, \(n-1\)-et. A rendetlenség mögött két szabály áll: \(\varphi\) szorzatra bontható (a 4.7 miatt), és az osztóira összegezve \(n\)-et ad. Ebből jön a Möbius-függvény, amellyel az osztók feletti összegek visszafordíthatók.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bb-fi">
+  <div class="body">
+    <div class="eyebrow">§1 · Az Euler-féle φ</div>
+    <h2>Szorzat-szabály és osztóösszeg</h2>
+    <p>Ha \(\gcd(m,n)=1\), akkor \(x\) pontosan akkor relatív prím \(mn\)-hez, ha \(m\)-hez és \(n\)-hez is. A 4.7 azonosítása \(x\mapsto(x\bmod m,\ x\bmod n)\) kölcsönösen egyértelmű, ezért a relatív prím maradékok párjai éppen a relatív prím \(m\)-beli és relatív prím \(n\)-beli maradékok párjai:</p>
+    <div class="eq gold">\[\varphi(mn)=\varphi(m)\,\varphi(n)\qquad(\gcd(m,n)=1).\]</div>
+    <p>Prímhatványra \(\varphi(p^e)=p^e-p^{e-1}\), mert csak a \(p\) többszörösei nem relatívak: ezek száma \(p^{e-1}\). A kettő együtt adja a képletet</p>
+    <div class="eq">\[\varphi(n)=n\prod_{p\mid n}\Bigl(1-\frac1p\Bigr).\]</div>
+    <p>Az osztóösszeg-szabály: az \(1,\dots,n\) számokat osztályozzuk a \(\gcd(k,n)\) értéke szerint. Az a \(k\), amelyre \(\gcd(k,n)=n/d\), a \(k=(n/d)\,j\) alakú, ahol \(1\le j\le d\) és \(\gcd(j,d)=1\), tehát pontosan \(\varphi(d)\) ilyen \(k\) van. Az osztályok az \(1,\dots,n\)-t kimerítik, ezért</p>
+    <div class="eq gold">\[\sum_{d\mid n}\varphi(d)=n.\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bb-f-n">n <input type="range" id="bb-f-n" min="1" max="500" value="360"> <span class="mono" id="bb-f-nv">360</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bb-f-t"></table></div>
+      <div class="info" id="bb-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\varphi\) szorzat-szabálya és az osztóösszeg-szabály egyaránt a 4.7 függetlenségéből ered. Az osztóösszeg-szabály pedig \(\varphi\) egy második jellemzése: \(\varphi\) az egyetlen függvény, amelyre \(\sum_{d\mid n}\varphi(d)=n\) minden \(n\)-re (az \(n=1\)-től indulva rekurzívan meghatározható).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bb-mu">
+  <div class="body">
+    <div class="eyebrow">§2 · A Möbius-féle μ</div>
+    <h2>Az előjeles prímszámláló</h2>
+    <p>Definíció: \(\mu(1)=1\); \(\mu(n)=0\), ha \(n\) osztható valamely prímnégyzettel; és \(\mu(n)=(-1)^k\), ha \(n\) pontosan \(k\) különböző prím szorzata. A \(\mu\) is szorzat-szabályú: \(\mu(mn)=\mu(m)\mu(n)\), ha \(\gcd(m,n)=1\). Alapvető tulajdonsága:</p>
+    <div class="eq gold">\[\sum_{d\mid n}\mu(d)=\begin{cases}1,&n=1,\\0,&n>1.\end{cases}\]</div>
+    <p>Bizonyítás. Ha \(n>1\) és \(k\) különböző prímje van, az összegben csak a négyzetmentes osztók számítanak. Ezek a prímek részhalmazainak felelnek meg, és a \(j\) elemű részhalmazok \(\binom kj\) darab osztót adnak \((-1)^j\) értékkel. Az összeg \(\sum_j\binom kj(-1)^j=(1-1)^k=0\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bb-m-n">n <input type="range" id="bb-m-n" min="1" max="500" value="30"> <span class="mono" id="bb-m-nv">30</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bb-m-t"></table></div>
+      <div class="info" id="bb-m-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\mu(n)\) értéke csak 0, 1 vagy −1. A 100-ig vett \(\sum\mu(k)\) összege 1, az előjelek tehát kiegyenlítik egymást. Az, hogy ez végtelenben milyen sebességgel marad kicsi, a Riemann-sejtéssel áll kapcsolatban; ezt itt nem tárgyaljuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bb-inverzio">
+  <div class="body">
+    <div class="eyebrow">§3 · Möbius-inverzió</div>
+    <h2>Az osztók feletti összeg visszafordítása</h2>
+    <p>Legyen \(g(n)=\sum_{d\mid n}f(d)\). Ebből \(f\)-et ki tudjuk fejezni:</p>
+    <div class="eq gold">\[f(n)=\sum_{d\mid n}\mu\!\left(\frac nd\right)g(d).\]</div>
+    <p>Bizonyítás. Helyettesítsük be \(g\)-t, és cseréljük fel az összegzések sorrendjét:</p>
+    <div class="eq">\[\sum_{d\mid n}\mu\!\left(\tfrac nd\right)\sum_{e\mid d}f(e)=\sum_{e\mid n}f(e)\sum_{e\mid d\mid n}\mu\!\left(\tfrac nd\right)=\sum_{e\mid n}f(e)\,[\,n/e=1\,]=f(n).\]</div>
+    <p>A belső összeg az \(n/e\) osztóin fut végig (az \(n/d\) értékei), így az előző pont szerint 1, ha \(n/e=1\), különben 0. Alkalmazás \(\varphi\)-re: az \(n=\sum_{d\mid n}\varphi(d)\) egyenletből \(\varphi(n)=\sum_{d\mid n}\mu(d)\,n/d\), ami a szorzat-formulával egyezik. A kísérletben választható \(f\), a program kiszámolja \(g\)-t, majd \(\mu\)-vel visszaállítja \(f\)-et.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bb-i-f">f <select id="bb-i-f"><option value="phi">φ(n)</option><option value="sq">n²</option><option value="p">1, ha n prím, különben 0</option><option value="ev">n páros ? n : −1</option></select></label>
+        <label class="rng" for="bb-i-n">n <input type="range" id="bb-i-n" min="1" max="200" value="60"> <span class="mono" id="bb-i-nv">60</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bb-i-t"></table></div>
+      <div class="info" id="bb-i-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az inverzió ugyanaz a gondolat, mint a differenciaszámítás és az összegzés viszonya: \(g\) az \(f\) „részletösszege” az osztók szerint, \(\mu\) pedig a „különbségképzés”. A formális alapja az osztók szerinti konvolúció, amelyet itt nem vezetünk be.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bb-alk">
+  <div class="body">
+    <div class="eyebrow">§4 · Alkalmazások</div>
+    <h2>Aperiodikus füzérek és relatív prím párok</h2>
+    <p>Hány olyan \(n\) hosszú 0–1 sorozat van, amely nem áll egy rövidebb blokk ismétléséből? Egy \(n\) hosszú sorozat periódusa az \(n\) valamely \(d\) osztója, és a \(d\) hosszú blokk szabadon választható: \(2^d\) sorozat van, amelynek \(d\) szerint periodikus. A pontos periódus \(d\) szerinti sorozatok számát \(a(d)\)-vel jelölve \(\sum_{d\mid n}a(d)=2^n\), és az inverzióból</p>
+    <div class="eq gold">\[a(n)=\sum_{d\mid n}\mu(d)\,2^{n/d}.\]</div>
+    <p>A második alkalmazás: hány \((a,b)\) pár van \(1\le a,b\le N\) között, amelyre \(\gcd(a,b)=1\)? A \([\gcd=1]=\sum_{d\mid\gcd}\mu(d)\) azonosítással</p>
+    <div class="eq gold">\[\#\{(a,b):\gcd(a,b)=1\}=\sum_{d=1}^{N}\mu(d)\Bigl\lfloor\frac Nd\Bigr\rfloor^{2}.\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bb-a-n">hossz n <input type="range" id="bb-a-n" min="1" max="16" value="6"> <span class="mono" id="bb-a-nv">6</span></label>
+        <label class="rng" for="bb-a-N">N <input type="range" id="bb-a-N" min="1" max="200" value="60"> <span class="mono" id="bb-a-Nv">60</span></label>
+      </div>
+      <div class="info" id="bb-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A relatív prím párok aránya \(N\) növekedésével a \(6/\pi^2\approx0{,}6079\) értékhez közelít. Ezt itt nem bizonyítjuk, a kísérlet az \(N=60\) esetben 0,6119-et mutat. A \(6/\pi^2\) ugyanabból az összegből adódik, amelyet a \(\mu\) ad.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bb-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Értékek, összegek, visszafordítás</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\varphi(360)\)-at a szorzat-formulával.</span></summary>
+      <div class="ans">
+        <p>\(360=2^3\cdot3^2\cdot5\), tehát \(\varphi=360\cdot\tfrac12\cdot\tfrac23\cdot\tfrac45=96\). <b>Ellenőrzés:</b> a kísérlet 360-ra 96-ot ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Igazold az \(\sum_{d\mid12}\varphi(d)=12\) egyenlőséget.</span></summary>
+      <div class="ans">
+        <p>A 12 osztói: \(1,2,3,4,6,12\), a \(\varphi\) értékei: \(1,1,2,2,2,4\), összegük 12. <b>Ellenőrzés:</b> \(1+1+2+2+2+4=12\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi \(\mu(30)\), \(\mu(12)\), \(\mu(210)\)?</span></summary>
+      <div class="ans">
+        <p>\(30=2\cdot3\cdot5\): három prím, \(\mu=-1\). \(12=2^2\cdot3\): prímnégyzettel osztható, \(\mu=0\). \(210=2\cdot3\cdot5\cdot7\): négy prím, \(\mu=+1\). <b>Ellenőrzés:</b> a §2 kísérlet a 30-ra \(-1\)-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány 6 hosszú 0–1 sorozat aperiodikus?</span></summary>
+      <div class="ans">
+        <div class="eq">\[a(6)=\mu(1)2^6+\mu(2)2^3+\mu(3)2^2+\mu(6)2^1=64-8-4+2=54.\]</div><p><b>Ellenőrzés:</b> a kieső \(64-54=10\) sorozat pontos periódusa 1, 2 vagy 3 (a 6 osztói közül a 6-nál kisebbek: 1, 2, 3, de az 1 és 2 a 3 és 6 részei is). Pontos periódus szerint: \(a(1)+a(2)+a(3)=2+2+6=10\), a kísérlet brute force módszerrel is 54-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az \(a(d)\) értékei kis \(d\)-re: 2, 2, 6, 12, 30, 54. Ezek a pontos periódusú sorozatok számai, és minden \(n\)-re összegük az osztókon \(2^n\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bb-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>Mit tudunk a φ-ről és a μ-ről?</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>\(\varphi\)</th><th>\(\mu\)</th></tr>
+      <tr><th>szorzat-szabály</th><td>igen, relatív prímekre</td><td>igen, relatív prímekre</td></tr>
+      <tr><th>osztóösszeg</th><td>\(\sum_{d\mid n}\varphi(d)=n\)</td><td>\(\sum_{d\mid n}\mu(d)=[n=1]\)</td></tr>
+      <tr><th>prímhatványon</th><td>\(p^e-p^{e-1}\)</td><td>\(-1,0,0,\dots\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd fel</b><span>Az osztók feletti összeget: \(g(n)=\sum_{d\mid n}f(d)\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Fordítsd vissza</b><span>\(f(n)=\sum\mu(n/d)g(d)\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrizd</b><span>Kis \(n\)-re, kézzel vagy kísérlettel.</span></div>
+    </div>
+    <p>Ezzel a 4. fejezet témái teljesek. A következő a 4.10, a feladatok száma, majd az 5. fejezet.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

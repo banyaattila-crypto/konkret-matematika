@@ -7,6 +7,18 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-11-15
+
+### Hozzáadva
+- 4.3 Prím példák: Mersenne- és Fermat-számok, a 2kp+1 alakú osztók, Euklidész-számok, prímhézagok.
+- 4.7 Független maradékok: Z_mn ≅ Z_m×Z_n, Garner módszere, gyökök száma, nem relatív prím modulusok.
+- 4.8 További alkalmazások: gyors hatványozás, Fermat-teszt és Carmichael-számok, RSA játékpélda, ellenőrző számjegyek.
+- 4.9 Fi és Mű: a φ szorzat-szabálya és osztóösszege, a Möbius-féle μ, Möbius-inverzió, aperiodikus füzérek, relatív prím párok.
+- Mindegyikhez élő ✓-ellenőrzéssel ellátott kísérletek, gyakorlatok és összefoglaló.
+
+### Módosítva
+- A négy szakasz helyőrzője kikerült; a 4. fejezet minden könyvszakasza elkészült.
+
 ## [1.3.0] - 2026-11-15
 
 ### Módosítva
