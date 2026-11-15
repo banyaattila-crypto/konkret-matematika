@@ -1,0 +1,125 @@
+
+<!-- ================= 8.3 VALÓSZÍNŰSÉG-GENERÁLÓ FÜGGVÉNYEK ================= -->
+<header class="hero page" id="ap-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.3</div>
+    <h1>Valószínűség-generáló függvények</h1>
+    <p class="lead">Egy nemnegatív egész értékű változó eloszlását hatványsorba csomagoljuk. A várható érték és a szórásnégyzet ilyenkor az \(x=1\) helyen vett deriváltakból olvasható le.</p>
+    <div class="formula">\(\displaystyle G(x)=\sum_kP(X=k)\,x^k=E[x^X]\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ap-hero" role="img" aria-label="A geometriai eloszlás valószínűségei és várható értéke"></svg>
+    <div class="counter"><span id="ap-hero-a">p = 1/2</span><span>várható várakozás: <b id="ap-hero-b">2</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A generáló függvény ugyanaz az eszköz, amelyet a 7. fejezetben a sorozatokra használtunk, csak az együtthatók most valószínűségek. Három tulajdonság teszi hasznossá: \(G(1)=1\), mert az összes valószínűség összege 1; \(G'(1)=E[X]\), mert a derivált \(\sum kP(k)x^{k-1}\); és független változók összegének generáló függvénye a szorzat. A képen a geometriai eloszlás látható: az első sikerig szükséges kísérletek száma, ha minden kísérlet sikere \(p\). A várható érték \(1/p\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ap-pgf">
+  <div class="body">
+    <div class="eyebrow">§1 · A deriváltak</div>
+    <h2>Várható érték és szórásnégyzet</h2>
+    <p>Mivel \(G'(x)=\sum kP(k)x^{k-1}\) és \(G''(x)=\sum k(k-1)P(k)x^{k-2}\):</p>
+    <div class="eq gold">\[E[X]=G'(1),\qquad E[X(X-1)]=G''(1),\qquad \mathrm{Var}\,X=G''(1)+G'(1)-G'(1)^2.\]</div>
+    <p>A kísérlet véges eloszlásoknál a deriváltakat pontosan (törtekkel) számolja az együtthatókból, és a definícióból kiszámolt értékekkel veti össze.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ap-g-d">eloszlás <select id="ap-g-d"><option value="0">egy kocka</option><option value="1">két kocka összege</option><option value="2">binomiális (n=10, p=0,3)</option><option value="3">három kocka összege</option></select></label>
+      </div>
+      <div class="info" id="ap-g-info"></div>
+    </div>
+    <p>A geometriai eloszlásnál \(P(X=k)=q^{k-1}p\) (\(q=1-p\)), és \(G(x)=\dfrac{px}{1-qx}\). A deriváltakból \(E=\tfrac1p\), \(\mathrm{Var}=\tfrac q{p^2}\). A kísérlet a sort \(500\) tagig összegzi, és a képletekkel veti össze.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ap-q-k">p = 1/k, k <input type="range" id="ap-q-k" min="2" max="20" value="6"> <span class="mono" id="ap-q-kv">6</span></label>
+      </div>
+      <div class="info" id="ap-q-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(G''(1)\) a faktoriális momentumot adja, ezért a variancia képletében \(+G'(1)\) szerepel: \(E[X^2]=G''(1)+G'(1)\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ap-osszeg">
+  <div class="body">
+    <div class="eyebrow">§2 · Összegek</div>
+    <h2>Független változók összege</h2>
+    <p>Ha \(X\) és \(Y\) függetlenek, akkor \(E[x^{X+Y}]=E[x^X]E[x^Y]\), vagyis \(G_{X+Y}=G_XG_Y\). Ebből \(n\) kocka összegére \(G(x)=\Bigl(\tfrac{x+\dots+x^6}6\Bigr)^n\), és a szorzatszabály alapján \(E=\tfrac72n\), \(\mathrm{Var}=\tfrac{35}{12}n\). Az \(n\) független Bernoulli-kísérlet összegére \(G=(q+px)^n\), ami a binomiális eloszlás.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ap-o-n">kockák <input type="range" id="ap-o-n" min="1" max="8" value="3"> <span class="mono" id="ap-o-nv">3</span></label>
+      </div>
+      <div class="info" id="ap-o-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet az eloszlást a 8.1-beli módon számolja (a generáló polinom együtthatói), a várható értéket és szórásnégyzetet pedig a definícióból. A képlet \(E=\tfrac72n\), \(\mathrm{Var}=\tfrac{35}{12}n\) független tagok összegére egyezik vele.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ap-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Deriváltak és összegek</h2>
+    <details>
+      <summary><span class="sq">1. Add meg egy kocka generáló függvényét, és számold ki a várható értéket a deriváltból.</span></summary>
+      <div class="ans">
+        <div class="eq">\[G(x)=\frac{x+x^2+\dots+x^6}6,\qquad G'(1)=\frac{1+2+\dots+6}6=\frac72.\]</div>
+        <p><b>Ellenőrzés:</b> \(G(1)=1\), és a kísérlet pontos értéke 7/2. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Vezesd le a binomiális eloszlás várható értékét a \((q+px)^n\) függvényből.</span></summary>
+      <div class="ans">
+        <p>A \(G'(x)=np\,(q+px)^{n-1}\), és \(G'(1)=np\,(q+p)^{n-1}=np\). A \(n=10\), \(p=0{,}3\) esetén ez 3.</p>
+        <p><b>Ellenőrzés:</b> a 8.2 kísérlete is 3-at ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki a geometriai eloszlás szórásnégyzetét \(p=\tfrac16\)-ra.</span></summary>
+      <div class="ans">
+        <p>A \(G=\tfrac{px}{1-qx}\), \(G'=\tfrac p{(1-qx)^2}\), \(G''=\tfrac{2pq}{(1-qx)^3}\). Így \(G'(1)=\tfrac1p=6\), \(G''(1)=\tfrac{2q}{p^2}=2\cdot\tfrac56\cdot36=60\), és</p>
+        <div class="eq">\[\mathrm{Var}=60+6-36=30.\]</div>
+        <p><b>Ellenőrzés:</b> \(q/p^2=\tfrac56\cdot36=30\), és a kísérlet a 500 tagú összegben 30-at ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi három kocka összegének várható értéke és szórásnégyzete?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E=3\cdot\tfrac72=\tfrac{21}2,\qquad \mathrm{Var}=3\cdot\tfrac{35}{12}=\tfrac{35}4.\]</div>
+        <p><b>Ellenőrzés:</b> a 216 kimenetel pontos számolása \(10{,}5\) és \(8{,}75\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a „második derivált” trükkjét mutatja: nem kell közvetlenül \(\sum k^2q^{k-1}p\)-t összegezni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ap-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A generáló függvény eszköztára</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Eloszlás</th><th>\(G(x)\)</th><th>\(E\)</th><th>Var</th></tr>
+      <tr><td>Bernoulli(\(p\))</td><td>\(q+px\)</td><td>\(p\)</td><td>\(pq\)</td></tr>
+      <tr><td>binomiális</td><td>\((q+px)^n\)</td><td>\(np\)</td><td>\(npq\)</td></tr>
+      <tr><td>geometriai</td><td>\(\tfrac{px}{1-qx}\)</td><td>\(\tfrac1p\)</td><td>\(\tfrac q{p^2}\)</td></tr>
+      <tr><td>kocka</td><td>\(\tfrac{x+\dots+x^6}6\)</td><td>\(\tfrac72\)</td><td>\(\tfrac{35}{12}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd fel \(G\)-t</b><span>Eloszlásból vagy szerkezetből.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorozz</b><span>Független összeg = szorzat.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Deriválj</b><span>\(G'(1)\), \(G''(1)\).</span></div>
+    </div>
+    <p>Következik a 8.4: három klasszikus feladat, a születésnap-paradoxon, a kupongyűjtő és a játékos csődje.</p>
+  </div>
+  <aside class="margo">
+    <p>Nem véges támaszú eloszlásoknál a deriváltat az \(x=1\) helyen a konvergencia miatt óvatosan kell kezelni. A feldolgozás itt a jól viselkedő eseteket (véges és geometriai) tárgyalja.</p>
+  </aside>
+</section>

@@ -1,0 +1,125 @@
+
+<!-- ================= 8.1 VALÓSZÍNŰSÉGI TÉR ================= -->
+<header class="hero page" id="an-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.1</div>
+    <h1>Valószínűségi tér</h1>
+    <p class="lead">Diszkrét esetben a valószínűség megszámlálás: az eseménytér elemeinek súlyát kell összeadni. Ha minden kimenetel egyformán valószínű, ez „kedvező per összes”.</p>
+    <div class="formula">\(\displaystyle P(A)=\sum_{\omega\in A}P(\omega)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="an-hero" role="img" aria-label="A kockák összegének eloszlása"></svg>
+    <div class="counter"><span id="an-hero-a">n = 1 kocka</span><span>legvalószínűbb összeg: <b id="an-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A valószínűségszámítás kockajátékokból született. Egy kocka kimenetelei egyformán valószínűek, két kockánál már az összeg eloszlása nem egyenletes: a 7-et hatféleképpen kaphatjuk, a 2-t csak egyféleképpen. Minél több kockát dobunk, annál inkább kirajzolódik a harang alakú görbe. A képen az \(n\) kocka összegének eloszlása látható. Az eloszlás pontos értékei a \((x+x^2+\dots+x^6)^n\) polinom együtthatóiból adódnak, ez a 7. fejezet generátorfüggvényes módszere.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="an-kocka">
+  <div class="body">
+    <div class="eyebrow">§1 · Kockadobások</div>
+    <h2>Az összeg eloszlása</h2>
+    <p>Az eseménytér az \(n\) kocka \(6^n\) egyformán valószínű kimenetele. Az \(S=s\) esemény valószínűsége \(P(S=s)=N_s/6^n\), ahol \(N_s\) az \(s\) összegű kimenetelek száma. Az \(N_s\) értéke a generátorfüggvényből jön:</p>
+    <div class="eq gold">\[\sum_sN_sx^s=(x+x^2+\dots+x^6)^n.\]</div>
+    <p>Mivel minden kocka független a többitől, az összeg generátorfüggvénye a tényezők szorzata. A kísérlet kiszámolja az eloszlást, és \(n\le5\) esetén az összes kimenetel végigszámolásával is ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="an-k-n">kockák <input type="range" id="an-k-n" min="1" max="8" value="2"> <span class="mono" id="an-k-nv">2</span></label>
+        <label class="rng" for="an-k-s">összeg s <input type="range" id="an-k-s" min="1" max="48" value="7"> <span class="mono" id="an-k-sv">7</span></label>
+      </div>
+      <svg id="an-k-svg" role="img" aria-label="Az összeg eloszlása oszlopokon"></svg>
+      <div class="info" id="an-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kockák összegének eloszlása szimmetrikus a \(3{,}5n\) körül, a csúcs magassága \(\sim1/\sqrt n\) ütemben csökken. Ezt a 8.2-ben a szórásnégyzetből értjük meg.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="an-feltetel">
+  <div class="body">
+    <div class="eyebrow">§2 · Feltételes valószínűség</div>
+    <h2>Bayes-tétel</h2>
+    <p>Az \(A\) esemény valószínűsége a \(B\) feltétel mellett \(P(A\mid B)=\dfrac{P(A\cap B)}{P(B)}\). Ebből a szorzatszabály és a Bayes-tétel:</p>
+    <div class="eq gold">\[P(A\mid B)=\frac{P(B\mid A)\,P(A)}{P(B\mid A)P(A)+P(B\mid\overline A)P(\overline A)}.\]</div>
+    <p>Az \(A\) és \(B\) <b>független</b>, ha \(P(A\cap B)=P(A)P(B)\). Két kockánál az „első kocka páros” és az „összeg 7” események függetlenek: \(P=\tfrac12\), \(\tfrac16\), a metszet pedig \(\tfrac3{36}=\tfrac1{12}\).</p>
+    <p>A szemléletes tanulság a ritka betegség és a teszt: a pozitív teszt sokszor tévedés, mert a betegek ritkák. A kísérlet egy 10 000 fős populáción számol gyakoriságokkal, és a Bayes-képlettel is.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="an-f-p">gyakoriság (%) <input type="range" id="an-f-p" min="1" max="50" value="1"> <span class="mono" id="an-f-pv">1</span></label>
+        <label class="rng" for="an-f-a">érzékenység (%) <input type="range" id="an-f-a" min="50" max="100" value="99"> <span class="mono" id="an-f-av">99</span></label>
+        <label class="rng" for="an-f-b">fajlagosság (%) <input type="range" id="an-f-b" min="50" max="100" value="95"> <span class="mono" id="an-f-bv">95</span></label>
+      </div>
+      <div class="info" id="an-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az érzékenység a \(P(\text{pozitív}\mid\text{beteg})\), a fajlagosság a \(P(\text{negatív}\mid\text{egészséges})\). A kísérletben a betegek száma 10 000-ből \(p\cdot100\), ami egész szám.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="an-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Kockák és feltételek</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi a valószínűsége, hogy két kocka összege 8?</span></summary>
+      <div class="ans">
+        <p>A kedvező kimenetelek: \((2,6),(3,5),(4,4),(5,3),(6,2)\), azaz 5 db a 36-ból, tehát \(\tfrac5{36}\approx0{,}139\).</p>
+        <p><b>Ellenőrzés:</b> a \((x+\dots+x^6)^2\) együtthatója \(x^8\)-nál 5. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mennyi a valószínűsége, hogy három kocka összege 10?</span></summary>
+      <div class="ans">
+        <p>A \((x+\dots+x^6)^3\) együtthatója \(x^{10}\)-nél 27, tehát \(P=\tfrac{27}{216}=\tfrac18\).</p>
+        <p><b>Ellenőrzés:</b> a három kocka összes 216 kimenetelének végigszámolása is 27-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Egy betegség gyakorisága 1%, a teszt érzékenysége 99%, fajlagossága 95%. Mennyi az esélye, hogy aki pozitív, tényleg beteg?</span></summary>
+      <div class="ans">
+        <div class="eq">\[P=\frac{0{,}01\cdot0{,}99}{0{,}01\cdot0{,}99+0{,}99\cdot0{,}05}=\frac{0{,}0099}{0{,}0594}=\frac16\approx0{,}167.\]</div>
+        <p><b>Ellenőrzés:</b> 10 000 emberből 100 beteg, ebből 99 pozitív, a 9 900 egészségesből 495 pozitív, és \(99/(99+495)=1/6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi a valószínűsége, hogy négy dobásból legalább egy hatos lesz?</span></summary>
+      <div class="ans">
+        <p>A komplementer esemény (nincs hatos) valószínűsége \((5/6)^4=\tfrac{625}{1296}\), tehát \(P=1-\tfrac{625}{1296}=\tfrac{671}{1296}\approx0{,}5177\).</p>
+        <p><b>Ellenőrzés:</b> \(6^4=1296\) kimenetelből 625-ben nincs hatos, így 671-ben van. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat egy híres történelmi kérdés: érdemes-e egy kockával négy dobásra fogadni hatosra. A válasz igen, mert \(P\gt\tfrac12\). A történeti hátteret itt nem részletezem.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="an-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Alapszabályok</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Szabály</th><th>Képlet</th></tr>
+      <tr><td>egyenletes eloszlás</td><td>\(P(A)=|A|/|\Omega|\)</td></tr>
+      <tr><td>komplementer</td><td>\(P(\overline A)=1-P(A)\)</td></tr>
+      <tr><td>feltételes valószínűség</td><td>\(P(A\mid B)=P(A\cap B)/P(B)\)</td></tr>
+      <tr><td>függetlenség</td><td>\(P(A\cap B)=P(A)P(B)\)</td></tr>
+      <tr><td>független tagok összege</td><td>generátorfüggvények szorzata</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Eseménytér</b><span>Mik a lehetséges kimenetelek?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Számolj</b><span>Kedvező per összes, vagy komplementer.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Frissíts</b><span>Új információ: feltételes valószínűség.</span></div>
+    </div>
+    <p>Következik a 8.2: a várható érték és a szórásnégyzet.</p>
+  </div>
+  <aside class="margo">
+    <p>Diszkrét esetben a valószínűség mindig összeg, ezért a 2. fejezet összegzési technikái közvetlenül használhatók. A folytonos eset (integrálok) itt nem szerepel.</p>
+  </aside>
+</section>

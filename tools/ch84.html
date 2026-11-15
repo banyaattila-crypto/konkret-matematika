@@ -1,0 +1,144 @@
+
+<!-- ================= 8.4 KLASSZIKUS FELADATOK ================= -->
+<header class="hero page" id="aq-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.4</div>
+    <h1>Klasszikus feladatok</h1>
+    <p class="lead">Három híres kérdés: hány ember kell ahhoz, hogy két azonos születésnap valószínű legyen, hányszor kell húzni, amíg minden fajta megvan, és mi az esélye, hogy a játékos nyer, mielőtt elfogy a pénze.</p>
+    <div class="formula">\(\displaystyle E[T]=n\,H_n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="aq-hero" role="img" aria-label="Az azonos születésnap valószínűsége a létszám függvényében"></svg>
+    <div class="counter"><span id="aq-hero-a">n = 5 ember</span><span>P(van egyező) = <b id="aq-hero-b">0,027</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A születésnap-paradoxon azért meglepő, mert a szemlélet a személyekre figyel („valakinek ugyanaz, mint nekem”), a számolás viszont a párokra: 23 emberből már 253 pár képezhető. A görbe meredeken emelkedik, és már 23 főnél átlépi a felet. A képen az egyező születésnap valószínűsége látható a létszám függvényében. A kupongyűjtő feladatban a harmonikus számok jelennek meg, a játékos csődjében pedig a 7.2-ben tárgyalt lineáris rekurzió.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="aq-szulinap">
+  <div class="body">
+    <div class="eyebrow">§1 · Születésnap-paradoxon</div>
+    <h2>Mikor valószínű egy egyezés?</h2>
+    <p>\(n\) ember, \(D\) lehetséges nap. Annak a valószínűsége, hogy mind különböző, a szorzatszabállyal</p>
+    <div class="eq gold">\[P(\text{nincs egyezés})=\prod_{k=0}^{n-1}\Bigl(1-\frac kD\Bigr)\approx e^{-n(n-1)/(2D)}.\]</div>
+    <p>A közelítés az \(1-x\le e^{-x}\) egyenlőtlenségből és \(\sum_{k<n}k=\tfrac{n(n-1)}2\)-ből jön. A kísérlet pontosan kiszámolja az értéket, megadja a közelítést, és kiírja a legkisebb \(n\)-et, amelynél az egyezés legalább 50%.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aq-b-n">n <input type="range" id="aq-b-n" min="1" max="100" value="23"> <span class="mono" id="aq-b-nv">23</span></label>
+        <label class="rng" for="aq-b-d">D <select id="aq-b-d"><option value="365">365 nap</option><option value="100">100 nap</option><option value="1000">1000 nap</option><option value="7">7 nap (hét napja)</option></select></label>
+      </div>
+      <svg id="aq-b-svg" role="img" aria-label="Egyezés valószínűsége a létszám függvényében"></svg>
+      <div class="info" id="aq-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(1-x\le e^{-x}\) egyenlőtlenség miatt a pontos „nincs egyezés” valószínűség kisebb a közelítésnél, vagyis a közelítés az egyezés valószínűségét alulbecsli (23 főnél 0,5000 az exponenciális közelítés, 0,5073 a pontos érték).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-kupon">
+  <div class="body">
+    <div class="eyebrow">§2 · Kupongyűjtő</div>
+    <h2>Hány húzás kell az összes fajtához?</h2>
+    <p>\(n\) fajta kupon, minden húzás egyenletes és független. Ha már \(i-1\) fajtát gyűjtöttünk, az \(i\). új fajta megérkezéséig a várakozás geometriai eloszlású \(p_i=\tfrac{n-i+1}n\) paraméterrel, várható értéke \(\tfrac n{n-i+1}\). Összeadva:</p>
+    <div class="eq gold">\[E[T]=\sum_{i=1}^{n}\frac n{n-i+1}=n\,H_n,\qquad \mathrm{Var}\,T=\sum_{i=1}^{n}\frac{n(i-1)}{(n-i+1)^2}=n^2H_n^{(2)}-nH_n.\]</div>
+    <p>A várakozási idők függetlenek, ezért a variancia összeadódik (8.2). A kísérlet pontos törtekkel számol, és egy rögzített magú szimulációt is futtat, amelynek átlaga a várható értékhez közelít.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aq-k-n">n <input type="range" id="aq-k-n" min="1" max="50" value="6"> <span class="mono" id="aq-k-nv">6</span></label>
+      </div>
+      <div class="info" id="aq-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(nH_n\approx n\ln n+0{,}5772\,n\), tehát a szükséges húzások száma kicsit több, mint \(n\ln n\). Egy hatoldalú kockánál 14,7 dobás kell átlagosan az összes lap megjelenéséhez.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-ruin">
+  <div class="body">
+    <div class="eyebrow">§3 · Bolyongás és csőd</div>
+    <h2>A játékos csődje</h2>
+    <p>A játékos \(i\) egységgel indul, minden fordulóban \(p\) eséllyel nyer egy egységet, \(q=1-p\) eséllyel veszít egyet. A játék akkor ér véget, ha 0-ra jut (csőd) vagy eléri az \(N\)-et. A \(P_i\) a siker valószínűsége:</p>
+    <div class="eq">\[P_i=pP_{i+1}+qP_{i-1},\qquad P_0=0,\ P_N=1.\]</div>
+    <p>A 7.2 módszerével (karakterisztikus gyökök \(1\) és \(r=q/p\)) a megoldás</p>
+    <div class="eq gold">\[P_i=\begin{cases}\dfrac iN,&p=\tfrac12,\\[2mm]\dfrac{1-r^i}{1-r^N},&p\ne\tfrac12.\end{cases}\]</div>
+    <p>A méltányos játéknál a játék várható hossza \(i(N-i)\). A kísérlet a rekurziót közvetlenül megoldja (háromátlós lineáris egyenletrendszerként), és összeveti a képletekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aq-r-p">p (%) <input type="range" id="aq-r-p" min="30" max="70" value="45"> <span class="mono" id="aq-r-pv">45</span></label>
+        <label class="rng" for="aq-r-i">i <input type="range" id="aq-r-i" min="1" max="49" value="10"> <span class="mono" id="aq-r-iv">10</span></label>
+        <label class="rng" for="aq-r-n">N <input type="range" id="aq-r-n" min="2" max="50" value="20"> <span class="mono" id="aq-r-nv">20</span></label>
+      </div>
+      <div class="info" id="aq-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Már a kicsit kedvezőtlen \(p=0{,}45\) is drasztikusan lerontja az esélyt: \(i=10\), \(N=20\) mellett csak 11,85% a siker, miközben a méltányos játéknál 50%.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Egyezés, kupon, csőd</h2>
+    <details>
+      <summary><span class="sq">1. Legalább hány ember kell ahhoz, hogy két azonos születésnap valószínűsége elérje az 50%-ot?</span></summary>
+      <div class="ans">
+        <p>A pontos számolás \(n=22\)-re 0,4757, \(n=23\)-ra 0,5073, tehát 23 ember kell.</p>
+        <p><b>Ellenőrzés:</b> az exponenciális közelítés \(e^{-23\cdot22/730}\approx0{,}5000\), ami az egyezésre 0,5000-et ad, de a pontos érték 0,5073, így a határ a pontos számolással dől el. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hányszor kell átlagosan dobni egy kockával, amíg minden lap legalább egyszer megjelent?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E[T]=6\,H_6=6\cdot\frac{49}{20}=\frac{147}{10}=14{,}7.\]</div>
+        <p><b>Ellenőrzés:</b> a kísérlet \(n=6\)-ra pontosan 147/10-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi az esélye a sikernek, ha a játékos 10 egységgel indul, 20-at szeretne, és \(p=\tfrac12\), illetve \(p=0{,}45\)?</span></summary>
+      <div class="ans">
+        <p>Méltányos játéknál \(\tfrac{10}{20}=\tfrac12\). A \(p=0{,}45\) esetén \(r=\tfrac{0{,}55}{0{,}45}=\tfrac{11}9\), és</p>
+        <div class="eq">\[P_{10}=\frac{1-(11/9)^{10}}{1-(11/9)^{20}}\approx0{,}1185.\]</div>
+        <p><b>Ellenőrzés:</b> a háromátlós egyenletrendszer megoldása is 0,1185. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi a méltányos játék várható hossza \(i=10\), \(N=20\) esetén?</span></summary>
+      <div class="ans">
+        <p>A képlet \(i(N-i)=10\cdot10=100\) forduló.</p>
+        <p><b>Ellenőrzés:</b> a \(D_i=1+\tfrac12D_{i+1}+\tfrac12D_{i-1}\) egyenletrendszer megoldása 100. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat eredménye a diffúzió négyzetgyök-törvényének diszkrét alakja: a bolyongás \(N^2\) nagyságrendű lépés alatt jár be egy \(N\) hosszú szakaszt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Három feladat, három módszer</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Feladat</th><th>Eredmény</th><th>Eszköz</th></tr>
+      <tr><td>születésnap</td><td>\(\prod(1-k/D)\)</td><td>komplementer, szorzatszabály</td></tr>
+      <tr><td>kupongyűjtő</td><td>\(nH_n\)</td><td>linearitás, geometriai eloszlás</td></tr>
+      <tr><td>csőd</td><td>\(\tfrac{1-r^i}{1-r^N}\)</td><td>lineáris rekurzió</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Bontsd szakaszokra</b><span>Független várakozások, lépések.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió vagy szorzat</b><span>Írd fel a lépésenkénti valószínűséget.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Oldd meg</b><span>Zárt alak, vagy numerikus ellenőrzés.</span></div>
+    </div>
+    <p>A fejezetvégi feladatok a 8.5-ben következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A szimulációk rögzített magú álvéletlen-generátorral futnak, ezért az eredmény minden futásnál ugyanaz. A szimuláció itt szemléltetés, nem bizonyíték.</p>
+  </aside>
+</section>

@@ -463,7 +463,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <body>
 <div class="app">
 <nav class="side" id="side" aria-label="Tartalom">
-  <a href="#kezdolap" class="brand" style="text-decoration:none;color:var(--ink)"><svg class="logo" id="logo3d" viewBox="0 0 28 28" aria-hidden="true" style="width:46px;height:46px;vertical-align:-16px;margin-right:6px;overflow:visible"></svg>Konkrét Matematika<small>Érdekességek és stílusos feladatok, levezetve</small></a>
+  <a href="#kezdolap" class="brand" style="text-decoration:none;color:var(--ink)"><svg class="logo" id="logo3d" viewBox="0 0 28 28" aria-hidden="true" style="width:72px;height:72px;vertical-align:-26px;margin-right:8px;overflow:visible"></svg>Konkrét Matematika<small>Érdekességek és stílusos feladatok, levezetve</small></a>
   <div class="tree" id="tree"></div>
 </nav>
 
@@ -6448,6 +6448,659 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 8.1 VALÓSZÍNŰSÉGI TÉR ================= -->
+<header class="hero page" id="an-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.1</div>
+    <h1>Valószínűségi tér</h1>
+    <p class="lead">Diszkrét esetben a valószínűség megszámlálás: az eseménytér elemeinek súlyát kell összeadni. Ha minden kimenetel egyformán valószínű, ez „kedvező per összes”.</p>
+    <div class="formula">\(\displaystyle P(A)=\sum_{\omega\in A}P(\omega)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="an-hero" role="img" aria-label="A kockák összegének eloszlása"></svg>
+    <div class="counter"><span id="an-hero-a">n = 1 kocka</span><span>legvalószínűbb összeg: <b id="an-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A valószínűségszámítás kockajátékokból született. Egy kocka kimenetelei egyformán valószínűek, két kockánál már az összeg eloszlása nem egyenletes: a 7-et hatféleképpen kaphatjuk, a 2-t csak egyféleképpen. Minél több kockát dobunk, annál inkább kirajzolódik a harang alakú görbe. A képen az \(n\) kocka összegének eloszlása látható. Az eloszlás pontos értékei a \((x+x^2+\dots+x^6)^n\) polinom együtthatóiból adódnak, ez a 7. fejezet generátorfüggvényes módszere.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="an-kocka">
+  <div class="body">
+    <div class="eyebrow">§1 · Kockadobások</div>
+    <h2>Az összeg eloszlása</h2>
+    <p>Az eseménytér az \(n\) kocka \(6^n\) egyformán valószínű kimenetele. Az \(S=s\) esemény valószínűsége \(P(S=s)=N_s/6^n\), ahol \(N_s\) az \(s\) összegű kimenetelek száma. Az \(N_s\) értéke a generátorfüggvényből jön:</p>
+    <div class="eq gold">\[\sum_sN_sx^s=(x+x^2+\dots+x^6)^n.\]</div>
+    <p>Mivel minden kocka független a többitől, az összeg generátorfüggvénye a tényezők szorzata. A kísérlet kiszámolja az eloszlást, és \(n\le5\) esetén az összes kimenetel végigszámolásával is ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="an-k-n">kockák <input type="range" id="an-k-n" min="1" max="8" value="2"> <span class="mono" id="an-k-nv">2</span></label>
+        <label class="rng" for="an-k-s">összeg s <input type="range" id="an-k-s" min="1" max="48" value="7"> <span class="mono" id="an-k-sv">7</span></label>
+      </div>
+      <svg id="an-k-svg" role="img" aria-label="Az összeg eloszlása oszlopokon"></svg>
+      <div class="info" id="an-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kockák összegének eloszlása szimmetrikus a \(3{,}5n\) körül, a csúcs magassága \(\sim1/\sqrt n\) ütemben csökken. Ezt a 8.2-ben a szórásnégyzetből értjük meg.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="an-feltetel">
+  <div class="body">
+    <div class="eyebrow">§2 · Feltételes valószínűség</div>
+    <h2>Bayes-tétel</h2>
+    <p>Az \(A\) esemény valószínűsége a \(B\) feltétel mellett \(P(A\mid B)=\dfrac{P(A\cap B)}{P(B)}\). Ebből a szorzatszabály és a Bayes-tétel:</p>
+    <div class="eq gold">\[P(A\mid B)=\frac{P(B\mid A)\,P(A)}{P(B\mid A)P(A)+P(B\mid\overline A)P(\overline A)}.\]</div>
+    <p>Az \(A\) és \(B\) <b>független</b>, ha \(P(A\cap B)=P(A)P(B)\). Két kockánál az „első kocka páros” és az „összeg 7” események függetlenek: \(P=\tfrac12\), \(\tfrac16\), a metszet pedig \(\tfrac3{36}=\tfrac1{12}\).</p>
+    <p>A szemléletes tanulság a ritka betegség és a teszt: a pozitív teszt sokszor tévedés, mert a betegek ritkák. A kísérlet egy 10 000 fős populáción számol gyakoriságokkal, és a Bayes-képlettel is.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="an-f-p">gyakoriság (%) <input type="range" id="an-f-p" min="1" max="50" value="1"> <span class="mono" id="an-f-pv">1</span></label>
+        <label class="rng" for="an-f-a">érzékenység (%) <input type="range" id="an-f-a" min="50" max="100" value="99"> <span class="mono" id="an-f-av">99</span></label>
+        <label class="rng" for="an-f-b">fajlagosság (%) <input type="range" id="an-f-b" min="50" max="100" value="95"> <span class="mono" id="an-f-bv">95</span></label>
+      </div>
+      <div class="info" id="an-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az érzékenység a \(P(\text{pozitív}\mid\text{beteg})\), a fajlagosság a \(P(\text{negatív}\mid\text{egészséges})\). A kísérletben a betegek száma 10 000-ből \(p\cdot100\), ami egész szám.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="an-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Kockák és feltételek</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi a valószínűsége, hogy két kocka összege 8?</span></summary>
+      <div class="ans">
+        <p>A kedvező kimenetelek: \((2,6),(3,5),(4,4),(5,3),(6,2)\), azaz 5 db a 36-ból, tehát \(\tfrac5{36}\approx0{,}139\).</p>
+        <p><b>Ellenőrzés:</b> a \((x+\dots+x^6)^2\) együtthatója \(x^8\)-nál 5. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mennyi a valószínűsége, hogy három kocka összege 10?</span></summary>
+      <div class="ans">
+        <p>A \((x+\dots+x^6)^3\) együtthatója \(x^{10}\)-nél 27, tehát \(P=\tfrac{27}{216}=\tfrac18\).</p>
+        <p><b>Ellenőrzés:</b> a három kocka összes 216 kimenetelének végigszámolása is 27-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Egy betegség gyakorisága 1%, a teszt érzékenysége 99%, fajlagossága 95%. Mennyi az esélye, hogy aki pozitív, tényleg beteg?</span></summary>
+      <div class="ans">
+        <div class="eq">\[P=\frac{0{,}01\cdot0{,}99}{0{,}01\cdot0{,}99+0{,}99\cdot0{,}05}=\frac{0{,}0099}{0{,}0594}=\frac16\approx0{,}167.\]</div>
+        <p><b>Ellenőrzés:</b> 10 000 emberből 100 beteg, ebből 99 pozitív, a 9 900 egészségesből 495 pozitív, és \(99/(99+495)=1/6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi a valószínűsége, hogy négy dobásból legalább egy hatos lesz?</span></summary>
+      <div class="ans">
+        <p>A komplementer esemény (nincs hatos) valószínűsége \((5/6)^4=\tfrac{625}{1296}\), tehát \(P=1-\tfrac{625}{1296}=\tfrac{671}{1296}\approx0{,}5177\).</p>
+        <p><b>Ellenőrzés:</b> \(6^4=1296\) kimenetelből 625-ben nincs hatos, így 671-ben van. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat egy híres történelmi kérdés: érdemes-e egy kockával négy dobásra fogadni hatosra. A válasz igen, mert \(P\gt\tfrac12\). A történeti hátteret itt nem részletezem.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="an-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Alapszabályok</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Szabály</th><th>Képlet</th></tr>
+      <tr><td>egyenletes eloszlás</td><td>\(P(A)=|A|/|\Omega|\)</td></tr>
+      <tr><td>komplementer</td><td>\(P(\overline A)=1-P(A)\)</td></tr>
+      <tr><td>feltételes valószínűség</td><td>\(P(A\mid B)=P(A\cap B)/P(B)\)</td></tr>
+      <tr><td>függetlenség</td><td>\(P(A\cap B)=P(A)P(B)\)</td></tr>
+      <tr><td>független tagok összege</td><td>generátorfüggvények szorzata</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Eseménytér</b><span>Mik a lehetséges kimenetelek?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Számolj</b><span>Kedvező per összes, vagy komplementer.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Frissíts</b><span>Új információ: feltételes valószínűség.</span></div>
+    </div>
+    <p>Következik a 8.2: a várható érték és a szórásnégyzet.</p>
+  </div>
+  <aside class="margo">
+    <p>Diszkrét esetben a valószínűség mindig összeg, ezért a 2. fejezet összegzési technikái közvetlenül használhatók. A folytonos eset (integrálok) itt nem szerepel.</p>
+  </aside>
+</section>
+
+<!-- ================= 8.2 VÁRHATÓ ÉRTÉK ÉS SZÓRÁS ================= -->
+<header class="hero page" id="ao-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.2</div>
+    <h1>Várható érték és szórás</h1>
+    <p class="lead">A várható érték az eloszlás súlypontja, a szórásnégyzet a szóródás mértéke. A várható érték additív akkor is, ha a változók függnek egymástól, ez az egyik leghasznosabb trükk.</p>
+    <div class="formula">\(\displaystyle E[X]=\sum_xx\,P(X=x),\quad \mathrm{Var}\,X=E[X^2]-E[X]^2\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ao-hero" role="img" aria-label="A fixpontok számának eloszlása véletlen permutációnál"></svg>
+    <div class="counter"><span id="ao-hero-a">n = 2</span><span>E = <b>1</b> · szórásnégyzet = <b id="ao-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Egy véletlen permutációban átlagosan hány elem marad a helyén? A válasz meglepően egyszerű: pontosan egy, bármilyen nagy is \(n\). A képen a fixpontok számának eloszlása látható \(n=2,3,\dots\) elemre. A súlypont mindig az 1-nél van, és már a szórásnégyzet is 1 (\(n\ge2\)-re). Az indoklás nem az eloszlásból, hanem a linearitásból jön: minden elem \(1/n\) eséllyel fixpont, és \(n\) elem van.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ao-linearis">
+  <div class="body">
+    <div class="eyebrow">§1 · Linearitás</div>
+    <h2>Indikátorváltozók</h2>
+    <p>Bármely \(X,Y\) valószínűségi változóra \(E[X+Y]=E[X]+E[Y]\), függetlenség nélkül is. Ha \(X\) az események bekövetkezéseinek száma, felírható indikátorok összegeként: \(X=\sum_i I_i\), ahol \(I_i=1\), ha az \(i\). esemény bekövetkezik, és \(E[I_i]=P(\text{az }i\text{. esemény})\). Ebből</p>
+    <div class="eq gold">\[E[X]=\sum_iP(A_i).\]</div>
+    <p>Három példa véletlen permutációra: a fixpontok számának várható értéke \(n\cdot\tfrac1n=1\); a ciklusok számáé \(H_n=\sum_k\tfrac1k\) (ez a 6.1 \(\sum k\genfrac[]{0pt}{}nk/n!\) képletével egyezik); a balról jobbra haladó rekordok (olyan elemek, amelyek nagyobbak az előttük állóknál) számáé szintén \(H_n\), mert az \(i\). elem \(\tfrac1i\) eséllyel a legnagyobb az első \(i\) közül. A kísérlet minden permutációt végigszámol (\(n\le8\)).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ao-l-n">n <input type="range" id="ao-l-n" min="1" max="8" value="6"> <span class="mono" id="ao-l-nv">6</span></label>
+      </div>
+      <div class="info" id="ao-l-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérletben a három várható érték pontos tört, nem közelítés. A fixpontok esetében az eloszlás \(P(k)=\binom nkD_{n-k}/n!\) (a 7.4-ből), és ebből is kiszámolható az átlag. Az indikátoros számolás ennél lényegesen rövidebb.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ao-szoras">
+  <div class="body">
+    <div class="eyebrow">§2 · Szórásnégyzet</div>
+    <h2>A szóródás mértéke</h2>
+    <p>A <b>szórásnégyzet</b> \(\mathrm{Var}\,X=E[(X-E X)^2]=E[X^2]-(E X)^2\). Független változókra additív: \(\mathrm{Var}(X+Y)=\mathrm{Var}X+\mathrm{Var}Y\), és \(\mathrm{Var}(cX)=c^2\mathrm{Var}X\). Az \(n\) független, \(p\) valószínűségű kísérlet sikereinek száma (binomiális eloszlás) indikátorok összege, ezért</p>
+    <div class="eq">\[E=np,\qquad \mathrm{Var}=np(1-p).\]</div>
+    <p>Egy kocka értékére \(E=\tfrac72\), \(\mathrm{Var}=\tfrac{35}{12}\). A kísérlet a binomiális eloszlást a definícióból, pontos törtekkel összegezi, és összeveti a képletekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ao-s-n">n <input type="range" id="ao-s-n" min="1" max="20" value="10"> <span class="mono" id="ao-s-nv">10</span></label>
+        <label class="rng" for="ao-s-p">p (%) <input type="range" id="ao-s-p" min="1" max="99" value="30"> <span class="mono" id="ao-s-pv">30</span></label>
+      </div>
+      <svg id="ao-s-svg" role="img" aria-label="A binomiális eloszlás oszlopai"></svg>
+      <div class="info" id="ao-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szórás \(\sigma=\sqrt{\mathrm{Var}}\). Az \(n\) független tag összegének szórása \(\sqrt n\) ütemben nő, miközben a várható érték \(n\) szerint lineárisan. Ezért az átlag relatív szóródása \(1/\sqrt n\) szerint csökken.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ao-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Átlagok és szóródás</h2>
+    <details>
+      <summary><span class="sq">1. Add meg egy kockadobás várható értékét és szórásnégyzetét.</span></summary>
+      <div class="ans">
+        <div class="eq">\[E=\tfrac{1+2+\dots+6}6=\tfrac72,\qquad E[X^2]=\tfrac{91}6,\qquad \mathrm{Var}=\tfrac{91}6-\tfrac{49}4=\tfrac{35}{12}.\]</div>
+        <p><b>Ellenőrzés:</b> két kocka összegének szórásnégyzete független tagok miatt \(\tfrac{35}6\), és a 8.1-beli eloszlásból számolva is \(\tfrac{35}6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Egy 10 elemű véletlen permutációban átlagosan hány fixpont és hány ciklus van?</span></summary>
+      <div class="ans">
+        <p>A fixpontok száma átlagosan \(1\), a ciklusoké \(H_{10}=\tfrac{7381}{2520}\approx2{,}929\).</p>
+        <p><b>Ellenőrzés:</b> a 6.2-ben \(H_{10}=7381/2520\), és a linearitás kísérlete kisebb \(n\)-re egyezik az összes permutáció átlagával. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi a várható érték és a szórásnégyzet, ha \(n=10\), \(p=0{,}3\) binomiális?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E=10\cdot0{,}3=3,\qquad \mathrm{Var}=10\cdot0{,}3\cdot0{,}7=2{,}1.\]</div>
+        <p><b>Ellenőrzés:</b> a kísérlet pontos összegzése ugyanezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Két kockát dobunk, mennyi a nagyobbik várható értéke?</span></summary>
+      <div class="ans">
+        <p>A \(P(M\ge k)=1-\tfrac{(k-1)^2}{36}\), és \(E[M]=\sum_{k=1}^{6}P(M\ge k)\):</p>
+        <div class="eq">\[E[M]=6-\frac{0+1+4+9+16+25}{36}=6-\frac{55}{36}=\frac{161}{36}\approx4{,}472.\]</div>
+        <p><b>Ellenőrzés:</b> a 36 kimenetel maximumának összege 161. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat az \(E[M]=\sum_kP(M\ge k)\) képletet használja, amely nemnegatív egész értékű változókra mindig igaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ao-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Várható érték és szórásnégyzet szabályai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Mennyiség</th><th>Szabály</th></tr>
+      <tr><td>linearitás</td><td>\(E[aX+bY]=aE[X]+bE[Y]\)</td></tr>
+      <tr><td>indikátor</td><td>\(E[I_A]=P(A)\)</td></tr>
+      <tr><td>variancia</td><td>\(E[X^2]-E[X]^2\)</td></tr>
+      <tr><td>független összeg</td><td>\(\mathrm{Var}(X+Y)=\mathrm{Var}X+\mathrm{Var}Y\)</td></tr>
+      <tr><td>binomiális</td><td>\(E=np\), \(\mathrm{Var}=np(1-p)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Indikátorok</b><span>Bontsd a változót 0–1 tagok összegére.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Linearitás</b><span>Függetlenség nélkül is összeadhatsz.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Variancia</b><span>Függetlenségnél összeadódik.</span></div>
+    </div>
+    <p>Következik a 8.3: a valószínűség-generáló függvények, amelyek mindkét mennyiséget a deriváltból olvassák le.</p>
+  </div>
+  <aside class="margo">
+    <p>A szórásnégyzet additivitásához függetlenség kell (vagy legalább korrelálatlanság). A várható érték linearitásához nem kell semmilyen feltétel.</p>
+  </aside>
+</section>
+
+<!-- ================= 8.3 VALÓSZÍNŰSÉG-GENERÁLÓ FÜGGVÉNYEK ================= -->
+<header class="hero page" id="ap-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.3</div>
+    <h1>Valószínűség-generáló függvények</h1>
+    <p class="lead">Egy nemnegatív egész értékű változó eloszlását hatványsorba csomagoljuk. A várható érték és a szórásnégyzet ilyenkor az \(x=1\) helyen vett deriváltakból olvasható le.</p>
+    <div class="formula">\(\displaystyle G(x)=\sum_kP(X=k)\,x^k=E[x^X]\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ap-hero" role="img" aria-label="A geometriai eloszlás valószínűségei és várható értéke"></svg>
+    <div class="counter"><span id="ap-hero-a">p = 1/2</span><span>várható várakozás: <b id="ap-hero-b">2</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A generáló függvény ugyanaz az eszköz, amelyet a 7. fejezetben a sorozatokra használtunk, csak az együtthatók most valószínűségek. Három tulajdonság teszi hasznossá: \(G(1)=1\), mert az összes valószínűség összege 1; \(G'(1)=E[X]\), mert a derivált \(\sum kP(k)x^{k-1}\); és független változók összegének generáló függvénye a szorzat. A képen a geometriai eloszlás látható: az első sikerig szükséges kísérletek száma, ha minden kísérlet sikere \(p\). A várható érték \(1/p\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ap-pgf">
+  <div class="body">
+    <div class="eyebrow">§1 · A deriváltak</div>
+    <h2>Várható érték és szórásnégyzet</h2>
+    <p>Mivel \(G'(x)=\sum kP(k)x^{k-1}\) és \(G''(x)=\sum k(k-1)P(k)x^{k-2}\):</p>
+    <div class="eq gold">\[E[X]=G'(1),\qquad E[X(X-1)]=G''(1),\qquad \mathrm{Var}\,X=G''(1)+G'(1)-G'(1)^2.\]</div>
+    <p>A kísérlet véges eloszlásoknál a deriváltakat pontosan (törtekkel) számolja az együtthatókból, és a definícióból kiszámolt értékekkel veti össze.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ap-g-d">eloszlás <select id="ap-g-d"><option value="0">egy kocka</option><option value="1">két kocka összege</option><option value="2">binomiális (n=10, p=0,3)</option><option value="3">három kocka összege</option></select></label>
+      </div>
+      <div class="info" id="ap-g-info"></div>
+    </div>
+    <p>A geometriai eloszlásnál \(P(X=k)=q^{k-1}p\) (\(q=1-p\)), és \(G(x)=\dfrac{px}{1-qx}\). A deriváltakból \(E=\tfrac1p\), \(\mathrm{Var}=\tfrac q{p^2}\). A kísérlet a sort \(500\) tagig összegzi, és a képletekkel veti össze.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ap-q-k">p = 1/k, k <input type="range" id="ap-q-k" min="2" max="20" value="6"> <span class="mono" id="ap-q-kv">6</span></label>
+      </div>
+      <div class="info" id="ap-q-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(G''(1)\) a faktoriális momentumot adja, ezért a variancia képletében \(+G'(1)\) szerepel: \(E[X^2]=G''(1)+G'(1)\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ap-osszeg">
+  <div class="body">
+    <div class="eyebrow">§2 · Összegek</div>
+    <h2>Független változók összege</h2>
+    <p>Ha \(X\) és \(Y\) függetlenek, akkor \(E[x^{X+Y}]=E[x^X]E[x^Y]\), vagyis \(G_{X+Y}=G_XG_Y\). Ebből \(n\) kocka összegére \(G(x)=\Bigl(\tfrac{x+\dots+x^6}6\Bigr)^n\), és a szorzatszabály alapján \(E=\tfrac72n\), \(\mathrm{Var}=\tfrac{35}{12}n\). Az \(n\) független Bernoulli-kísérlet összegére \(G=(q+px)^n\), ami a binomiális eloszlás.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ap-o-n">kockák <input type="range" id="ap-o-n" min="1" max="8" value="3"> <span class="mono" id="ap-o-nv">3</span></label>
+      </div>
+      <div class="info" id="ap-o-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet az eloszlást a 8.1-beli módon számolja (a generáló polinom együtthatói), a várható értéket és szórásnégyzetet pedig a definícióból. A képlet \(E=\tfrac72n\), \(\mathrm{Var}=\tfrac{35}{12}n\) független tagok összegére egyezik vele.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ap-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Deriváltak és összegek</h2>
+    <details>
+      <summary><span class="sq">1. Add meg egy kocka generáló függvényét, és számold ki a várható értéket a deriváltból.</span></summary>
+      <div class="ans">
+        <div class="eq">\[G(x)=\frac{x+x^2+\dots+x^6}6,\qquad G'(1)=\frac{1+2+\dots+6}6=\frac72.\]</div>
+        <p><b>Ellenőrzés:</b> \(G(1)=1\), és a kísérlet pontos értéke 7/2. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Vezesd le a binomiális eloszlás várható értékét a \((q+px)^n\) függvényből.</span></summary>
+      <div class="ans">
+        <p>A \(G'(x)=np\,(q+px)^{n-1}\), és \(G'(1)=np\,(q+p)^{n-1}=np\). A \(n=10\), \(p=0{,}3\) esetén ez 3.</p>
+        <p><b>Ellenőrzés:</b> a 8.2 kísérlete is 3-at ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki a geometriai eloszlás szórásnégyzetét \(p=\tfrac16\)-ra.</span></summary>
+      <div class="ans">
+        <p>A \(G=\tfrac{px}{1-qx}\), \(G'=\tfrac p{(1-qx)^2}\), \(G''=\tfrac{2pq}{(1-qx)^3}\). Így \(G'(1)=\tfrac1p=6\), \(G''(1)=\tfrac{2q}{p^2}=2\cdot\tfrac56\cdot36=60\), és</p>
+        <div class="eq">\[\mathrm{Var}=60+6-36=30.\]</div>
+        <p><b>Ellenőrzés:</b> \(q/p^2=\tfrac56\cdot36=30\), és a kísérlet a 500 tagú összegben 30-at ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi három kocka összegének várható értéke és szórásnégyzete?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E=3\cdot\tfrac72=\tfrac{21}2,\qquad \mathrm{Var}=3\cdot\tfrac{35}{12}=\tfrac{35}4.\]</div>
+        <p><b>Ellenőrzés:</b> a 216 kimenetel pontos számolása \(10{,}5\) és \(8{,}75\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a „második derivált” trükkjét mutatja: nem kell közvetlenül \(\sum k^2q^{k-1}p\)-t összegezni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ap-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A generáló függvény eszköztára</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Eloszlás</th><th>\(G(x)\)</th><th>\(E\)</th><th>Var</th></tr>
+      <tr><td>Bernoulli(\(p\))</td><td>\(q+px\)</td><td>\(p\)</td><td>\(pq\)</td></tr>
+      <tr><td>binomiális</td><td>\((q+px)^n\)</td><td>\(np\)</td><td>\(npq\)</td></tr>
+      <tr><td>geometriai</td><td>\(\tfrac{px}{1-qx}\)</td><td>\(\tfrac1p\)</td><td>\(\tfrac q{p^2}\)</td></tr>
+      <tr><td>kocka</td><td>\(\tfrac{x+\dots+x^6}6\)</td><td>\(\tfrac72\)</td><td>\(\tfrac{35}{12}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd fel \(G\)-t</b><span>Eloszlásból vagy szerkezetből.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorozz</b><span>Független összeg = szorzat.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Deriválj</b><span>\(G'(1)\), \(G''(1)\).</span></div>
+    </div>
+    <p>Következik a 8.4: három klasszikus feladat, a születésnap-paradoxon, a kupongyűjtő és a játékos csődje.</p>
+  </div>
+  <aside class="margo">
+    <p>Nem véges támaszú eloszlásoknál a deriváltat az \(x=1\) helyen a konvergencia miatt óvatosan kell kezelni. A feldolgozás itt a jól viselkedő eseteket (véges és geometriai) tárgyalja.</p>
+  </aside>
+</section>
+
+<!-- ================= 8.4 KLASSZIKUS FELADATOK ================= -->
+<header class="hero page" id="aq-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.4</div>
+    <h1>Klasszikus feladatok</h1>
+    <p class="lead">Három híres kérdés: hány ember kell ahhoz, hogy két azonos születésnap valószínű legyen, hányszor kell húzni, amíg minden fajta megvan, és mi az esélye, hogy a játékos nyer, mielőtt elfogy a pénze.</p>
+    <div class="formula">\(\displaystyle E[T]=n\,H_n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="aq-hero" role="img" aria-label="Az azonos születésnap valószínűsége a létszám függvényében"></svg>
+    <div class="counter"><span id="aq-hero-a">n = 5 ember</span><span>P(van egyező) = <b id="aq-hero-b">0,027</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A születésnap-paradoxon azért meglepő, mert a szemlélet a személyekre figyel („valakinek ugyanaz, mint nekem”), a számolás viszont a párokra: 23 emberből már 253 pár képezhető. A görbe meredeken emelkedik, és már 23 főnél átlépi a felet. A képen az egyező születésnap valószínűsége látható a létszám függvényében. A kupongyűjtő feladatban a harmonikus számok jelennek meg, a játékos csődjében pedig a 7.2-ben tárgyalt lineáris rekurzió.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="aq-szulinap">
+  <div class="body">
+    <div class="eyebrow">§1 · Születésnap-paradoxon</div>
+    <h2>Mikor valószínű egy egyezés?</h2>
+    <p>\(n\) ember, \(D\) lehetséges nap. Annak a valószínűsége, hogy mind különböző, a szorzatszabállyal</p>
+    <div class="eq gold">\[P(\text{nincs egyezés})=\prod_{k=0}^{n-1}\Bigl(1-\frac kD\Bigr)\approx e^{-n(n-1)/(2D)}.\]</div>
+    <p>A közelítés az \(1-x\le e^{-x}\) egyenlőtlenségből és \(\sum_{k<n}k=\tfrac{n(n-1)}2\)-ből jön. A kísérlet pontosan kiszámolja az értéket, megadja a közelítést, és kiírja a legkisebb \(n\)-et, amelynél az egyezés legalább 50%.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aq-b-n">n <input type="range" id="aq-b-n" min="1" max="100" value="23"> <span class="mono" id="aq-b-nv">23</span></label>
+        <label class="rng" for="aq-b-d">D <select id="aq-b-d"><option value="365">365 nap</option><option value="100">100 nap</option><option value="1000">1000 nap</option><option value="7">7 nap (hét napja)</option></select></label>
+      </div>
+      <svg id="aq-b-svg" role="img" aria-label="Egyezés valószínűsége a létszám függvényében"></svg>
+      <div class="info" id="aq-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(1-x\le e^{-x}\) egyenlőtlenség miatt a pontos „nincs egyezés” valószínűség kisebb a közelítésnél, vagyis a közelítés az egyezés valószínűségét alulbecsli (23 főnél 0,5000 az exponenciális közelítés, 0,5073 a pontos érték).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-kupon">
+  <div class="body">
+    <div class="eyebrow">§2 · Kupongyűjtő</div>
+    <h2>Hány húzás kell az összes fajtához?</h2>
+    <p>\(n\) fajta kupon, minden húzás egyenletes és független. Ha már \(i-1\) fajtát gyűjtöttünk, az \(i\). új fajta megérkezéséig a várakozás geometriai eloszlású \(p_i=\tfrac{n-i+1}n\) paraméterrel, várható értéke \(\tfrac n{n-i+1}\). Összeadva:</p>
+    <div class="eq gold">\[E[T]=\sum_{i=1}^{n}\frac n{n-i+1}=n\,H_n,\qquad \mathrm{Var}\,T=\sum_{i=1}^{n}\frac{n(i-1)}{(n-i+1)^2}=n^2H_n^{(2)}-nH_n.\]</div>
+    <p>A várakozási idők függetlenek, ezért a variancia összeadódik (8.2). A kísérlet pontos törtekkel számol, és egy rögzített magú szimulációt is futtat, amelynek átlaga a várható értékhez közelít.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aq-k-n">n <input type="range" id="aq-k-n" min="1" max="50" value="6"> <span class="mono" id="aq-k-nv">6</span></label>
+      </div>
+      <div class="info" id="aq-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(nH_n\approx n\ln n+0{,}5772\,n\), tehát a szükséges húzások száma kicsit több, mint \(n\ln n\). Egy hatoldalú kockánál 14,7 dobás kell átlagosan az összes lap megjelenéséhez.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-ruin">
+  <div class="body">
+    <div class="eyebrow">§3 · Bolyongás és csőd</div>
+    <h2>A játékos csődje</h2>
+    <p>A játékos \(i\) egységgel indul, minden fordulóban \(p\) eséllyel nyer egy egységet, \(q=1-p\) eséllyel veszít egyet. A játék akkor ér véget, ha 0-ra jut (csőd) vagy eléri az \(N\)-et. A \(P_i\) a siker valószínűsége:</p>
+    <div class="eq">\[P_i=pP_{i+1}+qP_{i-1},\qquad P_0=0,\ P_N=1.\]</div>
+    <p>A 7.2 módszerével (karakterisztikus gyökök \(1\) és \(r=q/p\)) a megoldás</p>
+    <div class="eq gold">\[P_i=\begin{cases}\dfrac iN,&p=\tfrac12,\\[2mm]\dfrac{1-r^i}{1-r^N},&p\ne\tfrac12.\end{cases}\]</div>
+    <p>A méltányos játéknál a játék várható hossza \(i(N-i)\). A kísérlet a rekurziót közvetlenül megoldja (háromátlós lineáris egyenletrendszerként), és összeveti a képletekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aq-r-p">p (%) <input type="range" id="aq-r-p" min="30" max="70" value="45"> <span class="mono" id="aq-r-pv">45</span></label>
+        <label class="rng" for="aq-r-i">i <input type="range" id="aq-r-i" min="1" max="49" value="10"> <span class="mono" id="aq-r-iv">10</span></label>
+        <label class="rng" for="aq-r-n">N <input type="range" id="aq-r-n" min="2" max="50" value="20"> <span class="mono" id="aq-r-nv">20</span></label>
+      </div>
+      <div class="info" id="aq-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Már a kicsit kedvezőtlen \(p=0{,}45\) is drasztikusan lerontja az esélyt: \(i=10\), \(N=20\) mellett csak 11,85% a siker, miközben a méltányos játéknál 50%.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Egyezés, kupon, csőd</h2>
+    <details>
+      <summary><span class="sq">1. Legalább hány ember kell ahhoz, hogy két azonos születésnap valószínűsége elérje az 50%-ot?</span></summary>
+      <div class="ans">
+        <p>A pontos számolás \(n=22\)-re 0,4757, \(n=23\)-ra 0,5073, tehát 23 ember kell.</p>
+        <p><b>Ellenőrzés:</b> az exponenciális közelítés \(e^{-23\cdot22/730}\approx0{,}5000\), ami az egyezésre 0,5000-et ad, de a pontos érték 0,5073, így a határ a pontos számolással dől el. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hányszor kell átlagosan dobni egy kockával, amíg minden lap legalább egyszer megjelent?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E[T]=6\,H_6=6\cdot\frac{49}{20}=\frac{147}{10}=14{,}7.\]</div>
+        <p><b>Ellenőrzés:</b> a kísérlet \(n=6\)-ra pontosan 147/10-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi az esélye a sikernek, ha a játékos 10 egységgel indul, 20-at szeretne, és \(p=\tfrac12\), illetve \(p=0{,}45\)?</span></summary>
+      <div class="ans">
+        <p>Méltányos játéknál \(\tfrac{10}{20}=\tfrac12\). A \(p=0{,}45\) esetén \(r=\tfrac{0{,}55}{0{,}45}=\tfrac{11}9\), és</p>
+        <div class="eq">\[P_{10}=\frac{1-(11/9)^{10}}{1-(11/9)^{20}}\approx0{,}1185.\]</div>
+        <p><b>Ellenőrzés:</b> a háromátlós egyenletrendszer megoldása is 0,1185. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi a méltányos játék várható hossza \(i=10\), \(N=20\) esetén?</span></summary>
+      <div class="ans">
+        <p>A képlet \(i(N-i)=10\cdot10=100\) forduló.</p>
+        <p><b>Ellenőrzés:</b> a \(D_i=1+\tfrac12D_{i+1}+\tfrac12D_{i-1}\) egyenletrendszer megoldása 100. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat eredménye a diffúzió négyzetgyök-törvényének diszkrét alakja: a bolyongás \(N^2\) nagyságrendű lépés alatt jár be egy \(N\) hosszú szakaszt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aq-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Három feladat, három módszer</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Feladat</th><th>Eredmény</th><th>Eszköz</th></tr>
+      <tr><td>születésnap</td><td>\(\prod(1-k/D)\)</td><td>komplementer, szorzatszabály</td></tr>
+      <tr><td>kupongyűjtő</td><td>\(nH_n\)</td><td>linearitás, geometriai eloszlás</td></tr>
+      <tr><td>csőd</td><td>\(\tfrac{1-r^i}{1-r^N}\)</td><td>lineáris rekurzió</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Bontsd szakaszokra</b><span>Független várakozások, lépések.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió vagy szorzat</b><span>Írd fel a lépésenkénti valószínűséget.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Oldd meg</b><span>Zárt alak, vagy numerikus ellenőrzés.</span></div>
+    </div>
+    <p>A fejezetvégi feladatok a 8.5-ben következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A szimulációk rögzített magú álvéletlen-generátorral futnak, ezért az eredmény minden futásnál ugyanaz. A szimuláció itt szemléltetés, nem bizonyíték.</p>
+  </aside>
+</section>
+
+<!-- ================= 8.5 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="ar-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.5</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a diszkrét valószínűségről, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\displaystyle E[X],\quad\mathrm{Var}\,X,\quad G(x)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ar-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="ar-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A valószínűségi feladatok megoldása két lépésből áll: először a modell (mi az eseménytér, mik a független részek), utána a számolás (megszámlálás, linearitás, generáló függvény). A bemelegítő feladatok egy-egy közvetlen számolást kérnek, az alapszinten Bayes-tételt, geometriai eloszlást és a kupongyűjtőt kell alkalmazni, a haladó szinten bizonyítani kell, a kutatásiakban pedig a számítógép ad sejtést, és az indoklás a tiéd. A feladatok sajátok, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="ar-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>Kockák összege, szorzat várható értéke, binomiális valószínűség.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Mennyi a valószínűsége, hogy két kocka összege legalább 10?</span></summary>
+      <div class="ans">
+        <p>Az összeg 10, 11, 12: \(3+2+1=6\) kedvező kimenetel a 36-ból, tehát \(P=\tfrac6{36}=\tfrac16\).</p>
+        <p><b>Ellenőrzés:</b> a 8.1 eloszlás \(x^{10}\), \(x^{11}\), \(x^{12}\) együtthatói 3, 2, 1. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Mennyi két (független) kockadobás szorzatának várható értéke?</span></summary>
+      <div class="ans">
+        <p>Függetlenek esetén \(E[XY]=E[X]E[Y]=\tfrac72\cdot\tfrac72=\tfrac{49}4=12{,}25\).</p>
+        <p><b>Ellenőrzés:</b> a 36 szorzat összege \((1+2+\dots+6)^2=441\), és \(441/36=\tfrac{49}4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Öt kockát dobunk. Mennyi a valószínűsége, hogy pontosan két hatos lesz?</span></summary>
+      <div class="ans">
+        <div class="eq">\[\binom52\Bigl(\frac16\Bigr)^2\Bigl(\frac56\Bigr)^3=\frac{10\cdot125}{7776}=\frac{625}{3888}\approx0{,}1608.\]</div>
+        <p><b>Ellenőrzés:</b> \(7776=6^5\) kimenetelből \(\binom52\cdot5^3=1250\) kedvező. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladatban a függetlenség lényeges: egy kockára \(E[X^2]=\tfrac{91}6\ne\tfrac{49}4\), vagyis \(E[X\cdot X]\ne E[X]^2\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ar-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Bayes, várakozás, bizonyítások</h2>
+    <p>Három alapfeladat, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Az A urnában 3 piros és 2 kék, a B urnában 1 piros és 4 kék golyó van. Egyenlő eséllyel választunk urnát, és pirosat húzunk. Mennyi az esélye, hogy az A urnából húztunk?</span></summary>
+      <div class="ans">
+        <div class="eq">\[P(A\mid\text{piros})=\frac{\tfrac12\cdot\tfrac35}{\tfrac12\cdot\tfrac35+\tfrac12\cdot\tfrac15}=\frac{3/10}{4/10}=\frac34.\]</div>
+        <p><b>Ellenőrzés:</b> 10 húzásból átlagosan 3 az A-ból piros, 1 a B-ből, így \(3/(3+1)\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Egy kockát dobunk az első hatosig. Mennyi az esélye, hogy pontosan a 3. dobásra jön, és mennyi, hogy 6-nál több dobás kell?</span></summary>
+      <div class="ans">
+        <p>A geometriai eloszlás szerint \(P(T=3)=\bigl(\tfrac56\bigr)^2\tfrac16=\tfrac{25}{216}\), és \(P(T>6)=\bigl(\tfrac56\bigr)^6=\tfrac{15625}{46656}\approx0{,}3349\).</p>
+        <p><b>Ellenőrzés:</b> \(6^3=216\), a kedvező \(5\cdot5\cdot1=25\); és 6 dobásból \(5^6=15625\) nem tartalmaz hatost. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Négy fajta kupon esetén átlagosan hány húzás kell mindegyikhez?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E[T]=4\,H_4=4\cdot\frac{25}{12}=\frac{25}3\approx8{,}33.\]</div>
+        <p><b>Ellenőrzés:</b> \(4+\tfrac43+\tfrac42+\tfrac41=\tfrac{25}3\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: egy \(n\ge2\) elemű véletlen permutáció fixpontjai számának szórásnégyzete 1.</span></summary>
+      <div class="ans">
+        <p>Legyen \(X=\sum_iI_i\), ahol \(I_i\) az \(i\). elem fixpont-volta. Ekkor \(E[X]=1\), és \(X^2=\sum_iI_i+\sum_{i\ne j}I_iI_j\). Az \(I_iI_j\) pontosan akkor 1, ha mindkét elem fixpont, aminek valószínűsége \(\tfrac{(n-2)!}{n!}=\tfrac1{n(n-1)}\). Ezért</p>
+        <div class="eq">\[E[X^2]=n\cdot\frac1n+n(n-1)\cdot\frac1{n(n-1)}=2,\qquad\mathrm{Var}\,X=2-1=1.\ \square\]</div>
+        <p><b>Ellenőrzés:</b> \(n=5\)-re a 120 permutáció teljes számolása is 1-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Igazold, hogy \(n\) ember és \(D\) nap esetén \(P(\text{van egyezés})\ge1-e^{-n(n-1)/(2D)}\). Mit ad ez \(n=23\), \(D=365\)-re?</span></summary>
+      <div class="ans">
+        <p>A szorzatszabály \(P(\text{nincs})=\prod_{k<n}(1-\tfrac kD)\), és minden tényezőre \(1-x\le e^{-x}\). Ezért \(P(\text{nincs})\le e^{-\sum k/D}=e^{-n(n-1)/(2D)}\), és az egyezés valószínűsége legalább \(1-e^{-n(n-1)/(2D)}\). \(\square\) Az \(n=23\), \(D=365\) esetén \(1-e^{-0{,}6932}\approx0{,}5000\).</p>
+        <p><b>Ellenőrzés:</b> a pontos érték 0,5073, valóban nagyobb a becslésnél. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 7. feladat tanulsága: a szórásnégyzet kiszámításához a páros indikátorszorzatok kellenek, ezek valószínűsége \(P(I_i=I_j=1)\). A permutációk szimmetriája teszi őket egyszerűvé.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ar-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Eloszlások nagy \(n\)-re</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. \(n\) kocka összegére számold ki annak valószínűségét, hogy az összeg legfeljebb egy szórásnyira van a várható értéktől. Mit sejtesz \(n\to\infty\) esetén?</span></summary>
+      <div class="ans">
+        <p>A kísérlet értékei \(n=1,2,3,5,10,20,40\)-re rendre kb. \(0{,}667\), \(0{,}667\), \(0{,}676\), \(0{,}696\), \(0{,}687\), \(0{,}672\), \(0{,}668\). A sorozat ingadozik (az eloszlás diszkrét, a határ a rácspontokon \(\mu\pm\sigma\)-nál lépcsőzik), és úgy látszik, \(0{,}68\) körüli értékhez közelít.</p>
+        <p>A sejtés: a határérték \(\approx0{,}6827\), ez a normális eloszlás \(\pm1\sigma\) tartománya. Ez a centrális határeloszlás-tétel következménye, amelyet itt nem bizonyítunk, a kísérlet csak numerikus megerősítés.</p>
+        <p><b>Ellenőrzés:</b> a program a pontos eloszlásból (lebegőpontos rekurzióval) számol, \(n\le40\)-ig. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ar-n-n">n <input type="range" id="ar-n-n" min="1" max="40" value="10"> <span class="mono" id="ar-n-nv">10</span></label>
+      </div>
+      <div class="info" id="ar-n-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. A kupongyűjtőnél hogyan viselkedik \(E[T]/(n\ln n)\) és a szórás/\(n\) arány nagy \(n\)-re? Mit sejtesz?</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint \(E[T]/(n\ln n)\) lassan 1-hez tart (\(n=10^6\)-nál még 1,042), a szórás és \(n\) hányadosa pedig kb. \(1{,}2825\)-höz, ami \(\pi/\sqrt6\) értéke.</p>
+        <p>Az első állítás igazolása: \(E[T]=nH_n\) és \(H_n=\ln n+\gamma+O(1/n)\) (6.2), tehát az arány \(1+\gamma/\ln n+\dots\), ami 1-hez tart, de nagyon lassan. A második: \(\mathrm{Var}\,T=n^2H_n^{(2)}-nH_n\), és \(H_n^{(2)}\to\pi^2/6\), így a szórás \(\sim n\pi/\sqrt6\). A \(\sum1/k^2=\pi^2/6\) értékét itt nem bizonyítom.</p>
+        <p><b>Ellenőrzés:</b> \(n=10^6\)-ra a program 1,0418-at és 1,28254-et ad, \(\pi/\sqrt6=1{,}28255\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ar-k-e">n = 10^e, e <input type="range" id="ar-k-e" min="1" max="6" value="3"> <span class="mono" id="ar-k-ev">3</span></label>
+      </div>
+      <div class="info" id="ar-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat szerint a kupongyűjtő időtartama szoros: a szórás \(n\)-nel arányos, a várható érték viszont \(n\ln n\)-nel, ezért a relatív szóródás \(\sim1/\ln n\) ütemben csökken, nagyon lassan.</p>
+  </aside>
+</section>
+
 <!-- ================= 1.4 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="w-bevezeto">
   <div>
@@ -7170,6 +7823,11 @@ const TOPICS={
   gfparticio:{"n": "7.3", "t": "Partíciók", "ch": 7, "prefix": "ak-", "pages": [["bevezeto", "Bevezető"], ["szorzat", "Végtelen szorzat"], ["euler", "Euler tétele"], ["penz", "Pénzváltás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.3 Partíciók. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   gfexp:{"n": "7.4", "t": "Exponenciális generátorfüggvények", "ch": 7, "prefix": "al-", "pages": [["bevezeto", "Bevezető"], ["szorzat", "A binomiális konvolúció"], ["derang", "Fixpontmentes permutációk"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.4 Exponenciális generátorfüggvények. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokgf:{"n": "7.5", "t": "Feladatok", "ch": 7, "prefix": "am-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.5 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  valalap:{"n": "8.1", "t": "Valószínűségi tér", "ch": 8, "prefix": "an-", "pages": [["bevezeto", "Bevezető"], ["kocka", "Kockadobások"], ["feltetel", "Feltételes valószínűség"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.1 Valószínűségi tér. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  varhato:{"n": "8.2", "t": "Várható érték és szórás", "ch": 8, "prefix": "ao-", "pages": [["bevezeto", "Bevezető"], ["linearis", "A várható érték linearitása"], ["szoras", "Szórásnégyzet"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.2 Várható érték és szórás. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  valgf:{"n": "8.3", "t": "Valószínűség-generáló függvények", "ch": 8, "prefix": "ap-", "pages": [["bevezeto", "Bevezető"], ["pgf", "Várható érték és variancia a deriváltból"], ["osszeg", "Független változók összege"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.3 Valószínűség-generáló függvények. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  klasszikus:{"n": "8.4", "t": "Klasszikus feladatok", "ch": 8, "prefix": "aq-", "pages": [["bevezeto", "Bevezető"], ["szulinap", "Születésnap-paradoxon"], ["kupon", "Kupongyűjtő"], ["ruin", "Bolyongás és csőd"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.4 Klasszikus feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  feladatokval:{"n": "8.5", "t": "Feladatok", "ch": 8, "prefix": "ar-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.5 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatok:{"n": "1.4", "t": "Feladatok", "ch": 1, "prefix": "w-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.4 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."}
 };
 const CH=[
@@ -7184,7 +7842,7 @@ const CH=[
   {"n": 5, "t": "Binomiális együtthatók", "d": "Azonosságok, összegek, Catalan-számok, generátorfüggvények.", "lead": "A binomiális együtthatók a kombinatorika és az algebra közös nyelve. A fejezet a Pascal-háromszög azonosságaitól a Vandermonde-konvolúcióig, a Catalan-számokig és az első generátorfüggvényekig vezet.", "topics": [{"id": "binomalap", "d": "Pascal-háromszög, szimmetria, elnyelés, binomiális tétel."}, {"id": "binomosszeg", "d": "Hokiütő-azonosság, Vandermonde-konvolúció, súlyozott összegek."}, {"id": "binomfortely", "d": "Negatív felső index, Catalan-számok, a binomiális sor."}, {"id": "binomgf", "d": "A binomiális együtthatók generátorfüggvénye, átlós összegek."}, {"id": "feladatokbinom", "d": "Tíz saját feladat négy szinten a binomiális együtthatókról, megoldással, programmal ellenőrizve."}]},
   {"n": 6, "t": "Speciális számok", "d": "Stirling-, harmonikus, Fibonacci- és Bernoulli-számok.", "lead": "Néhány számsorozat újra meg újra felbukkan a diszkrét matematikában. A fejezet a Stirling-számokat, a harmonikus számokat, a Fibonacci-számokat és a Bernoulli-számokat vizsgálja: hogyan születnek, milyen azonosságok kötik össze őket, és mire jók.", "topics": [{"id": "stirling", "d": "Másodfajú és elsőfajú Stirling-számok, hatványok kifejtése, szürjekciók."}, {"id": "harmonikus", "d": "H_n növekedése, részleges összegzés, kapcsolat a Stirling-számokkal."}, {"id": "fibonacci", "d": "Cassini-azonosság, gcd-tulajdonság, Zeckendorf-tétel."}, {"id": "bernoulli", "d": "Hatványösszegek zárt alakja, Bernoulli-számok rekurziója."}, {"id": "feladatokspec", "d": "Tíz saját feladat négy szinten a speciális számokról, megoldással, programmal ellenőrizve."}]},
   {"n": 7, "t": "Generátorfüggvények", "d": "Hatványsorok, rekurziók, partíciók, exponenciális generátorfüggvények.", "lead": "A generátorfüggvény egy sorozatot egyetlen hatványsorba csomagol. A fejezet azt mutatja meg, hogyan lesz a sorozatok közti rekurzióból algebrai egyenlet, és hogyan olvashatók le a megoldások és a megszámolási feladatok válaszai.", "topics": [{"id": "gfalap", "d": "Hatványsorok mint sorozatok, eltolás, deriválás, részletösszeg."}, {"id": "gfrek", "d": "Lineáris rekurzió megoldása, résztörtek, Catalan-számok generátorfüggvénye."}, {"id": "gfparticio", "d": "Partíciószámok, páratlan és különböző részek, pénzváltás."}, {"id": "gfexp", "d": "Exponenciális generátorfüggvény, Bell-számok, derangementek, involúciók."}, {"id": "feladatokgf", "d": "Tíz saját feladat négy szinten a generátorfüggvényekről, megoldással, programmal ellenőrizve."}]},
- {n:8,t:"Diszkrét valószínűség",d:"Várható érték, szórás, generátorfüggvények a valószínűségben."},
+  {"n": 8, "t": "Diszkrét valószínűség", "d": "Eseménytér, várható érték, szórás, generáló függvények, klasszikus feladatok.", "lead": "A diszkrét valószínűség megszámlálásra épül, ezért a korábbi fejezetek eszközei itt természetesen kerülnek elő: a binomiális együtthatók, a harmonikus számok és a generátorfüggvények. A fejezet a valószínűségi térből indul, és a klasszikus feladatokig vezet.", "topics": [{"id": "valalap", "d": "Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."}, {"id": "varhato", "d": "Várható érték, indikátorváltozók, variancia, függetlenek összege."}, {"id": "valgf", "d": "G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."}, {"id": "klasszikus", "d": "Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."}, {"id": "feladatokval", "d": "Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."}]},
  {n:9,t:"Aszimptotika",d:"Nagy O, Euler–Maclaurin-összegzés."}];
 CH.forEach(c=>c.topics&&c.topics.forEach(tp=>{if(tp.id){tp.n=TOPICS[tp.id].n;tp.t=TOPICS[tp.id].t;tp.ready=true;}}));
 /* ================= 1.3 A JOSEPHUS-PROBLÉMA ================= */
@@ -7466,21 +8124,24 @@ const pascal=(()=>{
   };
 })();
 
-/* 3D logó: lassan forgó gömb-tetraéder (a Pascal-háromszög térbeli változata) */
+/* 3D logó: lassan forgó gömb-tetraéder (a Pascal-háromszög térbeli változata), halvány élekkel */
 (function(){
   const svg=document.getElementById("logo3d");if(!svg)return;
-  const NS="http://www.w3.org/2000/svg",pts=[],S=7.4,K=Math.sqrt(2/3);
+  const NS="http://www.w3.org/2000/svg",pts=[],S=8.6,K=Math.sqrt(2/3);
   for(let j=0;j<3;j++){const cx=j/2,cz=j*Math.sqrt(3)/6;
     for(let b=0;b<=j;b++)for(let a=0;a+b<=j;a++)pts.push([a+b/2-cx,(j-1)*K,b*Math.sqrt(3)/2-cz]);}
+  const edges=[];for(let i=0;i<pts.length;i++)for(let k=i+1;k<pts.length;k++){const d=Math.hypot(pts[i][0]-pts[k][0],pts[i][1]-pts[k][1],pts[i][2]-pts[k][2]);if(Math.abs(d-1)<0.05)edges.push([i,k]);}
+  const ls=edges.map(()=>{const l=document.createElementNS(NS,"line");l.setAttribute("stroke","currentColor");l.setAttribute("stroke-width","0.5");svg.appendChild(l);return l;});
   const gs=pts.map(()=>{const g=document.createElementNS(NS,"g"),c=document.createElementNS(NS,"circle"),h=document.createElementNS(NS,"circle");
     c.setAttribute("fill","currentColor");h.setAttribute("fill","#fff");h.setAttribute("opacity",".3");g.append(c,h);svg.appendChild(g);return [g,c,h];});
-  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches,tilt=0.42,ct=Math.cos(tilt),st=Math.sin(tilt);
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches,tilt=0.95,ct=Math.cos(tilt),st=Math.sin(tilt);
   function draw(th){
     const ca=Math.cos(th),sa=Math.sin(th);
-    const q=pts.map((p,i)=>{const x=p[0]*ca+p[2]*sa,z=-p[0]*sa+p[2]*ca,y=p[1]*ct-z*st,z2=p[1]*st+z*ct;return {i,x,y,z:z2};}).sort((u,v)=>u.z-v.z);
-    q.forEach(o=>{const [g,c,h]=gs[o.i],r=2.1*(1+0.14*o.z),px=14+o.x*S,py=14+o.y*S;
+    const q=pts.map((p,i)=>{const x=p[0]*ca+p[2]*sa,z=-p[0]*sa+p[2]*ca,y=p[1]*ct-z*st,z2=p[1]*st+z*ct;return {i,x,y,z:z2};});
+    edges.forEach(([i,k],n)=>{const u=q[i],v=q[k],l=ls[n];l.setAttribute("x1",14+u.x*S);l.setAttribute("y1",14+u.y*S);l.setAttribute("x2",14+v.x*S);l.setAttribute("y2",14+v.y*S);l.setAttribute("opacity",(0.3+0.12*(u.z+v.z)/2).toFixed(2));});
+    q.slice().sort((u,v)=>u.z-v.z).forEach(o=>{const [g,c,h]=gs[o.i],r=1.75*(1+0.14*o.z),px=14+o.x*S,py=14+o.y*S;
       svg.appendChild(g);c.setAttribute("cx",px);c.setAttribute("cy",py);c.setAttribute("r",r);
-      c.setAttribute("opacity",(0.62+0.22*o.z).toFixed(2));
+      c.setAttribute("opacity",(0.68+0.22*o.z).toFixed(2));
       h.setAttribute("cx",px-r*0.3);h.setAttribute("cy",py-r*0.35);h.setAttribute("r",r*0.32);});
   }
   if(reduce){draw(0.6);return;}
@@ -9244,6 +9905,155 @@ function amE(){
   $("#am-e-info").innerHTML=`legfeljebb kétszer szereplő tagok: <b>${a[n]}</b> &nbsp;·&nbsp; 3-mal nem osztható tagok: <b>${b[n]}</b> ${ok(a[n]===b[n])}<br>0 ≤ n ≤ 60 minden értékére egyezik ${ok(all)}`;
 }
 $("#am-e-n").addEventListener("input",amE);amE();
+
+/* ================= 8.1 VALÓSZÍNŰSÉGI TÉR ================= */
+const vkDist=n=>{let c=[1];for(let t=0;t<n;t++){const d=Array(c.length+6).fill(0);c.forEach((v,i)=>{for(let f=1;f<=6;f++)d[i+f]+=v;});c=d;}return c;};
+c2hero("valalap-bevezeto",900,6,fr=>{
+  const n=1+fr,s=$("#an-hero"),W=420,H=250,d=vkDist(n),tot=6**n,mx=Math.max(...d),L=6*n+1,bw=(W-40)/L;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  for(let k=n;k<=6*n;k++){const h=d[k]/mx*170;el("rect",{x:20+(k-n)*bw*(L/(5*n+1))+0,y:H-30-h,width:Math.max(2,(W-40)/(5*n+1)-2),height:h,rx:2,style:"fill:var(--accent);opacity:.85"},s);}
+  $("#an-hero-a").textContent=`n = ${n} kocka`;$("#an-hero-b").textContent=d.indexOf(mx);
+});
+function anK(){
+  const n=+$("#an-k-n").value;let sv=+$("#an-k-s").value;const smax=6*n;$("#an-k-s").max=smax;if(sv>smax){sv=smax;$("#an-k-s").value=sv;}if(sv<n){sv=n;$("#an-k-s").value=n;}
+  $("#an-k-nv").textContent=n;$("#an-k-sv").textContent=sv;
+  const d=vkDist(n),tot=6**n,W=640,H=190,s=c2svg("#an-k-svg",W,H),mx=Math.max(...d),cnt=5*n+1,bw=(W-40)/cnt;
+  for(let k=n;k<=smax;k++){const h=d[k]/mx*(H-50);el("rect",{x:20+(k-n)*bw+1,y:H-26-h,width:Math.max(1.5,bw-2),height:h,rx:2,style:`fill:${k===sv?"var(--accent-2)":"var(--accent)"};opacity:${k===sv?1:.7}`},s);}
+  txt(s,20,H-8,n,"");txt(s,W-20,H-8,smax,"");
+  let br="";if(n<=5){let c=0;const rec=(i,sum)=>{if(i===n){if(sum===sv)c++;return;}for(let f=1;f<=6;f++)rec(i+1,sum+f);};rec(0,0);br=` &nbsp;·&nbsp; kimenetelek végigszámolva: ${c} ${ok(c===d[sv])}`;}
+  const sum=d.reduce((a,b)=>a+b,0);
+  $("#an-k-info").innerHTML=`${n} kocka, összeg ${sv}: N<sub>s</sub> = <b>${d[sv]}</b> a ${tot}-ből, P = ${d[sv]}/${tot} = ${fm(+(d[sv]/tot).toFixed(6))}${br}<br>az együtthatók összege 6<sup>${n}</sup> = ${tot} ${ok(sum===tot)}`;
+}
+["#an-k-n","#an-k-s"].forEach(i=>$(i).addEventListener("input",anK));anK();
+function anF(){
+  const p=+$("#an-f-p").value,a=+$("#an-f-a").value,b=+$("#an-f-b").value;$("#an-f-pv").textContent=p;$("#an-f-av").textContent=a;$("#an-f-bv").textContent=b;
+  const N=10000,sick=p*100,healthy=N-sick,tp=sick*a/100,fp=healthy*(100-b)/100;
+  const bay=rat(p*a,100*100).div(rat(p*a,10000).add(rat((100-p)*(100-b),10000)));
+  const fr=tp/(tp+fp);
+  $("#an-f-info").innerHTML=`${N} emberből ${sick} beteg, ${healthy} egészséges<br>pozitív betegek: ${fm(tp)}, pozitív egészségesek: ${fm(fp)}<br>P(beteg | pozitív) = ${fm(tp)}/${fm(tp+fp)} = <b>${fm(+fr.toFixed(4))}</b><br>Bayes-képlet (pontos tört): ${bay} = ${fm(+bay.num().toFixed(4))} ${ok(Math.abs(bay.num()-fr)<1e-12)}`;
+}
+["#an-f-p","#an-f-a","#an-f-b"].forEach(i=>$(i).addEventListener("input",anF));anF();
+
+/* ================= 8.2 VÁRHATÓ ÉRTÉK ÉS SZÓRÁS ================= */
+c2hero("varhato-bevezeto",900,6,fr=>{
+  const n=2+fr,s=$("#ao-hero"),W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const D=[1,0];for(let i=2;i<=n;i++)D.push((i-1)*(D[i-1]+D[i-2]));let f=1;for(let i=2;i<=n;i++)f*=i;
+  const pr=Array.from({length:n+1},(_,k)=>bC(n,k)*D[n-k]/f),bw=(W-60)/(n+1);
+  pr.forEach((p,k)=>{const h=p*180;el("rect",{x:30+k*bw+3,y:H-30-h,width:bw-6,height:Math.max(h,0.5),rx:3,style:"fill:var(--accent);opacity:.85"},s);txt(s,30+k*bw+bw/2,H-12,k,"");});
+  const mu=pr.reduce((a,p,k)=>a+p*k,0),x=30+mu*bw+bw/2;
+  el("line",{x1:x,x2:x,y1:20,y2:H-30,style:"stroke:var(--accent-2);stroke-width:2;stroke-dasharray:4 3"},s);
+  const v=pr.reduce((a,p,k)=>a+p*k*k,0)-mu*mu;
+  $("#ao-hero-a").textContent="n = "+n;$("#ao-hero-b").textContent=fm(+v.toFixed(4));
+});
+function aoL(){
+  const n=+$("#ao-l-n").value;$("#ao-l-nv").textContent=n;
+  let fx=0,cy=0,rc=0,cnt=0;const a=Array.from({length:n},(_,i)=>i);
+  const eval1=()=>{cnt++;let f=0;for(let i=0;i<n;i++)if(a[i]===i)f++;fx+=f;
+    const seen=Array(n).fill(false);let c=0;for(let i=0;i<n;i++)if(!seen[i]){c++;let j=i;while(!seen[j]){seen[j]=true;j=a[j];}}cy+=c;
+    let mx=-1,r=0;for(let i=0;i<n;i++)if(a[i]>mx){mx=a[i];r++;}rc+=r;};
+  const g=k=>{if(k===n){eval1();return;}for(let i=k;i<n;i++){[a[k],a[i]]=[a[i],a[k]];g(k+1);[a[k],a[i]]=[a[i],a[k]];}};g(0);
+  const H=hnR(n),m1=rat(fx,cnt),m2=rat(cy,cnt),m3=rat(rc,cnt);
+  $("#ao-l-info").innerHTML=`${cnt} permutáció<br>fixpontok átlaga: ${m1} &nbsp;·&nbsp; képlet: 1 ${ok(m1.eq(rat(1)))}<br>ciklusok átlaga: ${m2} &nbsp;·&nbsp; H<sub>${n}</sub> = ${H} ${ok(m2.eq(H))}<br>balról jobbra rekordok átlaga: ${m3} &nbsp;·&nbsp; H<sub>${n}</sub> ${ok(m3.eq(H))}`;
+}
+$("#ao-l-n").addEventListener("input",aoL);aoL();
+function aoS(){
+  const n=+$("#ao-s-n").value,P=+$("#ao-s-p").value;$("#ao-s-nv").textContent=n;$("#ao-s-pv").textContent=P;
+  const p=rat(P,100),q=rat(100-P,100);let E=rat(0),E2=rat(0),pm=[];
+  for(let k=0;k<=n;k++){let pk=rat(bC(n,k));for(let i=0;i<k;i++)pk=pk.mul(p);for(let i=0;i<n-k;i++)pk=pk.mul(q);pm.push(pk);E=E.add(pk.mul(rat(k)));E2=E2.add(pk.mul(rat(k*k)));}
+  const V=E2.sub(E.mul(E)),tot=pm.reduce((a,b)=>a.add(b),rat(0));
+  const W=640,H=160,s=c2svg("#ao-s-svg",W,H),mx=Math.max(...pm.map(x=>x.num())),bw=(W-40)/(n+1);
+  pm.forEach((x,k)=>{const h=x.num()/mx*(H-40);el("rect",{x:20+k*bw+2,y:H-22-h,width:Math.max(2,bw-4),height:h,rx:2,style:"fill:var(--accent);opacity:.8"},s);});
+  txt(s,20,H-6,0,"");txt(s,W-20,H-6,n,"");
+  const En=p.mul(rat(n)),Vn=p.mul(q).mul(rat(n));
+  $("#ao-s-info").innerHTML=`összeg a definícióból: P(0…n) összege = ${tot} ${ok(tot.eq(rat(1)))}<br>E = ${E} &nbsp;·&nbsp; np = ${En} ${ok(E.eq(En))}<br>Var = E[X²] − E² = ${V} &nbsp;·&nbsp; np(1−p) = ${Vn} ${ok(V.eq(Vn))}`;
+}
+["#ao-s-n","#ao-s-p"].forEach(i=>$(i).addEventListener("input",aoS));aoS();
+
+/* ================= 8.3 VALÓSZÍNŰSÉG-GENERÁLÓ FÜGGVÉNYEK ================= */
+c2hero("valgf-bevezeto",900,7,fr=>{
+  const k=2+fr,p=1/k,q=1-p,s=$("#ap-hero"),W=420,H=250,L=14,bw=(W-40)/L;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  for(let i=1;i<=L;i++){const h=q**(i-1)*p/0.5*170;el("rect",{x:20+(i-1)*bw+2,y:H-30-h,width:bw-4,height:Math.max(h,0.5),rx:2,style:"fill:var(--accent);opacity:.85"},s);txt(s,20+(i-1)*bw+bw/2,H-12,i,"");}
+  const x=20+(1/p-1)*bw+bw/2;if(1/p<=L)el("line",{x1:x,x2:x,y1:20,y2:H-30,style:"stroke:var(--accent-2);stroke-width:2;stroke-dasharray:4 3"},s);
+  $("#ap-hero-a").textContent="p = 1/"+k;$("#ap-hero-b").textContent=k;
+});
+const pgDist=i=>{if(i===0)return Array.from({length:7},(_,k)=>k?rat(1,6):rat(0));
+  if(i===1||i===3){const d=vkDist(i===1?2:3);return d.map(v=>rat(v,6**(i===1?2:3)));}
+  const p=rat(3,10),q=rat(7,10);return Array.from({length:11},(_,k)=>{let r=rat(bC(10,k));for(let j=0;j<k;j++)r=r.mul(p);for(let j=0;j<10-k;j++)r=r.mul(q);return r;});};
+function apG(){
+  const P=pgDist(+$("#ap-g-d").value);let G1=rat(0),G2=rat(0),Gv=rat(0),E=rat(0),E2=rat(0);
+  P.forEach((p,k)=>{Gv=Gv.add(p);G1=G1.add(p.mul(rat(k)));G2=G2.add(p.mul(rat(k*(k-1))));E=E.add(p.mul(rat(k)));E2=E2.add(p.mul(rat(k*k)));});
+  const V=G2.add(G1).sub(G1.mul(G1)),V0=E2.sub(E.mul(E));
+  $("#ap-g-info").innerHTML=`G(1) = ${Gv} ${ok(Gv.eq(rat(1)))}<br>G′(1) = ${G1} = E[X] ${ok(G1.eq(E))}<br>G″(1) = ${G2}<br>Var = G″(1) + G′(1) − G′(1)² = ${V} &nbsp;·&nbsp; E[X²] − E² = ${V0} ${ok(V.eq(V0))}`;
+}
+$("#ap-g-d").addEventListener("input",apG);apG();
+function apQ(){
+  const k=+$("#ap-q-k").value;$("#ap-q-kv").textContent=k;const p=1/k,q=1-p;let E=0,E2=0,t=0;
+  for(let i=1;i<=500;i++){const pr=q**(i-1)*p;t+=pr;E+=i*pr;E2+=i*i*pr;}
+  const V=E2-E*E;
+  $("#ap-q-info").innerHTML=`p = 1/${k}: összeg (500 tag) = ${fm(+t.toFixed(8))}<br>E = ${fm(+E.toFixed(6))} &nbsp;·&nbsp; 1/p = ${k} ${ok(Math.abs(E-k)<1e-6)}<br>Var = ${fm(+V.toFixed(5))} &nbsp;·&nbsp; q/p² = ${fm(+(q/(p*p)).toFixed(5))} ${ok(Math.abs(V-q/(p*p))<1e-4)}`;
+}
+$("#ap-q-k").addEventListener("input",apQ);apQ();
+function apO(){
+  const n=+$("#ap-o-n").value;$("#ap-o-nv").textContent=n;const d=vkDist(n),tot=rat(6**n);let E=rat(0),E2=rat(0);
+  d.forEach((c,k)=>{const p=rat(c).div(tot);E=E.add(p.mul(rat(k)));E2=E2.add(p.mul(rat(k*k)));});
+  const V=E2.sub(E.mul(E)),eE=rat(7*n,2),eV=rat(35*n,12);
+  $("#ap-o-info").innerHTML=`${n} kocka, G(x) = ((x+…+x⁶)/6)<sup>${n}</sup><br>E (a definícióból) = ${E} &nbsp;·&nbsp; 7n/2 = ${eE} ${ok(E.eq(eE))}<br>Var = ${V} &nbsp;·&nbsp; 35n/12 = ${eV} ${ok(V.eq(eV))}`;
+}
+$("#ap-o-n").addEventListener("input",apO);apO();
+
+/* ================= 8.4 KLASSZIKUS FELADATOK ================= */
+const qNoMatch=(n,D)=>{let p=1;for(let k=0;k<n;k++)p*=1-k/D;return p;};
+const qRng=seed=>{let s=seed>>>0;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};};
+c2hero("klasszikus-bevezeto",700,12,fr=>{
+  const n=5*(fr+1),s=$("#aq-hero"),W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  for(let k=5;k<=60;k+=5){const h=(1-qNoMatch(k,365))*180,x=20+(k/5-1)*(W-40)/12;el("rect",{x:x+2,y:H-30-h,width:(W-40)/12-4,height:Math.max(h,0.5),rx:2,style:`fill:var(--accent);opacity:${k<=n?.85:.15}`},s);txt(s,x+(W-40)/24,H-12,k,"");}
+  const y=H-30-0.5*180;el("line",{x1:20,x2:W-20,y1:y,y2:y,style:"stroke:var(--accent-2);stroke-dasharray:4 4"},s);
+  $("#aq-hero-a").textContent=`n = ${n} ember`;$("#aq-hero-b").textContent=fm(+(1-qNoMatch(n,365)).toFixed(3));
+});
+function aqB(){
+  const n=+$("#aq-b-n").value,D=+$("#aq-b-d").value;$("#aq-b-nv").textContent=n;
+  const W=640,H=170,s=c2svg("#aq-b-svg",W,H),L=100,bw=(W-40)/L;
+  for(let k=1;k<=L;k++){const h=(1-qNoMatch(k,D))*(H-40);el("rect",{x:20+(k-1)*bw,y:H-22-h,width:Math.max(1,bw-1),height:Math.max(h,0.3),style:`fill:${k===n?"var(--accent-2)":"var(--accent)"};opacity:${k===n?1:.6}`},s);}
+  txt(s,20,H-6,1,"");txt(s,W-20,H-6,L,"");
+  const pe=1-qNoMatch(n,D),ap=1-Math.exp(-n*(n-1)/(2*D));let m=1;while(1-qNoMatch(m,D)<0.5)m++;
+  $("#aq-b-info").innerHTML=`n = ${n}, D = ${D}: P(egyezés) = <b>${fm(+pe.toFixed(5))}</b><br>exponenciális közelítés: ${fm(+ap.toFixed(5))} (≤ pontos érték ${ok(ap<=pe+1e-12)})<br>a legkisebb n, amelynél P ≥ 50%: <b>${m}</b> &nbsp;·&nbsp; párok száma ekkor: ${m*(m-1)/2}`;
+}
+["#aq-b-n","#aq-b-d"].forEach(i=>$(i).addEventListener("input",aqB));aqB();
+function aqK(){
+  const n=+$("#aq-k-n").value;$("#aq-k-nv").textContent=n;
+  const H=hnR(n);let H2=rat(0),V=rat(0);for(let k=1;k<=n;k++)H2=H2.add(rat(1,k*k));
+  for(let i=1;i<=n;i++)V=V.add(rat(n*(i-1),(n-i+1)**2));
+  const E=H.mul(rat(n)),V2=H2.mul(rat(n*n)).sub(E);
+  const rnd=qRng(12345);let tot=0;const R=2000;for(let r=0;r<R;r++){const seen=new Set();let t=0;while(seen.size<n){seen.add(Math.floor(rnd()*n));t++;}tot+=t;}
+  $("#aq-k-info").innerHTML=`E[T] = n·H<sub>n</sub> = ${E} = ${fm(+E.num().toFixed(4))}<br>Var = Σ n(i−1)/(n−i+1)² = ${V} &nbsp;·&nbsp; n²H<sub>n</sub><sup>(2)</sup> − nH<sub>n</sub> = ${V2} ${ok(V.eq(V2))}<br>szimuláció (${R} futás, rögzített mag): átlag ${fm(+(tot/R).toFixed(3))}, eltérés a várható értéktől ${fm(+(Math.abs(tot/R-E.num())/E.num()*100).toFixed(2))}%`;
+}
+$("#aq-k-n").addEventListener("input",aqK);aqK();
+const aqThomas=(a,b,c,d)=>{const n=b.length,cp=[],dp=[];cp[0]=c[0]/b[0];dp[0]=d[0]/b[0];for(let i=1;i<n;i++){const m=b[i]-a[i]*cp[i-1];cp[i]=c[i]/m;dp[i]=(d[i]-a[i]*dp[i-1])/m;}const x=Array(n);x[n-1]=dp[n-1];for(let i=n-2;i>=0;i--)x[i]=dp[i]-cp[i]*x[i+1];return x;};
+function aqR(){
+  const P=+$("#aq-r-p").value,N0=+$("#aq-r-n").value;let i=+$("#aq-r-i").value;const N=N0;if(i>N-1){i=N-1;$("#aq-r-i").value=i;}$("#aq-r-i").max=N-1;
+  $("#aq-r-pv").textContent=P;$("#aq-r-iv").textContent=i;$("#aq-r-nv").textContent=N;
+  const p=P/100,q=1-p,m=N-1,a=[],b=[],c=[],d=[],d2=[];
+  for(let k=1;k<=m;k++){a.push(k>1?-q:0);b.push(1);c.push(k<m?-p:0);d.push(k===m?p:0);d2.push(1);}
+  const x=aqThomas(a,b,c,d),y=aqThomas(a,b,c,d2),r=q/p;
+  const f=P===50?i/N:(1-r**i)/(1-r**N);
+  $("#aq-r-info").innerHTML=`p = ${fm(p)}, i = ${i}, N = ${N}: P(siker)<br>egyenletrendszer: ${fm(+x[i-1].toFixed(8))} &nbsp;·&nbsp; képlet: ${fm(+f.toFixed(8))} ${ok(Math.abs(x[i-1]-f)<1e-9)}<br>várható játékhossz (egyenletrendszer): ${fm(+y[i-1].toFixed(4))}`+(P===50?` &nbsp;·&nbsp; i(N−i) = ${i*(N-i)} ${ok(Math.abs(y[i-1]-i*(N-i))<1e-6)}`:`<br>(méltányos játéknál, p = 50%, a képlet i(N−i))`);
+}
+["#aq-r-p","#aq-r-i","#aq-r-n"].forEach(i=>$(i).addEventListener("input",aqR));aqR();
+
+/* ================= 8.5 FELADATOK ================= */
+exHero("feladatokval-bevezeto","#ar-hero","#ar-hero-k",[3,3,2,2]);
+function arN(){
+  const n=+$("#ar-n-n").value;$("#ar-n-nv").textContent=n;
+  let d=[1];for(let t=0;t<n;t++){const e=Array(d.length+6).fill(0);d.forEach((v,i)=>{for(let f=1;f<=6;f++)e[i+f]+=v/6;});d=e;}
+  const mu=3.5*n,sg=Math.sqrt(35/12*n);let pin=0,tot=0;d.forEach((v,k)=>{tot+=v;if(Math.abs(k-mu)<=sg)pin+=v;});
+  $("#ar-n-info").innerHTML=`n = ${n}: μ = ${fm(mu)}, σ = ${fm(+sg.toFixed(4))}<br>P(|S − μ| ≤ σ) = <b>${fm(+pin.toFixed(4))}</b> &nbsp;·&nbsp; normális eloszlás ±1σ: 0,6827<br>az eloszlás összege = ${fm(+tot.toFixed(10))} ${ok(Math.abs(tot-1)<1e-9)}`;
+}
+$("#ar-n-n").addEventListener("input",arN);arN();
+function arK(){
+  const e=+$("#ar-k-e").value,n=10**e;$("#ar-k-ev").textContent=e;let h=0,h2=0;for(let k=n;k>=1;k--){h+=1/k;h2+=1/(k*k);}
+  const sd=Math.sqrt(n*n*h2-n*h)/n;
+  $("#ar-k-info").innerHTML=`n = 10<sup>${e}</sup>: E[T]/(n ln n) = ${fm(+(h/Math.log(n)).toFixed(5))} &nbsp;·&nbsp; 1 + γ/ln n = ${fm(+(1+0.5772156649/Math.log(n)).toFixed(5))}<br>σ/n = ${fm(+sd.toFixed(5))} &nbsp;·&nbsp; π/√6 = ${fm(+(Math.PI/Math.sqrt(6)).toFixed(5))} (eltérés: ${fm(+(sd-Math.PI/Math.sqrt(6)).toFixed(5))})`;
+}
+$("#ar-k-e").addEventListener("input",arK);arK();
 
 /* ================= 1.4 FELADATOK ================= */
 c2hero("feladatok-bevezeto",420,10,fr=>{

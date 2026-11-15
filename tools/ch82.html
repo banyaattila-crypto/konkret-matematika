@@ -1,0 +1,123 @@
+
+<!-- ================= 8.2 VÁRHATÓ ÉRTÉK ÉS SZÓRÁS ================= -->
+<header class="hero page" id="ao-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.2</div>
+    <h1>Várható érték és szórás</h1>
+    <p class="lead">A várható érték az eloszlás súlypontja, a szórásnégyzet a szóródás mértéke. A várható érték additív akkor is, ha a változók függnek egymástól, ez az egyik leghasznosabb trükk.</p>
+    <div class="formula">\(\displaystyle E[X]=\sum_xx\,P(X=x),\quad \mathrm{Var}\,X=E[X^2]-E[X]^2\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ao-hero" role="img" aria-label="A fixpontok számának eloszlása véletlen permutációnál"></svg>
+    <div class="counter"><span id="ao-hero-a">n = 2</span><span>E = <b>1</b> · szórásnégyzet = <b id="ao-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Egy véletlen permutációban átlagosan hány elem marad a helyén? A válasz meglepően egyszerű: pontosan egy, bármilyen nagy is \(n\). A képen a fixpontok számának eloszlása látható \(n=2,3,\dots\) elemre. A súlypont mindig az 1-nél van, és már a szórásnégyzet is 1 (\(n\ge2\)-re). Az indoklás nem az eloszlásból, hanem a linearitásból jön: minden elem \(1/n\) eséllyel fixpont, és \(n\) elem van.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ao-linearis">
+  <div class="body">
+    <div class="eyebrow">§1 · Linearitás</div>
+    <h2>Indikátorváltozók</h2>
+    <p>Bármely \(X,Y\) valószínűségi változóra \(E[X+Y]=E[X]+E[Y]\), függetlenség nélkül is. Ha \(X\) az események bekövetkezéseinek száma, felírható indikátorok összegeként: \(X=\sum_i I_i\), ahol \(I_i=1\), ha az \(i\). esemény bekövetkezik, és \(E[I_i]=P(\text{az }i\text{. esemény})\). Ebből</p>
+    <div class="eq gold">\[E[X]=\sum_iP(A_i).\]</div>
+    <p>Három példa véletlen permutációra: a fixpontok számának várható értéke \(n\cdot\tfrac1n=1\); a ciklusok számáé \(H_n=\sum_k\tfrac1k\) (ez a 6.1 \(\sum k\genfrac[]{0pt}{}nk/n!\) képletével egyezik); a balról jobbra haladó rekordok (olyan elemek, amelyek nagyobbak az előttük állóknál) számáé szintén \(H_n\), mert az \(i\). elem \(\tfrac1i\) eséllyel a legnagyobb az első \(i\) közül. A kísérlet minden permutációt végigszámol (\(n\le8\)).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ao-l-n">n <input type="range" id="ao-l-n" min="1" max="8" value="6"> <span class="mono" id="ao-l-nv">6</span></label>
+      </div>
+      <div class="info" id="ao-l-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérletben a három várható érték pontos tört, nem közelítés. A fixpontok esetében az eloszlás \(P(k)=\binom nkD_{n-k}/n!\) (a 7.4-ből), és ebből is kiszámolható az átlag. Az indikátoros számolás ennél lényegesen rövidebb.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ao-szoras">
+  <div class="body">
+    <div class="eyebrow">§2 · Szórásnégyzet</div>
+    <h2>A szóródás mértéke</h2>
+    <p>A <b>szórásnégyzet</b> \(\mathrm{Var}\,X=E[(X-E X)^2]=E[X^2]-(E X)^2\). Független változókra additív: \(\mathrm{Var}(X+Y)=\mathrm{Var}X+\mathrm{Var}Y\), és \(\mathrm{Var}(cX)=c^2\mathrm{Var}X\). Az \(n\) független, \(p\) valószínűségű kísérlet sikereinek száma (binomiális eloszlás) indikátorok összege, ezért</p>
+    <div class="eq">\[E=np,\qquad \mathrm{Var}=np(1-p).\]</div>
+    <p>Egy kocka értékére \(E=\tfrac72\), \(\mathrm{Var}=\tfrac{35}{12}\). A kísérlet a binomiális eloszlást a definícióból, pontos törtekkel összegezi, és összeveti a képletekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ao-s-n">n <input type="range" id="ao-s-n" min="1" max="20" value="10"> <span class="mono" id="ao-s-nv">10</span></label>
+        <label class="rng" for="ao-s-p">p (%) <input type="range" id="ao-s-p" min="1" max="99" value="30"> <span class="mono" id="ao-s-pv">30</span></label>
+      </div>
+      <svg id="ao-s-svg" role="img" aria-label="A binomiális eloszlás oszlopai"></svg>
+      <div class="info" id="ao-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szórás \(\sigma=\sqrt{\mathrm{Var}}\). Az \(n\) független tag összegének szórása \(\sqrt n\) ütemben nő, miközben a várható érték \(n\) szerint lineárisan. Ezért az átlag relatív szóródása \(1/\sqrt n\) szerint csökken.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ao-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Átlagok és szóródás</h2>
+    <details>
+      <summary><span class="sq">1. Add meg egy kockadobás várható értékét és szórásnégyzetét.</span></summary>
+      <div class="ans">
+        <div class="eq">\[E=\tfrac{1+2+\dots+6}6=\tfrac72,\qquad E[X^2]=\tfrac{91}6,\qquad \mathrm{Var}=\tfrac{91}6-\tfrac{49}4=\tfrac{35}{12}.\]</div>
+        <p><b>Ellenőrzés:</b> két kocka összegének szórásnégyzete független tagok miatt \(\tfrac{35}6\), és a 8.1-beli eloszlásból számolva is \(\tfrac{35}6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Egy 10 elemű véletlen permutációban átlagosan hány fixpont és hány ciklus van?</span></summary>
+      <div class="ans">
+        <p>A fixpontok száma átlagosan \(1\), a ciklusoké \(H_{10}=\tfrac{7381}{2520}\approx2{,}929\).</p>
+        <p><b>Ellenőrzés:</b> a 6.2-ben \(H_{10}=7381/2520\), és a linearitás kísérlete kisebb \(n\)-re egyezik az összes permutáció átlagával. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi a várható érték és a szórásnégyzet, ha \(n=10\), \(p=0{,}3\) binomiális?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E=10\cdot0{,}3=3,\qquad \mathrm{Var}=10\cdot0{,}3\cdot0{,}7=2{,}1.\]</div>
+        <p><b>Ellenőrzés:</b> a kísérlet pontos összegzése ugyanezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Két kockát dobunk, mennyi a nagyobbik várható értéke?</span></summary>
+      <div class="ans">
+        <p>A \(P(M\ge k)=1-\tfrac{(k-1)^2}{36}\), és \(E[M]=\sum_{k=1}^{6}P(M\ge k)\):</p>
+        <div class="eq">\[E[M]=6-\frac{0+1+4+9+16+25}{36}=6-\frac{55}{36}=\frac{161}{36}\approx4{,}472.\]</div>
+        <p><b>Ellenőrzés:</b> a 36 kimenetel maximumának összege 161. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat az \(E[M]=\sum_kP(M\ge k)\) képletet használja, amely nemnegatív egész értékű változókra mindig igaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ao-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Várható érték és szórásnégyzet szabályai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Mennyiség</th><th>Szabály</th></tr>
+      <tr><td>linearitás</td><td>\(E[aX+bY]=aE[X]+bE[Y]\)</td></tr>
+      <tr><td>indikátor</td><td>\(E[I_A]=P(A)\)</td></tr>
+      <tr><td>variancia</td><td>\(E[X^2]-E[X]^2\)</td></tr>
+      <tr><td>független összeg</td><td>\(\mathrm{Var}(X+Y)=\mathrm{Var}X+\mathrm{Var}Y\)</td></tr>
+      <tr><td>binomiális</td><td>\(E=np\), \(\mathrm{Var}=np(1-p)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Indikátorok</b><span>Bontsd a változót 0–1 tagok összegére.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Linearitás</b><span>Függetlenség nélkül is összeadhatsz.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Variancia</b><span>Függetlenségnél összeadódik.</span></div>
+    </div>
+    <p>Következik a 8.3: a valószínűség-generáló függvények, amelyek mindkét mennyiséget a deriváltból olvassák le.</p>
+  </div>
+  <aside class="margo">
+    <p>A szórásnégyzet additivitásához függetlenség kell (vagy legalább korrelálatlanság). A várható érték linearitásához nem kell semmilyen feltétel.</p>
+  </aside>
+</section>

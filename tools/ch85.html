@@ -1,0 +1,136 @@
+
+<!-- ================= 8.5 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="ar-bevezeto">
+  <div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.5</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a diszkrét valószínűségről, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\displaystyle E[X],\quad\mathrm{Var}\,X,\quad G(x)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ar-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="ar-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A valószínűségi feladatok megoldása két lépésből áll: először a modell (mi az eseménytér, mik a független részek), utána a számolás (megszámlálás, linearitás, generáló függvény). A bemelegítő feladatok egy-egy közvetlen számolást kérnek, az alapszinten Bayes-tételt, geometriai eloszlást és a kupongyűjtőt kell alkalmazni, a haladó szinten bizonyítani kell, a kutatásiakban pedig a számítógép ad sejtést, és az indoklás a tiéd. A feladatok sajátok, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="ar-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>Kockák összege, szorzat várható értéke, binomiális valószínűség.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Mennyi a valószínűsége, hogy két kocka összege legalább 10?</span></summary>
+      <div class="ans">
+        <p>Az összeg 10, 11, 12: \(3+2+1=6\) kedvező kimenetel a 36-ból, tehát \(P=\tfrac6{36}=\tfrac16\).</p>
+        <p><b>Ellenőrzés:</b> a 8.1 eloszlás \(x^{10}\), \(x^{11}\), \(x^{12}\) együtthatói 3, 2, 1. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Mennyi két (független) kockadobás szorzatának várható értéke?</span></summary>
+      <div class="ans">
+        <p>Függetlenek esetén \(E[XY]=E[X]E[Y]=\tfrac72\cdot\tfrac72=\tfrac{49}4=12{,}25\).</p>
+        <p><b>Ellenőrzés:</b> a 36 szorzat összege \((1+2+\dots+6)^2=441\), és \(441/36=\tfrac{49}4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Öt kockát dobunk. Mennyi a valószínűsége, hogy pontosan két hatos lesz?</span></summary>
+      <div class="ans">
+        <div class="eq">\[\binom52\Bigl(\frac16\Bigr)^2\Bigl(\frac56\Bigr)^3=\frac{10\cdot125}{7776}=\frac{625}{3888}\approx0{,}1608.\]</div>
+        <p><b>Ellenőrzés:</b> \(7776=6^5\) kimenetelből \(\binom52\cdot5^3=1250\) kedvező. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladatban a függetlenség lényeges: egy kockára \(E[X^2]=\tfrac{91}6\ne\tfrac{49}4\), vagyis \(E[X\cdot X]\ne E[X]^2\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ar-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Bayes, várakozás, bizonyítások</h2>
+    <p>Három alapfeladat, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Az A urnában 3 piros és 2 kék, a B urnában 1 piros és 4 kék golyó van. Egyenlő eséllyel választunk urnát, és pirosat húzunk. Mennyi az esélye, hogy az A urnából húztunk?</span></summary>
+      <div class="ans">
+        <div class="eq">\[P(A\mid\text{piros})=\frac{\tfrac12\cdot\tfrac35}{\tfrac12\cdot\tfrac35+\tfrac12\cdot\tfrac15}=\frac{3/10}{4/10}=\frac34.\]</div>
+        <p><b>Ellenőrzés:</b> 10 húzásból átlagosan 3 az A-ból piros, 1 a B-ből, így \(3/(3+1)\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Egy kockát dobunk az első hatosig. Mennyi az esélye, hogy pontosan a 3. dobásra jön, és mennyi, hogy 6-nál több dobás kell?</span></summary>
+      <div class="ans">
+        <p>A geometriai eloszlás szerint \(P(T=3)=\bigl(\tfrac56\bigr)^2\tfrac16=\tfrac{25}{216}\), és \(P(T>6)=\bigl(\tfrac56\bigr)^6=\tfrac{15625}{46656}\approx0{,}3349\).</p>
+        <p><b>Ellenőrzés:</b> \(6^3=216\), a kedvező \(5\cdot5\cdot1=25\); és 6 dobásból \(5^6=15625\) nem tartalmaz hatost. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Négy fajta kupon esetén átlagosan hány húzás kell mindegyikhez?</span></summary>
+      <div class="ans">
+        <div class="eq">\[E[T]=4\,H_4=4\cdot\frac{25}{12}=\frac{25}3\approx8{,}33.\]</div>
+        <p><b>Ellenőrzés:</b> \(4+\tfrac43+\tfrac42+\tfrac41=\tfrac{25}3\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: egy \(n\ge2\) elemű véletlen permutáció fixpontjai számának szórásnégyzete 1.</span></summary>
+      <div class="ans">
+        <p>Legyen \(X=\sum_iI_i\), ahol \(I_i\) az \(i\). elem fixpont-volta. Ekkor \(E[X]=1\), és \(X^2=\sum_iI_i+\sum_{i\ne j}I_iI_j\). Az \(I_iI_j\) pontosan akkor 1, ha mindkét elem fixpont, aminek valószínűsége \(\tfrac{(n-2)!}{n!}=\tfrac1{n(n-1)}\). Ezért</p>
+        <div class="eq">\[E[X^2]=n\cdot\frac1n+n(n-1)\cdot\frac1{n(n-1)}=2,\qquad\mathrm{Var}\,X=2-1=1.\ \square\]</div>
+        <p><b>Ellenőrzés:</b> \(n=5\)-re a 120 permutáció teljes számolása is 1-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Igazold, hogy \(n\) ember és \(D\) nap esetén \(P(\text{van egyezés})\ge1-e^{-n(n-1)/(2D)}\). Mit ad ez \(n=23\), \(D=365\)-re?</span></summary>
+      <div class="ans">
+        <p>A szorzatszabály \(P(\text{nincs})=\prod_{k<n}(1-\tfrac kD)\), és minden tényezőre \(1-x\le e^{-x}\). Ezért \(P(\text{nincs})\le e^{-\sum k/D}=e^{-n(n-1)/(2D)}\), és az egyezés valószínűsége legalább \(1-e^{-n(n-1)/(2D)}\). \(\square\) Az \(n=23\), \(D=365\) esetén \(1-e^{-0{,}6932}\approx0{,}5000\).</p>
+        <p><b>Ellenőrzés:</b> a pontos érték 0,5073, valóban nagyobb a becslésnél. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 7. feladat tanulsága: a szórásnégyzet kiszámításához a páros indikátorszorzatok kellenek, ezek valószínűsége \(P(I_i=I_j=1)\). A permutációk szimmetriája teszi őket egyszerűvé.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ar-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Eloszlások nagy \(n\)-re</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. \(n\) kocka összegére számold ki annak valószínűségét, hogy az összeg legfeljebb egy szórásnyira van a várható értéktől. Mit sejtesz \(n\to\infty\) esetén?</span></summary>
+      <div class="ans">
+        <p>A kísérlet értékei \(n=1,2,3,5,10,20,40\)-re rendre kb. \(0{,}667\), \(0{,}667\), \(0{,}676\), \(0{,}696\), \(0{,}687\), \(0{,}672\), \(0{,}668\). A sorozat ingadozik (az eloszlás diszkrét, a határ a rácspontokon \(\mu\pm\sigma\)-nál lépcsőzik), és úgy látszik, \(0{,}68\) körüli értékhez közelít.</p>
+        <p>A sejtés: a határérték \(\approx0{,}6827\), ez a normális eloszlás \(\pm1\sigma\) tartománya. Ez a centrális határeloszlás-tétel következménye, amelyet itt nem bizonyítunk, a kísérlet csak numerikus megerősítés.</p>
+        <p><b>Ellenőrzés:</b> a program a pontos eloszlásból (lebegőpontos rekurzióval) számol, \(n\le40\)-ig. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ar-n-n">n <input type="range" id="ar-n-n" min="1" max="40" value="10"> <span class="mono" id="ar-n-nv">10</span></label>
+      </div>
+      <div class="info" id="ar-n-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. A kupongyűjtőnél hogyan viselkedik \(E[T]/(n\ln n)\) és a szórás/\(n\) arány nagy \(n\)-re? Mit sejtesz?</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint \(E[T]/(n\ln n)\) lassan 1-hez tart (\(n=10^6\)-nál még 1,042), a szórás és \(n\) hányadosa pedig kb. \(1{,}2825\)-höz, ami \(\pi/\sqrt6\) értéke.</p>
+        <p>Az első állítás igazolása: \(E[T]=nH_n\) és \(H_n=\ln n+\gamma+O(1/n)\) (6.2), tehát az arány \(1+\gamma/\ln n+\dots\), ami 1-hez tart, de nagyon lassan. A második: \(\mathrm{Var}\,T=n^2H_n^{(2)}-nH_n\), és \(H_n^{(2)}\to\pi^2/6\), így a szórás \(\sim n\pi/\sqrt6\). A \(\sum1/k^2=\pi^2/6\) értékét itt nem bizonyítom.</p>
+        <p><b>Ellenőrzés:</b> \(n=10^6\)-ra a program 1,0418-at és 1,28254-et ad, \(\pi/\sqrt6=1{,}28255\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ar-k-e">n = 10^e, e <input type="range" id="ar-k-e" min="1" max="6" value="3"> <span class="mono" id="ar-k-ev">3</span></label>
+      </div>
+      <div class="info" id="ar-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat szerint a kupongyűjtő időtartama szoros: a szórás \(n\)-nel arányos, a várható érték viszont \(n\ln n\)-nel, ezért a relatív szóródás \(\sim1/\ln n\) ütemben csökken, nagyon lassan.</p>
+  </aside>
+</section>
