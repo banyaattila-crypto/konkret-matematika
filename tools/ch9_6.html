@@ -23,7 +23,7 @@
     <h2>A farok becslése</h2>
     <p>Mivel \(\frac1{k(k+1)}\le\frac1{k^2}\le\frac1{k(k-1)}\) és \(\frac1{k(k+1)}=\frac1k-\frac1{k+1}\), a farok teleszkopikus összegek közé szorul:</p>
     <div class="eq gold">\[\frac1{n+1}\le\sum_{k>n}\frac1{k^2}\le\frac1n.\]</div>
-    <p>Tehát \(\sum_{k=1}^n\frac1{k^2}=\frac{\pi^2}6-\frac1n+O(n^{-2})\), mert a farok \(\frac1n-\frac1{n+1}=\frac1{n(n+1)}\)-nél nem tér el \(\frac1n\)-től. Más példa: a \(\sum_{k\ge1}k2^{-k}\) sor tagjainak részletösszege pontosan</p>
+    <p>Tehát \(\sum_{k=1}^n\frac1{k^2}=\frac{\pi^2}6-\frac1n+O(n^{-2})\), mert a farok a \(\frac1{n+1}\le\text{farok}\le\frac1n\) korlátok szerint legfeljebb \(\frac1n-\frac1{n+1}=\frac1{n(n+1)}=O(n^{-2})\)-tel tér el \(\frac1n\)-től. Más példa: a \(\sum_{k\ge1}k2^{-k}\) sor tagjainak részletösszege pontosan</p>
     <div class="eq">\[\sum_{k=1}^nk\,2^{-k}=2-(n+2)2^{-n},\]</div>
     <p>ezért a farok \((n+2)2^{-n}\), amely a hatványsoroknál exponenciálisan gyors. A kísérlet a két farkat méri.</p>
     <div class="fig">

@@ -7,6 +7,11 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.9.2] - 2026-11-15
+
+### Javítva
+- 9.6 Véges összegzés: a farokbecslés indoklásának pontatlan mondata javítva (a farok legfeljebb 1/(n(n+1))-gyel tér el 1/n-től).
+
 ## [1.9.1] - 2026-11-15
 
 ### Módosítva
