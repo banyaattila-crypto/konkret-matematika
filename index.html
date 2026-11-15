@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Konkrét Matematika</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Terv: hűvös betonszürke papír, kobalt tinta, okker kiemelés a "legnagyobb korongnak".
+   Elrendezés: bal oldali fejezetsáv | főszöveg | margójegyzetek (a Konkrét Matematika margó-hagyománya). */
+:root{
+  --paper:#EEF0EE; --surface:#FFFFFF; --ink:#18202B; --muted:#5A6471; --line:#D3D8DC;
+  --accent:#2C48C8; --accent-2:#D99A00; --accent-soft:#E3E8FB; --bad:#C2362B; --good:#1F8A5B;
+  --f-display:"Fraunces", Georgia, "Times New Roman", serif;
+  --f-body:"Newsreader", Georgia, "Times New Roman", serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+  --bg1:rgba(44,72,200,.16); --bg2:rgba(217,154,0,.15); --bg3:rgba(31,138,140,.14);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1318; --surface:#161C24; --ink:#E5E9EF; --muted:#98A3B0; --line:#29313C;
+    --accent:#8197FF; --accent-2:#F0B429; --accent-soft:#1D2547; --bad:#FF6B5E; --good:#4CC38A;
+    --bg1:rgba(110,130,255,.20); --bg2:rgba(240,180,41,.11); --bg3:rgba(60,200,170,.12);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1318; --surface:#161C24; --ink:#E5E9EF; --muted:#98A3B0; --line:#29313C;
+  --accent:#8197FF; --accent-2:#F0B429; --accent-soft:#1D2547; --bad:#FF6B5E; --good:#4CC38A;
+  --bg1:rgba(110,130,255,.20); --bg2:rgba(240,180,41,.11); --bg3:rgba(60,200,170,.12);
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+h1,h2,h3{font-family:var(--f-display);font-weight:560;letter-spacing:-.005em;text-wrap:balance;line-height:1.15;margin:0}
+h2{font-size:clamp(1.3rem,3.4vw,1.7rem)}
+h3{font-size:1.08rem}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+
+
+/* ---- széles képletek: arányosan kicsinyítve férnek a kártyába, nem vágódnak le ---- */
+.eq mjx-container[display="true"]{margin:0!important;max-width:100%}
+.eq mjx-container[display="true"] svg{max-width:100%;height:auto}
+@media (max-width:560px){
+  table.vals th,table.vals td{padding:5px 5px;font-size:.78rem}
+  table.vals.cmp th,table.vals.cmp td{font-size:.74rem;white-space:normal}
+}
+/* ---- görgethető táblák: árnyék jelzi, hogy van még tartalom oldalt ---- */
+.tbl-wrap{overflow-x:auto;background:
+  linear-gradient(to right,var(--surface) 30%,transparent) left center/28px 100% no-repeat local,
+  linear-gradient(to left,var(--surface) 30%,transparent) right center/28px 100% no-repeat local,
+  radial-gradient(farthest-side at 0 50%,rgba(0,0,0,.28),transparent) left center/10px 100% no-repeat scroll,
+  radial-gradient(farthest-side at 100% 50%,rgba(0,0,0,.28),transparent) right center/10px 100% no-repeat scroll}
+/* ---- bevezető történetkártya, bitsorok ---- */
+.story{grid-column:1/-1;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent-2);border-radius:14px;padding:16px 20px;display:grid;gap:8px;max-width:62em}
+.story .tag{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-2)}
+.story p{font-size:.98rem;max-width:none}
+.bitrow{display:flex;align-items:center;gap:12px}
+.bitrow .bl{font-family:var(--f-mono);font-size:.85rem;color:var(--muted);min-width:42px}
+.bits{display:grid;grid-template-columns:repeat(var(--nb),minmax(0,40px));gap:5px;flex:1}
+.bit{aspect-ratio:1/1.15;display:grid;place-items:center;font-family:var(--f-mono);font-weight:600;font-size:1rem;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+.bit.lead{background:var(--accent-2);border-color:var(--accent-2);color:#111}
+.bit.zero{opacity:.35}
+.bitarrow{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);padding-left:54px}
+
+/* ---- animált háttér: nagy, elmosott színfoltok lassú lebegése (csak transform: GPU-n fut) ---- */
+body::before{content:"";position:fixed;inset:-35%;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(38% 34% at 22% 28%,var(--bg1),transparent 70%),
+    radial-gradient(34% 32% at 78% 24%,var(--bg2),transparent 70%),
+    radial-gradient(40% 36% at 60% 78%,var(--bg3),transparent 70%),
+    radial-gradient(30% 28% at 14% 82%,var(--bg1),transparent 70%);
+  animation:drift 46s ease-in-out infinite alternate;will-change:transform}
+@keyframes drift{
+  0%{transform:translate3d(-3%,-2%,0) rotate(0deg) scale(1)}
+  50%{transform:translate3d(4%,3%,0) rotate(9deg) scale(1.08)}
+  100%{transform:translate3d(-2%,5%,0) rotate(-7deg) scale(1.02)}}
+@media (prefers-reduced-motion:reduce){body::before{animation:none}}
+.app .side,main .topbar{background:color-mix(in srgb,var(--paper) 70%,transparent);-webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2)}
+/* ---- keret ---- */
+.app{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100%}
+.side{position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line);padding:28px 22px;background:var(--paper)}
+.brand{font-family:var(--f-display);font-size:1.15rem;line-height:1.1}
+.brand small{display:block;font-family:var(--f-body);font-size:.8rem;color:var(--muted);margin-top:6px;letter-spacing:.02em}
+.chap{margin-top:26px;display:grid;gap:4px}
+.chap .ch{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:14px}
+.chap a,.chap span.soon{display:flex;justify-content:space-between;gap:8px;text-decoration:none;color:var(--ink);padding:6px 10px;border-radius:8px;font-size:.95rem}
+.chap a.on{background:var(--accent-soft);color:var(--accent)}
+.chap span.soon{color:var(--muted)}
+.chap span.soon em{font-style:normal;font-size:.72rem;border:1px solid var(--line);border-radius:99px;padding:0 7px;align-self:center}
+main{min-width:0}
+.topbar{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:12px;padding:10px clamp(16px,4vw,56px);background:var(--paper);border-bottom:1px solid var(--line);min-height:52px}
+#menuBtn{display:none}
+.crumb{display:flex;gap:6px;align-items:center;font-size:.88rem;color:var(--muted);min-width:0;white-space:nowrap;overflow:hidden}
+.crumb a{color:var(--muted);text-decoration:none}.crumb a:hover{color:var(--accent)}
+.crumb b{font-weight:500;color:var(--ink);overflow:hidden;text-overflow:ellipsis}
+.crumb .sep{opacity:.5}
+.prog{display:flex;gap:3px;padding:0 clamp(16px,4vw,56px);margin-top:10px}
+.prog i{flex:1;height:3px;border-radius:2px;background:var(--line)}
+.prog i.done{background:var(--accent);opacity:.45}.prog i.cur{background:var(--accent)}
+/* fa-menü */
+.tree{margin-top:22px;display:grid;gap:2px}
+.tree .chh{display:flex;gap:8px;align-items:baseline;padding:7px 10px;border-radius:8px;text-decoration:none;color:var(--ink);font-size:.93rem}
+.tree .chh .num{font-family:var(--f-mono);font-size:.78rem;color:var(--muted);min-width:1.2em}
+.tree .chh.dis{color:var(--muted)}
+.tree .chh.on{background:var(--accent-soft);color:var(--accent)}
+.tree .tp{display:flex;justify-content:space-between;gap:8px;padding:5px 10px 5px 30px;border-radius:8px;text-decoration:none;color:var(--ink);font-size:.9rem}
+.tree .tp.dis{color:var(--muted)}
+.tree .tp.on{color:var(--accent);font-weight:500}
+.tree em{font-style:normal;font-size:.68rem;border:1px solid var(--line);border-radius:99px;padding:0 7px;align-self:center;color:var(--muted);white-space:nowrap}
+.tree .pg{display:block;padding:3px 10px 3px 44px;font-size:.84rem;color:var(--muted);text-decoration:none;border-left:2px solid transparent;margin-left:30px;padding-left:12px}
+.tree .pg:hover{color:var(--ink)}
+.tree .pg.on{color:var(--accent);border-left-color:var(--accent)}
+/* nézetek */
+.view{display:none}.view.on{display:block}
+#view-topic .page{display:none}
+#view-topic .page.on{display:grid}
+.pager{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:22px clamp(16px,4vw,56px);border-bottom:1px solid var(--line)}
+.pager .mid{font-family:var(--f-mono);font-size:.8rem;color:var(--muted);text-align:center}
+.pager button{min-width:120px;white-space:nowrap}
+.home{padding:40px clamp(16px,4vw,56px) 56px;display:grid;gap:22px;max-width:1100px}
+.home h1{font-size:clamp(1.8rem,4.6vw,2.7rem)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.ccard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:8px;text-decoration:none;color:var(--ink);align-content:start;transition:border-color .2s,transform .2s}
+a.ccard:hover{border-color:var(--accent);transform:translateY(-2px)}
+.ccard.dis{opacity:.62}
+.ccard .cn{font-family:var(--f-display);font-size:1.5rem;color:var(--accent);line-height:1}
+.ccard .ct{font-family:var(--f-display);font-size:1.12rem;line-height:1.2}
+.ccard .cd{font-size:.9rem;color:var(--muted)}
+.ccard .st{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.ccard .st.ok{color:var(--good)}
+.ccard svg:not(mjx-container svg){width:100%;height:auto;background:var(--paper);border-radius:8px}
+.plane{width:100%;aspect-ratio:100/62;display:block;border-radius:10px;background:var(--paper);touch-action:manipulation;cursor:crosshair}
+.frame .plane{border-radius:6px;cursor:default}
+.ccard .plane{cursor:pointer}
+.hero .stage .plane{cursor:default}
+
+/* ---- szekciók: főszöveg + margó ---- */
+.sec{display:grid;grid-template-columns:minmax(0,700px) 220px;gap:40px;padding:56px clamp(16px,4vw,56px);border-bottom:1px solid var(--line)}
+.sec>.body{display:grid;grid-template-columns:minmax(0,1fr);gap:18px;min-width:0}
+.sec>.body>*,details .ans>*{min-width:0}
+.margo{font-style:italic;font-size:.92rem;color:var(--muted);display:grid;gap:22px;align-content:start;padding-top:52px}
+.margo p{border-left:2px solid var(--accent-2);padding-left:12px}
+.eyebrow{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;color:var(--accent);text-transform:uppercase}
+.lead{font-size:1.04rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.fig svg:not(mjx-container svg){width:100%;height:auto;display:block}
+.cap{font-size:.88rem;color:var(--muted)}
+.mathblock{overflow-x:auto;padding:4px 0}
+.eq{font-size:.9em;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:10px 16px;overflow-x:auto}
+.eq.gold{border-left-color:var(--accent-2)}
+ol.steps{margin:0;padding-left:1.3em;display:grid;gap:8px}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.78rem;padding:2px 9px;border-radius:99px;border:1px solid var(--line);background:var(--surface)}
+
+/* ---- hero ---- */
+.hero{padding:56px clamp(16px,4vw,56px) 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:40px;align-items:center;border-bottom:1px solid var(--line)}
+.hero h1{font-size:clamp(2rem,5.5vw,3.3rem);letter-spacing:-.01em}
+.hero .formula{font-size:clamp(1.1rem,2.6vw,1.4rem);margin-top:14px;color:var(--accent)}
+.hero .lead{margin-top:16px;max-width:34em}
+.hero .stage{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 16px 10px}
+.hero .counter{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.85rem;color:var(--muted);padding:4px 4px 0}
+.hero .counter b{color:var(--ink);font-weight:600}
+
+/* ---- torony SVG ---- */
+.t-base{fill:var(--ink);opacity:.85}
+.t-peg{fill:var(--muted);opacity:.55;transition:fill .2s}
+.t-peg.tgt{fill:var(--accent-2);opacity:.9}
+.t-peg.bad{fill:var(--bad);opacity:1}
+.t-peg.selp{fill:var(--accent);opacity:1}
+.t-lab{font-family:var(--f-mono);font-size:14px;fill:var(--muted)}
+.t-dn{font-family:var(--f-mono);font-size:11px;fill:#fff;font-weight:600;pointer-events:none}
+.t-hit{fill:transparent;cursor:pointer}
+.t-hit:focus-visible{outline:none;stroke:var(--accent);stroke-width:2;stroke-dasharray:4 4}
+.disk rect{stroke:rgba(0,0,0,.18);stroke-width:1}
+.svg-t{font-family:var(--f-mono);font-size:12px;fill:var(--muted)}
+.svg-t.ink{fill:var(--ink)}
+.svg-t.acc{fill:var(--accent)}
+.svg-t.gold{fill:var(--accent-2)}
+.arrow{fill:none;stroke:var(--ink);stroke-width:1.6}
+.arrowhead{fill:var(--ink)}
+.grid-l{stroke:var(--line);stroke-width:1}
+.axis{stroke:var(--muted);stroke-width:1}
+
+/* ---- vezérlők ---- */
+.ctrl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button,.btn{font:inherit;font-size:.92rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:8px 14px;cursor:pointer;min-height:40px}
+button:hover{border-color:var(--accent)}
+button.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+:root[data-theme="dark"] button.primary{color:#0F1318}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.primary{color:#0F1318}}
+button:disabled{opacity:.45;cursor:default}
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--surface)}
+.stepper button{border:0;border-radius:0;min-width:40px}
+.stepper span{min-width:64px;text-align:center;font-family:var(--f-mono);font-size:.9rem}
+label.rng{display:flex;align-items:center;gap:8px;font-size:.88rem;color:var(--muted)}
+input[type=range]{accent-color:var(--accent)}
+select,input[type=number]{font:inherit;font-size:.95rem;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+input[type=number]{width:72px;font-family:var(--f-mono)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.stat .k{font-size:.75rem;color:var(--muted);letter-spacing:.04em}
+.stat .v{font-family:var(--f-mono);font-size:1.12rem;font-weight:600;font-variant-numeric:tabular-nums}
+.msg{font-size:.95rem;min-height:1.6em;color:var(--muted)}
+.msg.ok{color:var(--good)} .msg.bad{color:var(--bad)}
+
+/* ---- filmszalag ---- */
+.film{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.frame{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:6px}
+.frame .fc{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);text-align:center}
+
+/* ---- táblázat ---- */
+.tbl-wrap{overflow-x:auto}
+table.vals{border-collapse:collapse;font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:.9rem;width:100%}
+table.vals th,table.vals td{padding:6px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+table.vals th{font-family:var(--f-body);font-weight:500;color:var(--muted);text-align:left}
+table.vals tr.hl td{color:var(--accent);font-weight:600}
+
+/* ---- fázisok ---- */
+.phases{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;align-items:start}
+.ph-cell{display:grid;gap:4px;text-align:center}
+.ph-cell .fc{font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.chip{border:1px solid var(--line);border-radius:10px;padding:8px 10px;background:var(--paper);font-size:.85rem;transition:border-color .2s,background .2s}
+.chip b{display:block;font-family:var(--f-mono);font-size:.95rem}
+.chip.on{border-color:var(--accent);background:var(--accent-soft)}
+
+/* ---- bizonyítás ---- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bound{border-radius:12px;border:1px solid var(--line);background:var(--surface);padding:14px;display:grid;gap:6px}
+.bound .t{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase}
+.bound.up .t{color:var(--accent)} .bound.lo .t{color:var(--accent-2)}
+
+/* ---- gyakorlatok ---- */
+details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+details summary{cursor:pointer;font-weight:500;list-style:none;display:flex;justify-content:space-between;gap:10px}
+details summary .sq{min-width:0;flex:1}
+details summary::after{content:"Megoldás ▾";font-family:var(--f-mono);font-size:.75rem;color:var(--accent);white-space:nowrap;align-self:center}
+details[open] summary::after{content:"Elrejt ▴"}
+details .ans{margin-top:12px;display:grid;gap:10px;border-top:1px dashed var(--line);padding-top:12px}
+
+/* ---- módszer ---- */
+.method{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:stretch}
+.method .m{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:6px;align-content:start}
+.method .m .n{font-family:var(--f-display);font-size:1.4rem;color:var(--accent);line-height:1}
+.method .ar{align-self:center;color:var(--muted);font-size:1.4rem}
+pre.code{font-family:var(--f-mono);font-size:.85rem;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto;margin:0;line-height:1.5}
+.info{font-family:var(--f-mono);font-size:.85rem;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:10px 12px;overflow-x:auto}
+footer{padding:36px clamp(16px,4vw,56px) 60px;color:var(--muted);font-size:.9rem;display:grid;gap:8px;max-width:820px}
+
+/* ---- reszponzív ---- */
+@media (max-width:1180px){
+  .sec{grid-template-columns:minmax(0,1fr)}
+  .margo{padding-top:0;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+}
+@media (max-width:900px){
+  .app{grid-template-columns:1fr}
+  .app .side{background:color-mix(in srgb,var(--paper) 94%,transparent)}
+  .side{position:fixed;inset:0 auto 0 0;width:min(320px,86vw);z-index:30;transform:translateX(-102%);transition:transform .25s;box-shadow:0 0 40px rgba(0,0,0,.25)}
+  .side.open{transform:none}
+  #menuBtn{display:inline-block;min-height:36px;padding:6px 12px}
+  .topbar{padding:8px 16px}
+  .pager button{min-width:0}
+  .pager .mid .pt{display:none}
+  .hero{grid-template-columns:1fr;padding-top:28px;gap:22px}
+  .sec{padding:40px 16px}
+}
+@media (max-width:560px){
+  body{font-size:16px}
+  .eq{font-size:.85em}
+  .film{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+  .phases{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .two,.chips{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+  .stat .v{font-size:1.1rem}
+  .method{grid-template-columns:1fr}
+  .method .ar{transform:rotate(90deg);justify-self:center}
+}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important;scroll-behavior:auto!important} }
+</style>
+<script>
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{typeset:true}};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+</head>
+<body>
+<div class="app">
+<nav class="side" id="side" aria-label="Tartalom">
+  <a href="#kezdolap" class="brand" style="text-decoration:none;color:var(--ink)">Konkrét Matematika<small>Érdekességek és stílusos feladatok, levezetve</small></a>
+  <div class="tree" id="tree"></div>
+</nav>
+
+<main id="top">
+<div class="topbar">
+  <button id="menuBtn" aria-controls="side" aria-expanded="false">Menü</button>
+  <nav class="crumb" id="crumb" aria-label="Hely"></nav>
+</div>
+<div class="view" id="view-home">
+  <div class="home">
+    <div class="eyebrow">Graham – Knuth – Patashnik nyomán</div>
+    <h1>Konkrét Matematika</h1>
+    <p class="lead" style="max-width:40em">Matematikai érdekességek és stílusos feladatok, fejezetről fejezetre. Minden téma interaktív ábrákkal, a levezetés minden lépésével: mi igaz, és miért.</p>
+    <div class="cards" id="home-cards"></div>
+  </div>
+</div>
+<div class="view" id="view-chapter">
+  <div class="home">
+    <div class="eyebrow" id="ch-eyebrow"></div>
+    <h1 id="ch-title"></h1>
+    <p class="lead" id="ch-lead" style="max-width:40em"></p>
+    <div class="cards" id="ch-cards"></div>
+  </div>
+</div>
+<div class="view" id="view-topic">
+<div class="prog" id="prog"></div>
+<!-- HERO -->
+<header class="hero page" id="s-bevezeto">
+  <div>
+    <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.1</div>
+    <h1>Hanoi tornyai</h1>
+    <p class="lead">Három rúd, <span class="mono">n</span> korong, egyetlen tiltás: nagyobb korong sosem kerülhet kisebbre. Hány lépés kell az egész torony átköltöztetéséhez, és miért pontosan annyi, se több, se kevesebb?</p>
+    <div class="formula">\(T_n = 2^n - 1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="hero-svg" role="img" aria-label="Öt korongos torony, amely automatikusan, optimálisan költözik rúdról rúdra"></svg>
+    <div class="counter"><span>n = 5 · optimális megoldás</span><span>lépés <b id="hero-k">0</b> / 31</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A játékot Édouard Lucas francia matematikus találta ki 1883-ban. Az eredeti változatban nyolc korong áll a három rúd egyikén, alulról felfelé csökkenő méretben. Egy lépésben egyetlen korongot szabad mozgatni, és nagyobb korong sosem kerülhet kisebbre. Lucas mesét is költött hozzá: Brahma tornyáról, amely állítólag 64 aranykorongból áll három gyémánttűn. A legenda szerint szerzetesek éjjel-nappal rakosgatják a korongokat, és amikor végeznek, a világ véget ér. A mese ígéretét a §8 (Léptékek) számolja végig. <i>Forrás: a Konkrét matematika 1.1 fejezetének bevezetője, saját szavakkal.</i></p>
+  </aside>
+</header>
+
+<!-- §1 -->
+<section class="sec page" id="s-feladat">
+  <div class="body">
+    <div class="eyebrow">§1 · A feladat</div>
+    <h2>Próbáld ki kézzel</h2>
+    <p>A korongok kezdetben az <b>A</b> rúdon állnak, alulról felfelé csökkenő méretben. A cél, hogy az egész torony a <b>C</b> rúdra kerüljön. Egy lépésben egyetlen korongot emelhetsz le egy rúd tetejéről, és csak üres rúdra vagy nála nagyobb korongra teheted.</p>
+    <div class="fig">
+      <svg id="pg-svg" role="application" aria-label="Interaktív Hanoi-torony. Válaszd ki a forrásrudat, majd a célrudat."></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Megtett lépés</div><div class="v" id="pg-moves">0</div></div>
+        <div class="stat"><div class="k">Optimum: 2ⁿ − 1</div><div class="v" id="pg-opt">15</div></div>
+        <div class="stat"><div class="k">Innen még min.</div><div class="v" id="pg-rem">15</div></div>
+      </div>
+      <div class="msg" id="pg-msg">Koppints egy rúdra a felső korong kiválasztásához, majd a célrúdra.</div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Korongok száma">
+          <button id="pg-minus" aria-label="Kevesebb korong">−</button><span id="pg-n">n = 4</span><button id="pg-plus" aria-label="Több korong">+</button>
+        </div>
+        <button id="pg-reset">Újrakezdés</button>
+        <button id="pg-step">Következő optimális lépés</button>
+        <button id="pg-play" class="primary">Megoldás innen</button>
+        <label class="rng" for="pg-speed">Tempó <input type="range" id="pg-speed" min="60" max="900" value="420"></label>
+      </div>
+    </div>
+    <p class="cap">Az „Innen még min.” mező minden lépés után kiszámolja, hány lépés kell legalább az aktuális állásból a C rúdig. Ha rossz irányba lépsz, ez a szám nő. A „Megoldás innen” bármilyen szabályos állásból optimálisan fejezi be a feladatot.</p>
+  </div>
+  <aside class="margo">
+    <p>Lucas 1883-ban „N. Claus de Siam” álnéven adta ki a játékot. A név anagramma: Lucas d'Amiens.</p>
+    <p>A sárga rúd a cél. A matematikailag mindegy, hogy B vagy C, a szimmetria miatt a lépésszám ugyanaz.</p>
+  </aside>
+</section>
+
+<!-- §2 -->
+<section class="sec page" id="s-kis">
+  <div class="body">
+    <div class="eyebrow">§2 · Kis esetek és jelölés</div>
+    <h2>Először kicsiben</h2>
+    <p>Két lépésben szűkítünk. Először <b>általánosítunk</b>: nem 8 vagy 64 korongról kérdezünk, hanem tetszőleges \(n\)-ről. Aztán <b>nevet adunk</b> a keresett mennyiségnek:</p>
+    <div class="eq">\(T_n\) = a legkevesebb lépés, amellyel \(n\) korong a szabályok szerint egyik rúdról egy másikra vihető.</div>
+    <p>A legkisebb esetek kézzel kiszámolhatók: \(T_1 = 1\), \(T_2 = 3\), és a semmitmondónak tűnő \(T_0 = 0\) is: üres tornyot nem kell mozgatni. Ez utóbbi nem díszítés, ez lesz a rekurzió kezdőpontja. Három korongnál az optimális út hét lépés:</p>
+    <div class="fig">
+      <div class="film" id="film"></div>
+      <div class="cap">\(n = 3\): a 0. kocka a kiinduló állás, minden további egy lépés. A legnagyobb (sárga) korong egyetlenegyszer mozdul, pontosan középen, a 4. lépésben.</div>
+    </div>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="vals"></table></div>
+      <svg id="bars" role="img" aria-label="T_n oszlopdiagram n = 0..10"></svg>
+      <div class="cap">A harmadik sor (\(T_n + 1\)) árulja el a mintát: mindig kettőhatvány. Az oszlopok lineáris skálán mutatják, milyen gyorsan nő a lépésszám: minden új korong megduplázza a munkát (plusz egy lépés).</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A jó jelölés fél siker: amíg a mennyiségnek nincs neve, nem lehet egyenletet írni rá.</p>
+    <p>A kis esetek kétszer fizetnek: belőlük jön a sejtés, és később ezek a tesztesetek, amelyeken minden képletet ellenőrzünk.</p>
+  </aside>
+</section>
+
+<!-- §3 -->
+<section class="sec page" id="s-felso">
+  <div class="body">
+    <div class="eyebrow">§3 · Felső korlát</div>
+    <h2>Egy stratégia, amely biztosan működik</h2>
+    <p>A kulcsgondolat: az \(n-1\) kisebb korongot <b>egyetlen egységnek</b> tekintjük. Ha ezt az egységet át tudjuk vinni (ehhez \(T_{n-1}\) lépés elég), akkor három fázisban megoldható a teljes feladat:</p>
+    <div class="fig">
+      <div class="phases" id="phase-static"></div>
+      <div class="cap">Kék: a kisebb \(n-1\) korong, mint egy blokk. Sárga: a legnagyobb korong. A fázisok költsége \(T_{n-1}\), \(1\), \(T_{n-1}\).</div>
+    </div>
+    <div class="eq">\[T_n \;\le\; T_{n-1} + 1 + T_{n-1} \;=\; 2T_{n-1} + 1, \qquad n > 0.\]</div>
+    <p>Miért \(\le\) és nem \(=\)? Mert ezzel csak azt mutattuk meg, hogy ennyi lépés <b>elég</b>. Arról még semmit, hogy ennél kevesebb ne lehetne elég. Egy ügyesebb stratégia elvben rövidebb is lehetne.</p>
+    <div class="fig">
+      <svg id="ph-svg" role="img" aria-label="Animáció a három fázissal"></svg>
+      <div class="chips">
+        <div class="chip" id="chip1">1. fázis: n−1 korong A→B<b id="c1">0 / 7</b></div>
+        <div class="chip" id="chip2">2. fázis: legnagyobb A→C<b id="c2">0 / 1</b></div>
+        <div class="chip" id="chip3">3. fázis: n−1 korong B→C<b id="c3">0 / 7</b></div>
+      </div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Korongok száma">
+          <button id="ph-minus" aria-label="Kevesebb korong">−</button><span id="ph-n">n = 4</span><button id="ph-plus" aria-label="Több korong">+</button>
+        </div>
+        <button id="ph-play" class="primary">Fázisok lejátszása</button>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Ez a „blokkosítás” a rekurzió lényege: a nagy feladat megoldása egy kisebb, ugyanilyen feladat megoldására épül.</p>
+    <p>Figyeld a kék blokkot az animációban: az 1. és a 3. fázis belül pontosan ugyanaz a mintázat, csak más rudak között.</p>
+  </aside>
+</section>
+
+<!-- §4 -->
+<section class="sec page" id="s-also">
+  <div class="body">
+    <div class="eyebrow">§4 · Alsó korlát</div>
+    <h2>Rövidebb út nincs</h2>
+    <p>Most azt kell belátni, hogy <b>bármely</b> megoldás legalább \(2T_{n-1}+1\) lépés. A bizonyítás egyetlen pillanatra figyel: amikor a legnagyobb korong mozdul.</p>
+    <div class="fig">
+      <svg id="lb-svg" role="img" aria-label="A kritikus pillanat: a legnagyobb korong egyedül áll A-n, a többi B-n, C üres"></svg>
+      <div class="cap">A kritikus pillanat. A legnagyobb korong csak akkor mozdulhat A-ról C-re, ha fölötte semmi sincs, és C üres. Az összes többi korongnak tehát a harmadik rúdon kell állnia, szabályos toronyként.</div>
+    </div>
+    <ol class="steps">
+      <li>A legnagyobb korongnak legalább egyszer mozdulnia kell, különben nem kerül át.</li>
+      <li>Az <b>első</b> mozdulása előtt az \(n-1\) kisebb korong mind egyetlen rúdon áll. Ezt az állást a kezdőállásból el kellett érni: ez önmagában egy \(n-1\) korongos átköltöztetés, tehát legalább \(T_{n-1}\) lépés.</li>
+      <li>Az <b>utolsó</b> mozdulása után a kisebbeknek egyetlen rúdról rá kell kerülniük: ismét legalább \(T_{n-1}\) lépés.</li>
+      <li>Közben maga a legnagyobb legalább egyszer lép. Ha többször, az csak növeli a számot.</li>
+    </ol>
+    <div class="two">
+      <div class="bound up"><span class="t">Elégséges (§3)</span>\(T_n \le 2T_{n-1}+1\)</div>
+      <div class="bound lo"><span class="t">Szükséges (§4)</span>\(T_n \ge 2T_{n-1}+1\)</div>
+    </div>
+    <p>A két egyenlőtlenség együtt egyenlőséget ad. A kezdőértékkel kiegészítve ez a <b>rekurzió</b>:</p>
+    <div class="eq gold">\[\begin{aligned} T_0 &= 0;\\ T_n &= 2T_{n-1}+1, \qquad n>0. \end{aligned}\qquad (1.1)\]</div>
+    <p>Ellenőrzés a kis esetekkel: \(T_1 = 2\cdot 0+1 = 1\), \(T_2 = 2\cdot 1+1 = 3\). Egyezik.</p>
+  </div>
+  <aside class="margo">
+    <p>Ez a bizonyítás azon fele, amelyet a legtöbb népszerű leírás kihagy. Egy konstrukció még nem optimum.</p>
+    <p>Bónusz következmény: mivel egyenlőség áll fenn, a legnagyobb korong pontosan egyszer mozdul, és mindkét részfeladat optimális. Indukcióval: az optimális lépéssor egyértelmű.</p>
+  </aside>
+</section>
+
+<!-- §5 -->
+<section class="sec page" id="s-fa">
+  <div class="body">
+    <div class="eyebrow">§5 · A rekurzió kibontva</div>
+    <h2>A hívások fája</h2>
+    <p>Az (1.1) minden \(T_k\)-t két \(T_{k-1}\)-re és egyetlen lépésre bont. Ha ezt a bontást végig visszük, egy bináris fát kapunk. Minden csúcs egy részfeladat, és <b>minden csúcs pontosan egy lépést</b> tesz: a saját legnagyobb korongjának áthelyezését. A szám a csúcsban a részfeladat korongszáma, a szín a mozgatott korongé.</p>
+    <div class="fig">
+      <svg id="tree-svg" role="img" aria-label="A rekurzió bináris fája"></svg>
+      <div class="info" id="tree-sum"></div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Fa mélysége">
+          <button id="tr-minus" aria-label="Kisebb fa">−</button><span id="tr-n">n = 4</span><button id="tr-plus" aria-label="Nagyobb fa">+</button>
+        </div>
+      </div>
+    </div>
+    <p>A \(k\)-adik szinten \(2^k\) csúcs van, így a lépések száma egy mértani sor összege:</p>
+    <div class="eq">\[T_n = \sum_{k=0}^{n-1} 2^k = 1 + 2 + 4 + \dots + 2^{n-1} = 2^n - 1.\]</div>
+    <p>Ez már levezetés, nem találgatás. A könyv más utat jár be (§6–§7), de érdemes látni, hogy a zárt alak a fa szerkezetéből közvetlenül kiolvasható.</p>
+  </div>
+  <aside class="margo">
+    <p>A legalsó szinten \(2^{n-1}\) csúcs mozgatja a legkisebb korongot: ezért lép az 1-es korong a lépések felében.</p>
+    <p>A fa mélysége n, a csúcsok száma 2ⁿ − 1. Egy rekurzív program pontosan ennyiszer „dolgozik” ténylegesen.</p>
+  </aside>
+</section>
+
+<!-- §6 -->
+<section class="sec page" id="s-indukcio">
+  <div class="body">
+    <div class="eyebrow">§6 · Sejtés és indukció</div>
+    <h2>Kitalálni, aztán bebizonyítani</h2>
+    <p>A rekurzió minden \(n\)-re kiszámolja \(T_n\)-et, de csak lépésenként: \(T_{64}\)-hez végig kell menni mind a 64 értéken. Ami kell, az egy <b>zárt alak</b>, amely közvetlenül ad értéket, és meg is mutatja, mi a mennyiség természete.</p>
+    <p>Számoljunk tovább: \(T_3 = 7\), \(T_4 = 15\), \(T_5 = 31\), \(T_6 = 63\). A sejtés kézenfekvő:</p>
+    <div class="eq gold">\[T_n = 2^n - 1, \qquad n \ge 0. \qquad (1.2)\]</div>
+    <p>Hat esetre működik. A <b>matematikai indukció</b> ezt végtelen sok esetre terjeszti ki, véges munkával:</p>
+    <div class="two">
+      <div class="bound up"><span class="t">Alap: n = 0</span>\(T_0 = 0 = 2^0 - 1\). ✓</div>
+      <div class="bound lo"><span class="t">Lépés: n − 1 → n</span>Ha \(T_{n-1} = 2^{n-1}-1\), akkor<br>\(T_n = 2T_{n-1}+1 = 2(2^{n-1}-1)+1 = 2^n - 1.\) ✓</div>
+    </div>
+    <p>A létra-kép: ha a legalsó fokra fel tudunk lépni, és bármelyik fokról a következőre is, akkor bármilyen magasra feljutunk.</p>
+  </div>
+  <aside class="margo">
+    <p>A gyenge pont a módszerben az „Aha!” pillanat. Ha nem látjuk meg a mintát, az indukció nem segít, mert nincs mit bizonyítani.</p>
+    <p>A következő szakasz pont ezt a jóslást váltja ki gépies lépéssel.</p>
+  </aside>
+</section>
+
+<!-- §7 -->
+<section class="sec page" id="s-fixpont">
+  <div class="body">
+    <div class="eyebrow">§7 · Jóslás nélkül</div>
+    <h2>A +1 trükk, és miért működik</h2>
+    <p>Adjunk 1-et az (1.1) mindkét oldalához:</p>
+    <div class="eq">\[T_0 + 1 = 1, \qquad T_n + 1 = 2T_{n-1} + 2 = 2\,(T_{n-1}+1).\]</div>
+    <p>Az \(U_n = T_n + 1\) jelöléssel a zavaró konstans eltűnik:</p>
+    <div class="eq gold">\[U_0 = 1, \qquad U_n = 2U_{n-1} \quad\Longrightarrow\quad U_n = 2^n \quad\Longrightarrow\quad T_n = 2^n - 1. \qquad (1.3)\]</div>
+    <h3>A „miért”: a fixpont</h3>
+    <p>Az \(x \mapsto 2x + 1\) leképezésnek van egy pontja, amelyet helyben hagy: \(2\cdot(-1)+1 = -1\). Ez a <b>fixpont</b> [az az érték, amelyet a leképezés önmagába visz]. A fixponttól mért távolság minden lépésben pontosan megduplázódik:</p>
+    <div class="eq">\[T_n - (-1) = 2\,\bigl(T_{n-1} - (-1)\bigr).\]</div>
+    <div class="fig">
+      <svg id="nl-svg" role="img" aria-label="Számegyenes: a T_n értékek távolsága a -1 fixponttól minden lépésben duplázódik"></svg>
+      <div class="cap">A +1 tehát nem ötlet, hanem koordináta-eltolás: az origót a fixpontba tesszük, ahol a rekurzió tiszta szorzássá válik. Ezért szabadultunk meg a +1-től összeadással, és nem kivonással.</div>
+    </div>
+    <p>Ugyanez a gondolat minden <b>elsőrendű lineáris rekurzióra</b> működik. Ha \(x_n = a\,x_{n-1} + b\) és \(a \ne 1\), a fixpont \(-\tfrac{b}{a-1}\), és</p>
+    <div class="eq">\[x_n = \Bigl(x_0 + \frac{b}{a-1}\Bigr)a^n - \frac{b}{a-1}.\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ca">a <input type="number" id="ca" value="2" min="-9" max="9" step="1"></label>
+        <label class="rng" for="cb">b <input type="number" id="cb" value="1" min="-99" max="99" step="1"></label>
+        <label class="rng" for="cx">x₀ <input type="number" id="cx" value="0" min="-99" max="99" step="1"></label>
+      </div>
+      <div class="ctrl">
+        <button data-p="2,1,0">Hanoi: 2, 1, 0</button>
+        <button data-p="3,2,0">Szomszédos rudak: 3, 2, 0</button>
+        <button data-p="2,2,0">Dupla torony: 2, 2, 0</button>
+      </div>
+      <div class="eq" id="calc-out"></div>
+      <div class="tbl-wrap"><table class="vals" id="calc-tbl"></table></div>
+      <div class="cap">A táblázat a rekurzióval lépésenként és a zárt alakkal közvetlenül számolt értéket veti össze, egész számokkal, kerekítés nélkül.</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Mérnöki szemmel: egy lineáris, állandó gerjesztésű rendszer válasza = állandósult rész (a fixpont) + a homogén megoldás \(C\,a^n\).</p>
+    <p>a = 1 esetén nincs fixpont, és a megoldás lineáris: \(x_n = x_0 + nb\).</p>
+  </aside>
+</section>
+
+<!-- §8 -->
+<section class="sec page" id="s-leptek">
+  <div class="body">
+    <div class="eyebrow">§8 · Léptékek</div>
+    <h2>Mikor jön a világvége?</h2>
+    <p>Lucas legendájában szerzetesek 64 aranykorongot költöztetnek, és ha végeznek, vége a világnak. A zárt alakkal ez azonnal kiszámolható.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="sc-n">n <input type="range" id="sc-n" min="1" max="64" value="64"> <span class="mono" id="sc-nv">64</span></label>
+        <label class="rng" for="sc-r">Tempó
+          <select id="sc-r">
+            <option value="1">1 lépés / mp</option>
+            <option value="1000">1000 lépés / mp</option>
+            <option value="1000000" selected>1 lépés / µs</option>
+            <option value="1000000000">1 lépés / ns</option>
+          </select></label>
+      </div>
+      <div class="info" id="sc-out"></div>
+      <svg id="sc-svg" role="img" aria-label="Az átrakás ideje korongszám szerint, logaritmikus skálán"></svg>
+      <div class="cap">Függőleges tengely: idő logaritmikus skálán. Minden új korong megduplázza az időt, ezért a görbe egyenes. A szaggatott vonalak viszonyítási pontok.</div>
+    </div>
+    <div class="card">
+      <h3 style="margin-bottom:8px">Ellenőrzött számok</h3>
+      <p>\(2^{64}-1 = 18\,446\,744\,073\,709\,551\,615\), magyarul kb. 18,4 trillió (a magyar hosszú skálán 1 trillió = \(10^{18}\); angolul ugyanez quintillion). Másodpercenként egymillió lépéssel \(1{,}845\cdot 10^{13}\) s, azaz kb. <b>584 500 év</b>.</p>
+      <p style="margin-top:8px">A magyar kiadás itt „ötezer év”-et ír. A számolás szerint ez kb. 117-szeres alábecslés: az angol eredeti valószínűleg „5000 évszázadot” mond, ami a fordításban évvé rövidült.</p>
+      <p style="margin-top:8px">Lucas eredeti 8 korongjához \(2^8-1=255\) lépés kell: másodpercenként egy lépéssel 4 perc 15 mp.</p>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Másodpercenként egy lépéssel a 64 korong kb. 585 milliárd év. Ez a Világegyetem mai korának (kb. 13,8 milliárd év) mintegy 42-szerese.</p>
+  </aside>
+</section>
+
+<!-- §9 -->
+<section class="sec page" id="s-binaris">
+  <div class="body">
+    <div class="eyebrow">§9 · Rejtett szerkezet</div>
+    <h2>A megoldás egy bináris számláló</h2>
+    <p>Írjuk fel az optimális megoldás lépéseit sorban, és jelöljük mindegyiknél, hányadik korong mozdult. Az eredmény a „vonalzó-sorozat”: \(1,2,1,3,1,2,1,4,\dots\) A \(k\)-adik lépésben az a korong mozdul, amelynek sorszáma eggyel több, mint ahány nullára végződik \(k\) kettes számrendszerben.</p>
+    <div class="fig">
+      <svg id="ru-svg" role="img" aria-label="Oszlopdiagram: a k-adik lépésben mozgatott korong"></svg>
+      <div class="info" id="ru-info"></div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Korongok száma">
+          <button id="ru-minus" aria-label="Kevesebb korong">−</button><span id="ru-n">n = 5</span><button id="ru-plus" aria-label="Több korong">+</button>
+        </div>
+        <span class="cap">Koppints egy oszlopra a lépés részleteiért.</span>
+      </div>
+    </div>
+    <p>Három következmény, mind a fából (§5) is kiolvasható:</p>
+    <ol class="steps">
+      <li>A \(d\)-edik korong pontosan \(2^{\,n-d}\)-szer mozdul. Összegezve: \(\sum_{d=1}^{n} 2^{n-d} = 2^n - 1\), ugyanaz az eredmény harmadik úton.</li>
+      <li>A legkisebb korong minden páratlan sorszámú lépésben mozdul, mindig ugyanabba a körirányba: páros \(n\)-nél A→B→C→A, páratlannál A→C→B→A.</li>
+      <li>A páros sorszámú lépés mindig egyértelmű: az egyetlen szabályos lépés, amely nem a legkisebb korongot mozgatja.</li>
+    </ol>
+    <p>Ebből rekurzió nélküli algoritmus következik, amelyhez emlékezni sem kell semmire:</p>
+<pre class="code">ismételd 2ⁿ − 1-szer, k = 1, 2, …:
+    ha k páratlan:
+        a legkisebb korongot egy rúddal tovább viszed a körirányban
+    különben:
+        megteszed az egyetlen szabályos lépést,
+        amely nem a legkisebb korongot mozgatja</pre>
+  </div>
+  <aside class="margo">
+    <p>Ez a szakasz a könyv 1.1-én túlmutat, de ugyanabból a rekurzióból következik.</p>
+    <p>Kapcsolat a Gray-kóddal: ha a k-adik lépésben mozgó korong sorszámának megfelelő bitet átbillentjük, a reflektált bináris Gray-kód sorozatát kapjuk.</p>
+  </aside>
+</section>
+
+<!-- §10 -->
+<section class="sec page" id="s-gyak">
+  <div class="body">
+    <div class="eyebrow">§10 · Gyakorlatok</div>
+    <h2>Ugyanaz a gondolat, más szabályokkal</h2>
+    <details>
+      <summary><span class="sq">1. Csak szomszédos rudak között szabad lépni (A↔B, B↔C). Hány lépés kell A-ról C-re?</span></summary>
+      <div class="ans">
+        <p>A legnagyobb korongnak kétszer kell lépnie (A→B, majd B→C). Mindkét lépés előtt a többieknek a harmadik rúdon kell állniuk. Jelölje \(X_n\) a keresett számot:</p>
+        <ol class="steps">
+          <li>\(n-1\) korong A→C: \(X_{n-1}\)</li>
+          <li>legnagyobb A→B: 1</li>
+          <li>\(n-1\) korong C→A: \(X_{n-1}\)</li>
+          <li>legnagyobb B→C: 1</li>
+          <li>\(n-1\) korong A→C: \(X_{n-1}\)</li>
+        </ol>
+        <div class="eq">\[X_0=0,\quad X_n = 3X_{n-1}+2 \;\Rightarrow\; X_n+1 = 3(X_{n-1}+1) \;\Rightarrow\; X_n = 3^n-1.\]</div>
+        <p>A fixpont itt is \(-1\). Érdekesség: összesen \(3^n\) szabályos állás létezik, a megoldás tehát mindegyiken pontosan egyszer halad át.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Az optimális megoldásban hányszor mozdul a d-edik legkisebb korong?</span></summary>
+      <div class="ans">
+        <p>A \(d\)-edik korong a fa \((n-d)\)-edik szintjén mozdul, ahol \(2^{n-d}\) csúcs van. Így \(2^{n-d}\)-szer. A legnagyobb egyszer, a legkisebb \(2^{n-1}\)-szer.</p>
+        <div class="eq">\[\sum_{d=1}^{n} 2^{n-d} = 2^{n-1}+\dots+2+1 = 2^n-1 = T_n. \;\checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Dupla torony: 2n korong, minden méretből kettő (az egyformák felcserélhetők). Hány lépés kell?</span></summary>
+      <div class="ans">
+        <p>Az azonos méretű pár egységként viselkedik, csak két lépés kell az áthelyezéséhez. A rekurzió:</p>
+        <div class="eq">\[A_0=0,\quad A_n = 2A_{n-1}+2 \;\Rightarrow\; A_n+2 = 2(A_{n-1}+2) \;\Rightarrow\; A_n = 2^{n+1}-2 = 2T_n.\]</div>
+        <p>A fixpont itt \(-2\). Próbáld ki a §7 kalkulátorában az „a = 2, b = 2” beállítással.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Mindhárom feladat ugyanarra a sémára fut ki: rekurzió felírása a legnagyobb korong szemszögéből, aztán eltolás a fixpontba.</p>
+  </aside>
+</section>
+
+<!-- §11 -->
+<section class="sec page" id="s-modszer">
+  <div class="body">
+    <div class="eyebrow">§11 · A módszer</div>
+    <h2>Amit ez a feladat tanít</h2>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Kis esetek</b><span>\(T_0, T_1, T_2, T_3\) kézzel. Betekintést adnak, és később ellenőrzésre szolgálnak.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió + bizonyítás</b><span>Konstrukció: \(\le\). Szükségesség: \(\ge\). Együtt: (1.1).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Sejtés + indukció, vagy jóslás nélkül: transzformáció (1.3).</span></div>
+    </div>
+    <p>A könyv a továbbiakban főleg a harmadik lépéssel foglalkozik: hogyan lehet egy rekurziót „jóstehetség nélkül” megoldani. A következő modul (1.2, Egyenesek a síkban) ugyanezt a hármas lépést viszi végig egy geometriai kérdésen.</p>
+  </div>
+  <aside class="margo">
+    <p>A §5 (fa), §7 (fixpont) és §9 (bináris) három független út ugyanahhoz a képlethez. Ha három irányból is ugyanaz jön ki, az a legjobb ellenőrzés.</p>
+  </aside>
+</section>
+
+
+<!-- ================= 1.2 EGYENESEK A SÍKBAN ================= -->
+<header class="hero page" id="e-bevezeto">
+  <div>
+    <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.2</div>
+    <h1>Egyenesek a síkban</h1>
+    <p class="lead">Hány darabra vágható egy pizza n egyenes vágással? Matematikusabban: legfeljebb hány tartományra osztja a síkot n egyenes? A válasz a Hanoi tornyaival rokon, mégis egészen más jellegű növekedést mutat.</p>
+    <div class="formula">\(L_n = \dfrac{n(n+1)}{2} + 1\)</div>
+  </div>
+  <div class="stage">
+    <canvas class="plane" id="e-hero" role="img" aria-label="Egyenesek egyenként kerülnek a síkra, a tartományok színezve"></canvas>
+    <div class="counter"><span id="e-hero-n">n = 0</span><span>tartomány: <b id="e-hero-L">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A második mintapélda inkább geometriai: hány szelet pizzához jutunk \(n\) egyenes vágással? Szakszerűbben: legfeljebb hány tartományra osztja a síkot \(n\) egyenes? A kérdést elsőként Jakob Steiner svájci matematikus válaszolta meg 1826-ban. Itt is a kis esetekkel kezdünk. <i>Forrás: a Konkrét matematika 1.2 fejezetének bevezetője, saját szavakkal.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="e-feladat">
+  <div class="body">
+    <div class="eyebrow">§1 · A feladat</div>
+    <h2>Vágd fel a síkot</h2>
+    <p>Az egyenesek végtelenek, a sík is. A kérdés: \(n\) egyenessel legfeljebb hány tartomány hozható létre? Jelölje ezt \(L_n\). Koppints a síkra két pontot: a kettőn átmenő egyenes a sík része lesz. A tartományok színezve, a számláló a teljes síkra számol, nem csak a látható részre.</p>
+    <div class="fig">
+      <canvas class="plane" id="e-pg" role="application" aria-label="Interaktív sík: két koppintás egy egyenest rajzol"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Egyenesek: n</div><div class="v" id="e-pg-n">0</div></div>
+        <div class="stat"><div class="k">Tartományok</div><div class="v" id="e-pg-r">1</div></div>
+        <div class="stat"><div class="k">Maximum: Lₙ</div><div class="v" id="e-pg-max">1</div></div>
+      </div>
+      <div class="msg" id="e-pg-msg">Koppints két pontra a síkon, vagy kérj véletlen egyenest.</div>
+      <div class="ctrl">
+        <button id="e-pg-rand" class="primary">Véletlen egyenes</button>
+        <button id="e-pg-par">Párhuzamos</button>
+        <button id="e-pg-conc">Metszésponton át</button>
+        <button id="e-pg-undo">Visszavonás</button>
+        <button id="e-pg-clear">Törlés</button>
+      </div>
+    </div>
+    <p class="cap">A „Véletlen egyenes” mindig általános helyzetű: nem párhuzamos egyik korábbival sem, és nem megy át meglévő metszésponton. A másik két gomb szándékosan elrontja ezt, hogy lásd, mennyi tartomány vész el.</p>
+  </div>
+  <aside class="margo">
+    <p>A feladatot Jakob Steiner svájci geométer oldotta meg 1826-ban.</p>
+    <p>Általános helyzet [nincs két párhuzamos egyenes, és nincs három, amely egy ponton megy át]: ez a maximum feltétele.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-kis">
+  <div class="body">
+    <div class="eyebrow">§2 · Kis esetek</div>
+    <h2>A csapda: 1, 2, 4, …</h2>
+    <p>Egyenes nélkül egy tartomány van, eggyel kettő, kettővel négy. A minta \(L_n = 2^n\)-t sugall, de ez a harmadik egyenesnél megbukik: \(L_3 = 7\), nem 8.</p>
+    <div class="fig">
+      <div class="film" id="e-film"></div>
+      <div class="cap">Miért nem 8? Két metsző egyenes négy „negyedet” csinál. Egy harmadik egyenes legfeljebb kettőt metsz a két egyenesből, így csak három negyeden halad át. A negyediket (a vele szemközti szögtartományt) nem éri el, azt nem vágja ketté.</div>
+    </div>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="e-vals"></table></div>
+      <svg id="e-bars" role="img" aria-label="L_n és 2^n összehasonlítása"></svg>
+      <div class="cap">Kék: \(L_n\). Szürke: \(2^n\). Három egyenesig együtt haladnak, utána a kettőhatvány elszakad. A felismert minta kevés adatból félrevezethet, ezért kell bizonyítás.</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Hanoi tornyainál 2ⁿ − 1 jött ki. Itt a kis esetek eleje ugyanúgy duplázódást mutat, mégsem az.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-rekurzio">
+  <div class="body">
+    <div class="eyebrow">§3 · A rekurzió</div>
+    <h2>Mit ad hozzá az n-edik egyenes?</h2>
+    <ol class="steps">
+      <li>Az \(n\)-edik egyenes a korábbi \(n-1\) egyenest legfeljebb \(n-1\) pontban metszi, mindegyiket legfeljebb egyszer.</li>
+      <li>Ez a legfeljebb \(n-1\) pont az egyenest legfeljebb \(n\) darabra vágja: két félegyenesre és közte szakaszokra.</li>
+      <li>Minden darab egy már meglévő tartományon halad át, és azt pontosan kettévágja. Tehát legfeljebb \(n\) új tartomány keletkezik.</li>
+      <li>Pontosan \(n\) akkor lesz, ha a metszéspontok mind különbözők és valóban \(n-1\) darab: ez az általános helyzet.</li>
+    </ol>
+    <div class="fig">
+      <canvas class="plane" id="e-rec" role="img" aria-label="Az n-edik egyenes kiemelve, metszéspontjaival és számozott darabjaival"></canvas>
+      <div class="info" id="e-rec-info"></div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Egyenesek száma">
+          <button id="e-rec-minus" aria-label="Kevesebb egyenes">−</button><span id="e-rec-n">n = 4</span><button id="e-rec-plus" aria-label="Több egyenes">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="eq gold">\[\begin{aligned} L_0 &= 1;\\ L_n &= L_{n-1} + n, \qquad n>0. \end{aligned}\]</div>
+    <div class="two">
+      <div class="bound up"><span class="t">Felső korlát</span>A számolás: egy egyenes legfeljebb \(n\) tartományt vág ketté, ezért \(L_n \le L_{n-1}+n\).</div>
+      <div class="bound lo"><span class="t">Elérhetőség</span>Konstrukció: általános helyzetben pontosan \(n\) darab keletkezik, ezért \(L_n \ge L_{n-1}+n\).</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Fordított szereposztás a Hanoihoz képest: ott a konstrukció adta a felső korlátot, és a gondolatmenet az alsót. Itt a gondolatmenet a felső korlát, és a konstrukció az alsó.</p>
+    <p>A darabok számozása az ábrán: ennyi új tartomány született az új egyenessel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-zart">
+  <div class="body">
+    <div class="eyebrow">§4 · Zárt alak</div>
+    <h2>Gauss-trükk: összeg oda-vissza</h2>
+    <p>A rekurziót kibontva minden lépés egyszerűen hozzáad egy számot:</p>
+    <div class="eq">\[L_n = 1 + 1 + 2 + \dots + n = 1 + S_n, \qquad S_n = \sum_{k=1}^{n} k.\]</div>
+    <p>\(S_n\)-et kétszer írjuk le, egyszer előre, egyszer visszafelé. Az egymás alatti tagok összege mindig \(n+1\), és \(n\) ilyen oszlop van:</p>
+    <div class="fig">
+      <svg id="e-gauss" role="img" aria-label="Lépcső és fordított másolata egy n × (n+1) téglalapot ad"></svg>
+      <div class="info" id="e-gauss-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="e-gauss-n">n <input type="range" id="e-gauss-n" min="1" max="12" value="6"> <span class="mono" id="e-gauss-nv">6</span></label>
+      </div>
+    </div>
+    <div class="eq gold">\[2S_n = n(n+1) \quad\Longrightarrow\quad S_n = \frac{n(n+1)}{2} \quad\Longrightarrow\quad L_n = \frac{n(n+1)}{2} + 1.\]</div>
+    <p>Ellenőrzés indukcióval: \(L_0 = 1\) ✓, és ha \(L_{n-1} = \frac{(n-1)n}{2}+1\), akkor \(L_n = \frac{(n-1)n}{2}+1+n = \frac{n(n+1)}{2}+1\) ✓.</p>
+    <h3>A „miért” másképp: mit számol a képlet?</h3>
+    <p>Írjuk át: \(L_n = 1 + n + \binom{n}{2}\). Általános helyzetben \(\binom{n}{2}\) a metszéspontok száma. Tehát: <b>tartományok = 1 + egyenesek + metszéspontok</b>. Az üres sík 1 tartomány, minden egyenes 1-et ad hozzá önmagában, és minden metszéspont további 1-et. Ez akkor is igaz marad, ha az egyenesek nincsenek általános helyzetben, csak a metszéspontokat a rajtuk átmenő egyenesek szerint kell súlyozni.</p>
+  </div>
+  <aside class="margo">
+    <p>A legenda szerint Gauss iskolásként így adta össze 1-től 100-ig a számokat: 50 pár, mindegyik 101.</p>
+    <p>Hanoi: szorzás, ezért exponenciális. Itt: összeadás, változó taggal, ezért polinom. A 2. fejezet (Összegek) innen indul.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-cikkcakk">
+  <div class="body">
+    <div class="eyebrow">§5 · Cikkcakk</div>
+    <h2>Mi lesz, ha az egyenest megtörjük?</h2>
+    <p>A cikkcakk két félegyenes, közös kezdőponttal. Jelölje \(Z_n\), hogy \(n\) cikkcakk legfeljebb hány tartományra vágja a síkot. Egy cikkcakk olyan, mint két metsző egyenes, csak a csúcson túli folytatásuk hiányzik.</p>
+    <div class="fig">
+      <canvas class="plane" id="e-zz" role="img" aria-label="Cikkcakkok és a belőlük meghosszabbított egyenesek összehasonlítása"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Cikkcakk: n</div><div class="v" id="e-zz-n">2</div></div>
+        <div class="stat"><div class="k">Látható tartomány</div><div class="v" id="e-zz-r">7</div></div>
+        <div class="stat"><div class="k">Képlet</div><div class="v" id="e-zz-f">Z₂ = 7</div></div>
+      </div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Cikkcakkok száma">
+          <button id="e-zz-minus" aria-label="Kevesebb">−</button><span id="e-zz-k">n = 2</span><button id="e-zz-plus" aria-label="Több">+</button>
+        </div>
+        <button id="e-zz-mode" class="primary">Meghosszabbítás egyenessé</button>
+      </div>
+    </div>
+    <p>A csúcsnál a két teljes egyenes négy szögtartományt ad. Ha a csúcson túli két folytatást (szaggatott) elvesszük, ebből a négyből három egybeolvad. Egy cikkcakk tehát 2 tartománnyal kevesebbet ad, mint a neki megfelelő két egyenes, feltéve, hogy a folytatások nem metszenek semmit. A maximum ezért:</p>
+    <div class="eq gold">\[Z_n = L_{2n} - 2n = \frac{2n(2n+1)}{2} + 1 - 2n = 2n^2 - n + 1, \qquad n \ge 0.\]</div>
+    <div class="tbl-wrap"><table class="vals" id="e-zz-tbl"></table></div>
+    <p>Nagy \(n\)-re \(Z_n \approx 2n^2\), \(L_n \approx n^2/2\): a cikkcakkok kb. négyszer annyi tartományt adnak, mint ugyanannyi egyenes. Nem meglepő, hiszen egy cikkcakk nagyjából két egyenes munkáját végzi, és a metszéspontok száma a vonalszám négyzetével nő.</p>
+  </div>
+  <aside class="margo">
+    <p>Az ábra elrendezéseit úgy választottam ki számítással, hogy a látható tartományszám pontosan a képlet maximumát adja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-korlatos">
+  <div class="body">
+    <div class="eyebrow">§6 · Korlátos tartományok</div>
+    <h2>Hány tartomány véges?</h2>
+    <p>A tartományok egy része végtelenbe nyúlik, más része zárt sokszög. Nézzük a síkot nagyon messziről: egy hatalmas kört minden egyenes két helyen metsz, ez \(2n\) pont, ami a kört \(2n\) ívre vágja. Minden ív pontosan egy végtelen tartományhoz tartozik. A többi korlátos:</p>
+    <div class="eq">\[\text{végtelen: } 2n, \qquad \text{korlátos: } L_n - 2n = \frac{(n-1)(n-2)}{2} = \binom{n-1}{2}, \qquad n \ge 1.\]</div>
+    <div class="fig">
+      <canvas class="plane" id="e-kor" role="img" aria-label="Korlátos tartományok erős színnel, végtelenek halványan"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Korlátos (látható)</div><div class="v" id="e-kor-b">3</div></div>
+        <div class="stat"><div class="k">Végtelen (látható)</div><div class="v" id="e-kor-u">8</div></div>
+        <div class="stat"><div class="k">Képlet: C(n−1, 2)</div><div class="v" id="e-kor-f">3</div></div>
+      </div>
+      <div class="ctrl">
+        <label class="rng" for="e-kor-n">n <input type="range" id="e-kor-n" min="1" max="8" value="5"> <span class="mono" id="e-kor-nv">4</span></label>
+      </div>
+    </div>
+    <h3>Ellenőrzés Euler-képlettel</h3>
+    <p>Egy egyenes-elrendezésre a síkban \(V - E + F = 1\), ahol \(V\) a csúcsok (metszéspontok), \(E\) az élek (szakaszok és félegyenesek), \(F\) a tartományok száma. Általános helyzetben \(V = \binom{n}{2}\), és minden egyenes \(n-1\) pontja \(n\) élre vágja, így \(E = n^2\):</p>
+    <div class="eq">\[\frac{n(n-1)}{2} - n^2 + \Bigl(\frac{n(n+1)}{2}+1\Bigr) = 1. \;\checkmark\]</div>
+    <p>Három független út (rekurzió, metszéspont-számlálás, Euler) ugyanazt adja.</p>
+  </div>
+  <aside class="margo">
+    <p>A könyv 1.2-ét kiegészítő szakasz.</p>
+    <p>Az ábrán minden metszéspont a képen belül esik, ezért a látható korlátos tartományok száma megegyezik a képlettel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-gyak">
+  <div class="body">
+    <div class="eyebrow">§7 · Gyakorlatok</div>
+    <h2>Változatok</h2>
+    <details>
+      <summary><span class="sq">1. n egyenes, ebből k párhuzamos, a többi általános helyzetű. Hány tartomány?</span></summary>
+      <div class="ans">
+        <p>A „tartomány = 1 + egyenesek + metszéspontok” szabály szerint csak a metszéspontokat kell újraszámolni. A \(k\) párhuzamos egyenes egymást nem metszi, ez \(\binom{k}{2}\) hiányzó pont:</p>
+        <div class="eq">\[R = L_n - \binom{k}{2}.\]</div>
+        <p>Próbáld ki a §1 „Párhuzamos” gombjával: minden párhuzamos pár eggyel kevesebbet ad.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Egyetlen hármas metszéspont van (három egyenes egy ponton), egyébként általános helyzet. Hány tartomány?</span></summary>
+      <div class="ans">
+        <p>Három általános egyenes 3 metszéspontot adna, itt csak 1 van, de azon 3 egyenes megy át. Súlyozva: egy \(m\)-szeres pont \(m-1\)-et ér, tehát \(3-1 = 2\) a 3 helyett. Egy tartomány vész el:</p>
+        <div class="eq">\[R = L_n - 1.\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. A térben n sík legfeljebb hány részre vágja a teret?</span></summary>
+      <div class="ans">
+        <p>Az \(n\)-edik sík a korábbiakat \(n-1\) egyenesben metszi. Ezek a síkot legfeljebb \(L_{n-1}\) darabra vágják, és minden darab kettévág egy térrészt:</p>
+        <div class="eq">\[P_0 = 1, \quad P_n = P_{n-1} + L_{n-1} \;\Rightarrow\; P_n = \binom{n}{0}+\binom{n}{1}+\binom{n}{2}+\binom{n}{3} = \frac{n^3+5n+6}{6}.\]</div>
+        <p>Értékek: 1, 2, 4, 8, 15, 26, … Itt is a negyedik tagnál bukik a kettőhatvány-minta. A mintázat: egyenesen pont (1 dimenzió), síkban egyenes (2), térben sík (3) esetén a binomiális összeg a dimenzióig fut.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat ugyanazt a trükköt ismétli egy dimenzióval feljebb: az új sík „belül” egy 2D-s egyenes-feladatot old meg.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-modszer">
+  <div class="body">
+    <div class="eyebrow">§8 · Összevetés</div>
+    <h2>Két rekurzió, két növekedés</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>Hanoi tornyai</th><th>Egyenesek</th></tr>
+      <tr><th>Rekurzió</th><td>T<sub>n</sub> = 2T<sub>n−1</sub> + 1</td><td>L<sub>n</sub> = L<sub>n−1</sub> + n</td></tr>
+      <tr><th>Jelleg</th><td>szorzó</td><td>összeadó, változó taggal</td></tr>
+      <tr><th>Megoldási trükk</th><td>eltolás a fixpontba</td><td>összegzés (Gauss)</td></tr>
+      <tr><th>Zárt alak</th><td>2<sup>n</sup> − 1</td><td>n(n+1)/2 + 1</td></tr>
+      <tr><th>Növekedés</th><td>exponenciális</td><td>négyzetes</td></tr>
+      <tr><th>n = 20</th><td>1 048 575</td><td>211</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Kis esetek</b><span>1, 2, 4, 7. Megmutatják a csapdát is.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Az új egyenes legfeljebb n darab: \(\le\). Általános helyzet: \(\ge\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Kibontás összegre, majd Gauss-trükk.</span></div>
+    </div>
+    <p>A következő téma (1.3, Josephus-probléma) egy harmadik típust hoz: a rekurzió felezi az argumentumot, és a megoldás a kettes számrendszerben válik átláthatóvá.</p>
+  </div>
+  <aside class="margo">
+    <p>A táblázat utolsó sora a léptékkülönbséget mutatja: n = 20-nál már közel 5000-szeres a különbség.</p>
+  </aside>
+</section>
+
+<div class="pager">
+  <button id="pv">← Előző</button>
+  <div class="mid" id="pmid"></div>
+  <button id="nx" class="primary">Következő →</button>
+</div>
+
+<!-- ================= 1.3 A JOSEPHUS-PROBLÉMA ================= -->
+<header class="hero page" id="j-bevezeto">
+  <div>
+    <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.3</div>
+    <h1>A Josephus-probléma</h1>
+    <p class="lead">Körben állnak az emberek, és minden második kiesik, amíg csak egy marad. Hova kell állni, hogy te legyél az? A válasz a kettes számrendszerben szinte magától kiolvasható.</p>
+    <div class="formula">\(J(2^m + l) = 2l + 1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="j-hero" role="img" aria-label="Tíz ember áll körben, minden második kiesik, a végén egy túlélő marad" style="max-width:380px;margin:0 auto;display:block"></svg>
+    <div class="counter"><span id="j-hero-a">n = 10 · minden 2.</span><span id="j-hero-b">kiesett: <b>0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A névadó Flavius Josephus az első században élt zsidó–római történetíró. A legenda szerint a római háborúban egy 41 fős lázadó csapat tagjaként barlangba szorult. A társaik az elfogás helyett a halált választották: körbeálltak, és minden harmadikat kiszámolták, amíg mindenki el nem esett. Josephus és egy társa gyorsan kiszámolta, hova álljon, hogy ők maradjanak utoljára.</p>
+    <p>A mi változatunkban \(n\) ember áll körben, 1-től \(n\)-ig megszámozva, és <b>minden második</b> esik ki, amíg egy túlélő marad. A legendás számolást (minden harmadik, \(n = 41\)) a §1 játszótéren külön is kipróbálhatod. <i>Forrás: a Konkrét matematika 1.3 fejezetének bevezetője, saját szavakkal.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="j-feladat">
+  <div class="body">
+    <div class="eyebrow">§1 · A feladat</div>
+    <h2>Tippelj, aztán játszd le</h2>
+    <p>A számolás az 1-es embernél kezdődik: az 1-es marad, a 2-es kiesik, a 3-as marad, a 4-es kiesik, és így tovább körbe-körbe. Koppints arra, akit túlélőnek tippelsz, utána indítsd el a kiesést.</p>
+    <div class="fig">
+      <svg id="j-pg" role="application" aria-label="Interaktív Josephus-kör. Koppints egy emberre a tippeléshez." style="max-width:420px;margin:0 auto;display:block"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Kiesett</div><div class="v" id="j-pg-out">0</div></div>
+        <div class="stat"><div class="k">Hátravan</div><div class="v" id="j-pg-left">10</div></div>
+        <div class="stat"><div class="k">Túlélő</div><div class="v" id="j-pg-surv">?</div></div>
+      </div>
+      <div class="msg" id="j-pg-msg">Koppints egy emberre a tippeléshez.</div>
+      <div class="ctrl">
+        <button id="j-pg-step" class="primary">Egy kiesés</button>
+        <button id="j-pg-play">Lejátszás</button>
+        <button id="j-pg-reset">Újra</button>
+      </div>
+      <div class="ctrl">
+        <label class="rng" for="j-pg-n">n <input type="range" id="j-pg-n" min="2" max="41" value="10"> <span class="mono" id="j-pg-nv">10</span></label>
+        <button id="j-pg-k2" class="primary">Minden 2.</button>
+        <button id="j-pg-k3">Minden 3.</button>
+        <button id="j-pg-leg">Legenda: 41 fő, minden 3.</button>
+      </div>
+      <div class="msg mono" id="j-pg-order" style="font-size:.82rem"></div>
+    </div>
+    <p class="cap">A kiesés sorrendje alul látható. Piros: a legutóbb kiesett, szaggatott keret: a tipped, arany: a túlélő, kék gyűrű: aki a következő számolást kezdi.</p>
+  </div>
+  <aside class="margo">
+    <p>A legendában Josephus a 31. helyen állt, a társa a 16.-on. A §7 egyik feladata ennek az ellenőrzése.</p>
+    <p>A számolás folyamatos: a kieső után a következő élő ember mondja újra, hogy „egy”.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-kis">
+  <div class="body">
+    <div class="eyebrow">§2 · Kis esetek</div>
+    <h2>Mintát keresünk</h2>
+    <p>Jelölje \(J(n)\) a túlélő sorszámát \(n\) emberből. Egyetlen embernél \(J(1) = 1\). Két embernél a 2-es esik ki, így \(J(2) = 1\). Három embernél előbb a 2-es, aztán az 1-es esik ki, így \(J(3) = 3\). Ugyanígy tovább:</p>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="j-vals"></table></div>
+      <svg id="j-bars" role="img" aria-label="J(n) értékei n = 1-től 16-ig" style="width:100%"></svg>
+      <div class="cap">Arany: ahol \(J(n) = 1\), vagyis \(n\) kettőhatvány. Utána a túlélő sorszáma kettesével nő, amíg el nem érjük a következő kettőhatványt, és újra 1-re ugrik.</div>
+    </div>
+    <p>Két megfigyelés kínálkozik. <b>Mindig páratlan</b> a túlélő: az első körben minden páros sorszámú kiesik, tehát páros sorszámú nem maradhat. És <b>ahol \(n\) kettőhatvány, ott \(J(n) = 1\)</b>: ilyenkor minden kör pontosan felez, és a számolás mindig az 1-esre fordul vissza.</p>
+  </div>
+  <aside class="margo">
+    <p>Ez a Hanoi-feladat „kis eseteinek” párja: a minta itt nem egy képlet, hanem egy fűrészfog.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-rekurzio">
+  <div class="body">
+    <div class="eyebrow">§3 · A rekurzió</div>
+    <h2>Egy kör után a feladat felére zsugorodik</h2>
+    <p>Induljunk \(2n\) emberrel. Az első körben kiesik a 2, 4, …, \(2n\) sorszámú, és a számolás újra az 1-esnél tart. Megmaradt \(n\) ember: 1, 3, 5, …, \(2n-1\). Ez ugyanaz a feladat, csak feleakkora körrel, és az új \(j\)-edik ember az eredeti \(2j-1\)-edik.</p>
+    <div class="fig">
+      <svg id="j-rec" role="img" aria-label="Külső kör: eredeti sorszámok, a kieső párosak áthúzva. Belső kör: a megmaradtak új sorszámmal." style="max-width:440px;margin:0 auto;display:block"></svg>
+      <div class="info" id="j-rec-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="j-rec-n">n <input type="range" id="j-rec-n" min="2" max="8" value="5"> <span class="mono" id="j-rec-nv">5</span></label>
+        <button id="j-rec-even" class="primary">2n fő</button>
+        <button id="j-rec-odd">2n + 1 fő</button>
+      </div>
+    </div>
+    <div class="eq">\[J(2n) = 2J(n) - 1.\]</div>
+    <p>Páratlan létszámnál, \(2n+1\) embernél, a 2, 4, …, \(2n\) után még az 1-es is kiesik (a számolás hozzá érkezik vissza, és ő a „második”). Megmaradnak a 3, 5, …, \(2n+1\) sorszámúak, és a számolást a 3-as kezdi. Az új \(j\)-edik ember az eredeti \(2j+1\)-edik:</p>
+    <div class="eq">\[J(2n+1) = 2J(n) + 1.\]</div>
+    <p>Együtt, a kezdőértékkel:</p>
+    <div class="eq gold">\[J(1) = 1, \qquad J(2n) = 2J(n) - 1, \qquad J(2n+1) = 2J(n) + 1 \quad (n \ge 1).\]</div>
+    <p>Ez már egy valódi rekurzió, és gyorsabb is, mint a Hanoi-é: egy lépés felezi az \(n\)-et, ezért \(n\) ezer körüli értékeknél is csak tíz lépés kell. Az ábrán a „kieső + párosítás” gondolat látszik: a belső kör az eredeti kör feleakkora másolata, csak más számozással.</p>
+  </div>
+  <aside class="margo">
+    <p>Az „új sorszám → régi sorszám” leképezés az a lépés, amely az egész megoldást hordozza: \(j \mapsto 2j - 1\), illetve \(j \mapsto 2j + 1\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-zart">
+  <div class="body">
+    <div class="eyebrow">§4 · Zárt alak</div>
+    <h2>Fűrészfog: kettőhatványonként újraindul</h2>
+    <p>A §2 táblázata alapján felírjuk az \(n = 2^m + l\) alakot, ahol \(2^m\) az \(n\)-et nem meghaladó legnagyobb kettőhatvány, és \(0 \le l < 2^m\). A sejtés:</p>
+    <div class="eq gold">\[J(2^m + l) = 2l + 1.\]</div>
+    <div class="fig">
+      <svg id="j-saw" role="img" aria-label="J(n) fűrészfog-grafikon n = 1-től 64-ig" style="width:100%"></svg>
+      <div class="info" id="j-saw-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="j-saw-n">n <input type="range" id="j-saw-n" min="1" max="64" value="27"> <span class="mono" id="j-saw-nv">27</span></label>
+      </div>
+    </div>
+    <h3>Bizonyítás indukcióval \(m\)-re</h3>
+    <ol class="steps">
+      <li>Ha \(m = 0\), akkor \(l = 0\), \(n = 1\), és \(J(1) = 1 = 2 \cdot 0 + 1\).</li>
+      <li>Ha \(m > 0\) és \(n = 2^m + l\) páros, akkor \(l = 2l'\), és \(n/2 = 2^{m-1} + l'\). Az indukciós feltevés szerint \(J(n/2) = 2l' + 1\), a rekurzióból \(J(n) = 2(2l'+1) - 1 = 4l' + 1 = 2l + 1\).</li>
+      <li>Ha \(n = 2^m + l\) páratlan, akkor \(l = 2l' + 1\), és \((n-1)/2 = 2^{m-1} + l'\). Így \(J(n) = 2(2l'+1) + 1 = 4l' + 3 = 2l + 1\).</li>
+    </ol>
+    <p>Mindkét ágban ugyanaz a \(2l+1\) jön ki, ezért a képlet \(m\)-ről \(m-1\)-re és vissza is mindig megáll. A grafikon hat sávja egyetlen szabály hat másolata: egyenes, amely kettesével emelkedik, és minden kettőhatványnál 1-re esik vissza.</p>
+  </div>
+  <aside class="margo">
+    <p>Az indukció itt a rekurzió ugyanazt a szerkezetét követi, mint a Hanoinál, csak a lépés \(n-1\) helyett \(\lfloor n/2 \rfloor\).</p>
+    <p>\(l\) az \(n\) „kettőhatvány feletti maradéka”: ahány emberrel a körnek túl kell lépnie a kettőhatványt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-binaris">
+  <div class="body">
+    <div class="eyebrow">§5 · Bináris szerkezet</div>
+    <h2>Forgasd balra a biteket</h2>
+    <p>Írjuk \(n\)-et kettes számrendszerben: \(n = (1\,b_{m-1} \ldots b_1 b_0)_2\). Ekkor \(l = (b_{m-1} \ldots b_0)_2\), vagyis a vezető 1 levétele után megmaradó szám. A \(2l + 1\) pedig ennek balra tolása egy hellyel, és a végére írt 1-es:</p>
+    <div class="eq gold">\[J\bigl((1\,b_{m-1} \ldots b_1 b_0)_2\bigr) = (b_{m-1} \ldots b_1 b_0\,1)_2.\]</div>
+    <p>A túlélő sorszámát tehát úgy kapjuk, hogy \(n\) bináris alakjának első számjegyét a végére visszük: ez egy ciklikus forgatás.</p>
+    <div class="fig">
+      <div class="bitrow"><span class="bl">n</span><div class="bits" id="j-bits-a"></div></div>
+      <div class="bitarrow">↓ a vezető 1-es a végére kerül</div>
+      <div class="bitrow"><span class="bl">J(n)</span><div class="bits" id="j-bits-b"></div></div>
+      <div class="info" id="j-bin-info"></div>
+      <div class="ctrl">
+        <label for="j-bin-n" class="rng">n <input type="number" id="j-bin-n" min="1" max="511" value="100"></label>
+        <button data-bn="10">10</button><button data-bn="13">13</button><button data-bn="41">41</button><button data-bn="100" class="primary">100</button><button data-bn="255">255</button>
+      </div>
+    </div>
+    <h3>Mi történik, ha többször alkalmazzuk \(J\)-t?</h3>
+    <p>Ha a forgatás után a vezető számjegy 0, az eltűnik, és a szám rövidebb lesz. Néhány lépés után csak az 1-es bitek maradnak:</p>
+    <div class="eq">\[\underbrace{J(J(\ldots J(n)\ldots))}_{\text{elég sokszor}} = 2^{\nu(n)} - 1,\]</div>
+    <p>ahol \(\nu(n)\) az \(n\) bináris alakjában álló 1-es bitek száma. Az ábra alatti sor ezt minden \(n\)-re kiírja.</p>
+  </div>
+  <aside class="margo">
+    <p>\(100 = 1100100_2\), balra forgatva \(1001001_2 = 73\). Ellenőrzés: \(100 = 64 + 36\), \(2 \cdot 36 + 1 = 73\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-altalanos">
+  <div class="body">
+    <div class="eyebrow">§6 · Általánosítás</div>
+    <h2>A repertoármódszer</h2>
+    <p>A \(J\) rekurziója egy általánosabb alakba írható, amelyben az 1, \(-1\) és \(1\) állandók helyén paraméterek állnak:</p>
+    <div class="eq gold">\[f(1) = \alpha, \qquad f(2n) = 2f(n) + \beta, \qquad f(2n+1) = 2f(n) + \gamma.\]</div>
+    <p>A Josephus-feladat az \(\alpha = 1,\ \beta = -1,\ \gamma = 1\) eset. Azt várjuk, hogy a megoldás \(\alpha,\beta,\gamma\)-ban lineáris legyen:</p>
+    <div class="eq">\[f(n) = A(n)\,\alpha + B(n)\,\beta + C(n)\,\gamma.\]</div>
+    <p>Az együtthatókat nem kell külön levezetni: ismert megoldásokat „gyűjtünk”, és ebből egyenletrendszert kapunk. A gyűjtemény a <b>repertoár</b>.</p>
+    <ol class="steps">
+      <li><b>\(\alpha = 1,\ \beta = \gamma = 0\).</b> Ekkor \(f(2n) = f(2n+1) = 2f(n)\), tehát \(f(n) = 2^m\). Ebből \(A(n) = 2^m\).</li>
+      <li><b>\(f(n) = 1\).</b> Ez teljesíti a rekurziót, ha \(\alpha = 1\), \(1 = 2 \cdot 1 + \beta\) és \(1 = 2 \cdot 1 + \gamma\), vagyis \(\beta = \gamma = -1\). Ebből \(A - B - C = 1\).</li>
+      <li><b>\(f(n) = n\).</b> Itt \(\alpha = 1\), \(2n = 2n + \beta\) és \(2n + 1 = 2n + \gamma\), tehát \(\beta = 0\), \(\gamma = 1\). Ebből \(A + C = n\).</li>
+    </ol>
+    <p>Az első egyenlet \(A = 2^m\), a harmadikból \(C = n - 2^m = l\), a másodikból \(B = A - 1 - C = 2^m - 1 - l\). Az eredmény:</p>
+    <div class="eq gold">\[f(2^m + l) = 2^m\,\alpha + (2^m - 1 - l)\,\beta + l\,\gamma.\]</div>
+    <p>Ellenőrzés a Josephus-esetre: \(2^m - (2^m - 1 - l) + l = 2l + 1\). \(\checkmark\)</p>
+    <h3>Számjegycsere</h3>
+    <p>Ugyanez szebben is kimondható. Írd fel \(n\) bináris alakját, és minden számjegyet cserélj ki: a vezető 1 helyére \(\alpha\) kerül, minden 0 helyére \(\beta\), minden további 1 helyére \(\gamma\). A kapott „számjegysor” kettes számrendszerű értéke \(f(n)\). A Josephus-esetben \(13 = 1101_2\) számjegyei \((1,\,1,\,-1,\,1)\):</p>
+    <div class="eq">\[(1\;\;1\;\;{-1}\;\;1)_2 = 8 + 4 - 2 + 1 = 11 = J(13).\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="j-a">α <input type="number" id="j-a" value="1"></label>
+        <label class="rng" for="j-b">β <input type="number" id="j-b" value="-1"></label>
+        <label class="rng" for="j-c">γ <input type="number" id="j-c" value="1"></label>
+        <label class="rng" for="j-gn">n <input type="number" id="j-gn" min="1" max="100000" value="13"></label>
+      </div>
+      <div class="ctrl">
+        <button data-pre="1,-1,1" class="primary">Josephus: 1, −1, 1</button>
+        <button data-pre="0,0,1">Vezető bit levétele: 0, 0, 1</button>
+        <button data-pre="1,0,0">Legnagyobb 2-hatvány: 1, 0, 0</button>
+        <button data-pre="1,1,1">Csupa egyes: 1, 1, 1</button>
+      </div>
+      <div class="info" id="j-gen-info"></div>
+      <div class="tbl-wrap"><table class="vals" id="j-gen-tbl"></table></div>
+      <div class="cap">A táblázat az első értékeket mutatja (keskeny képernyőn 10-et): felül a rekurzióval lépésenként számolt, alul a zárt alakkal kapott érték.</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(f(n) = 1\) és \(f(n) = n\) „gyűjtött megoldások”: úgy választjuk meg \(\alpha,\beta,\gamma\)-t, hogy ismert függvény legyen a megoldás.</p>
+    <p>A módszer jól jellemzi az egész fejezetet: nem a megoldást keressük, hanem olyan megoldásokat, amelyeket már ismerünk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-gyak">
+  <div class="body">
+    <div class="eyebrow">§7 · Gyakorlatok</div>
+    <h2>Változatok</h2>
+    <details>
+      <summary><span class="sq">1. Mikor éli túl az 1-es ember?</span></summary>
+      <div class="ans">
+        <p>\(J(n) = 2l + 1 = 1\) pontosan akkor, ha \(l = 0\), vagyis \(n = 2^m\). Kettőhatvány létszámnál minden kör pontosan felezi a kört, és a számolás mindig az 1-esnél indul újra, így ő soha nem esik ki.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mely \(n\)-re igaz \(J(n) = n\)?</span></summary>
+      <div class="ans">
+        <p>\(2l + 1 = 2^m + l\) esetén \(l = 2^m - 1\), és ez még megengedett (\(l < 2^m\)). Ekkor \(n = 2^{m+1} - 1\). Bitekben: a forgatás akkor hagyja változatlanul a számot, ha minden bit 1. Értékek: \(n = 1, 3, 7, 15, 31, \dots\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igazold, hogy a \(J\) ismételt alkalmazása \(2^{\nu(n)} - 1\)-hez vezet.</span></summary>
+      <div class="ans">
+        <p>Minden \(J\) a bitsor ciklikus forgatása balra, ahol a vezető 1 a sor végére kerül. Ha utána a legelső bit 0, az eltűnik: a szám rövidebb lesz, de az 1-es bitek száma nem változik. A hossz csak csökkenhet, így véges sok lépés után a számban nincs vezető 0, vagyis minden bit 1: ez \(\nu(n)\) darab egyes, azaz \(2^{\nu(n)} - 1\). Ez fixpont (2. feladat).</p>
+        <p>Példa: \(13 \to 11 \to 7\). \(13 = 1101_2\), három egyes, \(2^3 - 1 = 7\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. A legenda: \(n = 41\), minden harmadik esik ki. Hova állt Josephus és a társa?</span></summary>
+      <div class="ans">
+        <p>A „minden \(k\)-adik” általános esetre a kettes szerkezet nem érvényes, de egy másik rekurzió igen. Számozzuk a pozíciókat 0-tól, és jelölje \(g(n)\) a túlélő 0-tól számozott helyét:</p>
+        <div class="eq">\[g(1) = 0, \qquad g(n) = \bigl(g(n-1) + k\bigr) \bmod n.\]</div>
+        <p>Indok: az első kieső után \(n-1\) ember marad, és a számolás a kieső utáni emberrel újraindul. A \(k\) lépéses eltolás a régi és az új számozás különbsége. A túlélő sorszáma \(g(n) + 1\). Számítva \(k = 3\), \(n = 41\) esetén a túlélő a <b>31.</b>, és az utolsó kieső a <b>16.</b> Tehát Josephus a 31. helyen, a társa a 16. helyen állt. Kipróbálhatod a §1 „Legenda” gombjával.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladatban a számítógép is a gyors rekurziót használja: \(n\) lépés, szimuláció nélkül.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-modszer">
+  <div class="body">
+    <div class="eyebrow">§8 · Összevetés</div>
+    <h2>Három rekurzió, három növekedés</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>Hanoi</th><th>Egyenesek</th><th>Josephus</th></tr>
+      <tr><th>Rekurzió</th><td>T<sub>n</sub> = 2T<sub>n−1</sub> + 1</td><td>L<sub>n</sub> = L<sub>n−1</sub> + n</td><td>J(2n) = 2J(n) − 1<br>J(2n+1) = 2J(n) + 1</td></tr>
+      <tr><th>Lépés</th><td>n → n−1</td><td>n → n−1</td><td>n → n/2</td></tr>
+      <tr><th>Megoldási trükk</th><td>eltolás a fixpontba</td><td>összegzés (Gauss)</td><td>kettes számrendszer, repertoár</td></tr>
+      <tr><th>Zárt alak</th><td>2<sup>n</sup> − 1</td><td>n(n+1)/2 + 1</td><td>2l + 1, n = 2<sup>m</sup> + l</td></tr>
+      <tr><th>Jelleg</th><td>exponenciális</td><td>négyzetes</td><td>fűrészfog, lineáris sávokban</td></tr>
+      <tr><th>n = 20</th><td>1 048 575</td><td>211</td><td>9</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Kis esetek</b><span>1, 1, 3, 1, 3, 5, 7, 1: a fűrészfog már látszik.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Egy kör felez: \(2n\)-ből \(n\) lesz, új számozással.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Sejtés + indukció, majd a bitforgatás és a repertoár.</span></div>
+    </div>
+    <p>Az 1. fejezet három feladata ugyanazt a menetet követi: kis esetek, rekurzió, zárt alak. A különbség a lépés jellegében van: egyet leveszünk (Hanoi, egyenesek), vagy felezünk (Josephus). A 2. fejezet (Összegek) azt mutatja meg, hogyan lehet ezeket a zárt alakokat szisztematikusan, jelöléssel levezetni.</p>
+  </div>
+  <aside class="margo">
+    <p>A fűrészfog azért nem exponenciális, mert a felezés miatt a rekurzió \(\log_2 n\) lépés mély.</p>
+  </aside>
+</section>
+
+<footer id="foot"></footer>
+</div>
+</main>
+</div>
+
+<script>
+(()=>{
+"use strict";
+const $=s=>document.querySelector(s);
+const NS="http://www.w3.org/2000/svg";
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function el(tag,attrs,parent){const e=document.createElementNS(NS,tag);if(attrs)for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function txt(parent,x,y,s,cls,anchor){const t=el("text",{x,y,class:"svg-t "+(cls||""),"text-anchor":anchor||"middle"},parent);t.textContent=s;return t;}
+function clear(s){while(s.firstChild)s.removeChild(s.firstChild);}
+function diskColor(k,n){const t=n<=1?0:(k-1)/(n-1);const h=228-t*(228-40);return `hsl(${h.toFixed(0)} 62% 54%)`;}
+const SUP={"0":"⁰","1":"¹","2":"²","3":"³","4":"⁴","5":"⁵","6":"⁶","7":"⁷","8":"⁸","9":"⁹","-":"⁻"};
+const sup=n=>String(n).split("").map(c=>SUP[c]||c).join("");
+const hu=(x,d)=>x.toLocaleString("hu-HU",{maximumFractionDigits:d??0});
+const big=b=>b.toString().replace(/\B(?=(\d{3})+(?!\d))/g," ");
+const PEG="ABC";
+let curPage="";
+const az=k=>(k===1||k===5||(k>=50&&k<60))?"az":"a";
+function typeset(node){const mj=window.MathJax;if(mj&&mj.typesetPromise){(mj.startup&&mj.startup.promise?mj.startup.promise:Promise.resolve()).then(()=>mj.typesetPromise([node])).catch(()=>{});}}
+
+/* Optimális megoldás tetszőleges szabályos állásból a target rúdra (a pegs-et szimulálja és módosítja). */
+function* solveFrom(pegs,k,target){
+  if(k===0)return;
+  const p=pegs.findIndex(a=>a.includes(k));
+  if(p===target){yield* solveFrom(pegs,k-1,target);return;}
+  const other=3-p-target;
+  yield* solveFrom(pegs,k-1,other);
+  pegs[p].pop();pegs[target].push(k);
+  yield [p,target];
+  yield* solveFrom(pegs,k-1,target);
+}
+const clone=p=>p.map(a=>a.slice());
+function remaining(pegs,n,target){let c=0;for(const _ of solveFrom(clone(pegs),n,target))c++;return c;}
+function startPegs(n,s){const p=[[],[],[]];for(let k=n;k>=1;k--)p[s||0].push(k);return p;}
+
+/* ---------- Torony komponens ---------- */
+class Tower{
+  constructor(svg,o){
+    this.svg=svg;this.o=Object.assign({W:600,H:260,interactive:false,mode:"grad",labels:true,nums:true,target:null},o||{});
+    this.W=this.o.W;this.H=this.o.H;svg.setAttribute("viewBox",`0 0 ${this.W} ${this.H}`);
+    this.tok=0;this.busy=false;this.sel=null;this.n=this.o.n||4;this.pegs=startPegs(this.n);this.moves=0;this.draw();
+  }
+  reset(n){this.n=n;this.pegs=startPegs(n);this.moves=0;this.sel=null;this.tok++;this.busy=false;this.draw();}
+  setPegs(p,n){this.pegs=clone(p);this.n=n;this.draw();}
+  geom(){const W=this.W,H=this.H,n=Math.max(this.n,1);const baseY=H-(this.o.labels?26:10);const px=[W/6,W/2,5*W/6];const maxW=W/3-12,minW=Math.max(14,maxW*.24);const h=Math.min(26,(baseY-30)/(n+.9));return {baseY,px,maxW,minW,h,lift:Math.max(2,baseY-h*(n+1.5))};}
+  dw(k){const g=this.g;return this.n===1?g.maxW*.55:g.minW+(g.maxW-g.minW)*(k-1)/(this.n-1);}
+  pos(k,peg,lvl){const g=this.g;return {x:g.px[peg]-this.dw(k)/2,y:g.baseY-(lvl+1)*g.h+1};}
+  color(k){if(this.o.mode==="group")return k===this.n?"var(--accent-2)":"var(--accent)";if(this.o.mode==="last")return k===this.n?"var(--accent-2)":diskColor(k,this.n);return diskColor(k,this.n);}
+  draw(){
+    const s=this.svg;clear(s);const g=this.g=this.geom();
+    el("rect",{x:6,y:g.baseY,width:this.W-12,height:7,rx:3,class:"t-base"},s);
+    this.pe=g.px.map((x,i)=>{const ph=(this.n+.9)*g.h;const r=el("rect",{x:x-3,y:g.baseY-ph,width:6,height:ph,rx:3,class:"t-peg"+(this.o.target===i?" tgt":"")},s);if(this.o.labels)txt(s,x,this.H-5,PEG[i],"t-lab");return r;});
+    this.de={};const layer=el("g",{},s);this.layer=layer;
+    for(let k=1;k<=this.n;k++){
+      const gg=el("g",{class:"disk"},layer);const w=this.dw(k),hh=g.h-2;
+      const r=el("rect",{x:0,y:0,width:w,height:hh,rx:Math.min(8,hh/2)},gg);r.setAttribute("style",`fill:${this.color(k)}`);
+      if(this.o.nums&&hh>=12&&w>=18){const t=el("text",{x:w/2,y:hh/2+.5,class:"t-dn","text-anchor":"middle","dominant-baseline":"central"},gg);t.textContent=k;}
+      this.de[k]=gg;
+    }
+    this.place();
+    if(this.o.interactive){
+      g.px.forEach((x,i)=>{const r=el("rect",{x:x-this.W/6+2,y:0,width:this.W/3-4,height:this.H,class:"t-hit",tabindex:"0",role:"button","aria-label":"Rúd "+PEG[i]},s);
+        r.addEventListener("click",()=>this.tap(i));
+        r.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();this.tap(i);}});});
+    }
+  }
+  setXY(k,x,y){this.de[k].setAttribute("transform",`translate(${x.toFixed(2)},${y.toFixed(2)})`);}
+  place(){this.pegs.forEach((a,p)=>a.forEach((k,i)=>{const q=this.pos(k,p,i);this.setXY(k,q.x,q.y);}));}
+  top(p){const a=this.pegs[p];return a.length?a[a.length-1]:0;}
+  legal(a,b){const t=this.top(a);if(!t)return false;const u=this.top(b);return !u||u>t;}
+  async move(a,b,dur,fromY){
+    if(!this.legal(a,b))return 0;
+    const k=this.top(a);const p0=this.pos(k,a,this.pegs[a].length-1);if(fromY!=null)p0.y=fromY;
+    this.pegs[a].pop();const p1=this.pos(k,b,this.pegs[b].length);this.pegs[b].push(k);this.moves++;
+    if(!dur||reduce){this.setXY(k,p1.x,p1.y);return k;}
+    await this.anim(k,p0,p1,dur);return k;
+  }
+  anim(k,p0,p1,dur){
+    const tok=this.tok,L=this.g.lift;const d1=Math.max(0,p0.y-L),d2=Math.abs(p1.x-p0.x),d3=Math.max(0,p1.y-L),T=d1+d2+d3||1;const sx=Math.sign(p1.x-p0.x);
+    return new Promise(res=>{const t0=performance.now();
+      const f=now=>{if(tok!==this.tok)return res();let t=Math.min(1,(now-t0)/dur);t=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;const s=t*T;let x,y;
+        if(s<=d1){x=p0.x;y=p0.y-s;}else if(s<=d1+d2){x=p0.x+sx*(s-d1);y=L;}else{x=p1.x;y=L+(s-d1-d2);}
+        this.setXY(k,x,y);if(t<1)requestAnimationFrame(f);else res();};
+      requestAnimationFrame(f);});
+  }
+  flash(i){const r=this.pe[i];r.classList.add("bad");setTimeout(()=>r.classList.remove("bad"),450);}
+  async tap(i){
+    if(this.busy)return;
+    if(this.sel===null){
+      if(!this.pegs[i].length){this.flash(i);this.o.onInfo&&this.o.onInfo("Ez a rúd üres, innen nincs mit emelni.","bad");return;}
+      this.sel=i;const k=this.top(i);const q=this.pos(k,i,this.pegs[i].length-1);this.selY=q.y-this.g.h*.8;this.setXY(k,q.x,this.selY);this.pe[i].classList.add("selp");
+      this.o.onInfo&&this.o.onInfo(`${k}. korong kiválasztva (${PEG[i]}). Hová tegyem?`,"");return;
+    }
+    const a=this.sel;this.sel=null;this.pe[a].classList.remove("selp");
+    if(a===i){this.place();this.o.onInfo&&this.o.onInfo("Kijelölés visszavonva.","");return;}
+    if(!this.legal(a,i)){this.place();this.flash(i);this.o.onInfo&&this.o.onInfo(`Szabálytalan: ${az(this.top(a))} ${this.top(a)}. korong nem kerülhet a kisebb ${this.top(i)}. korongra.`,"bad");return;}
+    this.busy=true;await this.move(a,i,260,this.selY);this.busy=false;this.o.onMove&&this.o.onMove();
+  }
+  cancelSel(){if(this.sel!==null){this.pe[this.sel].classList.remove("selp");this.sel=null;this.place();}}
+}
+
+/* ---------- HERO ---------- */
+const hero=new Tower($("#hero-svg"),{n:5,H:250,mode:"last"});
+(async function heroLoop(){
+  if(reduce){$("#hero-k").textContent="—";return;}
+  let target=2;
+  for(;;){
+    hero.moves=0;$("#hero-k").textContent="0";await sleep(900);
+    for(const [a,b] of solveFrom(clone(hero.pegs),5,target)){
+      while(document.hidden||curPage!=="hanoi-bevezeto")await sleep(400);
+      await hero.move(a,b,430);$("#hero-k").textContent=hero.moves;await sleep(70);
+    }
+    await sleep(1800);target=target===2?0:2;
+  }
+})();
+
+/* ---------- §1 Játszótér ---------- */
+let pgN=4,playing=false;
+const pgMsg=(s,c)=>{const m=$("#pg-msg");m.textContent=s;m.className="msg "+(c||"");};
+const pg=new Tower($("#pg-svg"),{n:pgN,H:290,interactive:true,target:2,mode:"last",onInfo:pgMsg,onMove:()=>pgUpdate(true)});
+function pgUpdate(after){
+  const opt=2**pgN-1,rem=remaining(pg.pegs,pgN,2);
+  $("#pg-moves").textContent=pg.moves;$("#pg-opt").textContent=opt;$("#pg-rem").textContent=rem;$("#pg-n").textContent="n = "+pgN;
+  if(rem===0&&pg.moves>0){
+    if(pg.moves===opt)pgMsg(`Kész, ${pg.moves} lépéssel. Ez optimális: 2${sup(pgN)} − 1 = ${opt}.`,"ok");
+    else pgMsg(`Kész, ${pg.moves} lépéssel. Az optimum ${opt}, tehát ${pg.moves-opt} felesleges lépés volt benne.`,"");
+  }else if(after&&!playing){
+    const ideal=opt-pg.moves;
+    if(rem===ideal)pgMsg(`Jó úton jársz: még ${rem} lépés, pontosan az optimum szerint.`,"ok");
+    else pgMsg(`Innen még legalább ${rem} lépés kell; az optimális úton most ${Math.max(ideal,0)} lenne hátra.`,"");
+  }
+}
+function pgSet(n){pgN=Math.min(10,Math.max(1,n));playing=false;$("#pg-play").textContent="Megoldás innen";pg.reset(pgN);pgUpdate();pgMsg("Koppints egy rúdra a felső korong kiválasztásához, majd a célrúdra.");}
+$("#pg-minus").onclick=()=>pgSet(pgN-1);$("#pg-plus").onclick=()=>pgSet(pgN+1);$("#pg-reset").onclick=()=>pgSet(pgN);
+const pgDur=()=>+$("#pg-speed").value;
+$("#pg-step").onclick=async()=>{
+  if(playing||pg.busy)return;pg.cancelSel();const it=solveFrom(clone(pg.pegs),pgN,2).next();if(it.done){pgUpdate(true);return;}
+  pg.busy=true;await pg.move(it.value[0],it.value[1],pgDur());pg.busy=false;pgUpdate(true);
+};
+$("#pg-play").onclick=async()=>{
+  if(playing){playing=false;return;}
+  if(pg.busy)return;pg.cancelSel();
+  if(remaining(pg.pegs,pgN,2)===0)pgSet(pgN);
+  playing=true;$("#pg-play").textContent="Megállítás";pg.busy=true;const tok=pg.tok;
+  pgMsg("Optimális befejezés az aktuális állásból…","");
+  for(const [a,b] of solveFrom(clone(pg.pegs),pgN,2)){if(!playing||tok!==pg.tok)break;await pg.move(a,b,pgDur());pgUpdate();await sleep(Math.min(120,pgDur()/4));}
+  if(tok===pg.tok){pg.busy=false;playing=false;$("#pg-play").textContent="Megoldás innen";pgUpdate(true);}
+};
+pgUpdate();
+
+/* ---------- §2 Filmszalag, táblázat, oszlopok ---------- */
+(function film(){
+  const box=$("#film");const sim=startPegs(3);const frames=[{p:clone(sim),c:"0. kiinduló"}];
+  for(const [a,b] of solveFrom(sim,3,2)){/* sim már módosult */frames.push({p:clone(sim),c:`${frames.length}. ${sim[b][sim[b].length-1]}: ${PEG[a]}→${PEG[b]}`});}
+  frames.forEach(f=>{const d=document.createElement("div");d.className="frame";const s=document.createElementNS(NS,"svg");d.appendChild(s);const c=document.createElement("div");c.className="fc";c.textContent=f.c;d.appendChild(c);box.appendChild(d);new Tower(s,{n:3,W:240,H:120,mode:"last",nums:false}).setPegs(f.p,3);});
+})();
+(function vals(){
+  const t=$("#vals");const N=10;let h="<tr><th>n</th>";for(let n=0;n<=N;n++)h+=`<td>${n}</td>`;
+  h+="</tr><tr><th>T<sub>n</sub></th>";for(let n=0;n<=N;n++)h+=`<td>${2**n-1}</td>`;
+  h+="</tr><tr class=\"hl\"><th>T<sub>n</sub> + 1</th>";for(let n=0;n<=N;n++)h+=`<td>${2**n}</td>`;t.innerHTML=h+"</tr>";
+  const s=$("#bars");const W=640,H=200,l=40,r=10,tp=18,b=26;s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const bw=(W-l-r)/(N+1),ys=v=>H-b-(H-b-tp)*v/1023;
+  [0,256,512,768,1023].forEach(v=>{el("line",{x1:l,x2:W-r,y1:ys(v),y2:ys(v),class:"grid-l"},s);txt(s,l-6,ys(v)+4,v,"","end");});
+  for(let n=0;n<=N;n++){const v=2**n-1,x=l+n*bw+bw*.18,w=bw*.64;el("rect",{x,y:ys(v),width:w,height:Math.max(0,H-b-ys(v)),rx:3,style:`fill:${diskColor(Math.max(n,1),N)}`},s);txt(s,x+w/2,ys(v)-5,v,"ink");txt(s,x+w/2,H-8,"n="+n);}
+})();
+
+/* ---------- §3 Fázisok ---------- */
+(function phaseStatic(){
+  const box=$("#phase-static");const n=4;
+  const st=[[[4,3,2,1],[],[]],[[4],[3,2,1],[]],[[],[3,2,1],[4]],[[],[],[4,3,2,1]]];
+  const cap=["Kiinduló állás","1. fázis után: T₃ = 7","2. fázis után: +1","3. fázis után: +7 = 15"];
+  st.forEach((p,i)=>{const d=document.createElement("div");d.className="ph-cell";const s=document.createElementNS(NS,"svg");d.appendChild(s);const c=document.createElement("div");c.className="fc";c.textContent=cap[i];d.appendChild(c);box.appendChild(d);new Tower(s,{n,W:240,H:120,mode:"group",nums:false}).setPegs(p,n);});
+})();
+let phN=4;
+const ph=new Tower($("#ph-svg"),{n:phN,H:250,mode:"group"});
+function phLabels(c){const t=2**(phN-1)-1;$("#c1").textContent=`${c[0]} / ${t}`;$("#c2").textContent=`${c[1]} / 1`;$("#c3").textContent=`${c[2]} / ${t}`;
+  $("#chip1").firstChild.textContent=`1. fázis: ${phN-1} korong A→B`;$("#chip3").firstChild.textContent=`3. fázis: ${phN-1} korong B→C`;}
+function phSet(n){phN=Math.min(7,Math.max(2,n));$("#ph-n").textContent="n = "+phN;ph.reset(phN);phLabels([0,0,0]);[1,2,3].forEach(i=>$("#chip"+i).classList.remove("on"));}
+$("#ph-minus").onclick=()=>phSet(phN-1);$("#ph-plus").onclick=()=>phSet(phN+1);
+$("#ph-play").onclick=async()=>{
+  phSet(phN);const tok=ph.tok;const c=[0,0,0];let phase=1;const dur=phN>5?200:360;
+  for(const [a,b] of solveFrom(clone(ph.pegs),phN,2)){
+    if(tok!==ph.tok)return;
+    const k=ph.top(a);if(k===phN)phase=2;else if(phase===2)phase=3;
+    [1,2,3].forEach(i=>$("#chip"+i).classList.toggle("on",i===phase));
+    await ph.move(a,b,dur);if(tok!==ph.tok)return;c[phase-1]++;phLabels(c);await sleep(60);
+  }
+};
+phLabels([0,0,0]);
+
+/* ---------- §4 Kritikus pillanat ---------- */
+(function lower(){
+  const s=$("#lb-svg");const n=5;const t=new Tower(s,{n,H:300,mode:"group"});t.setPegs([[5],[4,3,2,1],[]],n);
+  const g=t.g,y=g.baseY-g.h*1.6;const x0=g.px[0],x2=g.px[2];const stackTop=g.baseY-4*g.h;
+  el("path",{d:`M ${x0} ${y-14} Q ${(x0+x2)/2} ${y-300} ${x2} ${y-14}`,class:"arrow","stroke-dasharray":"5 4"},s);
+  el("path",{d:`M ${x2} ${y-8} l -8 -12 l 13 -1 z`,class:"arrowhead"},s);
+  txt(s,(x0+x2)/2,y-170,"a legnagyobb korong mozdul: A → C","ink");
+  txt(s,g.px[1],stackTop-30,"n − 1 korong egy rúdon:","acc");
+  txt(s,g.px[1],stackTop-14,"idáig ≥ T(n−1) lépés","acc");
+  txt(s,g.px[2],g.baseY-8,"üres","");
+})();
+
+/* ---------- §5 Rekurziós fa ---------- */
+let trN=4;
+function drawTree(){
+  const s=$("#tree-svg");clear(s);const n=trN;const W=640,lh=54,top=24,H=top+lh*(n-1)+40;s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const Wt=W-120;
+  for(let k=0;k<n;k++){const cnt=2**k,y=top+k*lh;
+    for(let i=0;i<cnt;i++){const x=(i+.5)*Wt/cnt;if(k<n-1){const yc=y+lh,c1=(2*i+.5)*Wt/(2*cnt),c2=(2*i+1.5)*Wt/(2*cnt);el("line",{x1:x,y1:y,x2:c1,y2:yc,class:"grid-l"},s);el("line",{x1:x,y1:y,x2:c2,y2:yc,class:"grid-l"},s);}}
+  }
+  for(let k=0;k<n;k++){const cnt=2**k,y=top+k*lh,r=Math.max(5,Math.min(15,Wt/cnt/2-2));
+    for(let i=0;i<cnt;i++){const x=(i+.5)*Wt/cnt;el("circle",{cx:x,cy:y,r,style:`fill:${diskColor(n-k,n)}`},s);if(r>=9){const t=el("text",{x,y:y+.5,class:"t-dn","text-anchor":"middle","dominant-baseline":"central"},s);t.textContent=n-k;}}
+    txt(s,W-112,y+4,`2${sup(k)} = ${cnt} lépés`,"ink","start");
+  }
+  const terms=[];for(let k=0;k<n;k++)terms.push(2**k);
+  $("#tree-sum").textContent=`T${String(n).split("").map(c=>"₀₁₂₃₄₅₆₇₈₉"[c]).join("")} = ${terms.join(" + ")} = ${2**n-1} = 2${sup(n)} − 1`;
+  $("#tr-n").textContent="n = "+n;
+}
+$("#tr-minus").onclick=()=>{trN=Math.max(1,trN-1);drawTree();};$("#tr-plus").onclick=()=>{trN=Math.min(6,trN+1);drawTree();};
+drawTree();
+
+/* ---------- §7 Számegyenes ---------- */
+(function numberLine(){
+  const s=$("#nl-svg");const W=640,H=190;s.setAttribute("viewBox",`0 0 ${W} ${H}`);const l=30,r=20,y=150;const X=v=>l+(v+1)*(W-l-r)/16;
+  el("line",{x1:l-10,x2:W-r+6,y1:y,y2:y,class:"axis"},s);
+  for(let v=-1;v<=15;v++)el("line",{x1:X(v),x2:X(v),y1:y-4,y2:y+4,class:"axis"},s);
+  el("circle",{cx:X(-1),cy:y,r:6,style:"fill:var(--accent-2)"},s);txt(s,X(-1),y+22,"−1","gold");txt(s,X(-1)+4,y+38,"fixpont","gold","start");
+  const T=[0,1,3,7,15];
+  T.forEach((v,i)=>{const d=v+1;const x1=X(-1),x2=X(v),hgt=14+i*22;
+    el("path",{d:`M ${x1} ${y-8} C ${x1} ${y-8-hgt} ${x2} ${y-8-hgt} ${x2} ${y-8}`,class:"arrow",style:`stroke:${diskColor(i+1,5)}`},s);
+    txt(s,(x1+x2)/2+(i===0?10:0),y-14-hgt*.75,`${d}`,"ink");
+    el("circle",{cx:x2,cy:y,r:5,style:`fill:${diskColor(i+1,5)}`},s);txt(s,x2,y+22,`T${"₀₁₂₃₄"[i]}=${v}`,"");});
+  txt(s,W-r,24,"távolság a fixponttól: 1, 2, 4, 8, 16","acc","end");
+})();
+
+/* ---------- §7 Kalkulátor ---------- */
+function gcd(a,b){a=a<0n?-a:a;b=b<0n?-b:b;while(b){[a,b]=[b,a%b];}return a||1n;}
+function frac(p,q){if(q<0n){p=-p;q=-q;}const g=gcd(p,q);return [p/g,q/g];}
+function fTex(p,q){const neg=p<0n;const a=neg?-p:p;const body=q===1n?`${a}`:`\\tfrac{${a}}{${q}}`;return {neg,body,zero:p===0n,one:p===q};}
+function calc(){
+  const a=BigInt(Math.trunc(+$("#ca").value||0)),b=BigInt(Math.trunc(+$("#cb").value||0)),x0=BigInt(Math.trunc(+$("#cx").value||0));
+  const out=$("#calc-out");let tex,closed;
+  if(a===1n){tex=`\\(x_n = ${x0} + ${b}\\,n\\)`;closed=n=>x0+BigInt(n)*b;}
+  else{
+    const [sp,sq]=frac(b,a-1n);           /* s = b/(a-1), a fixpont −s */
+    const [kp,kq]=frac(x0*sq+sp,sq);      /* K = x0 + s */
+    const aT=a<0n?`(${a})`:`${a}`;const K=fTex(kp,kq),S=fTex(sp,sq);
+    let lhs;if(K.zero)lhs="";else if(K.one)lhs=`${aT}^n`;else if(kp===-kq)lhs=`-${aT}^n`;else lhs=`${K.neg?"-":""}${K.body}\\cdot ${aT}^n`;
+    let tail="";if(!S.zero)tail=S.neg?` + ${S.body}`:` - ${S.body}`;
+    if(!lhs)lhs=S.zero?"0":"";if(!lhs&&tail.startsWith(" + "))tail=tail.slice(3);if(!lhs&&tail.startsWith(" - "))tail="-"+tail.slice(3);
+    tex=`\\(x_n = ${lhs}${tail}\\)`;
+    closed=n=>{const num=(x0*sq+sp)*a**BigInt(n)-sp;return num%sq===0n?num/sq:null;};
+  }
+  out.innerHTML=tex;typeset(out);
+  let rows="<tr><th>n</th>",r1="<tr><th>rekurzióval</th>",r2="<tr><th>zárt alakkal</th>",r3="<tr><th>egyezik</th>";let x=x0;
+  for(let n=0;n<=8;n++){if(n>0)x=a*x+b;const c=closed(n);rows+=`<td>${n}</td>`;r1+=`<td>${big(x)}</td>`;r2+=`<td>${c===null?"–":big(c)}</td>`;r3+=`<td style="color:var(--${c===x?"good":"bad"})">${c===x?"✓":"✗"}</td>`;}
+  $("#calc-tbl").innerHTML=rows+"</tr>"+r1+"</tr>"+r2+"</tr>"+r3+"</tr>";
+}
+["#ca","#cb","#cx"].forEach(i=>$(i).addEventListener("input",calc));
+document.querySelectorAll("[data-p]").forEach(bt=>bt.onclick=()=>{const [a,b,x]=bt.dataset.p.split(",");$("#ca").value=a;$("#cb").value=b;$("#cx").value=x;calc();});
+calc();
+
+/* ---------- §8 Léptékek ---------- */
+const YEAR=31557600;
+function fmtTime(s){
+  if(s<1e-3)return hu(s*1e6,1)+" µs";if(s<1)return hu(s*1e3,1)+" ms";if(s<60)return hu(s,1)+" mp";
+  if(s<3600){const m=Math.floor(s/60),r=Math.round(s-m*60);return `${m} perc ${r} mp`;}
+  if(s<86400)return hu(s/3600,1)+" óra";if(s<YEAR)return hu(s/86400,1)+" nap";
+  const y=s/YEAR;if(y<1e3)return hu(y,y<10?1:0)+" év";if(y<1e6)return hu(y/1e3,1)+" ezer év";if(y<1e9)return hu(y/1e6,1)+" millió év";return hu(y/1e9,1)+" milliárd év";
+}
+function scale(){
+  const n=+$("#sc-n").value,rate=+$("#sc-r").value;$("#sc-nv").textContent=n;
+  const M=(1n<<BigInt(n))-1n;const sec=Number(M)/rate;const uni=13.8e9*YEAR;
+  $("#sc-out").innerHTML=`2${sup(n)} − 1 = <b>${big(M)}</b> lépés<br>időtartam: <b>${fmtTime(sec)}</b>`+(sec>uni/100?`<br>a Világegyetem korának ${hu(sec/uni,2)}-szerese`:"");
+  const s=$("#sc-svg");clear(s);const W=640,H=270,l=46,r=12,t=14,b=30;s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const y0=-9.5,y1=20,X=k=>l+(k-1)*(W-l-r)/63,Y=v=>t+(H-t-b)*(1-(v-y0)/(y1-y0));
+  const refs=[[1e-6,"1 µs"],[1,"1 mp"],[86400,"1 nap"],[YEAR,"1 év"],[1e6*YEAR,"1 millió év"],[uni,"Világegyetem kora"]];
+  refs.forEach(([v,lab])=>{const yy=Y(Math.log10(v));el("line",{x1:l,x2:W-r,y1:yy,y2:yy,class:"grid-l","stroke-dasharray":"4 4"},s);txt(s,l+4,yy-4,lab,"","start");});
+  el("line",{x1:l,x2:l,y1:t,y2:H-b,class:"axis"},s);el("line",{x1:l,x2:W-r,y1:H-b,y2:H-b,class:"axis"},s);
+  [1,8,16,24,32,40,48,56,64].forEach(k=>{txt(s,X(k),H-10,k);});
+  [-9,-6,-3,0,3,6,9,12,15,18].forEach(e=>txt(s,l-6,Y(e)+4,`10${sup(e)}`,"","end"));
+  let d="";for(let k=1;k<=64;k++){const v=Math.log10((2**k-1)/rate);d+=(k===1?"M":"L")+X(k).toFixed(1)+" "+Y(v).toFixed(1)+" ";}
+  el("path",{d,style:"fill:none;stroke:var(--accent);stroke-width:2.5"},s);
+  const yv=Y(Math.log10(Number(M)/rate));el("line",{x1:X(n),x2:X(n),y1:yv,y2:H-b,style:"stroke:var(--accent-2);stroke-width:1.5"},s);
+  el("circle",{cx:X(n),cy:yv,r:6,style:"fill:var(--accent-2);stroke:var(--surface);stroke-width:2"},s);
+  txt(s,(W+l)/2,H-b+0,"","");txt(s,W-r,H-b-6,"n (korongok száma)","","end");
+}
+$("#sc-n").addEventListener("input",scale);$("#sc-r").addEventListener("change",scale);scale();
+
+/* ---------- §9 Vonalzó-sorozat ---------- */
+let ruN=5,ruSel=12,ruMoves=[];
+function ctz(k){let c=0;while(k%2===0){k/=2;c++;}return c;}
+function drawRuler(){
+  const n=ruN;const sim=startPegs(n);ruMoves=[];for(const [a,b] of solveFrom(sim,n,2))ruMoves.push([a,b,sim[b][sim[b].length-1]]);
+  const M=ruMoves.length;if(ruSel>M)ruSel=Math.ceil(M/2);
+  const s=$("#ru-svg");clear(s);const W=640,H=190,l=10,r=10,t=14,b=22;s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const bw=(W-l-r)/M;
+  ruMoves.forEach(([a,bb,d],i)=>{const k=i+1,h=(H-t-b)*d/n,x=l+i*bw;
+    const rc=el("rect",{x:x+bw*.12,y:H-b-h,width:Math.max(1,bw*.76),height:h,rx:Math.min(3,bw*.3),style:`fill:${diskColor(d,n)};cursor:pointer;${k===ruSel?"stroke:var(--ink);stroke-width:2":""}`,tabindex:"0",role:"button","aria-label":`${k}. lépés: ${d}. korong`},s);
+    rc.addEventListener("click",()=>{ruSel=k;drawRuler();});rc.addEventListener("keydown",e=>{if(e.key==="Enter"){ruSel=k;drawRuler();}});
+    if(n<=4||k%(2**(n-3))===0)txt(s,x+bw/2,H-6,k);});
+  const k=ruSel,[a,bb,d]=ruMoves[k-1];const bin=k.toString(2).padStart(n,"0");const z=ctz(k);
+  $("#ru-info").innerHTML=`k = ${k} = ${bin}₂ → ${z} záró nulla → ${az(z+1)} <b>${z+1}. korong</b> mozdul: ${PEG[a]} → ${PEG[bb]}<br>`+
+    `${az(d)} ${d}. korong összesen 2${sup(n-d)} = ${2**(n-d)}-szor lép ebben a megoldásban`;
+  $("#ru-n").textContent="n = "+n;
+}
+$("#ru-minus").onclick=()=>{ruN=Math.max(3,ruN-1);drawRuler();};$("#ru-plus").onclick=()=>{ruN=Math.min(7,ruN+1);drawRuler();};
+drawRuler();
+
+
+/* ================= 1.2 EGYENESEK A SÍKBAN ================= */
+const VA=0.62; /* világ-koordináták: x ∈ [-1,1], y ∈ [-VA,VA] */
+function rng32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+function isDarkTheme(){const t=document.documentElement.getAttribute("data-theme");if(t)return t==="dark";return matchMedia("(prefers-color-scheme: dark)").matches;}
+function cssv(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||"#888";}
+function hsl2rgb(h,s,l){s/=100;l/=100;const k=n=>(n+h/30)%12,a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,Math.min(9-k(n),1)));return [Math.round(255*f(0)),Math.round(255*f(8)),Math.round(255*f(4))];}
+function lineX(a,b){const den=a.d[0]*b.d[1]-a.d[1]*b.d[0];if(Math.abs(den)<1e-10)return null;const dx=b.p[0]-a.p[0],dy=b.p[1]-a.p[1];return (dx*b.d[1]-dy*b.d[0])/den;}
+const ptOn=(l,t)=>[l.p[0]+t*l.d[0],l.p[1]+t*l.d[1]];
+function exactRegions(L){let r=1;for(let i=0;i<L.length;i++){const ts=[];for(let j=0;j<i;j++){const t=lineX(L[i],L[j]);if(t!==null&&!ts.some(u=>Math.abs(u-t)<1e-7))ts.push(t);}r+=1+ts.length;}return r;}
+function allPts(L){const P=[];for(let i=0;i<L.length;i++)for(let j=i+1;j<L.length;j++){const t=lineX(L[i],L[j]);if(t!==null)P.push(ptOn(L[i],t));}return P;}
+const Lmax=n=>n*(n+1)/2+1;
+function mkLine(p,th){return {p,d:[Math.cos(th),Math.sin(th)]};}
+function genLine(L,rnd,strict,sep){sep=sep||.05;
+  const ex=allPts(L);
+  for(let a=0;a<(strict?3000:600);a++){
+    const lim=strict||a<400;const nl=mkLine([(rnd()*2-1)*.55,(rnd()*2-1)*VA*.55],rnd()*Math.PI);let ok=true;const pts=[];
+    for(const l of L){const cr=Math.abs(nl.d[0]*l.d[1]-nl.d[1]*l.d[0]);if(cr<.14){ok=false;break;}const q=ptOn(nl,lineX(nl,l));if(lim&&(Math.abs(q[0])>.9||Math.abs(q[1])>VA*.88)){ok=false;break;}pts.push(q);}
+    if(!ok)continue;
+    if(pts.some(q=>ex.some(e=>Math.hypot(e[0]-q[0],e[1]-q[1])<sep)))continue;
+    if(pts.some((q,i)=>pts.some((r,j)=>j>i&&Math.hypot(r[0]-q[0],r[1]-q[1])<sep)))continue;
+    return nl;
+  }
+  return null;
+}
+function seededLines(seed,n,strict){
+  /* Érintővonalak egy kis kör körül, 130°-os normálisszög-tartományban: minden metszéspont a képen belül marad. */
+  const r=rng32(seed);
+  for(let attempt=0;attempt<400;attempt++){
+    const L=[],phi0=r()*Math.PI*2,span=130*Math.PI/180,order=[...Array(n).keys()].sort(()=>r()-.5);let ok=true;
+    for(const i of order){let placed=false;
+      for(let a=0;a<200&&!placed;a++){
+        const ph=phi0+(n>1?i*span/(n-1):0)+(r()-.5)*.12,rad=.06+r()*.17,nv=[Math.cos(ph),Math.sin(ph)];
+        const l={p:[nv[0]*rad,nv[1]*rad-0.02],d:[-nv[1],nv[0]]};let good=true;const ex=allPts(L),pts=[];
+        for(const m of L){if(Math.abs(l.d[0]*m.d[1]-l.d[1]*m.d[0])<.14){good=false;break;}const q=ptOn(l,lineX(l,m));if(Math.abs(q[0])>.9||Math.abs(q[1])>VA*.86){good=false;break;}pts.push(q);}
+        if(good&&pts.some(q=>ex.some(e=>Math.hypot(e[0]-q[0],e[1]-q[1])<.06)))good=false;
+        if(good&&pts.some((q,k)=>pts.some((u,j)=>j>k&&Math.hypot(u[0]-q[0],u[1]-q[1])<.13)))good=false;
+        if(good){L.push(l);placed=true;}}
+      if(!placed){ok=false;break;}}
+    if(ok)return L;
+  }
+  const L=[],rr=rng32(seed+1);while(L.length<n){const l=genLine(L,rr,false);if(!l)break;L.push(l);}return L;
+}
+function clipT(p,d){let t0=-1e9,t1=1e9;const lo=[-1,-VA],hi=[1,VA];for(let k=0;k<2;k++){if(Math.abs(d[k])<1e-12){if(p[k]<lo[k]||p[k]>hi[k])return null;continue;}let a=(lo[k]-p[k])/d[k],b=(hi[k]-p[k])/d[k];if(a>b)[a,b]=[b,a];t0=Math.max(t0,a);t1=Math.min(t1,b);}return t0<t1?[t0,t1]:null;}
+
+class Plane{
+  constructor(cv,o){
+    this.cv=cv;this.o=Object.assign({cell:2,interactive:false,bounded:false,onChange:null},o||{});
+    this.lines=[];this.zz=[];this.mode="lines";this.hl=-1;this.pending=null;this.visible=0;this.boundedN=0;this.unboundedN=0;
+    this.ro=new ResizeObserver(()=>this.render());this.ro.observe(cv);
+    if(this.o.interactive)cv.addEventListener("pointerdown",e=>this.tap(e));
+  }
+  dims(){const r=this.cv.getBoundingClientRect();return {w:r.width,h:r.width*VA};}
+  toS(x,y,w,h){return [(x+1)/2*w,(VA-y)/(2*VA)*h];}
+  key(x,y){
+    let k=0;
+    if(this.mode==="zz"){this.zz.forEach((z,i)=>{const px=x-z.v[0],py=y-z.v[1],a=z.a,b=z.b,cr=a[0]*b[1]-a[1]*b[0],sg=cr>0?1:-1;if((a[0]*py-a[1]*px)*sg>0&&(px*b[1]-py*b[0])*sg>0)k|=1<<i;});return k;}
+    const L=this.mode==="zzlines"?this.zzLines():this.lines;
+    for(let i=0;i<L.length;i++){const l=L[i];if(l.d[0]*(y-l.p[1])-l.d[1]*(x-l.p[0])>0)k|=1<<i;}
+    return k;
+  }
+  zzLines(){const L=[];this.zz.forEach(z=>{L.push({p:z.v,d:z.a});L.push({p:z.v,d:z.b});});return L;}
+  render(){
+    const {w,h}=this.dims();if(w<20)return;
+    const dpr=Math.min(2,window.devicePixelRatio||1),cv=this.cv;cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);
+    const ctx=cv.getContext("2d");ctx.setTransform(dpr,0,0,dpr,0,0);
+    const c=this.o.cell,gw=Math.ceil(w/c),gh=Math.ceil(h/c),N=gw*gh,keys=new Int32Array(N);
+    for(let j=0;j<gh;j++){const y=VA-((j+.5)*c/h)*2*VA;for(let i=0;i<gw;i++)keys[j*gw+i]=this.key(-1+((i+.5)*c/w)*2,y);}
+    const lab=new Int32Array(N).fill(-1),st=new Int32Array(N),comp=[];
+    for(let s=0;s<N;s++){if(lab[s]>=0)continue;const k=keys[s],id=comp.length;let sp=0,sz=0,bd=false;st[sp++]=s;lab[s]=id;
+      while(sp){const q=st[--sp];sz++;const qi=q%gw,qj=(q/gw)|0;if(qi===0||qj===0||qi===gw-1||qj===gh-1)bd=true;
+        if(qi>0&&lab[q-1]<0&&keys[q-1]===k){lab[q-1]=id;st[sp++]=q-1;}
+        if(qi<gw-1&&lab[q+1]<0&&keys[q+1]===k){lab[q+1]=id;st[sp++]=q+1;}
+        if(qj>0&&lab[q-gw]<0&&keys[q-gw]===k){lab[q-gw]=id;st[sp++]=q-gw;}
+        if(qj<gh-1&&lab[q+gw]<0&&keys[q+gw]===k){lab[q+gw]=id;st[sp++]=q+gw;}}
+      comp.push({k,sz,bd});}
+    const dark=isDarkTheme(),seen=new Map();let vis=0,bnd=0,unb=0;
+    const col=comp.map(cp=>{const big=cp.sz>=3;if(big){vis++;cp.bd?unb++:bnd++;}
+      const dup=seen.get(cp.k)||0;seen.set(cp.k,dup+1);
+      const h=((cp.k*2654435761>>>0)%360+dup*67)%360;
+      if(this.o.bounded&&cp.bd)return dark?[34,40,48]:[226,229,227];
+      return this.o.bounded?hsl2rgb(h,dark?55:70,dark?36:68):hsl2rgb(h,dark?42:68,dark?27:86);});
+    this.visible=vis;this.boundedN=bnd;this.unboundedN=unb;
+    const off=document.createElement("canvas");off.width=gw;off.height=gh;const octx=off.getContext("2d"),img=octx.createImageData(gw,gh);
+    for(let s=0;s<N;s++){const cc=col[lab[s]];img.data[4*s]=cc[0];img.data[4*s+1]=cc[1];img.data[4*s+2]=cc[2];img.data[4*s+3]=255;}
+    octx.putImageData(img,0,0);ctx.imageSmoothingEnabled=true;ctx.drawImage(off,0,0,w,h);
+    const ink=cssv("--ink"),acc=cssv("--accent"),gold=cssv("--accent-2"),mut=cssv("--muted");
+    const seg=(a,b,color,lw,dash)=>{const A=this.toS(a[0],a[1],w,h),B=this.toS(b[0],b[1],w,h);ctx.beginPath();ctx.setLineDash(dash||[]);ctx.strokeStyle=color;ctx.lineWidth=lw;ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();ctx.setLineDash([]);};
+    const dot=(p,r,color)=>{const P=this.toS(p[0],p[1],w,h);ctx.beginPath();ctx.fillStyle=color;ctx.arc(P[0],P[1],r,0,7);ctx.fill();};
+    if(this.mode==="zz"){
+      this.zz.forEach(z=>{[z.a,z.b].forEach(d=>{const ct=clipT(z.v,d);if(ct)seg(z.v,ptOn({p:z.v,d},ct[1]),ink,2);const nd=[-d[0],-d[1]],ce=clipT(z.v,nd);if(ce)seg(z.v,ptOn({p:z.v,d:nd},ce[1]),mut,1.2,[5,5]);});dot(z.v,4,gold);});
+    }else{
+      const L=this.mode==="zzlines"?this.zzLines():this.lines;
+      L.forEach((l,i)=>{if(i===this.hl)return;const ct=clipT(l.p,l.d);if(ct)seg(ptOn(l,ct[0]),ptOn(l,ct[1]),ink,1.6);});
+      if(this.mode==="zzlines")this.zz.forEach(z=>dot(z.v,4,gold));
+      if(this.hl>=0&&this.hl<L.length){
+        const l=L[this.hl],ct=clipT(l.p,l.d);
+        if(ct){seg(ptOn(l,ct[0]),ptOn(l,ct[1]),acc,3.4);
+          const ts=[];for(let j=0;j<this.hl;j++){const t=lineX(l,L[j]);if(t!==null&&!ts.some(u=>Math.abs(u-t)<1e-7))ts.push(t);}ts.sort((a,b)=>a-b);
+          const bounds=[ct[0],...ts.filter(t=>t>ct[0]&&t<ct[1]),ct[1]];
+          for(let s=0;s<bounds.length-1;s++){const m=ptOn(l,(bounds[s]+bounds[s+1])/2),P=this.toS(m[0],m[1],w,h);
+            ctx.beginPath();ctx.fillStyle=acc;ctx.arc(P[0],P[1],9,0,7);ctx.fill();ctx.fillStyle="#fff";ctx.font="600 11px "+getComputedStyle(document.body).getPropertyValue("--f-mono");ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(s+1),P[0],P[1]+.5);}
+          ts.forEach(t=>dot(ptOn(l,t),4.5,gold));}
+      }
+    }
+    if(this.pending){dot(this.pending,5,acc);}
+    this.o.onChange&&this.o.onChange(this);
+  }
+  tap(e){
+    const r=this.cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*2-1,y=VA-(e.clientY-r.top)/(r.width*VA)*2*VA;
+    if(!this.pending){this.pending=[x,y];this.render();this.o.onInfo&&this.o.onInfo("Első pont megvan. Koppints a második pontra.","");return;}
+    const a=this.pending;this.pending=null;const dx=x-a[0],dy=y-a[1],len=Math.hypot(dx,dy);
+    if(len<.04){this.render();this.o.onInfo&&this.o.onInfo("A két pont túl közel van, kezdd újra.","bad");return;}
+    this.add({p:a,d:[dx/len,dy/len]},"saját");
+  }
+  add(l,how){
+    if(this.lines.length>=14){this.o.onInfo&&this.o.onInfo("Legfeljebb 14 egyenes fér el.","bad");return false;}
+    for(const m of this.lines){const cr=l.d[0]*m.d[1]-l.d[1]*m.d[0];if(Math.abs(cr)<1e-6){const dist=Math.abs(m.d[0]*(l.p[1]-m.p[1])-m.d[1]*(l.p[0]-m.p[0]));if(dist<1e-4){this.o.onInfo&&this.o.onInfo("Ez az egyenes már a síkon van.","bad");return false;}}}
+    this.lines.push(l);this.hl=this.lines.length-1;this.render();this.o.onAdd&&this.o.onAdd(how);return true;
+  }
+}
+
+/* --- hero --- */
+const eHero=new Plane($("#e-hero"),{cell:3});
+(async function eHeroLoop(){
+  if(reduce){eHero.lines=seededLines(11,5,true);eHero.render();$("#e-hero-n").textContent="n = 5";$("#e-hero-L").textContent=Lmax(5);return;}
+  let seed=21;
+  for(;;){
+    eHero.lines=[];eHero.hl=-1;eHero.render();$("#e-hero-n").textContent="n = 0";$("#e-hero-L").textContent="1";
+    const L=seededLines(seed++,7,true);
+    for(const l of L){await sleep(1300);while(document.hidden||curPage!=="egyenesek-bevezeto")await sleep(400);eHero.lines.push(l);eHero.hl=eHero.lines.length-1;eHero.render();
+      const n=eHero.lines.length;$("#e-hero-n").textContent=`n = ${n} · +${n}`;$("#e-hero-L").textContent=exactRegions(eHero.lines);}
+    await sleep(2600);
+  }
+})();
+
+/* --- §1 játszótér --- */
+const ePgMsg=(s,c)=>{const m=$("#e-pg-msg");m.textContent=s;m.className="msg "+(c||"");};
+const eRnd=rng32(Date.now()%100000);
+const ePg=new Plane($("#e-pg"),{interactive:true,onInfo:ePgMsg,onAdd:how=>ePgStats(how)});
+function ePgStats(how){
+  const n=ePg.lines.length,r=exactRegions(ePg.lines),mx=Lmax(n);
+  $("#e-pg-n").textContent=n;$("#e-pg-r").textContent=r;$("#e-pg-max").textContent=mx;
+  if(!how)return;
+  const prev=exactRegions(ePg.lines.slice(0,-1)),gain=r-prev;
+  if(r===mx)ePgMsg(`${n}. egyenes: +${gain} tartomány (ez a maximum). Összesen ${r} = L${String(n).split("").map(c=>"₀₁₂₃₄₅₆₇₈₉"[c]).join("")}.`,"ok");
+  else ePgMsg(`${n}. egyenes: csak +${gain} tartomány, a maximum +${n} lett volna. Összesen ${mx-r} tartomány hiányzik a maximumból.`,"bad");
+}
+$("#e-pg-rand").onclick=()=>{const l=genLine(ePg.lines,eRnd,false);if(!l){ePgMsg("Nem találtam szabad helyet új általános egyenesnek. Törölj vagy vonj vissza.","bad");return;}ePg.add(l,"rand");};
+$("#e-pg-par").onclick=()=>{if(!ePg.lines.length){ePgMsg("Előbb kell legalább egy egyenes.","bad");return;}const m=ePg.lines[Math.floor(eRnd()*ePg.lines.length)];const nrm=[-m.d[1],m.d[0]];const off=(eRnd()<.5?-1:1)*(.12+eRnd()*.25);ePg.add({p:[m.p[0]+nrm[0]*off,m.p[1]+nrm[1]*off],d:m.d.slice()},"par");};
+$("#e-pg-conc").onclick=()=>{const P=allPts(ePg.lines).filter(q=>Math.abs(q[0])<.95&&Math.abs(q[1])<VA*.95);if(!P.length){ePgMsg("Ehhez kell egy látható metszéspont (legalább két nem párhuzamos egyenes).","bad");return;}const q=P[Math.floor(eRnd()*P.length)];
+  for(let a=0;a<100;a++){const l=mkLine(q.slice(),eRnd()*Math.PI);if(ePg.lines.every(m=>Math.abs(l.d[0]*m.d[1]-l.d[1]*m.d[0])>.15)){ePg.add(l,"conc");return;}}ePgMsg("Nem találtam megfelelő irányt, próbáld újra.","bad");};
+$("#e-pg-undo").onclick=()=>{ePg.lines.pop();ePg.hl=ePg.lines.length-1;ePg.pending=null;ePg.render();ePgStats();ePgMsg("Visszavonva.","");};
+$("#e-pg-clear").onclick=()=>{ePg.lines=[];ePg.hl=-1;ePg.pending=null;ePg.render();ePgStats();ePgMsg("Üres sík: 1 tartomány.","");};
+ePgStats();
+
+/* --- §2 kis esetek --- */
+(function eSmall(){
+  const box=$("#e-film");const base=seededLines(5,3,true);
+  [0,1,2,3].forEach(n=>{const d=document.createElement("div");d.className="frame";const cv=document.createElement("canvas");cv.className="plane";d.appendChild(cv);const c=document.createElement("div");c.className="fc";c.textContent=`L${"₀₁₂₃"[n]} = ${Lmax(n)}`;d.appendChild(c);box.appendChild(d);
+    const p=new Plane(cv,{cell:3});p.lines=base.slice(0,n);p.render();});
+  const N=8;let h="<tr><th>n</th>";for(let n=0;n<=N;n++)h+=`<td>${n}</td>`;h+="</tr><tr class=\"hl\"><th>L<sub>n</sub></th>";for(let n=0;n<=N;n++)h+=`<td>${Lmax(n)}</td>`;
+  h+="</tr><tr><th>2<sup>n</sup></th>";for(let n=0;n<=N;n++)h+=`<td>${2**n}</td>`;$("#e-vals").innerHTML=h+"</tr>";
+  const s=$("#e-bars"),W=640,H=210,l=40,r=10,tp=16,b=26;s.setAttribute("viewBox",`0 0 ${W} ${H}`);const bw=(W-l-r)/(N+1),ys=v=>H-b-(H-b-tp)*v/256;
+  [0,64,128,192,256].forEach(v=>{el("line",{x1:l,x2:W-r,y1:ys(v),y2:ys(v),class:"grid-l"},s);txt(s,l-6,ys(v)+4,v,"","end");});
+  for(let n=0;n<=N;n++){const x=l+n*bw,w=bw*.36;
+    el("rect",{x:x+bw*.12,y:ys(Lmax(n)),width:w,height:H-b-ys(Lmax(n)),rx:2,style:"fill:var(--accent)"},s);
+    el("rect",{x:x+bw*.12+w+2,y:ys(2**n),width:w,height:H-b-ys(2**n),rx:2,style:"fill:var(--muted);opacity:.55"},s);
+    if(n>=3)txt(s,x+bw*.12+w/2,ys(Lmax(n))-4,Lmax(n),"acc");txt(s,x+bw/2,H-8,"n="+n);}
+})();
+
+/* --- §3 rekurzió --- */
+let eRecN=4;const eRecBase=seededLines(340,8,true);
+const eRec=new Plane($("#e-rec"));
+function eRecDraw(){const n=eRecN;eRec.lines=eRecBase.slice(0,n);eRec.hl=n-1;eRec.render();$("#e-rec-n").textContent="n = "+n;
+  $("#e-rec-info").innerHTML=`A kiemelt ${n}. egyenes ${n-1} metszéspontot kap (sárga), ezért ${n} darabra esik (számozva).<br>L${String(n-1).split("").map(c=>"₀₁₂₃₄₅₆₇₈₉"[c]).join("")} + ${n} = ${Lmax(n-1)} + ${n} = ${Lmax(n)}`;}
+$("#e-rec-minus").onclick=()=>{eRecN=Math.max(1,eRecN-1);eRecDraw();};$("#e-rec-plus").onclick=()=>{eRecN=Math.min(eRecBase.length,eRecN+1);eRecDraw();};
+eRecDraw();
+
+/* --- §4 Gauss-lépcső --- */
+function eGauss(){
+  const n=+$("#e-gauss-n").value;$("#e-gauss-nv").textContent=n;const s=$("#e-gauss");clear(s);
+  const W=640,H=300,u=Math.min(40,Math.min((W-80)/n,(H-50)/(n+1)));s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const x0=(W-n*u)/2,y0=H-24;
+  for(let i=0;i<n;i++){const k=i+1;
+    for(let j=0;j<k;j++)el("rect",{x:x0+i*u+1,y:y0-(j+1)*u+1,width:u-2,height:u-2,rx:3,style:"fill:var(--accent)"},s);
+    for(let j=k;j<n+1;j++)el("rect",{x:x0+i*u+1,y:y0-(j+1)*u+1,width:u-2,height:u-2,rx:3,style:"fill:var(--accent-2);opacity:.85"},s);
+    if(u>=16)txt(s,x0+i*u+u/2,y0+16,k);}
+  txt(s,x0-8,y0-(n+1)*u/2,`${n+1}`,"ink","end");
+  $("#e-gauss-info").innerHTML=`kék: 1 + 2 + … + ${n} = S${String(n).split("").map(c=>"₀₁₂₃₄₅₆₇₈₉"[c]).join("")} · sárga: ugyanez fordítva<br>együtt: ${n} × ${n+1} = ${n*(n+1)} négyzet → S = ${n*(n+1)/2}, L = ${n*(n+1)/2+1}`;
+}
+$("#e-gauss-n").addEventListener("input",eGauss);eGauss();
+
+/* --- §5 cikkcakk --- */
+const ZZP={1:[[-0.419,0.044,2.3245,-2.9944]],2:[[0.07,0.169,-2.4895,-2.0122],[-0.581,0.125,-0.7266,-0.2747]],3:[[-0.195,0.235,-0.6574,-0.1012],[-0.084,-0.5,1.2913,1.6089],[0.479,0.212,-2.8392,-2.3358]]};
+let eZk=2,eZm="zz";
+const eZ=new Plane($("#e-zz"),{cell:2,onChange:p=>{$("#e-zz-r").textContent=p.visible;}});
+function eZdraw(){
+  eZ.zz=ZZP[eZk].map(([x,y,a,b])=>({v:[x,y],a:[Math.cos(a),Math.sin(a)],b:[Math.cos(b),Math.sin(b)]}));eZ.mode=eZm==="zz"?"zz":"zzlines";eZ.hl=-1;eZ.render();
+  $("#e-zz-k").textContent="n = "+eZk;$("#e-zz-n").textContent=eZm==="zz"?eZk:`${2*eZk} egyenes`;
+  const sub=String(eZk).split("").map(c=>"₀₁₂₃₄₅₆₇₈₉"[c]).join(""),sub2=String(2*eZk).split("").map(c=>"₀₁₂₃₄₅₆₇₈₉"[c]).join("");
+  $("#e-zz-f").textContent=eZm==="zz"?`Z${sub} = ${2*eZk*eZk-eZk+1}`:`L${sub2} = ${Lmax(2*eZk)}`;
+  $("#e-zz-mode").textContent=eZm==="zz"?"Meghosszabbítás egyenessé":"Vissza cikkcakkra";
+}
+$("#e-zz-minus").onclick=()=>{eZk=Math.max(1,eZk-1);eZdraw();};$("#e-zz-plus").onclick=()=>{eZk=Math.min(3,eZk+1);eZdraw();};
+$("#e-zz-mode").onclick=()=>{eZm=eZm==="zz"?"lines":"zz";eZdraw();};
+eZdraw();
+(function(){let h="<tr><th>n</th>";for(let n=0;n<=8;n++)h+=`<td>${n}</td>`;h+="</tr><tr class=\"hl\"><th>Z<sub>n</sub></th>";for(let n=0;n<=8;n++)h+=`<td>${2*n*n-n+1}</td>`;
+  h+="</tr><tr><th>L<sub>n</sub></th>";for(let n=0;n<=8;n++)h+=`<td>${Lmax(n)}</td>`;h+="</tr><tr><th>L<sub>2n</sub></th>";for(let n=0;n<=8;n++)h+=`<td>${Lmax(2*n)}</td>`;$("#e-zz-tbl").innerHTML=h+"</tr>";})();
+
+/* --- §6 korlátos tartományok --- */
+const eKorBase=seededLines(302,8,true);
+const eKor=new Plane($("#e-kor"),{cell:1,bounded:true,onChange:p=>{$("#e-kor-b").textContent=p.boundedN;$("#e-kor-u").textContent=p.unboundedN;}});
+function eKorDraw(){const n=+$("#e-kor-n").value;$("#e-kor-nv").textContent=n;eKor.lines=eKorBase.slice(0,n);eKor.hl=-1;eKor.render();$("#e-kor-f").textContent=(n-1)*(n-2)/2;}
+$("#e-kor-n").addEventListener("input",eKorDraw);eKorDraw();
+
+/* ---------- menürendszer: kezdőlap → fejezet → téma → oldalak ---------- */
+const TOPICS={
+  hanoi:{n:"1.1",t:"Hanoi tornyai",prefix:"s-",
+    pages:[["bevezeto","Bevezető"],["feladat","A feladat – játék"],["kis","Kis esetek"],["felso","Felső korlát"],["also","Alsó korlát"],["fa","A rekurzió kibontva"],["indukcio","Sejtés és indukció"],["fixpont","Jóslás nélkül: a +1 trükk"],["leptek","Léptékek"],["binaris","Bináris szerkezet"],["gyak","Gyakorlatok"],["modszer","A módszer"]],
+    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.1 Hanoi tornyai. A szöveg saját feldolgozás; a §5, a §7 második fele, a §8 ellenőrzései, a §9 és a §10 kiegészítések."},
+  egyenesek:{n:"1.2",t:"Egyenesek a síkban",prefix:"e-",
+    pages:[["bevezeto","Bevezető"],["feladat","A feladat – rajzolás"],["kis","Kis esetek"],["rekurzio","A rekurzió"],["zart","Zárt alak"],["cikkcakk","Cikkcakk"],["korlatos","Korlátos tartományok"],["gyak","Gyakorlatok"],["modszer","Összevetés"]],
+    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.2 Egyenesek a síkban. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §4 metszéspont-értelmezése, a §6 és a §7 kiegészítések."}
+,
+  josephus:{n:"1.3",t:"A Josephus-probléma",prefix:"j-",
+    pages:[["bevezeto","Bevezető"],["feladat","A feladat – játék"],["kis","Kis esetek"],["rekurzio","A rekurzió"],["zart","Zárt alak"],["binaris","Bináris szerkezet"],["altalanos","Általánosítás"],["gyak","Gyakorlatok"],["modszer","Összevetés"]],
+    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.3 A Josephus-probléma. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §5 iterációs állítása, a §6 számjegycseréje és a §7 kiegészítések."}
+};
+const CH=[
+ {n:1,t:"Rekurziós problémák",d:"Három klasszikus feladat, amelyek megoldása egy kisebb, hasonló feladat megoldására épül.",
+  lead:"Mindhárom feladatot újra és újra vizsgálták a matematikusok, és mindháromban ugyanaz a gondolat dolgozik: a megoldás egy kisebb, ugyanilyen feladat megoldására épül. A cél mindenütt a rekurzióból zárt képlethez jutni.",
+  topics:[{id:"hanoi",d:"Hány lépésben költöztethető át egy n korongos torony? Rekurzió, alsó és felső korlát, zárt alak."},
+          {id:"egyenesek",d:"Legfeljebb hány részre vágja a síkot n egyenes? És n darab cikkcakk?"},
+          {id:"josephus",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."}]},
+ {n:2,t:"Összegek",d:"Összegzési jelölés, perturbáció, többszörös összegek."},
+ {n:3,t:"Egészrész-függvények",d:"Alsó és felső egészrész, mod, spektrumok."},
+ {n:4,t:"Számelmélet",d:"Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa."},
+ {n:5,t:"Binomiális együtthatók",d:"Azonosságok, hipergeometrikus függvények."},
+ {n:6,t:"Speciális számok",d:"Stirling-, Euler-, harmonikus, Bernoulli- és Fibonacci-számok."},
+ {n:7,t:"Generátorfüggvények",d:"Rekurziók megoldása hatványsorokkal."},
+ {n:8,t:"Diszkrét valószínűség",d:"Várható érték, szórás, generátorfüggvények a valószínűségben."},
+ {n:9,t:"Aszimptotika",d:"Nagy O, Euler–Maclaurin-összegzés."}];
+CH.forEach(c=>c.topics&&c.topics.forEach(tp=>{if(tp.id){tp.n=TOPICS[tp.id].n;tp.t=TOPICS[tp.id].t;tp.ready=true;}}));
+/* ================= 1.3 A JOSEPHUS-PROBLÉMA ================= */
+function josSim(n,k){
+  const a=Array.from({length:n},(_,i)=>i+1),order=[],starts=[];let i=0;
+  while(a.length>1){starts.push(a[i]);i=(i+k-1)%a.length;order.push(a.splice(i,1)[0]);if(i>=a.length)i=0;}
+  order.push(a[0]);return {order,starts};
+}
+const josJ=(n,k=2)=>josSim(n,k).order[n-1];
+const josC=n=>{const m=31-Math.clz32(n);return 2*(n-(1<<m))+1;};
+const sup2=m=>`2<sup>${m}</sup>`;
+
+class Ring{
+  constructor(svg,o){
+    this.svg=svg;this.o=Object.assign({W:340,pick:false,onChange:null},o);
+    svg.setAttribute("viewBox",`0 0 ${this.o.W} ${this.o.W}`);
+    this.reset(this.o.n||10,this.o.k||2);
+  }
+  reset(n,k){
+    this.n=n;this.k=k;const s=josSim(n,k);this.order=s.order;this.starts=s.starts;
+    this.rank=new Array(n+1);s.order.forEach((p,i)=>{this.rank[p]=i;});
+    this.step=0;this.guess=0;this.build();this.paint();
+  }
+  build(){
+    clear(this.svg);const W=this.o.W,c=W/2,R=c-26,n=this.n,sp=2*Math.PI*R/n,r=Math.min(17,sp*.42);this.r=r;this.pp=[];
+    this.hub=el("text",{x:c,y:c+7,"text-anchor":"middle"},this.svg);
+    this.hub.style.cssText="font-family:var(--f-display);font-size:24px;fill:var(--muted)";
+    for(let p=1;p<=n;p++){
+      const a=-Math.PI/2+(p-1)*2*Math.PI/n,x=c+R*Math.cos(a),y=c+R*Math.sin(a);
+      const g=el("g",{},this.svg);g.style.cursor=this.o.pick?"pointer":"default";
+      const ci=el("circle",{cx:x,cy:y,r},g);
+      const fs=Math.max(6.5,Math.min(13,r*1.05));
+      const t=el("text",{x,y:y+fs*.36,"text-anchor":"middle"},g);
+      t.style.cssText=`font-family:var(--f-mono);font-size:${fs}px;pointer-events:none`;t.textContent=p;
+      g.addEventListener("click",()=>this.pick(p));
+      this.pp[p]={ci,t,x,y};
+    }
+    this.sr=el("circle",{r:r+5,fill:"none"},this.svg);this.sr.style.cssText="stroke:var(--accent);stroke-width:2.2;pointer-events:none";
+    this.gr=el("circle",{r:r+4,fill:"none"},this.svg);this.gr.style.cssText="stroke:var(--accent-2);stroke-width:2.2;stroke-dasharray:4 3;pointer-events:none";
+  }
+  pick(p){if(!this.o.pick||this.step>0)return;this.guess=this.guess===p?0:p;this.paint();this.o.onChange&&this.o.onChange(this);}
+  next(){if(this.step<this.n-1){this.step++;this.paint();this.o.onChange&&this.o.onChange(this);return true;}return false;}
+  done(){return this.step>=this.n-1;}
+  survivor(){return this.order[this.n-1];}
+  paint(){
+    const done=this.done(),sv=this.survivor();
+    for(let p=1;p<=this.n;p++){
+      const q=this.pp[p],rk=this.rank[p],dead=rk<this.step&&!(done&&p===sv),last=rk===this.step-1&&!done,surv=done&&p===sv;
+      let f="var(--surface)",s="var(--accent)",tc="var(--ink)",op=1,td="none";
+      if(dead){f="var(--paper)";s="var(--line)";tc="var(--muted)";op=.6;td="line-through";}
+      if(last){f="var(--bad)";s="var(--bad)";tc="var(--ink)";op=1;}
+      if(surv){f="var(--accent-2)";s="var(--accent-2)";tc="#111";}
+      q.ci.style.cssText=`fill:${f};fill-opacity:${last?.28:1};stroke:${s};stroke-width:1.6;opacity:${op}`;
+      q.t.style.fill=tc;q.t.style.opacity=op;q.t.style.textDecoration=td;
+    }
+    if(!done){const st=this.starts[this.step],q=this.pp[st];this.sr.setAttribute("cx",q.x);this.sr.setAttribute("cy",q.y);this.sr.style.display="";}
+    else this.sr.style.display="none";
+    if(this.guess){const q=this.pp[this.guess];this.gr.setAttribute("cx",q.x);this.gr.setAttribute("cy",q.y);this.gr.style.display="";}else this.gr.style.display="none";
+    this.hub.textContent=done?`J = ${sv}`:`${this.n-this.step} fő`;
+  }
+}
+
+/* --- hero --- */
+const jHero=new Ring($("#j-hero"),{n:10,k:2});
+(async function jHeroLoop(){
+  const up=()=>{$("#j-hero-b").innerHTML=jHero.done()?`túlélő: <b>${jHero.survivor()}</b>`:`kiesett: <b>${jHero.step}</b>`;};
+  if(reduce){jHero.step=jHero.n-1;jHero.paint();up();return;}
+  for(;;){
+    jHero.reset(10,2);up();
+    while(!jHero.done()){await sleep(900);while(document.hidden||curPage!=="josephus-bevezeto")await sleep(400);jHero.next();up();}
+    await sleep(3400);
+  }
+})();
+
+/* --- §1 játszótér --- */
+let jTok=0,jPlaying=false;
+const jPg=new Ring($("#j-pg"),{n:10,k:2,pick:true,onChange:()=>jPgUpd()});
+function jPgUpd(){
+  const r=jPg,done=r.done();
+  $("#j-pg-out").textContent=r.step;$("#j-pg-left").textContent=r.n-r.step;$("#j-pg-surv").textContent=done?r.survivor():"?";
+  let msg="",cls="";
+  if(done){
+    const s=r.survivor();
+    if(r.guess){msg=r.guess===s?`Eltaláltad: a ${s}. ember maradt.`:`A túlélő a ${s}. ember, te a ${r.guess}.-ra tippeltél.`;cls=r.guess===s?"ok":"bad";}
+    else msg=`A túlélő a ${s}. ember.`;
+    if(r.k===2)msg+=` Képlet: J(${r.n}) = ${josC(r.n)}.`;
+    if(r.k===3&&r.n===41)msg+=` A legenda szerint Josephus a ${s}., a társa a ${r.order[r.n-2]}. helyen állt.`;
+  }else if(r.step===0)msg=r.guess?`Tipp: ${r.guess}. ember. Indulhat a kiesés.`:"Koppints egy emberre a tippeléshez.";
+  else msg=`Kiesett: ${r.order[r.step-1]}.`;
+  const m=$("#j-pg-msg");m.textContent=msg;m.className="msg "+cls;
+  $("#j-pg-order").textContent=r.step?`Sorrend: ${r.order.slice(0,r.step).join(", ")}${done?"  →  túlélő: "+r.survivor():""}`:"";
+  $("#j-pg-step").disabled=done;
+}
+function jPgReset(){jTok++;jPlaying=false;$("#j-pg-play").textContent="Lejátszás";jPg.reset(+$("#j-pg-n").value,jPg.k);jPgUpd();}
+function jSetK(k){jPg.k=k;$("#j-pg-k2").classList.toggle("primary",k===2);$("#j-pg-k3").classList.toggle("primary",k===3);jPgReset();}
+$("#j-pg-n").addEventListener("input",()=>{$("#j-pg-nv").textContent=$("#j-pg-n").value;jPgReset();});
+$("#j-pg-k2").onclick=()=>jSetK(2);$("#j-pg-k3").onclick=()=>jSetK(3);
+$("#j-pg-leg").onclick=()=>{$("#j-pg-n").value=41;$("#j-pg-nv").textContent=41;jSetK(3);};
+$("#j-pg-reset").onclick=jPgReset;
+$("#j-pg-step").onclick=()=>{jTok++;jPlaying=false;$("#j-pg-play").textContent="Lejátszás";jPg.next();};
+$("#j-pg-play").onclick=async()=>{
+  if(jPlaying){jTok++;jPlaying=false;$("#j-pg-play").textContent="Lejátszás";return;}
+  if(jPg.done()){jPg.reset(jPg.n,jPg.k);jPgUpd();}
+  const tok=++jTok;jPlaying=true;$("#j-pg-play").textContent="Szünet";
+  while(jPlaying&&tok===jTok&&!jPg.done()){jPg.next();await sleep(jPg.n>24?240:520);}
+  if(tok===jTok){jPlaying=false;$("#j-pg-play").textContent="Lejátszás";}
+};
+jPgUpd();
+
+/* --- §2 kis esetek --- */
+(function jSmall(){
+  const N=matchMedia("(max-width:560px)").matches?10:16;let h="<tr><th>n</th>";for(let n=1;n<=N;n++)h+=`<td>${n}</td>`;
+  h+="</tr><tr class=\"hl\"><th>J(n)</th>";for(let n=1;n<=N;n++)h+=`<td>${josJ(n)}</td>`;$("#j-vals").innerHTML=h+"</tr>";
+  const s=$("#j-bars"),W=640,H=210,l=34,r=10,tp=18,b=26;s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const bw=(W-l-r)/N,ys=v=>H-b-(H-b-tp)*v/16;
+  [0,4,8,12,16].forEach(v=>{el("line",{x1:l,x2:W-r,y1:ys(v),y2:ys(v),class:"grid-l"},s);txt(s,l-6,ys(v)+4,v,"","end");});
+  for(let n=1;n<=N;n++){const j=josJ(n),x=l+(n-1)*bw;
+    el("rect",{x:x+bw*.18,y:ys(j),width:bw*.64,height:H-b-ys(j),rx:2,style:`fill:${j===1?"var(--accent-2)":"var(--accent)"}`},s);
+    txt(s,x+bw/2,ys(j)-4,j,j===1?"gold":"acc");txt(s,x+bw/2,H-8,n);}
+})();
+
+/* --- §3 rekurzió: egy kör után --- */
+let jRecPar=0;
+function jRecDraw(){
+  const n=+$("#j-rec-n").value;$("#j-rec-nv").textContent=n;const N=2*n+jRecPar,s=$("#j-rec");clear(s);
+  const W=360;s.setAttribute("viewBox",`0 0 ${W} ${W}`);const c=W/2,R1=c-26,R2=R1*.5;
+  const P=(i,cnt,R)=>{const a=-Math.PI/2+i*2*Math.PI/cnt;return [c+R*Math.cos(a),c+R*Math.sin(a)];};
+  const r1=Math.min(14,2*Math.PI*R1/N*.42),r2=Math.min(18,2*Math.PI*R2/n*.42);
+  const alive=[];for(let p=1;p<=N;p++){if(!(p%2===0||(jRecPar&&p===1)))alive.push(p);}
+  /* összekötő vonalak (alul) */
+  alive.forEach((p,j)=>{const [x1,y1]=P(p-1,N,R1),[x2,y2]=P(j,n,R2);el("line",{x1,y1,x2,y2,style:"stroke:var(--accent-2);stroke-width:1.2;opacity:.55"},s);});
+  for(let p=1;p<=N;p++){
+    const [x,y]=P(p-1,N,R1),dead=!alive.includes(p);
+    const g=el("g",{},s);
+    el("circle",{cx:x,cy:y,r:r1,style:dead?"fill:var(--paper);stroke:var(--line);stroke-width:1.5;opacity:.65":"fill:var(--surface);stroke:var(--accent);stroke-width:1.6"},g);
+    const t=el("text",{x,y:y+4,"text-anchor":"middle"},g);t.style.cssText=`font-family:var(--f-mono);font-size:${Math.max(8,r1*.95)}px;fill:${dead?"var(--muted)":"var(--ink)"};${dead?"text-decoration:line-through;opacity:.7":""}`;t.textContent=p;
+  }
+  alive.forEach((p,j)=>{const [x,y]=P(j,n,R2);
+    el("circle",{cx:x,cy:y,r:r2,style:"fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.8"},s);
+    const t=el("text",{x,y:y+4.5,"text-anchor":"middle"},s);t.style.cssText=`font-family:var(--f-mono);font-size:${Math.max(9,r2*.9)}px;font-weight:600;fill:var(--accent)`;t.textContent=j+1;});
+  const h=el("text",{x:c,y:c+4,"text-anchor":"middle"},s);h.style.cssText="font-family:var(--f-body);font-size:12px;fill:var(--muted)";h.textContent="új számozás";
+  const Jn=josJ(n),JN=josJ(N),pred=jRecPar?2*Jn+1:2*Jn-1;
+  $("#j-rec-info").innerHTML=`Külső kör: ${N} ember, eredeti sorszámokkal (áthúzva: kiesettek). Belső kör: ${n} ember, új sorszámokkal.<br>`+
+    `J(${N}) = 2·J(${n}) ${jRecPar?"+":"−"} 1 = 2·${Jn} ${jRecPar?"+":"−"} 1 = ${pred}<br>Szimulációval: J(${N}) = ${JN} ${JN===pred?"✓":"✗"}`;
+  $("#j-rec-even").classList.toggle("primary",!jRecPar);$("#j-rec-odd").classList.toggle("primary",!!jRecPar);
+}
+$("#j-rec-n").addEventListener("input",jRecDraw);
+$("#j-rec-even").onclick=()=>{jRecPar=0;jRecDraw();};$("#j-rec-odd").onclick=()=>{jRecPar=1;jRecDraw();};
+jRecDraw();
+
+/* --- §4 fűrészfog --- */
+function jSawDraw(){
+  const sel=+$("#j-saw-n").value;$("#j-saw-nv").textContent=sel;
+  const s=$("#j-saw"),W=640,H=270,l=38,r=10,tp=14,b=34,NN=64;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const X=n=>l+(n-.5)*(W-l-r)/NN,Y=v=>H-b-(H-b-tp)*v/NN;
+  [0,16,32,48,64].forEach(v=>{el("line",{x1:l,x2:W-r,y1:Y(v),y2:Y(v),class:"grid-l"},s);txt(s,l-6,Y(v)+4,v,"","end");});
+  [1,2,4,8,16,32,64].forEach(p=>{el("line",{x1:X(p),x2:X(p),y1:tp,y2:H-b,style:"stroke:var(--line);stroke-dasharray:3 4"},s);txt(s,X(p),H-b+16,String(p),"",p===64?"end":"middle");});
+  txt(s,(l+W-r)/2,H-4,"n  (a függőleges vonalak a kettőhatványok)","");
+  for(let m=0;m<=6;m++){
+    const a=1<<m,z=Math.min(2*a-1,NN),col=m%2?"var(--accent-2)":"var(--accent)";
+    el("polyline",{points:Array.from({length:z-a+1},(_,i)=>`${X(a+i)},${Y(josC(a+i))}`).join(" "),style:`fill:none;stroke:${col};stroke-width:2`},s);
+    for(let n=a;n<=z;n++)el("circle",{cx:X(n),cy:Y(josC(n)),r:n===sel?0:2.6,style:`fill:${col}`},s);
+  }
+  const jv=josC(sel);
+  el("line",{x1:X(sel),x2:X(sel),y1:Y(jv),y2:H-b,style:"stroke:var(--ink);stroke-width:1;stroke-dasharray:2 3"},s);
+  el("circle",{cx:X(sel),cy:Y(jv),r:6,style:"fill:var(--ink);stroke:var(--surface);stroke-width:2"},s);
+  const m=31-Math.clz32(sel),l_=sel-(1<<m);
+  $("#j-saw-info").innerHTML=`n = ${sel} = ${sup2(m)} + ${l_} &nbsp;→&nbsp; J = 2·${l_} + 1 = <b>${jv}</b><br>Szimulációval: J(${sel}) = ${josJ(sel)} ${josJ(sel)===jv?"✓":"✗"}`;
+}
+$("#j-saw-n").addEventListener("input",jSawDraw);jSawDraw();
+
+/* --- §5 bináris forgatás --- */
+function jBinDraw(){
+  const n=Math.max(1,Math.min(511,Math.round(+$("#j-bin-n").value)||1)),b=n.toString(2),rot=b.slice(1)+"1",jv=josC(n);
+  const lz=(rot.match(/^0*/)||[""])[0].length;
+  $("#j-bits-a").outerHTML=`<div class="bits" id="j-bits-a" style="--nb:${b.length}">${[...b].map((ch,i)=>`<span class="bit${i===0?" lead":""}">${ch}</span>`).join("")}</div>`;
+  $("#j-bits-b").outerHTML=`<div class="bits" id="j-bits-b" style="--nb:${rot.length}">${[...rot].map((ch,i)=>`<span class="bit${i===rot.length-1?" lead":""}${i<lz?" zero":""}">${ch}</span>`).join("")}</div>`;
+  const m=b.length-1,l=n-(1<<m);
+  const ch=[n];while(josC(ch[ch.length-1])!==ch[ch.length-1])ch.push(josC(ch[ch.length-1]));
+  const nu=(b.match(/1/g)||[]).length;
+  $("#j-bin-info").innerHTML=`${n} = ${b}<sub>2</sub> → ${rot}<sub>2</sub> = <b>${jv}</b> &nbsp;·&nbsp; képlettel: ${sup2(m)} + ${l}, 2·${l} + 1 = ${jv} ${jv===parseInt(rot,2)?"✓":"✗"}<br>`+
+    `J ismételve: ${ch.join(" → ")}${ch.length===1?" (fixpont)":""} &nbsp;·&nbsp; ν(n) = ${nu} → ${sup2(nu)} − 1 = ${(1<<nu)-1} ${ch[ch.length-1]===(1<<nu)-1?"✓":"✗"}`;
+}
+$("#j-bin-n").addEventListener("input",jBinDraw);
+document.querySelectorAll("[data-bn]").forEach(bt=>bt.onclick=()=>{$("#j-bin-n").value=bt.dataset.bn;jBinDraw();});
+jBinDraw();
+
+/* --- §6 általános rekurzió, repertoár --- */
+function jGenDraw(){
+  const a=Math.round(+$("#j-a").value)||0,b=Math.round(+$("#j-b").value)||0,c=Math.round(+$("#j-c").value)||0;
+  const n=Math.max(1,Math.min(100000,Math.round(+$("#j-gn").value)||1));
+  const rec=k=>k===1?a:2*rec(k>>1)+((k&1)?c:b);
+  const A=k=>1<<(31-Math.clz32(k)),Bf=k=>A(k)-1-(k-A(k)),Cf=k=>k-A(k);
+  const clo=k=>A(k)*a+Bf(k)*b+Cf(k)*c;
+  const bn=n.toString(2),m=bn.length-1,l=n-(1<<m);
+  const dig=[...bn].map((ch,i)=>i===0?a:(ch==="1"?c:b));
+  const sg=v=>v<0?"−"+Math.abs(v):""+v;
+  const dv=dig.reduce((acc,d)=>2*acc+d,0);
+  $("#j-gen-info").innerHTML=`n = ${n} = ${bn}<sub>2</sub> = ${sup2(m)} + ${l}<br>`+
+    `A = ${1<<m}, &nbsp;B = ${1<<m} − 1 − ${l} = ${Bf(n)}, &nbsp;C = ${l}<br>`+
+    `f(${n}) = ${1<<m}·α + ${Bf(n)}·β + ${l}·γ = ${1<<m}·${sg(a)} + ${Bf(n)}·${sg(b)} + ${l}·${sg(c)} = <b>${sg(clo(n))}</b><br>`+
+    `Számjegycsere: (${dig.map(sg).join(", ")})<sub>2</sub> = ${sg(dv)} &nbsp;·&nbsp; rekurzióval: ${sg(rec(n))} ${clo(n)===rec(n)&&dv===rec(n)?"✓":"✗"}`;
+  const KN=matchMedia("(max-width:560px)").matches?10:16;let h="<tr><th>n</th>";for(let k=1;k<=KN;k++)h+=`<td>${k}</td>`;
+  h+="</tr><tr class=\"hl\"><th>rekurzió</th>";for(let k=1;k<=KN;k++)h+=`<td>${sg(rec(k))}</td>`;
+  h+="</tr><tr><th>zárt alak</th>";for(let k=1;k<=KN;k++)h+=`<td>${sg(clo(k))}</td>`;
+  h+="</tr><tr><th></th>";for(let k=1;k<=KN;k++)h+=`<td style="color:var(--${clo(k)===rec(k)?"good":"bad"})">${clo(k)===rec(k)?"✓":"✗"}</td>`;
+  $("#j-gen-tbl").innerHTML=h+"</tr>";
+}
+["#j-a","#j-b","#j-c","#j-gn"].forEach(id=>$(id).addEventListener("input",jGenDraw));
+document.querySelectorAll("[data-pre]").forEach(bt=>bt.onclick=()=>{const v=bt.dataset.pre.split(",");$("#j-a").value=v[0];$("#j-b").value=v[1];$("#j-c").value=v[2];
+  document.querySelectorAll("[data-pre]").forEach(x=>x.classList.toggle("primary",x===bt));jGenDraw();});
+jGenDraw();
+
+/* ---- router ---- */
+const side=$("#side"),mb=$("#menuBtn");
+function closeMenu(){side.classList.remove("open");mb.setAttribute("aria-expanded","false");}
+mb.onclick=()=>{const o=side.classList.toggle("open");mb.setAttribute("aria-expanded",o);};
+function renderTree(r){
+  let h="";
+  CH.forEach(c=>{
+    const has=!!c.topics,on=r.ch===c.n;
+    h+=has?`<a class="chh${on&&!r.topic?" on":""}" href="#fejezet-${c.n}"><span class="num">${c.n}</span>${c.t}</a>`:`<span class="chh dis"><span class="num">${c.n}</span>${c.t}</span>`;
+    if(has&&on)c.topics.forEach(tp=>{
+      if(tp.ready){h+=`<a class="tp${r.topic===tp.id?" on":""}" href="#${tp.id}-bevezeto"><span>${tp.n} ${tp.t}</span></a>`;
+        if(r.topic===tp.id)TOPICS[tp.id].pages.forEach(([id,tt],i)=>{h+=`<a class="pg${r.page===id?" on":""}" href="#${tp.id}-${id}">${i===0?"":"§"+i+" "}${tt}</a>`;});}
+      else h+=`<span class="tp dis"><span>${tp.n} ${tp.t}</span><em>hamarosan</em></span>`;});
+  });
+  $("#tree").innerHTML=h;
+}
+function homeCards(){
+  $("#home-cards").innerHTML=CH.map(c=>{const ready=c.topics?c.topics.filter(t=>t.ready).length:0,tot=c.topics?c.topics.length:0;
+    const st=c.topics?`<span class="st ok">${ready} / ${tot} téma kész</span>`:`<span class="st">tervezett</span>`;
+    const inner=`<span class="cn">${c.n}</span><span class="ct">${c.t}</span><span class="cd">${c.d}</span>${st}`;
+    return c.topics?`<a class="ccard" href="#fejezet-${c.n}">${inner}</a>`:`<div class="ccard dis">${inner}</div>`;}).join("");
+}
+function chapterView(c){
+  $("#ch-eyebrow").textContent=`${c.n}. fejezet`;$("#ch-title").textContent=c.t;$("#ch-lead").textContent=c.lead||c.d;
+  const box=$("#ch-cards");
+  box.innerHTML=c.topics.map(tp=>{const thumb=tp.id==="hanoi"?`<svg data-thumb="hanoi"></svg>`:tp.id==="egyenesek"?`<canvas class="plane" data-thumb="egyenesek"></canvas>`:tp.id==="josephus"?`<svg data-thumb="josephus"></svg>`:"";
+    const inner=`${thumb}<span class="cn">${tp.n}</span><span class="ct">${tp.t}</span><span class="cd">${tp.d}</span><span class="st${tp.ready?" ok":""}">${tp.ready?TOPICS[tp.id].pages.length+" oldal · kész":"hamarosan"}</span>`;
+    return tp.ready?`<a class="ccard" href="#${tp.id}-bevezeto">${inner}</a>`:`<div class="ccard dis">${inner}</div>`;}).join("");
+  box.querySelectorAll('[data-thumb="hanoi"]').forEach(sv=>new Tower(sv,{n:5,W:300,H:110,mode:"last",nums:false,labels:false}));
+  box.querySelectorAll('[data-thumb="josephus"]').forEach(sv=>{sv.style.cssText="max-height:110px;width:auto;margin:0 auto;display:block";const r=new Ring(sv,{n:10,k:2});r.step=6;r.paint();});
+  box.querySelectorAll('[data-thumb="egyenesek"]').forEach(cv=>{const p=new Plane(cv,{cell:3});p.lines=seededLines(5,4,true);p.render();});
+}
+function crumb(r){
+  const parts=[];const c=CH.find(x=>x.n===r.ch);
+  parts.push(c?`<a href="#kezdolap">Kezdőlap</a>`:`<b>Kezdőlap</b>`);
+  if(c)parts.push(r.topic?`<a href="#fejezet-${c.n}">${c.n}. fejezet</a>`:`<b>${c.n}. ${c.t}</b>`);
+  if(r.topic){const T=TOPICS[r.topic],i=T.pages.findIndex(p=>p[0]===r.page);parts.push(`<b>${T.n} ${T.t} · ${i===0?"Bevezető":"§"+i}</b>`);}
+  $("#crumb").innerHTML=parts.join('<span class="sep">›</span>');
+}
+function parse(){
+  const h=decodeURIComponent(location.hash.slice(1));
+  const m=h.match(/^([a-z]+)-([a-z]+)$/);
+  if(m&&TOPICS[m[1]]&&TOPICS[m[1]].pages.some(p=>p[0]===m[2]))return {ch:1,topic:m[1],page:m[2]};
+  const f=h.match(/^fejezet-(\d+)$/);if(f&&CH.find(c=>c.n===+f[1]&&c.topics))return {ch:+f[1]};
+  const old=h.match(/^s-([a-z]+)$/);if(old&&TOPICS.hanoi.pages.some(p=>p[0]===old[1]))return {ch:1,topic:"hanoi",page:old[1]};
+  return {};
+}
+let curTopic="";
+function route(){
+  const r=parse();closeMenu();
+  ["home","chapter","topic"].forEach(v=>$("#view-"+v).classList.toggle("on",v===(r.topic?"topic":r.ch?"chapter":"home")));
+  if(r.topic){
+    const T=TOPICS[r.topic],P=T.pages,i=P.findIndex(p=>p[0]===r.page);curTopic=r.topic;curPage=r.topic+"-"+r.page;
+    document.querySelectorAll("#view-topic .page").forEach(pg=>pg.classList.toggle("on",pg.id===T.prefix+r.page));
+    $("#prog").innerHTML=P.map((_,j)=>`<i class="${j<i?"done":j===i?"cur":""}"></i>`).join("");
+    $("#pmid").innerHTML=`${i+1} / ${P.length}<span class="pt"> · ${P[i][1]}</span>`;
+    $("#pv").disabled=i===0;$("#nx").textContent=i===P.length-1?"Fejezet ↑":"Következő →";
+    $("#pv").onclick=()=>{if(i>0)location.hash=r.topic+"-"+P[i-1][0];};
+    $("#nx").onclick=()=>{location.hash=i<P.length-1?r.topic+"-"+P[i+1][0]:"fejezet-1";};
+    $("#foot").innerHTML=`<div>${T.foot}</div><div>Interaktív tananyag · Konkrét Matematika sorozat · ${T.n} modul</div>`;
+  }else{curPage="";curTopic="";}
+  if(r.ch&&!r.topic)chapterView(CH.find(c=>c.n===r.ch));
+  renderTree(r);crumb(r);window.scrollTo(0,0);
+}
+document.addEventListener("keydown",e=>{
+  if(!curTopic||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName||""))return;
+  const P=TOPICS[curTopic].pages,i=P.findIndex(p=>curPage===curTopic+"-"+p[0]);
+  if(e.key==="ArrowRight"&&i<P.length-1)location.hash=curTopic+"-"+P[i+1][0];
+  if(e.key==="ArrowLeft"&&i>0)location.hash=curTopic+"-"+P[i-1][0];
+});
+window.addEventListener("hashchange",route);
+homeCards();route();
+})();
+</script>
+</body>
+</html>

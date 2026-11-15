@@ -1,0 +1,236 @@
+
+<!-- ================= 1.2 EGYENESEK A SÍKBAN ================= -->
+<header class="hero page" id="e-bevezeto">
+  <div>
+    <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.2</div>
+    <h1>Egyenesek a síkban</h1>
+    <p class="lead">Hány darabra vágható egy pizza n egyenes vágással? Matematikusabban: legfeljebb hány tartományra osztja a síkot n egyenes? A válasz a Hanoi tornyaival rokon, mégis egészen más jellegű növekedést mutat.</p>
+    <div class="formula">\(L_n = \dfrac{n(n+1)}{2} + 1\)</div>
+  </div>
+  <div class="stage">
+    <canvas class="plane" id="e-hero" role="img" aria-label="Egyenesek egyenként kerülnek a síkra, a tartományok színezve"></canvas>
+    <div class="counter"><span id="e-hero-n">n = 0</span><span>tartomány: <b id="e-hero-L">1</b></span></div>
+  </div>
+</header>
+
+<section class="sec page" id="e-feladat">
+  <div class="body">
+    <div class="eyebrow">§1 · A feladat</div>
+    <h2>Vágd fel a síkot</h2>
+    <p>Az egyenesek végtelenek, a sík is. A kérdés: \(n\) egyenessel legfeljebb hány tartomány hozható létre? Jelölje ezt \(L_n\). Koppints a síkra két pontot: a kettőn átmenő egyenes a sík része lesz. A tartományok színezve, a számláló a teljes síkra számol, nem csak a látható részre.</p>
+    <div class="fig">
+      <canvas class="plane" id="e-pg" role="application" aria-label="Interaktív sík: két koppintás egy egyenest rajzol"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Egyenesek: n</div><div class="v" id="e-pg-n">0</div></div>
+        <div class="stat"><div class="k">Tartományok</div><div class="v" id="e-pg-r">1</div></div>
+        <div class="stat"><div class="k">Maximum: Lₙ</div><div class="v" id="e-pg-max">1</div></div>
+      </div>
+      <div class="msg" id="e-pg-msg">Koppints két pontra a síkon, vagy kérj véletlen egyenest.</div>
+      <div class="ctrl">
+        <button id="e-pg-rand" class="primary">Véletlen egyenes</button>
+        <button id="e-pg-par">Párhuzamos</button>
+        <button id="e-pg-conc">Metszésponton át</button>
+        <button id="e-pg-undo">Visszavonás</button>
+        <button id="e-pg-clear">Törlés</button>
+      </div>
+    </div>
+    <p class="cap">A „Véletlen egyenes” mindig általános helyzetű: nem párhuzamos egyik korábbival sem, és nem megy át meglévő metszésponton. A másik két gomb szándékosan elrontja ezt, hogy lásd, mennyi tartomány vész el.</p>
+  </div>
+  <aside class="margo">
+    <p>A feladatot Jakob Steiner svájci geométer oldotta meg 1826-ban.</p>
+    <p>Általános helyzet [nincs két párhuzamos egyenes, és nincs három, amely egy ponton megy át]: ez a maximum feltétele.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-kis">
+  <div class="body">
+    <div class="eyebrow">§2 · Kis esetek</div>
+    <h2>A csapda: 1, 2, 4, …</h2>
+    <p>Egyenes nélkül egy tartomány van, eggyel kettő, kettővel négy. A minta \(L_n = 2^n\)-t sugall, de ez a harmadik egyenesnél megbukik: \(L_3 = 7\), nem 8.</p>
+    <div class="fig">
+      <div class="film" id="e-film"></div>
+      <div class="cap">Miért nem 8? Két metsző egyenes négy „negyedet” csinál. Egy harmadik egyenes legfeljebb kettőt metsz a két egyenesből, így csak három negyeden halad át. A negyediket (a vele szemközti szögtartományt) nem éri el, azt nem vágja ketté.</div>
+    </div>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="e-vals"></table></div>
+      <svg id="e-bars" role="img" aria-label="L_n és 2^n összehasonlítása"></svg>
+      <div class="cap">Kék: \(L_n\). Szürke: \(2^n\). Három egyenesig együtt haladnak, utána a kettőhatvány elszakad. A felismert minta kevés adatból félrevezethet, ezért kell bizonyítás.</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Hanoi tornyainál 2ⁿ − 1 jött ki. Itt a kis esetek eleje ugyanúgy duplázódást mutat, mégsem az.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-rekurzio">
+  <div class="body">
+    <div class="eyebrow">§3 · A rekurzió</div>
+    <h2>Mit ad hozzá az n-edik egyenes?</h2>
+    <ol class="steps">
+      <li>Az \(n\)-edik egyenes a korábbi \(n-1\) egyenest legfeljebb \(n-1\) pontban metszi, mindegyiket legfeljebb egyszer.</li>
+      <li>Ez a legfeljebb \(n-1\) pont az egyenest legfeljebb \(n\) darabra vágja: két félegyenesre és közte szakaszokra.</li>
+      <li>Minden darab egy már meglévő tartományon halad át, és azt pontosan kettévágja. Tehát legfeljebb \(n\) új tartomány keletkezik.</li>
+      <li>Pontosan \(n\) akkor lesz, ha a metszéspontok mind különbözők és valóban \(n-1\) darab: ez az általános helyzet.</li>
+    </ol>
+    <div class="fig">
+      <canvas class="plane" id="e-rec" role="img" aria-label="Az n-edik egyenes kiemelve, metszéspontjaival és számozott darabjaival"></canvas>
+      <div class="info" id="e-rec-info"></div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Egyenesek száma">
+          <button id="e-rec-minus" aria-label="Kevesebb egyenes">−</button><span id="e-rec-n">n = 4</span><button id="e-rec-plus" aria-label="Több egyenes">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="eq gold">\[\begin{aligned} L_0 &= 1;\\ L_n &= L_{n-1} + n, \qquad n>0. \end{aligned}\]</div>
+    <div class="two">
+      <div class="bound up"><span class="t">Felső korlát</span>A számolás: egy egyenes legfeljebb \(n\) tartományt vág ketté, ezért \(L_n \le L_{n-1}+n\).</div>
+      <div class="bound lo"><span class="t">Elérhetőség</span>Konstrukció: általános helyzetben pontosan \(n\) darab keletkezik, ezért \(L_n \ge L_{n-1}+n\).</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Fordított szereposztás a Hanoihoz képest: ott a konstrukció adta a felső korlátot, és a gondolatmenet az alsót. Itt a gondolatmenet a felső korlát, és a konstrukció az alsó.</p>
+    <p>A darabok számozása az ábrán: ennyi új tartomány született az új egyenessel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-zart">
+  <div class="body">
+    <div class="eyebrow">§4 · Zárt alak</div>
+    <h2>Gauss-trükk: összeg oda-vissza</h2>
+    <p>A rekurziót kibontva minden lépés egyszerűen hozzáad egy számot:</p>
+    <div class="eq">\[L_n = 1 + 1 + 2 + \dots + n = 1 + S_n, \qquad S_n = \sum_{k=1}^{n} k.\]</div>
+    <p>\(S_n\)-et kétszer írjuk le, egyszer előre, egyszer visszafelé. Az egymás alatti tagok összege mindig \(n+1\), és \(n\) ilyen oszlop van:</p>
+    <div class="fig">
+      <svg id="e-gauss" role="img" aria-label="Lépcső és fordított másolata egy n × (n+1) téglalapot ad"></svg>
+      <div class="info" id="e-gauss-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="e-gauss-n">n <input type="range" id="e-gauss-n" min="1" max="12" value="6"> <span class="mono" id="e-gauss-nv">6</span></label>
+      </div>
+    </div>
+    <div class="eq gold">\[2S_n = n(n+1) \quad\Longrightarrow\quad S_n = \frac{n(n+1)}{2} \quad\Longrightarrow\quad L_n = \frac{n(n+1)}{2} + 1.\]</div>
+    <p>Ellenőrzés indukcióval: \(L_0 = 1\) ✓, és ha \(L_{n-1} = \frac{(n-1)n}{2}+1\), akkor \(L_n = \frac{(n-1)n}{2}+1+n = \frac{n(n+1)}{2}+1\) ✓.</p>
+    <h3>A „miért” másképp: mit számol a képlet?</h3>
+    <p>Írjuk át: \(L_n = 1 + n + \binom{n}{2}\). Általános helyzetben \(\binom{n}{2}\) a metszéspontok száma. Tehát: <b>tartományok = 1 + egyenesek + metszéspontok</b>. Az üres sík 1 tartomány, minden egyenes 1-et ad hozzá önmagában, és minden metszéspont további 1-et. Ez akkor is igaz marad, ha az egyenesek nincsenek általános helyzetben, csak a metszéspontokat a rajtuk átmenő egyenesek szerint kell súlyozni.</p>
+  </div>
+  <aside class="margo">
+    <p>A legenda szerint Gauss iskolásként így adta össze 1-től 100-ig a számokat: 50 pár, mindegyik 101.</p>
+    <p>Hanoi: szorzás, ezért exponenciális. Itt: összeadás, változó taggal, ezért polinom. A 2. fejezet (Összegek) innen indul.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-cikkcakk">
+  <div class="body">
+    <div class="eyebrow">§5 · Cikkcakk</div>
+    <h2>Mi lesz, ha az egyenest megtörjük?</h2>
+    <p>A cikkcakk két félegyenes, közös kezdőponttal. Jelölje \(Z_n\), hogy \(n\) cikkcakk legfeljebb hány tartományra vágja a síkot. Egy cikkcakk olyan, mint két metsző egyenes, csak a csúcson túli folytatásuk hiányzik.</p>
+    <div class="fig">
+      <canvas class="plane" id="e-zz" role="img" aria-label="Cikkcakkok és a belőlük meghosszabbított egyenesek összehasonlítása"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Cikkcakk: n</div><div class="v" id="e-zz-n">2</div></div>
+        <div class="stat"><div class="k">Látható tartomány</div><div class="v" id="e-zz-r">7</div></div>
+        <div class="stat"><div class="k">Képlet</div><div class="v" id="e-zz-f">Z₂ = 7</div></div>
+      </div>
+      <div class="ctrl">
+        <div class="stepper" role="group" aria-label="Cikkcakkok száma">
+          <button id="e-zz-minus" aria-label="Kevesebb">−</button><span id="e-zz-k">n = 2</span><button id="e-zz-plus" aria-label="Több">+</button>
+        </div>
+        <button id="e-zz-mode" class="primary">Meghosszabbítás egyenessé</button>
+      </div>
+    </div>
+    <p>A csúcsnál a két teljes egyenes négy szögtartományt ad. Ha a csúcson túli két folytatást (szaggatott) elvesszük, ebből a négyből három egybeolvad. Egy cikkcakk tehát 2 tartománnyal kevesebbet ad, mint a neki megfelelő két egyenes, feltéve, hogy a folytatások nem metszenek semmit. A maximum ezért:</p>
+    <div class="eq gold">\[Z_n = L_{2n} - 2n = \frac{2n(2n+1)}{2} + 1 - 2n = 2n^2 - n + 1, \qquad n \ge 0.\]</div>
+    <div class="tbl-wrap"><table class="vals" id="e-zz-tbl"></table></div>
+    <p>Nagy \(n\)-re \(Z_n \approx 2n^2\), \(L_n \approx n^2/2\): a cikkcakkok kb. négyszer annyi tartományt adnak, mint ugyanannyi egyenes. Nem meglepő, hiszen egy cikkcakk nagyjából két egyenes munkáját végzi, és a metszéspontok száma a vonalszám négyzetével nő.</p>
+  </div>
+  <aside class="margo">
+    <p>Az ábra elrendezéseit úgy választottam ki számítással, hogy a látható tartományszám pontosan a képlet maximumát adja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-korlatos">
+  <div class="body">
+    <div class="eyebrow">§6 · Korlátos tartományok</div>
+    <h2>Hány tartomány véges?</h2>
+    <p>A tartományok egy része végtelenbe nyúlik, más része zárt sokszög. Nézzük a síkot nagyon messziről: egy hatalmas kört minden egyenes két helyen metsz, ez \(2n\) pont, ami a kört \(2n\) ívre vágja. Minden ív pontosan egy végtelen tartományhoz tartozik. A többi korlátos:</p>
+    <div class="eq">\[\text{végtelen: } 2n, \qquad \text{korlátos: } L_n - 2n = \frac{(n-1)(n-2)}{2} = \binom{n-1}{2}, \qquad n \ge 1.\]</div>
+    <div class="fig">
+      <canvas class="plane" id="e-kor" role="img" aria-label="Korlátos tartományok erős színnel, végtelenek halványan"></canvas>
+      <div class="stats">
+        <div class="stat"><div class="k">Korlátos (látható)</div><div class="v" id="e-kor-b">3</div></div>
+        <div class="stat"><div class="k">Végtelen (látható)</div><div class="v" id="e-kor-u">8</div></div>
+        <div class="stat"><div class="k">Képlet: C(n−1, 2)</div><div class="v" id="e-kor-f">3</div></div>
+      </div>
+      <div class="ctrl">
+        <label class="rng" for="e-kor-n">n <input type="range" id="e-kor-n" min="1" max="9" value="4"> <span class="mono" id="e-kor-nv">4</span></label>
+      </div>
+    </div>
+    <h3>Ellenőrzés Euler-képlettel</h3>
+    <p>Egy egyenes-elrendezésre a síkban \(V - E + F = 1\), ahol \(V\) a csúcsok (metszéspontok), \(E\) az élek (szakaszok és félegyenesek), \(F\) a tartományok száma. Általános helyzetben \(V = \binom{n}{2}\), és minden egyenes \(n-1\) pontja \(n\) élre vágja, így \(E = n^2\):</p>
+    <div class="eq">\[\frac{n(n-1)}{2} - n^2 + \Bigl(\frac{n(n+1)}{2}+1\Bigr) = 1. \;\checkmark\]</div>
+    <p>Három független út (rekurzió, metszéspont-számlálás, Euler) ugyanazt adja.</p>
+  </div>
+  <aside class="margo">
+    <p>A könyv 1.2-ét kiegészítő szakasz.</p>
+    <p>Az ábrán minden metszéspont a képen belül esik, ezért a látható korlátos tartományok száma megegyezik a képlettel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-gyak">
+  <div class="body">
+    <div class="eyebrow">§7 · Gyakorlatok</div>
+    <h2>Változatok</h2>
+    <details>
+      <summary>1. n egyenes, ebből k párhuzamos, a többi általános helyzetű. Hány tartomány?</summary>
+      <div class="ans">
+        <p>A „tartomány = 1 + egyenesek + metszéspontok” szabály szerint csak a metszéspontokat kell újraszámolni. A \(k\) párhuzamos egyenes egymást nem metszi, ez \(\binom{k}{2}\) hiányzó pont:</p>
+        <div class="eq">\[R = L_n - \binom{k}{2}.\]</div>
+        <p>Próbáld ki a §1 „Párhuzamos” gombjával: minden párhuzamos pár eggyel kevesebbet ad.</p>
+      </div>
+    </details>
+    <details>
+      <summary>2. Egyetlen hármas metszéspont van (három egyenes egy ponton), egyébként általános helyzet. Hány tartomány?</summary>
+      <div class="ans">
+        <p>Három általános egyenes 3 metszéspontot adna, itt csak 1 van, de azon 3 egyenes megy át. Súlyozva: egy \(m\)-szeres pont \(m-1\)-et ér, tehát \(3-1 = 2\) a 3 helyett. Egy tartomány vész el:</p>
+        <div class="eq">\[R = L_n - 1.\]</div>
+      </div>
+    </details>
+    <details>
+      <summary>3. A térben n sík legfeljebb hány részre vágja a teret?</summary>
+      <div class="ans">
+        <p>Az \(n\)-edik sík a korábbiakat \(n-1\) egyenesben metszi. Ezek a síkot legfeljebb \(L_{n-1}\) darabra vágják, és minden darab kettévág egy térrészt:</p>
+        <div class="eq">\[P_0 = 1, \quad P_n = P_{n-1} + L_{n-1} \;\Rightarrow\; P_n = \binom{n}{0}+\binom{n}{1}+\binom{n}{2}+\binom{n}{3} = \frac{n^3+5n+6}{6}.\]</div>
+        <p>Értékek: 1, 2, 4, 8, 15, 26, … Itt is a negyedik tagnál bukik a kettőhatvány-minta. A mintázat: egyenesen pont (1 dimenzió), síkban egyenes (2), térben sík (3) esetén a binomiális összeg a dimenzióig fut.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat ugyanazt a trükköt ismétli egy dimenzióval feljebb: az új sík „belül” egy 2D-s egyenes-feladatot old meg.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="e-modszer">
+  <div class="body">
+    <div class="eyebrow">§8 · Összevetés</div>
+    <h2>Két rekurzió, két növekedés</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>Hanoi tornyai</th><th>Egyenesek</th></tr>
+      <tr><th>Rekurzió</th><td>T<sub>n</sub> = 2T<sub>n−1</sub> + 1</td><td>L<sub>n</sub> = L<sub>n−1</sub> + n</td></tr>
+      <tr><th>Jelleg</th><td>szorzó</td><td>összeadó, változó taggal</td></tr>
+      <tr><th>Megoldási trükk</th><td>eltolás a fixpontba</td><td>összegzés (Gauss)</td></tr>
+      <tr><th>Zárt alak</th><td>2<sup>n</sup> − 1</td><td>n(n+1)/2 + 1</td></tr>
+      <tr><th>Növekedés</th><td>exponenciális</td><td>négyzetes</td></tr>
+      <tr><th>n = 20</th><td>1 048 575</td><td>211</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Kis esetek</b><span>1, 2, 4, 7. Megmutatják a csapdát is.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Az új egyenes legfeljebb n darab: \(\le\). Általános helyzet: \(\ge\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Kibontás összegre, majd Gauss-trükk.</span></div>
+    </div>
+    <p>A következő téma (1.3, Josephus-probléma) egy harmadik típust hoz: a rekurzió felezi az argumentumot, és a megoldás a kettes számrendszerben válik átláthatóvá.</p>
+  </div>
+  <aside class="margo">
+    <p>A táblázat utolsó sora a léptékkülönbséget mutatja: 20-nál már négy nagyságrend a különbség.</p>
+  </aside>
+</section>

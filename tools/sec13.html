@@ -1,0 +1,258 @@
+
+<!-- ================= 1.3 A JOSEPHUS-PROBLÉMA ================= -->
+<header class="hero page" id="j-bevezeto">
+  <div>
+    <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.3</div>
+    <h1>A Josephus-probléma</h1>
+    <p class="lead">Körben állnak az emberek, és minden második kiesik, amíg csak egy marad. Hova kell állni, hogy te legyél az? A válasz a kettes számrendszerben szinte magától kiolvasható.</p>
+    <div class="formula">\(J(2^m + l) = 2l + 1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="j-hero" role="img" aria-label="Tíz ember áll körben, minden második kiesik, a végén egy túlélő marad" style="max-width:380px;margin:0 auto;display:block"></svg>
+    <div class="counter"><span id="j-hero-a">n = 10 · minden 2.</span><span id="j-hero-b">kiesett: <b>0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A névadó Flavius Josephus az első században élt zsidó–római történetíró. A legenda szerint a római háborúban egy 41 fős lázadó csapat tagjaként barlangba szorult. A társaik az elfogás helyett a halált választották: körbeálltak, és minden harmadikat kiszámolták, amíg mindenki el nem esett. Josephus és egy társa gyorsan kiszámolta, hova álljon, hogy ők maradjanak utoljára.</p>
+    <p>A mi változatunkban \(n\) ember áll körben, 1-től \(n\)-ig megszámozva, és <b>minden második</b> esik ki, amíg egy túlélő marad. A legendás számolást (minden harmadik, \(n = 41\)) a §1 játszótéren külön is kipróbálhatod. <i>Forrás: a Konkrét matematika 1.3 fejezetének bevezetője, saját szavakkal.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="j-feladat">
+  <div class="body">
+    <div class="eyebrow">§1 · A feladat</div>
+    <h2>Tippelj, aztán játszd le</h2>
+    <p>A számolás az 1-es embernél kezdődik: az 1-es marad, a 2-es kiesik, a 3-as marad, a 4-es kiesik, és így tovább körbe-körbe. Koppints arra, akit túlélőnek tippelsz, utána indítsd el a kiesést.</p>
+    <div class="fig">
+      <svg id="j-pg" role="application" aria-label="Interaktív Josephus-kör. Koppints egy emberre a tippeléshez." style="max-width:420px;margin:0 auto;display:block"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Kiesett</div><div class="v" id="j-pg-out">0</div></div>
+        <div class="stat"><div class="k">Hátravan</div><div class="v" id="j-pg-left">10</div></div>
+        <div class="stat"><div class="k">Túlélő</div><div class="v" id="j-pg-surv">?</div></div>
+      </div>
+      <div class="msg" id="j-pg-msg">Koppints egy emberre a tippeléshez.</div>
+      <div class="ctrl">
+        <button id="j-pg-step" class="primary">Egy kiesés</button>
+        <button id="j-pg-play">Lejátszás</button>
+        <button id="j-pg-reset">Újra</button>
+      </div>
+      <div class="ctrl">
+        <label class="rng" for="j-pg-n">n <input type="range" id="j-pg-n" min="2" max="41" value="10"> <span class="mono" id="j-pg-nv">10</span></label>
+        <button id="j-pg-k2" class="primary">Minden 2.</button>
+        <button id="j-pg-k3">Minden 3.</button>
+        <button id="j-pg-leg">Legenda: 41 fő, minden 3.</button>
+      </div>
+      <div class="msg mono" id="j-pg-order" style="font-size:.82rem"></div>
+    </div>
+    <p class="cap">A kiesés sorrendje alul látható. Piros: a legutóbb kiesett, szaggatott keret: a tipped, arany: a túlélő, kék gyűrű: aki a következő számolást kezdi.</p>
+  </div>
+  <aside class="margo">
+    <p>A legendában Josephus a 31. helyen állt, a társa a 16.-on. A §7 egyik feladata ennek az ellenőrzése.</p>
+    <p>Itt a számolás mindig az 1-es embernél indul, nem a legutóbb kiesett utáni embernél: ez csak az első körben ugyanaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-kis">
+  <div class="body">
+    <div class="eyebrow">§2 · Kis esetek</div>
+    <h2>Mintát keresünk</h2>
+    <p>Jelölje \(J(n)\) a túlélő sorszámát \(n\) emberből. Egyetlen embernél \(J(1) = 1\). Két embernél a 2-es esik ki, így \(J(2) = 1\). Három embernél előbb a 2-es, aztán az 1-es esik ki, így \(J(3) = 3\). Ugyanígy tovább:</p>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="j-vals"></table></div>
+      <svg id="j-bars" role="img" aria-label="J(n) értékei n = 1-től 16-ig" style="width:100%"></svg>
+      <div class="cap">Arany: ahol \(J(n) = 1\), vagyis \(n\) kettőhatvány. Utána a túlélő sorszáma kettesével nő, amíg el nem érjük a következő kettőhatványt, és újra 1-re ugrik.</div>
+    </div>
+    <p>Két megfigyelés kínálkozik. <b>Mindig páratlan</b> a túlélő: az első körben minden páros sorszámú kiesik, tehát páros sorszámú nem maradhat. És <b>ahol \(n\) kettőhatvány, ott \(J(n) = 1\)</b>: ilyenkor minden kör pontosan felez, és a számolás mindig az 1-esre fordul vissza.</p>
+  </div>
+  <aside class="margo">
+    <p>Ez a Hanoi-feladat „kis eseteinek” párja: a minta itt nem egy képlet, hanem egy fűrészfog.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-rekurzio">
+  <div class="body">
+    <div class="eyebrow">§3 · A rekurzió</div>
+    <h2>Egy kör után a feladat felére zsugorodik</h2>
+    <p>Induljunk \(2n\) emberrel. Az első körben kiesik a 2, 4, …, \(2n\) sorszámú, és a számolás újra az 1-esnél tart. Megmaradt \(n\) ember: 1, 3, 5, …, \(2n-1\). Ez ugyanaz a feladat, csak feleakkora körrel, és az új \(j\)-edik ember az eredeti \(2j-1\)-edik.</p>
+    <div class="fig">
+      <svg id="j-rec" role="img" aria-label="Külső kör: eredeti sorszámok, a kieső párosak áthúzva. Belső kör: a megmaradtak új sorszámmal." style="max-width:440px;margin:0 auto;display:block"></svg>
+      <div class="info" id="j-rec-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="j-rec-n">n <input type="range" id="j-rec-n" min="2" max="8" value="5"> <span class="mono" id="j-rec-nv">5</span></label>
+        <button id="j-rec-even" class="primary">2n fő</button>
+        <button id="j-rec-odd">2n + 1 fő</button>
+      </div>
+    </div>
+    <div class="eq">\[J(2n) = 2J(n) - 1.\]</div>
+    <p>Páratlan létszámnál, \(2n+1\) embernél, a 2, 4, …, \(2n\) után még az 1-es is kiesik (a számolás hozzá érkezik vissza, és ő a „második”). Megmaradnak a 3, 5, …, \(2n+1\) sorszámúak, és a számolást a 3-as kezdi. Az új \(j\)-edik ember az eredeti \(2j+1\)-edik:</p>
+    <div class="eq">\[J(2n+1) = 2J(n) + 1.\]</div>
+    <p>Együtt, a kezdőértékkel:</p>
+    <div class="eq gold">\[J(1) = 1, \qquad J(2n) = 2J(n) - 1, \qquad J(2n+1) = 2J(n) + 1 \quad (n \ge 1).\]</div>
+    <p>Ez már egy valódi rekurzió, és gyorsabb is, mint a Hanoi-é: egy lépés felezi az \(n\)-et, ezért \(n\) ezer körüli értékeknél is csak tíz lépés kell. Az ábrán a „kieső + párosítás” gondolat látszik: a belső kör az eredeti kör feleakkora másolata, csak más számozással.</p>
+  </div>
+  <aside class="margo">
+    <p>Az „új sorszám → régi sorszám” leképezés az a lépés, amely az egész megoldást hordozza: \(j \mapsto 2j - 1\), illetve \(j \mapsto 2j + 1\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-zart">
+  <div class="body">
+    <div class="eyebrow">§4 · Zárt alak</div>
+    <h2>Fűrészfog: kettőhatványonként újraindul</h2>
+    <p>A §2 táblázata alapján felírjuk az \(n = 2^m + l\) alakot, ahol \(2^m\) az \(n\)-et nem meghaladó legnagyobb kettőhatvány, és \(0 \le l < 2^m\). A sejtés:</p>
+    <div class="eq gold">\[J(2^m + l) = 2l + 1.\]</div>
+    <div class="fig">
+      <svg id="j-saw" role="img" aria-label="J(n) fűrészfog-grafikon n = 1-től 64-ig" style="width:100%"></svg>
+      <div class="info" id="j-saw-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="j-saw-n">n <input type="range" id="j-saw-n" min="1" max="64" value="27"> <span class="mono" id="j-saw-nv">27</span></label>
+      </div>
+    </div>
+    <h3>Bizonyítás indukcióval \(m\)-re</h3>
+    <ol class="steps">
+      <li>Ha \(m = 0\), akkor \(l = 0\), \(n = 1\), és \(J(1) = 1 = 2 \cdot 0 + 1\).</li>
+      <li>Ha \(m > 0\) és \(n = 2^m + l\) páros, akkor \(l = 2l'\), és \(n/2 = 2^{m-1} + l'\). Az indukciós feltevés szerint \(J(n/2) = 2l' + 1\), a rekurzióból \(J(n) = 2(2l'+1) - 1 = 4l' + 1 = 2l + 1\).</li>
+      <li>Ha \(n = 2^m + l\) páratlan, akkor \(l = 2l' + 1\), és \((n-1)/2 = 2^{m-1} + l'\). Így \(J(n) = 2(2l'+1) + 1 = 4l' + 3 = 2l + 1\).</li>
+    </ol>
+    <p>Mindkét ágban ugyanaz a \(2l+1\) jön ki, ezért a képlet \(m\)-ről \(m-1\)-re és vissza is mindig megáll. A grafikon hat sávja egyetlen szabály hat másolata: egyenes, amely kettesével emelkedik, és minden kettőhatványnál 1-re esik vissza.</p>
+  </div>
+  <aside class="margo">
+    <p>Az indukció itt a rekurzió ugyanazt a szerkezetét követi, mint a Hanoinál, csak a lépés \(n-1\) helyett \(\lfloor n/2 \rfloor\).</p>
+    <p>\(l\) az \(n\) „kettőhatvány feletti maradéka”: ahány emberrel a körnek túl kell lépnie a kettőhatványt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-binaris">
+  <div class="body">
+    <div class="eyebrow">§5 · Bináris szerkezet</div>
+    <h2>Forgasd balra a biteket</h2>
+    <p>Írjuk \(n\)-et kettes számrendszerben: \(n = (1\,b_{m-1} \ldots b_1 b_0)_2\). Ekkor \(l = (b_{m-1} \ldots b_0)_2\), vagyis a vezető 1 levétele után megmaradó szám. A \(2l + 1\) pedig ennek balra tolása egy hellyel, és a végére írt 1-es:</p>
+    <div class="eq gold">\[J\bigl((1\,b_{m-1} \ldots b_1 b_0)_2\bigr) = (b_{m-1} \ldots b_1 b_0\,1)_2.\]</div>
+    <p>A túlélő sorszámát tehát úgy kapjuk, hogy \(n\) bináris alakjának első számjegyét a végére visszük: ez egy ciklikus forgatás.</p>
+    <div class="fig">
+      <div class="bitrow"><span class="bl">n</span><div class="bits" id="j-bits-a"></div></div>
+      <div class="bitarrow">↓ a vezető 1-es a végére kerül</div>
+      <div class="bitrow"><span class="bl">J(n)</span><div class="bits" id="j-bits-b"></div></div>
+      <div class="info" id="j-bin-info"></div>
+      <div class="ctrl">
+        <label for="j-bin-n" class="rng">n <input type="number" id="j-bin-n" min="1" max="511" value="100"></label>
+        <button data-bn="10">10</button><button data-bn="13">13</button><button data-bn="41">41</button><button data-bn="100" class="primary">100</button><button data-bn="255">255</button>
+      </div>
+    </div>
+    <h3>Mi történik, ha többször alkalmazzuk \(J\)-t?</h3>
+    <p>Ha a forgatás után a vezető számjegy 0, az eltűnik, és a szám rövidebb lesz. Néhány lépés után csak az 1-es bitek maradnak:</p>
+    <div class="eq">\[\underbrace{J(J(\ldots J(n)\ldots))}_{\text{elég sokszor}} = 2^{\nu(n)} - 1,\]</div>
+    <p>ahol \(\nu(n)\) az \(n\) bináris alakjában álló 1-es bitek száma. Az ábra alatti sor ezt minden \(n\)-re kiírja.</p>
+  </div>
+  <aside class="margo">
+    <p>\(100 = 1100100_2\), balra forgatva \(1001001_2 = 73\). Ellenőrzés: \(100 = 64 + 36\), \(2 \cdot 36 + 1 = 73\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-altalanos">
+  <div class="body">
+    <div class="eyebrow">§6 · Általánosítás</div>
+    <h2>A repertoármódszer</h2>
+    <p>A \(J\) rekurziója egy általánosabb alakba írható, amelyben az 1, \(-1\) és \(1\) állandók helyén paraméterek állnak:</p>
+    <div class="eq gold">\[f(1) = \alpha, \qquad f(2n) = 2f(n) + \beta, \qquad f(2n+1) = 2f(n) + \gamma.\]</div>
+    <p>A Josephus-feladat az \(\alpha = 1,\ \beta = -1,\ \gamma = 1\) eset. Azt várjuk, hogy a megoldás \(\alpha,\beta,\gamma\)-ban lineáris legyen:</p>
+    <div class="eq">\[f(n) = A(n)\,\alpha + B(n)\,\beta + C(n)\,\gamma.\]</div>
+    <p>Az együtthatókat nem kell külön levezetni: ismert megoldásokat „gyűjtünk”, és ebből egyenletrendszert kapunk. A gyűjtemény a <b>repertoár</b>.</p>
+    <ol class="steps">
+      <li><b>\(\alpha = 1,\ \beta = \gamma = 0\).</b> Ekkor \(f(2n) = f(2n+1) = 2f(n)\), tehát \(f(n) = 2^m\). Ebből \(A(n) = 2^m\).</li>
+      <li><b>\(f(n) = 1\).</b> Ez teljesíti a rekurziót, ha \(\alpha = 1\), \(1 = 2 \cdot 1 + \beta\) és \(1 = 2 \cdot 1 + \gamma\), vagyis \(\beta = \gamma = -1\). Ebből \(A - B - C = 1\).</li>
+      <li><b>\(f(n) = n\).</b> Itt \(\alpha = 1\), \(2n = 2n + \beta\) és \(2n + 1 = 2n + \gamma\), tehát \(\beta = 0\), \(\gamma = 1\). Ebből \(A + C = n\).</li>
+    </ol>
+    <p>Az első egyenlet \(A = 2^m\), a harmadikból \(C = n - 2^m = l\), a másodikból \(B = A - 1 - C = 2^m - 1 - l\). Az eredmény:</p>
+    <div class="eq gold">\[f(2^m + l) = 2^m\,\alpha + (2^m - 1 - l)\,\beta + l\,\gamma.\]</div>
+    <p>Ellenőrzés a Josephus-esetre: \(2^m - (2^m - 1 - l) + l = 2l + 1\). \(\checkmark\)</p>
+    <h3>Számjegycsere</h3>
+    <p>Ugyanez szebben is kimondható. Írd fel \(n\) bináris alakját, és minden számjegyet cserélj ki: a vezető 1 helyére \(\alpha\) kerül, minden 0 helyére \(\beta\), minden további 1 helyére \(\gamma\). A kapott „számjegysor” kettes számrendszerű értéke \(f(n)\). A Josephus-esetben \(13 = 1101_2\) számjegyei \((1,\,1,\,-1,\,1)\):</p>
+    <div class="eq">\[(1\;\;1\;\;{-1}\;\;1)_2 = 8 + 4 - 2 + 1 = 11 = J(13).\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="j-a">α <input type="number" id="j-a" value="1"></label>
+        <label class="rng" for="j-b">β <input type="number" id="j-b" value="-1"></label>
+        <label class="rng" for="j-c">γ <input type="number" id="j-c" value="1"></label>
+        <label class="rng" for="j-gn">n <input type="number" id="j-gn" min="1" max="100000" value="13"></label>
+      </div>
+      <div class="ctrl">
+        <button data-pre="1,-1,1" class="primary">Josephus: 1, −1, 1</button>
+        <button data-pre="0,0,1">Vezető bit levétele: 0, 0, 1</button>
+        <button data-pre="1,0,0">Legnagyobb 2-hatvány: 1, 0, 0</button>
+        <button data-pre="1,1,1">Csupa egyes: 1, 1, 1</button>
+      </div>
+      <div class="info" id="j-gen-info"></div>
+      <div class="tbl-wrap"><table class="vals" id="j-gen-tbl"></table></div>
+      <div class="cap">A táblázat az első 16 értéket mutatja: felül a rekurzióval lépésenként számolt, alul a zárt alakkal kapott érték.</div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(f(n) = 1\) és \(f(n) = n\) „gyűjtött megoldások”: úgy választjuk meg \(\alpha,\beta,\gamma\)-t, hogy ismert függvény legyen a megoldás.</p>
+    <p>A módszer jól jellemzi az egész fejezetet: nem a megoldást keressük, hanem olyan megoldásokat, amelyeket már ismerünk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-gyak">
+  <div class="body">
+    <div class="eyebrow">§7 · Gyakorlatok</div>
+    <h2>Változatok</h2>
+    <details>
+      <summary>1. Mikor éli túl az 1-es ember?</summary>
+      <div class="ans">
+        <p>\(J(n) = 2l + 1 = 1\) pontosan akkor, ha \(l = 0\), vagyis \(n = 2^m\). Kettőhatvány létszámnál minden kör pontosan felezi a kört, és a számolás mindig az 1-esnél indul újra, így ő soha nem esik ki.</p>
+      </div>
+    </details>
+    <details>
+      <summary>2. Mely \(n\)-re igaz \(J(n) = n\)?</summary>
+      <div class="ans">
+        <p>\(2l + 1 = 2^m + l\) esetén \(l = 2^m - 1\), és ez még megengedett (\(l < 2^m\)). Ekkor \(n = 2^{m+1} - 1\). Bitekben: a forgatás akkor hagyja változatlanul a számot, ha minden bit 1. Értékek: \(n = 1, 3, 7, 15, 31, \dots\)</p>
+      </div>
+    </details>
+    <details>
+      <summary>3. Igazold, hogy a \(J\) ismételt alkalmazása \(2^{\nu(n)} - 1\)-hez vezet.</summary>
+      <div class="ans">
+        <p>Minden \(J\) a bitsor ciklikus forgatása balra, ahol a vezető 1 a sor végére kerül. Ha utána a legelső bit 0, az eltűnik: a szám rövidebb lesz, de az 1-es bitek száma nem változik. A hossz csak csökkenhet, így véges sok lépés után a számban nincs vezető 0, vagyis minden bit 1: ez \(\nu(n)\) darab egyes, azaz \(2^{\nu(n)} - 1\). Ez fixpont (2. feladat).</p>
+        <p>Példa: \(13 \to 11 \to 7\). \(13 = 1101_2\), három egyes, \(2^3 - 1 = 7\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary>4. A legenda: \(n = 41\), minden harmadik esik ki. Hova állt Josephus és a társa?</summary>
+      <div class="ans">
+        <p>A „minden \(k\)-adik” általános esetre a kettes szerkezet nem érvényes, de egy másik rekurzió igen. Számozzuk a pozíciókat 0-tól, és jelölje \(g(n)\) a túlélő 0-tól számozott helyét:</p>
+        <div class="eq">\[g(1) = 0, \qquad g(n) = \bigl(g(n-1) + k\bigr) \bmod n.\]</div>
+        <p>Indok: az első kieső után \(n-1\) ember marad, és a számolás a kieső utáni emberrel újraindul. A \(k\) lépéses eltolás a régi és az új számozás különbsége. A túlélő sorszáma \(g(n) + 1\). Számítva \(k = 3\), \(n = 41\) esetén a túlélő a <b>31.</b>, és az utolsó kieső a <b>16.</b> Tehát Josephus a 31. helyen, a társa a 16. helyen állt. Kipróbálhatod a §1 „Legenda” gombjával.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladatban a számítógép is a gyors rekurziót használja: \(n\) lépés, szimuláció nélkül.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="j-modszer">
+  <div class="body">
+    <div class="eyebrow">§8 · Összevetés</div>
+    <h2>Három rekurzió, három növekedés</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>Hanoi</th><th>Egyenesek</th><th>Josephus</th></tr>
+      <tr><th>Rekurzió</th><td>T<sub>n</sub> = 2T<sub>n−1</sub> + 1</td><td>L<sub>n</sub> = L<sub>n−1</sub> + n</td><td>J(2n) = 2J(n) − 1<br>J(2n+1) = 2J(n) + 1</td></tr>
+      <tr><th>Lépés</th><td>n → n−1</td><td>n → n−1</td><td>n → n/2</td></tr>
+      <tr><th>Megoldási trükk</th><td>eltolás a fixpontba</td><td>összegzés (Gauss)</td><td>kettes számrendszer, repertoár</td></tr>
+      <tr><th>Zárt alak</th><td>2<sup>n</sup> − 1</td><td>n(n+1)/2 + 1</td><td>2l + 1, n = 2<sup>m</sup> + l</td></tr>
+      <tr><th>Jelleg</th><td>exponenciális</td><td>négyzetes</td><td>fűrészfog, lineáris sávokban</td></tr>
+      <tr><th>n = 20</th><td>1 048 575</td><td>211</td><td>9</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Kis esetek</b><span>1, 1, 3, 1, 3, 5, 7, 1: a fűrészfog már látszik.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Egy kör felez: \(2n\)-ből \(n\) lesz, új számozással.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Sejtés + indukció, majd a bitforgatás és a repertoár.</span></div>
+    </div>
+    <p>Az 1. fejezet három feladata ugyanazt a menetet követi: kis esetek, rekurzió, zárt alak. A különbség a lépés jellegében van: egyet leveszünk (Hanoi, egyenesek), vagy felezünk (Josephus). A 2. fejezet (Összegek) azt mutatja meg, hogyan lehet ezeket a zárt alakokat szisztematikusan, jelöléssel levezetni.</p>
+  </div>
+  <aside class="margo">
+    <p>A fűrészfog azért nem exponenciális, mert a felezés miatt a rekurzió \(\log_2 n\) lépés mély.</p>
+  </aside>
+</section>
