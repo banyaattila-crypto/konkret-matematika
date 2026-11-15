@@ -7,6 +7,14 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.6.2] - 2026-11-15
+
+### Módosítva
+- A 4. fejezet címei a tartalomjegyzékhez igazítva: 4.6 „MOD”: A kongruencia reláció, 4.9 Fí és Mű.
+
+### Javítva
+- A 4.8 szakasz azonosítója ütközött a 3.2-ével (mindkettő „alkalmazasok”, azonos hero-oldalazonosítóval); a 4.8 azonosítója „tovabbialk” lett.
+
 ## [1.6.1] - 2026-11-15
 
 ### Módosítva

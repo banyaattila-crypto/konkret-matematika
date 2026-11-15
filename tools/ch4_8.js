@@ -3,7 +3,7 @@ const baGcd=(a,b)=>b?baGcd(b,a%b):a;
 function baPow(a,e,m){let r=1n,b=BigInt(a)%BigInt(m);const M=BigInt(m);e=BigInt(e);while(e>0n){if(e&1n)r=r*b%M;b=b*b%M;e>>=1n;}return r%M;}
 function baIsPrime(n){if(n<2)return false;for(let p=2;p*p<=n;p++)if(n%p===0)return false;return true;}
 function baInv(a,m){let[r0,r1,s0,s1]=[BigInt(m),BigInt(a)%BigInt(m),0n,1n];while(r1!==0n){const q=r0/r1;[r0,r1]=[r1,r0-q*r1];[s0,s1]=[s1,s0-q*s1];}return r0===1n?((s0%BigInt(m))+BigInt(m))%BigInt(m):null;}
-c2hero("alkalmazasok-bevezeto",330,34,fr=>{
+c2hero("tovabbialk-bevezeto",330,34,fr=>{
   const s=c2svg("#ba-hero",420,250),cx=210,cy=125,R=100,P=17,k=Math.min(fr,P-1);
   const pos=i=>[cx+R*Math.cos(2*Math.PI*i/P-Math.PI/2),cy+R*Math.sin(2*Math.PI*i/P-Math.PI/2)];
   const seq=[1];for(let i=1;i<=P-1;i++)seq.push(seq[i-1]*3%P);
