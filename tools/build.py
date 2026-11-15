@@ -21,7 +21,8 @@ exec(open('tools/mods6.py',encoding='utf-8').read())
 exec(open('tools/mods7.py',encoding='utf-8').read())
 exec(open('tools/mods8.py',encoding='utf-8').read())
 exec(open('tools/mods9.py',encoding='utf-8').read())
-MODS=MODS+MODS3+MODS4+MODS5+MODS6+MODS7+MODS8+MODS9+MODS1
+exec(open('tools/mods10.py',encoding='utf-8').read())
+MODS=MODS+MODS3+MODS4+MODS5+MODS6+MODS7+MODS8+MODS9+MODS10+MODS1
 built=[m for m in MODS if os.path.exists(T+m[4]+'.html') and os.path.exists(T+m[4]+'.js')]
 css=open(T+'ch2.css',encoding='utf-8').read()
 s=base
@@ -80,7 +81,11 @@ tops9=[]
 for (tid,n,t,pre,fn,pages,d) in MODS9:
     tops9.append({"id":tid,"d":d} if (tid,n,t,pre,fn,pages,d) in built else {"n":n,"t":t,"d":d})
 ch9={k:v for k,v in CH9.items() if k!='old'};ch9['topics']=tops9
-rep(CH9['old'],' '+json.dumps(ch9,ensure_ascii=False))
+tops10=[]
+for (tid,n,t,pre,fn,pages,d) in MODS10:
+    tops10.append({"id":tid,"d":d} if (tid,n,t,pre,fn,pages,d) in built else {"n":n,"t":t,"d":d})
+ch10={k:v for k,v in CH10.items() if k!='old'};ch10['topics']=tops10
+rep(CH9['old'],' '+json.dumps(ch9,ensure_ascii=False)+',\n '+json.dumps(ch10,ensure_ascii=False))
 html="".join(open(T+m[4]+'.html',encoding='utf-8').read() for m in built)
 js=open(T+'landing.js',encoding='utf-8').read()+"\n"+open(T+'ch2common.js',encoding='utf-8').read()+"\n"+"\n".join(open(T+m[4]+'.js',encoding='utf-8').read() for m in built)
 rep('<footer id="foot"></footer>',html+'\n<footer id="foot"></footer>')

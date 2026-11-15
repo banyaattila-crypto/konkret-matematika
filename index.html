@@ -493,7 +493,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
     <div class="pillar"><span class="pi">✓</span><b>Ellenőrizve</b><span>Az oldalak ellenőrző sorai élőben vetik össze a képletet a számolással.</span></div>
   </section>
   <section class="land-chapters" id="fejezetek">
-    <h2>Kilenc fejezet</h2>
+    <h2>Fejezetek</h2>
     <div class="spines" id="home-cards"></div>
   </section>
 </div>
@@ -7740,6 +7740,133 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 10.1 A KÖTET TÉRKÉPE ================= -->
+<header class="hero page" id="ax-bevezeto">
+  <div>
+    <div class="eyebrow">Összegzés · 10.1</div>
+    <h1>A kötet térképe</h1>
+    <p class="lead">A kilenc fejezet nem külön szigetek: ugyanaz a néhány gondolat tér vissza más-más ruhában. Ez a rész a kapcsolatokat és az eszköztárat gyűjti össze.</p>
+    <div class="formula">\(\displaystyle\text{rekurzió}\to\sum\to\binom nk\to G(x)\to E[X]\to O(\cdot)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ax-hero" role="img" aria-label="Kilenc fejezet gyűrűben, a köztük lévő kapcsolatokkal"></svg>
+    <div class="counter"><span id="ax-hero-a">1. kapcsolat</span><span id="ax-hero-b">1 → 2</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen a fejezetek számozott pontok, a vonalak pedig azt jelölik, hogy az egyik fejezet eszköze a másikban visszatér. A tizenhárom kapcsolat egyénileg válogatott: saját szerkesztésű térkép, nem a könyv hivatalos felépítése. Az ötlet az, hogy a tananyag kevesebb, mint amilyennek látszik. A rekurzió, az összegzés, a binomiális együtthatók, a generátorfüggvények és a harmonikus számok kilenc fejezeten át ismétlődnek. Ha valamelyiket értjük, a többi fejezetben is kéznél van.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ax-terkep">
+  <div class="body">
+    <div class="eyebrow">§1 · Térkép</div>
+    <h2>Melyik fejezet melyikhez kapcsolódik?</h2>
+    <p>Válassz egy fejezetet a listából, vagy kattints egy pontra az ábrán. A kiemelt vonalak és a lista megmutatják, hová vezet a fejezet eszköze, és honnan jön.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ax-m-c">fejezet <select id="ax-m-c"></select></label>
+      </div>
+      <svg id="ax-m-svg" role="img" aria-label="A fejezetek kapcsolati térképe"></svg>
+      <div class="info" id="ax-m-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A térkép szerkesztői döntés: máshogy is meg lehetne húzni. Itt csak olyan kapcsolat szerepel, amelyet a tananyag egy konkrét helyén használtunk is.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ax-szam">
+  <div class="body">
+    <div class="eyebrow">§2 · Ugyanaz a szám</div>
+    <h2>A \(H_n\) öt helyen</h2>
+    <p>A harmonikus szám \(H_n=1+\tfrac12+\dots+\tfrac1n\) öt egymástól független feladatban bukkan fel. A kísérlet mindegyiket külön számolja ki, és összeveti:</p>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Hely</th><th>Feladat</th></tr>
+      <tr><td>6.2</td><td>a definíció, pontos törtekkel</td></tr>
+      <tr><td>6.1 és 8.2</td><td>véletlen permutáció ciklusainak várható száma: \(\tfrac1{n!}\sum k\bigl[{n\atop k}\bigr]\)</td></tr>
+      <tr><td>8.4</td><td>kupongyűjtő: \(E[T]/n\)</td></tr>
+      <tr><td>9.4</td><td>gyorsrendezés: \(\tfrac{C_n+4n}{2(n+1)}\)</td></tr>
+      <tr><td>9.3</td><td>Euler–Maclaurin-közelítés: \(\ln n+\gamma+\tfrac1{2n}-\dots\)</td></tr>
+    </table></div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ax-h-n">n <input type="range" id="ax-h-n" min="2" max="14" value="10"> <span class="mono" id="ax-h-nv">10</span></label>
+      </div>
+      <div class="info" id="ax-h-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az első három forrás pontosan egyenlő (törtként), a gyorsrendezés lebegőpontosan egyezik, az utolsó csak közelítés. Az egyezés nem véletlen: mindegyik mögött ugyanaz a \(\sum 1/k\) rejlik, amely más-más szerepben bukkan fel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ax-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Fejezeteken átívelő feladatok</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi a 6 elemű véletlen permutáció ciklusszámának várható értéke, és mennyi a hatoldalú kocka kupongyűjtő-ideje? Mi a kettő aránya?</span></summary>
+      <div class="ans">
+        <p>A ciklusszám várható értéke \(H_6=\tfrac{49}{20}\) (8.2), a kupongyűjtő idő \(6H_6=\tfrac{147}{10}=14{,}7\) (8.4). Az arány 6.</p>
+        <p><b>Ellenőrzés:</b> \(\tfrac{147/10}{49/20}=6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számítsd ki \(F_{30}\)-at a \(\varphi^{30}/\sqrt5\) alakból, és magyarázd meg, miért kerekítéssel pontos.</span></summary>
+      <div class="ans">
+        <p>A 7.2 szerint \(F_n=\tfrac{\varphi^n-\psi^n}{\sqrt5}\), ahol \(\psi=-\tfrac1\varphi\). A \(\psi^n/\sqrt5\) tag abszolút értéke \(n\ge0\)-ra kisebb \(\tfrac12\)-nél, tehát \(F_n\) a \(\varphi^n/\sqrt5\) legközelebbi egésze. \(\varphi^{30}/\sqrt5=832\,040{,}0000002\).</p>
+        <p><b>Ellenőrzés:</b> \(F_{30}=832\,040\), a hiba \(2{,}4\cdot10^{-7}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi az \(5.\) Catalan-szám, és mit ad a \(\tfrac{4^n}{\sqrt\pi\,n^{3/2}}\) aszimptotikus alak \(n=5\)-re?</span></summary>
+      <div class="ans">
+        <p>\(C_5=\tfrac16\binom{10}5=42\) (5. fejezet). A közelítés \(\tfrac{1024}{\sqrt\pi\cdot5^{3/2}}=51{,}7\), 23%-kal több. A \(\bigl(1-\tfrac9{8n}\bigr)\) tényezővel (9.4) \(51{,}7\cdot0{,}775=40{,}1\), 4,6%-kal kevesebb.</p>
+        <p><b>Ellenőrzés:</b> a hiba \(n=5\)-nél 23%, a 9.4 4. feladatában \(n=10\)-nél 11%: kb. a felére csökken, ahogy az \(O(1/n)\) hiba megkívánja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Melyik a legkisebb \(n\), amelyre \(\sum_{k>n}1/k^2<10^{-6}\)?</span></summary>
+      <div class="ans">
+        <p>A 9.3 szerint \(\sum_{k>n}\tfrac1{k^2}=\tfrac1n-\tfrac1{2n^2}+\tfrac1{6n^3}-\dots\). Az \(n=10^6\)-nál ez \(10^{-6}-5\cdot10^{-13}<10^{-6}\), az \(n=999\,999\)-nél \(1{,}0000005\cdot10^{-6}>10^{-6}\). Tehát \(n=10^6\).</p>
+        <p><b>Ellenőrzés:</b> a hiba nagyságrendje \(1/n\), ezért a küszöb \(10^6\) körül adódik, és a \(-\tfrac1{2n^2}\) tag dönti el a pontos helyet. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladatnak tanulsága: az összeg konvergens, de lassan. A \(\sum1/k^2\)-nek egymillió tagját kell összeadni hat tizedesjegyhez, miközben az Euler–Maclaurin-sorral két tag elég.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ax-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Eszköztár</div>
+    <h2>Visszatérő eszközök</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Eszköz</th><th>Hol tanultuk</th><th>Hol tért vissza</th></tr>
+      <tr><td>rekurzió zárt alakra</td><td>1., 2. fejezet</td><td>7.2, 8.4, 9.4</td></tr>
+      <tr><td>teleszkópos összegzés</td><td>2. fejezet</td><td>9.4</td></tr>
+      <tr><td>binomiális tétel</td><td>5. fejezet</td><td>7., 8.2, 9.1</td></tr>
+      <tr><td>generátorfüggvény</td><td>7. fejezet</td><td>8.1, 8.3</td></tr>
+      <tr><td>harmonikus számok</td><td>6.2</td><td>8.2, 8.4, 9.3, 9.4</td></tr>
+      <tr><td>Stirling-számok (1. fajta)</td><td>6.1</td><td>8.2</td></tr>
+      <tr><td>Bernoulli-számok</td><td>6.4</td><td>9.3</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd fel</b><span>Rekurzió, összeg vagy generátorfüggvény.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Oldd meg pontosan</b><span>Zárt alak, ha van.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Becsüld</b><span>Ha nincs, aszimptotikával, hibatagot adva.</span></div>
+    </div>
+    <p>A táblázat a tananyag felépítése szerint készült, a könyv sorrendjét nem követi pontosan.</p>
+  </div>
+  <aside class="margo">
+    <p>Tanulási tipp: ha egy új feladatnál nem látod az utat, nézd meg, melyik eszköz működik a legkisebb esetekre (\(n=1,2,3\)). Ez volt a módszer az 1. fejezetben is.</p>
+  </aside>
+</section>
+
 <!-- ================= 1.4 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="w-bevezeto">
   <div>
@@ -8472,6 +8599,7 @@ const TOPICS={
   eulermac:{"n": "9.3", "t": "Euler–Maclaurin-összegzés", "ch": 9, "prefix": "au-", "pages": [["bevezeto", "Bevezető"], ["trapez", "Összeg és integrál"], ["formula", "Az Euler–Maclaurin-formula"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.3 Euler–Maclaurin-összegzés. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   aszalk:{"n": "9.4", "t": "Alkalmazások", "ch": 9, "prefix": "av-", "pages": [["bevezeto", "Bevezető"], ["binom", "A központi binomiális együttható"], ["qsort", "A gyorsrendezés átlagos költsége"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.4 Alkalmazások. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokasz:{"n": "9.5", "t": "Feladatok", "ch": 9, "prefix": "aw-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.5 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  osszegzes:{"n": "10.1", "t": "A kötet térképe", "ch": 10, "prefix": "ax-", "pages": [["bevezeto", "Bevezető"], ["terkep", "Hogyan kapcsolódnak?"], ["szam", "Ugyanaz a szám"], ["gyak", "Gyakorlatok"], ["modszer", "Eszköztár"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 10. fejezet, 10.1 A kötet térképe. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatok:{"n": "1.4", "t": "Feladatok", "ch": 1, "prefix": "w-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.4 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."}
 };
 const CH=[
@@ -8487,7 +8615,8 @@ const CH=[
   {"n": 6, "t": "Speciális számok", "d": "Stirling-, harmonikus, Fibonacci- és Bernoulli-számok.", "lead": "Néhány számsorozat újra meg újra felbukkan a diszkrét matematikában. A fejezet a Stirling-számokat, a harmonikus számokat, a Fibonacci-számokat és a Bernoulli-számokat vizsgálja: hogyan születnek, milyen azonosságok kötik össze őket, és mire jók.", "topics": [{"id": "stirling", "d": "Másodfajú és elsőfajú Stirling-számok, hatványok kifejtése, szürjekciók."}, {"id": "harmonikus", "d": "H_n növekedése, részleges összegzés, kapcsolat a Stirling-számokkal."}, {"id": "fibonacci", "d": "Cassini-azonosság, gcd-tulajdonság, Zeckendorf-tétel."}, {"id": "bernoulli", "d": "Hatványösszegek zárt alakja, Bernoulli-számok rekurziója."}, {"id": "feladatokspec", "d": "Tíz saját feladat négy szinten a speciális számokról, megoldással, programmal ellenőrizve."}]},
   {"n": 7, "t": "Generátorfüggvények", "d": "Hatványsorok, rekurziók, partíciók, exponenciális generátorfüggvények.", "lead": "A generátorfüggvény egy sorozatot egyetlen hatványsorba csomagol. A fejezet azt mutatja meg, hogyan lesz a sorozatok közti rekurzióból algebrai egyenlet, és hogyan olvashatók le a megoldások és a megszámolási feladatok válaszai.", "topics": [{"id": "gfalap", "d": "Hatványsorok mint sorozatok, eltolás, deriválás, részletösszeg."}, {"id": "gfrek", "d": "Lineáris rekurzió megoldása, résztörtek, Catalan-számok generátorfüggvénye."}, {"id": "gfparticio", "d": "Partíciószámok, páratlan és különböző részek, pénzváltás."}, {"id": "gfexp", "d": "Exponenciális generátorfüggvény, Bell-számok, derangementek, involúciók."}, {"id": "feladatokgf", "d": "Tíz saját feladat négy szinten a generátorfüggvényekről, megoldással, programmal ellenőrizve."}]},
   {"n": 8, "t": "Diszkrét valószínűség", "d": "Eseménytér, várható érték, szórás, generáló függvények, klasszikus feladatok.", "lead": "A diszkrét valószínűség megszámlálásra épül, ezért a korábbi fejezetek eszközei itt természetesen kerülnek elő: a binomiális együtthatók, a harmonikus számok és a generátorfüggvények. A fejezet a valószínűségi térből indul, és a klasszikus feladatokig vezet.", "topics": [{"id": "valalap", "d": "Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."}, {"id": "varhato", "d": "Várható érték, indikátorváltozók, variancia, függetlenek összege."}, {"id": "valgf", "d": "G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."}, {"id": "klasszikus", "d": "Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."}, {"id": "feladatokval", "d": "Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."}]},
-  {"n": 9, "t": "Aszimptotika", "d": "Nagy O, Stirling-formula, Euler–Maclaurin-összegzés, alkalmazások.", "lead": "Ha egy összegnek vagy sorozatnak nincs zárt alakja, még mindig megkérdezhetjük, hogyan viselkedik nagy n-re. A fejezet a nagy O jelöléssel kezdődik, és az Euler–Maclaurin-összegzésen át a Stirling-formuláig és a gyorsrendezés elemzéséig jut.", "topics": [{"id": "nagyo", "d": "O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."}, {"id": "stirfej", "d": "Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."}, {"id": "eulermac", "d": "Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."}, {"id": "aszalk", "d": "C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."}, {"id": "feladatokasz", "d": "Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."}]}];
+  {"n": 9, "t": "Aszimptotika", "d": "Nagy O, Stirling-formula, Euler–Maclaurin-összegzés, alkalmazások.", "lead": "Ha egy összegnek vagy sorozatnak nincs zárt alakja, még mindig megkérdezhetjük, hogyan viselkedik nagy n-re. A fejezet a nagy O jelöléssel kezdődik, és az Euler–Maclaurin-összegzésen át a Stirling-formuláig és a gyorsrendezés elemzéséig jut.", "topics": [{"id": "nagyo", "d": "O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."}, {"id": "stirfej", "d": "Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."}, {"id": "eulermac", "d": "Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."}, {"id": "aszalk", "d": "C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."}, {"id": "feladatokasz", "d": "Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."}]},
+ {"n": 10, "t": "Összegzés", "d": "Saját záró rész: a fejezetek közötti kapcsolatok és a visszatérő eszközök.", "lead": "A Konkrét matematika kilenc fejezetes, ez a rész nem a könyv fejezete, hanem saját összegzés. Megmutatja, hogyan kapcsolódik egymáshoz a kilenc fejezet, és hogy ugyanaz a néhány eszköz hányféle helyzetben tér vissza.", "topics": [{"id": "osszegzes", "d": "A kilenc fejezet kapcsolatai, visszatérő eszközök, egy szám öt helyen."}]}];
 CH.forEach(c=>c.topics&&c.topics.forEach(tp=>{if(tp.id){tp.n=TOPICS[tp.id].n;tp.t=TOPICS[tp.id].t;tp.ready=true;}}));
 /* ================= 1.3 A JOSEPHUS-PROBLÉMA ================= */
 function josSim(n,k){
@@ -10836,6 +10965,47 @@ function awS(){
   $("#aw-s-info").innerHTML=`n = ${n}: n·(ln n! − n ln n + n − ½ ln 2πn) = <b>${fm(+v.toFixed(10))}</b><br>1/12 − érték = ${fm(+(1/12-v).toExponential(3))} &nbsp;·&nbsp; 1/(360n²) = ${fm(+(1/(360*n*n)).toExponential(3))}`;
 }
 $("#aw-s-n").addEventListener("input",awS);awS();
+
+/* ================= 10.1 A KÖTET TÉRKÉPE ================= */
+const axCh=["","Rekurziós problémák","Összegek","Egészrész-függvények","Számelmélet","Binomiális együtthatók","Speciális számok","Generátorfüggvények","Diszkrét valószínűség","Aszimptotika"];
+const axE=[[1,2,"rekurzió és összeg kölcsönös átírása"],[1,7,"rekurzió megoldása hatványsorral"],[2,6,"teleszkópos összeg és perturbáció: harmonikus és Bernoulli-számok"],[2,9,"összeg közelítése integrállal (Euler–Maclaurin)"],[3,4,"egészrész és mod a számelméletben"],[4,5,"oszthatóság és paritás a binomiális együtthatókban"],[5,7,"binomiális tétel és generátorfüggvény"],[5,8,"binomiális eloszlás"],[5,9,"a C(2n,n) aszimptotikája"],[6,8,"harmonikus és Stirling-számok a valószínűségben"],[6,9,"Bernoulli-számok az Euler–Maclaurin-sorban"],[7,8,"generátorfüggvény és valószínűség-generáló függvény"],[8,9,"a kupongyűjtő aszimptotikája"]];
+function axDraw(svg,sel,upto){
+  const W=420,H=300,cx=W/2,cy=H/2,R=110,P=i=>[cx+R*Math.sin(2*Math.PI*(i-1)/9),cy-R*Math.cos(2*Math.PI*(i-1)/9)];
+  clear(svg);svg.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  axE.forEach((e,k)=>{if(upto!==undefined&&k>upto)return;const a=P(e[0]),b=P(e[1]),on=sel&&(e[0]===sel||e[1]===sel);
+    el("line",{x1:a[0],y1:a[1],x2:b[0],y2:b[1],style:`stroke:${on||upto!==undefined&&k===upto?"var(--accent-2)":"var(--accent)"};stroke-width:${on||upto!==undefined&&k===upto?3:1.4};opacity:${sel&&!on?.15:.75}`},svg);});
+  for(let i=1;i<=9;i++){const p=P(i),on=sel===i;
+    const c=el("circle",{cx:p[0],cy:p[1],r:on?17:14,style:`fill:${on?"var(--accent-2)":"var(--accent)"};opacity:.92;cursor:${sel!==undefined?"pointer":"default"}`},svg);
+    const t=txt(svg,p[0],p[1]+4,i,"","middle");if(t&&t.style){t.style.fill="#fff";t.style.fontWeight="700";t.style.pointerEvents="none";}if(sel!==undefined)c.addEventListener("click",()=>{$("#ax-m-c").value=i;axM();});}
+}
+c2hero("osszegzes-bevezeto",700,13,fr=>{
+  axDraw($("#ax-hero"),undefined,fr);const e=axE[fr];
+  $("#ax-hero-a").textContent=`${fr+1}. kapcsolat`;$("#ax-hero-b").textContent=`${e[0]} → ${e[1]}`;
+});
+const axSel=$("#ax-m-c");for(let i=1;i<=9;i++){const o=document.createElement("option");o.value=i;o.textContent=`${i}. ${axCh[i]}`;axSel.appendChild(o);}
+function axM(){
+  const c=+axSel.value;axDraw($("#ax-m-svg"),c);
+  const l=axE.filter(e=>e[0]===c||e[1]===c).map(e=>{const o=e[0]===c?e[1]:e[0];return `<li>${o}. ${axCh[o]}: ${e[2]}</li>`;}).join("");
+  $("#ax-m-info").innerHTML=`<b>${c}. ${axCh[c]}</b> kapcsolatai (${axE.filter(e=>e[0]===c||e[1]===c).length}):<ul>${l}</ul>`;
+}
+axSel.addEventListener("input",axM);axM();
+function axH(){
+  const n=+$("#ax-h-n").value;$("#ax-h-nv").textContent=n;
+  const H=hnR(n);
+  let fact=1;for(let k=2;k<=n;k++)fact*=k;let sk=0;for(let k=1;k<=n;k++)sk+=k*sS1[n][k];
+  const cyc=rat(sk,fact);
+  let T=rat(0);for(let i=1;i<=n;i++)T=T.add(rat(n,n-i+1));const coup=T.div(rat(n));
+  const C=[0];let S=0;for(let m=1;m<=n;m++){S+=C[m-1];C.push(m-1+2/m*S);}
+  const qs=(C[n]+4*n)/(2*(n+1)),g=0.5772156649015329;
+  const em=Math.log(n)+g+1/(2*n)-1/(12*n*n)+1/(120*n**4)-1/(252*n**6);
+  const hv=H.num();
+  $("#ax-h-info").innerHTML=`n = ${n}: H<sub>n</sub> = <b>${H}</b> = ${fm(+hv.toFixed(10))}<div class="tbl-wrap"><table class="vals cmp"><tr><th>forrás</th><th>érték</th><th>egyezik</th></tr>`+
+   `<tr><td>ciklusok várható száma</td><td>${cyc}</td><td>${ok(cyc.eq(H))}</td></tr>`+
+   `<tr><td>kupongyűjtő E[T]/n</td><td>${coup}</td><td>${ok(coup.eq(H))}</td></tr>`+
+   `<tr><td>gyorsrendezés (C<sub>n</sub> + 4n)/(2(n+1))</td><td>${fm(+qs.toFixed(10))}</td><td>${ok(Math.abs(qs-hv)<1e-9)}</td></tr>`+
+   `<tr><td>Euler–Maclaurin (5 tag)</td><td>${fm(+em.toFixed(10))}</td><td>hiba ${fm(+(em-hv).toExponential(2))}</td></tr></table></div>`;
+}
+$("#ax-h-n").addEventListener("input",axH);axH();
 
 /* ================= 1.4 FELADATOK ================= */
 c2hero("feladatok-bevezeto",420,10,fr=>{
