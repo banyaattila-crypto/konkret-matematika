@@ -1,4 +1,4 @@
-/* ================= 7.3 PARTÍCIÓK ================= */
+/* ================= 7.8 PARTÍCIÓK ================= */
 const pcWays=(coins,N)=>{const c=Array(N+1).fill(0);c[0]=1;for(const a of coins)for(let i=a;i<=N;i++)c[i]+=c[i-a];return c;};
 const pcDist=N=>{const c=Array(N+1).fill(0);c[0]=1;for(let a=1;a<=N;a++)for(let i=N;i>=a;i--)c[i]+=c[i-a];return c;};
 const pcList=(n,mx,ok2)=>{const out=[];const rec=(rem,m,cur)=>{if(rem===0){out.push(cur.slice());return;}for(let k=Math.min(rem,m);k>=1;k--){if(!ok2(k,cur))continue;cur.push(k);rec(rem-k,ok2.strict?k-1:k,cur);cur.pop();}};rec(n,mx,[]);return out;};

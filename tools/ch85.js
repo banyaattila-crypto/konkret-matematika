@@ -1,4 +1,4 @@
-/* ================= 8.5 FELADATOK ================= */
+/* ================= 8.7 FELADATOK ================= */
 exHero("feladatokval-bevezeto","#ar-hero","#ar-hero-k",[3,3,2,2]);
 function arN(){
   const n=+$("#ar-n-n").value;$("#ar-n-nv").textContent=n;

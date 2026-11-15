@@ -1,4 +1,4 @@
-/* ================= 6.5 FELADATOK ================= */
+/* ================= 6.8 FELADATOK ================= */
 exHero("feladatokspec-bevezeto","#ah-hero","#ah-hero-k",[3,3,2,2]);
 function ahH(){
   const n=+$("#ah-h-n").value;$("#ah-h-nv").textContent=n;

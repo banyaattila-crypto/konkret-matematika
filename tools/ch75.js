@@ -1,4 +1,4 @@
-/* ================= 7.5 FELADATOK ================= */
+/* ================= 7.9 FELADATOK ================= */
 exHero("feladatokgf-bevezeto","#am-hero","#am-hero-k",[3,3,2,2]);
 const amP=pcWays(Array.from({length:100},(_,i)=>i+1),100);
 function amR(){

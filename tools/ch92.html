@@ -1,9 +1,9 @@
 
-<!-- ================= 9.2 AZ O ALGEBRÁJA ÉS A STIRLING-FORMULA ================= -->
+<!-- ================= 9.3 AZ O ALGEBRÁJA ÉS A STIRLING-FORMULA ================= -->
 <header class="hero page" id="at-bevezeto">
   <div>
-    <div class="eyebrow">9. fejezet · Aszimptotika · 9.2</div>
-    <h1>Az O algebrája és a Stirling-formula</h1>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.3</div>
+    <h1>Műveletek az O szimbólummal</h1>
     <p class="lead">A hibatagot nem kell kiszámolni, elég a nagyságrendjét követni. Ezzel a szemlélettel az \(n!\) szinte pontosan megadható.</p>
     <div class="formula">\(\displaystyle n!\sim\sqrt{2\pi n}\Bigl(\frac ne\Bigr)^{n}\)</div>
   </div>
@@ -44,9 +44,9 @@
   <div class="body">
     <div class="eyebrow">§2 · Stirling</div>
     <h2>Az \(n!\) fejtése</h2>
-    <p>A pontosabb alak, amelyet a 9.3 Euler–Maclaurin-formulájából is megkapunk (az \(\sqrt{2\pi}\) állandóval együtt nem, azt külön érvvel, a Wallis-szorzattal szokás megadni):</p>
+    <p>A pontosabb alak, amelyet a 9.5 Euler–Maclaurin-formulájából is megkapunk (az \(\sqrt{2\pi}\) állandóval együtt nem, azt külön érvvel, a Wallis-szorzattal szokás megadni):</p>
     <div class="eq gold">\[n!=\sqrt{2\pi n}\Bigl(\frac ne\Bigr)^{n}\Bigl(1+\frac1{12n}+\frac1{288n^2}-\frac{139}{51840n^3}+O\Bigl(\frac1{n^4}\Bigr)\Bigr).\]</div>
-    <p>Amit itt be tudunk látni: \(n\ln n-n+1\le\ln n!\le n\ln n-n+1+\ln n\), vagyis \(\ln n!=n\ln n-n+O(\ln n)\) (ez a 9.5 egyik feladata). Az \(\tfrac12\ln n\) és az állandó pontos értéke a finomabb elemzésből jön, amelyet a 9.3-ban az Euler–Maclaurin-formula ad meg. A \(\sqrt{2\pi}\) levezetését nem közöljük.</p>
+    <p>Amit itt be tudunk látni: \(n\ln n-n+1\le\ln n!\le n\ln n-n+1+\ln n\), vagyis \(\ln n!=n\ln n-n+O(\ln n)\) (ez a 9.8 egyik feladata). Az \(\tfrac12\ln n\) és az állandó pontos értéke a finomabb elemzésből jön, amelyet a 9.5-ben az Euler–Maclaurin-formula ad meg. A \(\sqrt{2\pi}\) levezetését nem közöljük.</p>
     <p>A kísérlet az \(n!\) pontos értékét BigInt-tel számolja, és a Stirling-közelítések hibáját mutatja 0, 1 és 2 korrekciós taggal.</p>
     <div class="fig">
       <div class="ctrl">
@@ -82,7 +82,7 @@
       </div>
     </details>
     <details>
-      <summary><span class="sq">3. Add meg az \(\bigl(1+\tfrac1n\bigr)^n\) közelítését \(n=100\)-ra a 9.2 fejtés három tagjával, és vesd össze a pontos értékkel.</span></summary>
+      <summary><span class="sq">3. Add meg az \(\bigl(1+\tfrac1n\bigr)^n\) közelítését \(n=100\)-ra a 9.3 fejtés három tagjával, és vesd össze a pontos értékkel.</span></summary>
       <div class="ans">
         <div class="eq">\[e\Bigl(1-\frac1{200}+\frac{11}{240000}\Bigr)\approx2{,}704815,\qquad 1{,}01^{100}\approx2{,}704814.\]</div>
         <p>A hiba \(\approx10^{-6}\), ami \(O(n^{-3})=10^{-6}\) nagyságrendű.</p>
@@ -122,7 +122,7 @@
       <div class="ar" aria-hidden="true">→</div>
       <div class="m"><span class="n">3</span><b>Írd a hibát O-ba</b><span>A maradékot nem számoljuk ki.</span></div>
     </div>
-    <p>Következő: összegek közelítése integrálokkal, az Euler–Maclaurin-formula (9.3).</p>
+    <p>Következő: összegek közelítése integrálokkal, az Euler–Maclaurin-formula (9.5).</p>
   </div>
   <aside class="margo">
     <p>A fejtésnél a rendet előre döntsd el: ha a végeredményben \(1/n^2\) pontosság kell, a közbenső lépésekben is legalább ilyen rendig kell követni a tagokat.</p>

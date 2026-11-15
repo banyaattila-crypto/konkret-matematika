@@ -1,4 +1,4 @@
-/* ================= 4.5 KONGRUENCIÁK ================= */
+/* ================= 4.6 KONGRUENCIÁK ================= */
 const oInv=(a,m)=>{const r=kXgcd(a%m,m);return r.g===1?((r.x%m)+m)%m:null;};
 const oPow=(a,e,m)=>{let r=1%m,b=a%m;while(e>0){if(e&1)r=r*b%m;b=b*b%m;e=Math.floor(e/2);}return r;};
 function oPhi(m){let c=0;for(let k=1;k<=m;k++)if(kGcd(k,m)===1)c++;return c;}

@@ -1,4 +1,4 @@
-/* ================= 4.4 RELATÍV PRÍMEK ================= */
+/* ================= 4.5 RELATÍV PRÍMEK ================= */
 function nNodes(maxD){const arr=[];(function rec(l,r,d,par){if(d>maxD)return null;const m=[l[0]+r[0],l[1]+r[1]];const node={n:m[0],d:m[1],lvl:d,par:par};
   const left=rec(l,m,d+1,node);arr.push(node);const right=rec(m,r,d+1,node);return node;})([0,1],[1,0],0,null);arr.forEach((x,i)=>x.i=i);return arr;}
 c2hero("sternbrocot-bevezeto",1100,5,fr=>{

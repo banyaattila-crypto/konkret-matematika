@@ -1,4 +1,4 @@
-/* ================= 7.2 REKURZIÓK MEGOLDÁSA ================= */
+/* ================= 7.3 REKURZIÓK MEGOLDÁSA ================= */
 c2hero("gfrek-bevezeto",900,10,fr=>{
   const s=$("#aj-hero"),W=420,H=250,n=1+fr;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
   const a=k=>3**k-2**k,y=v=>H-30-(v-1.5)*(H-60)/3.7,x=k=>30+(k-1)*(W-60)/9;

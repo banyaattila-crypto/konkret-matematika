@@ -1,4 +1,4 @@
-/* ================= 4.6 FELADATOK ================= */
+/* ================= 4.10 FELADATOK ================= */
 exHero("feladatokszam-bevezeto","#v-hero","#v-hero-k",[3,3,2,2]);
 function vTri(){
   const N=+$("#v-t-n").value;$("#v-t-nv").textContent=N;

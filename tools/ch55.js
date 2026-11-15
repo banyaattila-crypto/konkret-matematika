@@ -1,4 +1,4 @@
-/* ================= 5.5 FELADATOK ================= */
+/* ================= 5.9 FELADATOK ================= */
 exHero("feladatokbinom-bevezeto","#ac-hero","#ac-hero-k",[3,3,2,2]);
 function acFi(){
   const n=+$("#ac-f-n").value;$("#ac-f-nv").textContent=n;

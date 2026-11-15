@@ -1,4 +1,4 @@
-/* ================= 6.3 FIBONACCI-SZÁMOK ================= */
+/* ================= 6.6 FIBONACCI-SZÁMOK ================= */
 const fbB=(()=>{const a=[0n,1n];for(let i=2;i<=130;i++)a.push(a[i-1]+a[i-2]);return a;})();
 const fbGcd=(a,b)=>{while(b){[a,b]=[b,a%b];}return a;};
 c2hero("fibonacci-bevezeto",700,10,fr=>{

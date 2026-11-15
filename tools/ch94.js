@@ -1,4 +1,4 @@
-/* ================= 9.4 ALKALMAZÁSOK ================= */
+/* ================= 9.7 ALKALMAZÁSOK ================= */
 const avBin=n=>{let r=1n;for(let k=1n;k<=BigInt(n);k++)r=r*(BigInt(n)+k)/k;return r;};
 const avR=n=>Number(avBin(n))/(Math.pow(4,n)/Math.sqrt(Math.PI*n));
 c2hero("aszalk-bevezeto",700,12,fr=>{

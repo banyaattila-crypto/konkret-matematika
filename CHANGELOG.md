@@ -7,6 +7,16 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-11-15
+
+### Módosítva
+- A 4–9. fejezet szakaszai a magyar kiadás tartalomjegyzékének számozásához és címeihez igazítva (pl. 4.4 Faktoriálisok tényezői, 4.6 A kongruencia reláció, 6.5 Bernoulli-számok, 8.3 A valószínűségek generátorfüggvényei, 9.5 Euler-féle szummációs formula). A hash-azonosítók változatlanok.
+- A „Feladatok” rész a fejezet utolsó szakasza lett (pl. 4.10, 5.9, 9.8); a könyvben nem szereplő saját szakaszaink „(kiegészítés)” jelzést kaptak.
+- Szakaszhivatkozások és ragok javítva az átszámozás miatt.
+
+### Hozzáadva
+- 18 helyőrző a még hiányzó könyvszakaszoknak („hamarosan”): 4.3, 4.7, 4.8, 4.9; 5.5–5.8; 6.2, 6.4, 6.7; 7.1, 7.4, 7.5, 7.7; 8.4, 8.5; 9.4, 9.6.
+
 ## [1.2.1] - 2026-11-15
 
 ### Módosítva

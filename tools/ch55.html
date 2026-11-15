@@ -1,8 +1,8 @@
 
-<!-- ================= 5.5 FELADATOK (a fejezet végén) ================= -->
+<!-- ================= 5.9 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="ac-bevezeto">
   <div>
-    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.5</div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.9</div>
     <h1>Feladatok</h1>
     <p class="lead">Tíz saját feladat a binomiális együtthatókról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
     <div class="formula">\(\displaystyle\binom nk\)</div>
@@ -120,7 +120,7 @@
       <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Hány páratlan elem van a Pascal-háromszög \(n\). sorában? Keress szabályt, és indokold.</span></summary>
       <div class="ans">
         <p>A kísérlet szerint a páratlan elemek száma mindig kettőhatvány: \(2^{s_2(n)}\), ahol \(s_2(n)\) az \(n\) bináris alakjában az egyesek száma. A \(n=100=1100100_2\) esetén \(s_2=3\), így 8 páratlan elem van.</p>
-        <p>Indoklás: a 4.3 szerint \(\binom nk\) kettes kitevője \(s_2(k)+s_2(n-k)-s_2(n)\), ez a \(k\) és \(n-k\) bináris összeadásának átvitelei száma. A \(\binom nk\) pontosan akkor páratlan, ha nincs átvitel, vagyis ha a \(k\) egyesei az \(n\) egyeseinek részhalmazát alkotják. Ilyen \(k\) annyi van, ahány részhalmaza az \(s_2(n)\) egyesnek: \(2^{s_2(n)}\).</p>
+        <p>Indoklás: a 4.4 szerint \(\binom nk\) kettes kitevője \(s_2(k)+s_2(n-k)-s_2(n)\), ez a \(k\) és \(n-k\) bináris összeadásának átvitelei száma. A \(\binom nk\) pontosan akkor páratlan, ha nincs átvitel, vagyis ha a \(k\) egyesei az \(n\) egyeseinek részhalmazát alkotják. Ilyen \(k\) annyi van, ahány részhalmaza az \(s_2(n)\) egyesnek: \(2^{s_2(n)}\).</p>
         <p><b>Ellenőrzés:</b> \(n<256\)-ig mindkét számolás egyezik (a páratlan elemek száma és a \(k\ \&\ n=k\) feltételű \(k\)-k száma is). \(\checkmark\)</p>
       </div>
     </details>

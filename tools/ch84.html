@@ -1,9 +1,9 @@
 
-<!-- ================= 8.4 KLASSZIKUS FELADATOK ================= -->
+<!-- ================= 8.6 KLASSZIKUS FELADATOK ================= -->
 <header class="hero page" id="aq-bevezeto">
   <div>
-    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.4</div>
-    <h1>Klasszikus feladatok</h1>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.6</div>
+    <h1>Klasszikus feladatok (kiegészítés)</h1>
     <p class="lead">Három híres kérdés: hány ember kell ahhoz, hogy két azonos születésnap valószínű legyen, hányszor kell húzni, amíg minden fajta megvan, és mi az esélye, hogy a játékos nyer, mielőtt elfogy a pénze.</p>
     <div class="formula">\(\displaystyle E[T]=n\,H_n\)</div>
   </div>
@@ -13,7 +13,7 @@
   </div>
   <aside class="story">
     <div class="tag">Történet</div>
-    <p>A születésnap-paradoxon azért meglepő, mert a szemlélet a személyekre figyel („valakinek ugyanaz, mint nekem”), a számolás viszont a párokra: 23 emberből már 253 pár képezhető. A görbe meredeken emelkedik, és már 23 főnél átlépi a felet. A képen az egyező születésnap valószínűsége látható a létszám függvényében. A kupongyűjtő feladatban a harmonikus számok jelennek meg, a játékos csődjében pedig a 7.2-ben tárgyalt lineáris rekurzió.</p>
+    <p>A születésnap-paradoxon azért meglepő, mert a szemlélet a személyekre figyel („valakinek ugyanaz, mint nekem”), a számolás viszont a párokra: 23 emberből már 253 pár képezhető. A görbe meredeken emelkedik, és már 23 főnél átlépi a felet. A képen az egyező születésnap valószínűsége látható a létszám függvényében. A kupongyűjtő feladatban a harmonikus számok jelennek meg, a játékos csődjében pedig a 7.3-ban tárgyalt lineáris rekurzió.</p>
   </aside>
 </header>
 
@@ -63,7 +63,7 @@
     <h2>A játékos csődje</h2>
     <p>A játékos \(i\) egységgel indul, minden fordulóban \(p\) eséllyel nyer egy egységet, \(q=1-p\) eséllyel veszít egyet. A játék akkor ér véget, ha 0-ra jut (csőd) vagy eléri az \(N\)-et. A \(P_i\) a siker valószínűsége:</p>
     <div class="eq">\[P_i=pP_{i+1}+qP_{i-1},\qquad P_0=0,\ P_N=1.\]</div>
-    <p>A 7.2 módszerével (karakterisztikus gyökök \(1\) és \(r=q/p\)) a megoldás</p>
+    <p>A 7.3 módszerével (karakterisztikus gyökök \(1\) és \(r=q/p\)) a megoldás</p>
     <div class="eq gold">\[P_i=\begin{cases}\dfrac iN,&p=\tfrac12,\\[2mm]\dfrac{1-r^i}{1-r^N},&p\ne\tfrac12.\end{cases}\]</div>
     <p>A méltányos játéknál a játék várható hossza \(i(N-i)\). A kísérlet a rekurziót közvetlenül megoldja (háromátlós lineáris egyenletrendszerként), és összeveti a képletekkel.</p>
     <div class="fig">
@@ -136,7 +136,7 @@
       <div class="ar" aria-hidden="true">→</div>
       <div class="m"><span class="n">3</span><b>Oldd meg</b><span>Zárt alak, vagy numerikus ellenőrzés.</span></div>
     </div>
-    <p>A fejezetvégi feladatok a 8.5-ben következnek.</p>
+    <p>A fejezetvégi feladatok a 8.7-ben következnek.</p>
   </div>
   <aside class="margo">
     <p>A szimulációk rögzített magú álvéletlen-generátorral futnak, ezért az eredmény minden futásnál ugyanaz. A szimuláció itt szemléltetés, nem bizonyíték.</p>

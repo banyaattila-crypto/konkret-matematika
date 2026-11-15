@@ -1,8 +1,8 @@
 
-<!-- ================= 4.6 FELADATOK (a fejezet végén) ================= -->
+<!-- ================= 4.10 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="v-bevezeto">
   <div>
-    <div class="eyebrow">4. fejezet · Számelmélet · 4.6</div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.10</div>
     <h1>Feladatok</h1>
     <p class="lead">Tíz saját feladat az oszthatóságról, a prímekről, a faktoriálisról, a törtekről és a kongruenciákról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
     <div class="formula">\(a\equiv b\pmod m\)</div>
@@ -111,7 +111,7 @@
     <details>
       <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Mekkora a valószínűsége, hogy három véletlen egész szám legnagyobb közös osztója 1? Általánosítsd a \(6/\pi^2\) eredményt.</span></summary>
       <div class="ans">
-        <p>A 4.4 Möbius-szitája három számra is működik: az \(1\ldots N\) közötti hármasok közül azok, amelyekben \(d\) mindhárom számot osztja, \(\lfloor N/d\rfloor^3\) darab, tehát</p>
+        <p>A 4.5 Möbius-szitája három számra is működik: az \(1\ldots N\) közötti hármasok közül azok, amelyekben \(d\) mindhárom számot osztja, \(\lfloor N/d\rfloor^3\) darab, tehát</p>
         <div class="eq">\[\#\{\gcd(a,b,c)=1\}=\sum_{d=1}^{N}\mu(d)\Bigl\lfloor\frac Nd\Bigr\rfloor^3\ \Longrightarrow\ \frac1{N^3}\#\to\sum_{d\ge1}\frac{\mu(d)}{d^3}=\frac1{\zeta(3)}\approx0{,}8319.\]</div>
         <p>Itt \(\zeta(3)=\sum1/k^3\approx1{,}2021\). Hasonlóan \(k\) számra \(1/\zeta(k)\) adódik. Háromnál nagyobb az esély, mint kettőnél, mert közös osztót három számnak nehezebb találnia.</p>
         <p><b>Ellenőrzés:</b> \(N=100\)-ra a megszámolt hármasok aránya \(832693/10^6=0{,}8327\), míg \(1/\zeta(3)=0{,}8319\). A kísérlet más \(N\)-re is összeveti a számolást. \(\checkmark\)</p>

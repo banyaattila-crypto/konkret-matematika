@@ -1,4 +1,4 @@
-/* ================= 9.3 EULER–MACLAURIN ================= */
+/* ================= 9.5 EULER–MACLAURIN ================= */
 const auG=0.5772156649015329;
 c2hero("eulermac-bevezeto",700,12,fr=>{
   const n=fr+1,s=$("#au-hero"),W=420,H=250,B=H-26,X=x=>24+(x-1)/11.2*(W-48),Y=v=>B-v*(B-16);

@@ -1,4 +1,4 @@
-/* ================= 9.2 AZ O ALGEBRÁJA ÉS A STIRLING-FORMULA ================= */
+/* ================= 9.3 AZ O ALGEBRÁJA ÉS A STIRLING-FORMULA ================= */
 const atFactB=n=>{let f=1n;for(let k=2n;k<=BigInt(n);k++)f*=k;return f;};
 const atLF=n=>{let t=0;for(let k=2;k<=n;k++)t+=Math.log(k);return t;};
 const atStirLn=n=>n*Math.log(n)-n+.5*Math.log(2*Math.PI*n);

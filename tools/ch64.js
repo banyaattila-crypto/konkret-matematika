@@ -1,4 +1,4 @@
-/* ================= 6.4 BERNOULLI-SZÁMOK ================= */
+/* ================= 6.5 BERNOULLI-SZÁMOK ================= */
 const bnB=(()=>{const B=[rat(1)];for(let m=1;m<=24;m++){let s=rat(0);for(let k=0;k<m;k++)s=s.add(B[k].mul(rat(bC(m+1,k))));B.push(s.neg().div(rat(m+1)));}return B;})();
 c2hero("bernoulli-bevezeto",900,13,fr=>{
   const s=$("#ag-hero"),W=420,H=250,m=fr,bw=(W-40)/13;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);

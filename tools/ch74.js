@@ -1,4 +1,4 @@
-/* ================= 7.4 EXPONENCIÁLIS GENERÁTORFÜGGVÉNYEK ================= */
+/* ================= 7.6 EXPONENCIÁLIS GENERÁTORFÜGGVÉNYEK ================= */
 const eFact=n=>{let r=1n;for(let i=2;i<=n;i++)r*=BigInt(i);return r;};
 const eRat=(seq,N)=>Array.from({length:N},(_,n)=>rat(seq(n),eFact(n)));
 const eMul=(a,b,N)=>{const c=Array(N).fill(0).map(()=>rat(0));for(let i=0;i<N;i++)for(let j=0;i+j<N;j++)c[i+j]=c[i+j].add(a[i].mul(b[j]));return c;};

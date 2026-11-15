@@ -1,8 +1,8 @@
 
-<!-- ================= 8.5 FELADATOK (a fejezet végén) ================= -->
+<!-- ================= 8.7 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="ar-bevezeto">
   <div>
-    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.5</div>
+    <div class="eyebrow">8. fejezet · Diszkrét valószínűség · 8.7</div>
     <h1>Feladatok</h1>
     <p class="lead">Tíz saját feladat a diszkrét valószínűségről, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
     <div class="formula">\(\displaystyle E[X],\quad\mathrm{Var}\,X,\quad G(x)\)</div>
@@ -119,7 +119,7 @@
       <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. A kupongyűjtőnél hogyan viselkedik \(E[T]/(n\ln n)\) és a szórás/\(n\) arány nagy \(n\)-re? Mit sejtesz?</span></summary>
       <div class="ans">
         <p>A kísérlet szerint \(E[T]/(n\ln n)\) lassan 1-hez tart (\(n=10^6\)-nál még 1,042), a szórás és \(n\) hányadosa pedig kb. \(1{,}2825\)-höz, ami \(\pi/\sqrt6\) értéke.</p>
-        <p>Az első állítás igazolása: \(E[T]=nH_n\) és \(H_n=\ln n+\gamma+O(1/n)\) (6.2), tehát az arány \(1+\gamma/\ln n+\dots\), ami 1-hez tart, de nagyon lassan. A második: \(\mathrm{Var}\,T=n^2H_n^{(2)}-nH_n\), és \(H_n^{(2)}\to\pi^2/6\), így a szórás \(\sim n\pi/\sqrt6\). A \(\sum1/k^2=\pi^2/6\) értékét itt nem bizonyítom.</p>
+        <p>Az első állítás igazolása: \(E[T]=nH_n\) és \(H_n=\ln n+\gamma+O(1/n)\) (6.3), tehát az arány \(1+\gamma/\ln n+\dots\), ami 1-hez tart, de nagyon lassan. A második: \(\mathrm{Var}\,T=n^2H_n^{(2)}-nH_n\), és \(H_n^{(2)}\to\pi^2/6\), így a szórás \(\sim n\pi/\sqrt6\). A \(\sum1/k^2=\pi^2/6\) értékét itt nem bizonyítom.</p>
         <p><b>Ellenőrzés:</b> \(n=10^6\)-ra a program 1,0418-at és 1,28254-et ad, \(\pi/\sqrt6=1{,}28255\). \(\checkmark\)</p>
       </div>
     </details>

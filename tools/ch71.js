@@ -1,4 +1,4 @@
-/* ================= 7.1 ALAPFOGALMAK ================= */
+/* ================= 7.2 ALAPFOGALMAK ================= */
 const gN=14;
 const gfMul=(a,b,N=gN)=>{const c=Array(N).fill(0);for(let i=0;i<N;i++)for(let j=0;i+j<N;j++)c[i+j]+=(a[i]||0)*(b[j]||0);return c;};
 const gfDiv=(p,q,N=gN)=>{const a=[];for(let n=0;n<N;n++){let s=(p[n]||0);for(let k=1;k<=n;k++)s-=(q[k]||0)*a[n-k];a.push(s/(q[0]||1));}return a;};

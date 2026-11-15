@@ -1,4 +1,4 @@
-/* ================= 4.3 A FAKTORIÁLIS OSZTÓI ================= */
+/* ================= 4.4 A FAKTORIÁLIS OSZTÓI ================= */
 function mEps(n,p){let s=0,q=p;while(q<=n){s+=Math.floor(n/q);q*=p;}return s;}
 function mSd(n,p){let s=0;while(n){s+=n%p;n=Math.floor(n/p);}return s;}
 function mDirect(n,p){let s=0;for(let k=2;k<=n;k++){let m=k;while(m%p===0){m/=p;s++;}}return s;}

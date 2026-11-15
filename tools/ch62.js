@@ -1,4 +1,4 @@
-/* ================= 6.2 HARMONIKUS SZÁMOK ================= */
+/* ================= 6.3 HARMONIKUS SZÁMOK ================= */
 const hnR=n=>{let s=rat(0);for(let k=1;k<=n;k++)s=s.add(rat(1,k));return s;};
 const hnF=n=>{let s=0;for(let k=n;k>=1;k--)s+=1/k;return s;};
 const hGamma=0.5772156649015329;

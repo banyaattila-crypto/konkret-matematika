@@ -1,4 +1,4 @@
-/* ================= 8.4 KLASSZIKUS FELADATOK ================= */
+/* ================= 8.6 KLASSZIKUS FELADATOK ================= */
 const qNoMatch=(n,D)=>{let p=1;for(let k=0;k<n;k++)p*=1-k/D;return p;};
 const qRng=seed=>{let s=seed>>>0;return()=>{s=(Math.imul(s,1664525)+1013904223)>>>0;return s/4294967296;};};
 c2hero("klasszikus-bevezeto",700,12,fr=>{

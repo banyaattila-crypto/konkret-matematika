@@ -1,4 +1,4 @@
-/* ================= 9.5 FELADATOK ================= */
+/* ================= 9.8 FELADATOK ================= */
 exHero("feladatokasz-bevezeto","#aw-hero","#aw-hero-k",[3,3,2,2]);
 function awC(){
   const k=+$("#aw-c-k").value;$("#aw-c-kv").textContent=k;

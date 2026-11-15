@@ -1,8 +1,8 @@
 
-<!-- ================= 9.5 FELADATOK (a fejezet végén) ================= -->
+<!-- ================= 9.8 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="aw-bevezeto">
   <div>
-    <div class="eyebrow">9. fejezet · Aszimptotika · 9.5</div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.8</div>
     <h1>Feladatok</h1>
     <p class="lead">Tíz saját feladat az aszimptotikáról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
     <div class="formula">\(\displaystyle O,\ \Theta,\ \sim,\quad n!,\quad H_n\)</div>
@@ -71,7 +71,7 @@
     <details>
       <summary><span class="sq"><span class="lvl l2">alap</span> 6. Mennyi a gyorsrendezés várható összehasonlításszáma \(n=10^6\) elemre?</span></summary>
       <div class="ans">
-        <p>A \(C_n=2(n+1)H_n-4n\) képletbe a \(H_n\)-et a 9.3 sorából írjuk be:</p>
+        <p>A \(C_n=2(n+1)H_n-4n\) képletbe a \(H_n\)-et a 9.5 sorából írjuk be:</p>
         <div class="eq">\[C_{10^6}\approx2{,}4785\cdot10^{7}.\]</div>
         <p>A \(2n\ln n=2{,}763\cdot10^7\) főtag 11%-kal nagyobb, \(n\log_2n=1{,}993\cdot10^7\) pedig kisebb.</p>
         <p><b>Ellenőrzés:</b> a közvetlenül összegzett \(H_{10^6}\)-ból kapott érték 24 785 482,23, és a három tagos aszimptotikus formula is ennyit ad. \(\checkmark\)</p>
@@ -120,7 +120,7 @@
       <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Mit sejtesz az \(n\bigl(\ln n!-n\ln n+n-\tfrac12\ln2\pi n\bigr)\) határértékéről, és milyen gyorsan közelít hozzá?</span></summary>
       <div class="ans">
         <p>A kísérlet szerint az érték \(\tfrac1{12}=0{,}08333\)-hoz közelít, és \(\bigl(\tfrac1{12}-\text{érték}\bigr)n^2\approx0{,}00278\), ami \(\tfrac1{360}\).</p>
-        <p>Indoklás: a 9.3 sora szerint</p>
+        <p>Indoklás: a 9.5 sora szerint</p>
         <div class="eq">\[\ln n!-n\ln n+n-\tfrac12\ln2\pi n=\frac1{12n}-\frac1{360n^3}+\frac1{1260n^5}-\cdots\]</div>
         <p>Szorozva \(n\)-nel: \(\tfrac1{12}-\tfrac1{360n^2}+O(n^{-4})\). A határérték \(\tfrac1{12}\), a hiba \(\tfrac1{360n^2}\).</p>
         <p><b>Ellenőrzés:</b> \(n=100\)-ra a program 0,0833330556-ot ad, és ennyi a \(\tfrac1{12}-\tfrac1{360\cdot10^4}\) is. \(\checkmark\)</p>
