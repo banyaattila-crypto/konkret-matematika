@@ -1,0 +1,149 @@
+
+<!-- ================= 2.8 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="x-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.8</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat az összegekről, négy nehézségi szinten. A megoldások teljes levezetések, a számszerű eredményeket programmal is ellenőriztük.</p>
+    <div class="formula">\(\displaystyle\sum_{k}a_k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="x-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="x-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az összegekkel úgy lesz az ember otthonos, ha rájön, melyik szerszám melyik feladathoz való. A fejezet szabályai (elosztás, átrendezés, perturbáció, sorrendcsere, differenciaszámítás) mind ugyanazt a célt szolgálják: a szigmát zárt alakra cserélni. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. Az első kettő szinten egy-egy szabályt gyakorolsz, a haladó szinten már választanod kell közülük, a kutatási szinten pedig kísérletezni kell: az utolsó két feladat nem képlet-alkalmazás, hanem megfigyelés, amelyből bizonyítás lesz. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="x-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors összeg</h2>
+    <p>Egy-egy szabály: az összeg linearitása, az Iverson-zárójel és a teleszkópos összeg.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki \(\sum_{k=1}^{20}(3k+2)\)-t a szabályokkal, nem tagonként.</span></summary>
+      <div class="ans">
+        <p>Az összegzés lineáris, ezért \(\sum(3k+2)=3\sum k+2\sum1\). A \(\sum_{k=1}^{20}k=\tfrac{20\cdot21}2=210\), és \(\sum_{k=1}^{20}1=20\).</p>
+        <div class="eq">\[3\cdot210+2\cdot20=630+40=670.\]</div>
+        <p><b>Ellenőrzés:</b> a 20 tag közvetlen összeadása is 670. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Számold ki a \(\sum_{k=1}^{100}k\,[3\mid k\ \text{vagy}\ 5\mid k]\) összeget.</span></summary>
+      <div class="ans">
+        <p>A „vagy” a szitaformulával kezelhető: \([A\lor B]=[A]+[B]-[A\land B]\). A 3 többszöröseinek összege \(3\cdot\tfrac{33\cdot34}2=1683\). Az 5 többszöröseinek összege \(5\cdot\tfrac{20\cdot21}2=1050\). Mindkettővel osztható szám a 15 többszöröse: \(15\cdot\tfrac{6\cdot7}2=315\).</p>
+        <div class="eq">\[1683+1050-315=2418.\]</div>
+        <p><b>Ellenőrzés:</b> a feltételes összeg közvetlen kiszámolása 2418. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Mennyi \(\sum_{k=1}^{\infty}\dfrac1{k(k+2)}\)?</span></summary>
+      <div class="ans">
+        <p>A törtekre bontás: \(\tfrac1{k(k+2)}=\tfrac12\bigl(\tfrac1k-\tfrac1{k+2}\bigr)\). A részletösszeg teleszkópos:</p>
+        <div class="eq">\[\sum_{k=1}^{N}\frac1{k(k+2)}=\frac12\Bigl(1+\frac12-\frac1{N+1}-\frac1{N+2}\Bigr)\ \xrightarrow{N\to\infty}\ \frac34.\]</div>
+        <p><b>Ellenőrzés:</b> \(N=1999\)-re a zárt alak racionális számokkal pontosan egyezik a tagonkénti összeggel. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladatnál érdemes az Iverson-zárójelet kiírni: \([3\mid k]\), és az összegzést az egész \(1\ldots100\) tartományra végezni.</p>
+    <p>A 3. feladatban a teleszkópos összeg azért működik, mert a tagok két szomszédos „lépcsőfok” különbségei.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="x-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Szerszámválasztás</h2>
+    <p>A következő öt feladatban már te választod a szerszámot: differenciaszámítás, sorrendcsere, perturbáció, összegzőtényező.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Számold ki \(\sum_{k=0}^{n-1}k(k-1)(k-2)\)-t eséspolinomokkal. Mennyi ez \(n=10\)-re?</span></summary>
+      <div class="ans">
+        <p>A \(k(k-1)(k-2)=k^{\underline3}\) eséspolinom, és \(\Delta k^{\underline4}=4k^{\underline3}\). Az összegzés alaptétele szerint</p>
+        <div class="eq">\[\sum_{k=0}^{n-1}k^{\underline3}=\frac{k^{\underline4}}4\Big|_0^n=\frac{n(n-1)(n-2)(n-3)}4.\]</div>
+        <p>Az \(n=10\) esetén \(\tfrac{10\cdot9\cdot8\cdot7}4=1260\).</p>
+        <p><b>Ellenőrzés:</b> az összeg közvetlen számolása \(n=1\ldots14\)-re egyezik a képlettel, \(n=10\)-nél 1260. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Hány \((a,b,c)\) egész hármas van, amelyre \(1\le a\le b\le c\le n\)? Mennyi ez \(n=5\)-re?</span></summary>
+      <div class="ans">
+        <p>Rögzített \(b\) mellett \(a\)-ra \(b\) választás van. Rögzített \(c\) mellett így \(\sum_{b=1}^{c}b=\tfrac{c(c+1)}2\) pár \((a,b)\) jön szóba. Összegezve \(c\) szerint:</p>
+        <div class="eq">\[\sum_{c=1}^{n}\frac{c(c+1)}2=\frac12\Bigl(\frac{n(n+1)(2n+1)}6+\frac{n(n+1)}2\Bigr)=\frac{n(n+1)(n+2)}6.\]</div>
+        <p>Az \(n=5\) esetén \(\tfrac{5\cdot6\cdot7}6=35\), vagyis \(\binom{7}{3}\).</p>
+        <p><b>Ellenőrzés:</b> a hármasok kimerítő megszámolása \(n=1\ldots11\)-re egyezik a képlettel, \(n=5\)-re 35. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Perturbációval számold ki \(S_n=\sum_{k=0}^{n}k\,2^k\)-t.</span></summary>
+      <div class="ans">
+        <p>Az \(S_{n+1}\)-et kétféleképpen írjuk fel: az utolsó tag leválasztásával, illetve az első tag (a nulla) leválasztásával és az indexek eltolásával.</p>
+        <div class="eq">\[S_n+(n+1)2^{n+1}=\sum_{k=0}^{n}(k+1)2^{k+1}=2S_n+2\bigl(2^{n+1}-1\bigr).\]</div>
+        <p>Az \(S_n\)-re rendezve \(S_n=(n+1)2^{n+1}-2^{n+2}+2=(n-1)\,2^{n+1}+2\).</p>
+        <p><b>Ellenőrzés:</b> \(n=0\ldots29\)-re a tagonkénti összeg egyezik a képlettel. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Oldd meg az \(a_0=1\), \(a_n=2a_{n-1}+n\) rekurziót összegzőtényezővel.</span></summary>
+      <div class="ans">
+        <p>A 2 hatványaival osztva \(b_n=a_n/2^n\) mellett \(b_n=b_{n-1}+\tfrac n{2^n}\), tehát \(b_n=1+\sum_{k=1}^{n}\tfrac k{2^k}\). A \(\sum_{k=1}^{n}\tfrac k{2^k}=2-\tfrac{n+2}{2^n}\) összeg ugyanúgy perturbációval adódik, mint a 6. feladatban. Így</p>
+        <div class="eq gold">\[b_n=3-\frac{n+2}{2^n},\qquad a_n=3\cdot2^n-n-2.\]</div>
+        <p><b>Ellenőrzés:</b> \(a_0=1,\ a_1=3,\ a_2=8,\ a_3=19,\ a_4=42\), és a rekurzió \(n=0\ldots29\)-ig egyezik a zárt alakkal. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Igazold: \(\sum_{k=1}^{n}k\,H_k=\dfrac{n(n+1)}2H_n-\dfrac{n(n-1)}4\), ahol \(H_k=\sum_{j=1}^{k}\tfrac1j\).</span></summary>
+      <div class="ans">
+        <p>Sorrendcserével: \(H_k\)-t kiírva a feltétel \(1\le j\le k\le n\), és ezt \(j\) szerint külső összegként írva:</p>
+        <div class="eq">\[\sum_{k=1}^{n}k\sum_{j\le k}\frac1j=\sum_{j=1}^{n}\frac1j\sum_{k=j}^{n}k=\sum_{j=1}^{n}\frac1j\Bigl(\frac{n(n+1)}2-\frac{j(j-1)}2\Bigr).\]</div>
+        <p>Az első rész \(\tfrac{n(n+1)}2H_n\). A másodikban \(\tfrac1j\cdot\tfrac{j(j-1)}2=\tfrac{j-1}2\), és \(\sum_{j=1}^{n}\tfrac{j-1}2=\tfrac{n(n-1)}4\). Ezzel a képlet bizonyított.</p>
+        <p><b>Ellenőrzés:</b> \(n=1\ldots24\)-re a képlet racionális számokkal pontosan egyezik az összeggel. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 6. és a 7. feladat összekapcsolódik: az összegzőtényezős megoldás ugyanazt az összeget használja, amelyet a perturbáció adott.</p>
+    <p>A 8. feladatban a sorrendcsere adja a bizonyítást. A \(H_k\) „mögött” egy belső összeg áll, és a felcserélés kiegyenesíti.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="x-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Végtelen összegek, kísérletileg</h2>
+    <p>A végtelen összegekről a legtöbbet kísérletezéssel lehet megtanulni: számoljunk sok tagot, és nézzük meg, mit tesz az összeg.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Az \(1-\tfrac12+\tfrac13-\tfrac14+\cdots\) összege \(\ln2\). Rendezd át úgy, hogy két pozitív tag után jöjjön egy negatív: \(1+\tfrac13-\tfrac12+\tfrac15+\tfrac17-\tfrac14+\cdots\). Mire tart?</span></summary>
+      <div class="ans">
+        <p>Az első \(3m\) tagban \(2m\) páratlan nevezőjű pozitív és \(m\) páros nevezőjű negatív tag van. A pozitívak összege \(H_{4m}-\tfrac12H_{2m}\), a negatívaké \(\tfrac12H_m\). A \(H_n=\ln n+\gamma+o(1)\) felhasználásával a \(\gamma\) kiesik, és</p>
+        <div class="eq gold">\[S_{3m}=H_{4m}-\tfrac12H_{2m}-\tfrac12H_m\ \longrightarrow\ \ln4-\tfrac12\ln2=\tfrac32\ln2\approx1{,}0397.\]</div>
+        <p>Az átrendezés tehát \(\ln2\approx0{,}6931\) helyett az \(1{,}5\)-szeresét adja. Ez a feltételesen konvergens sorok jellegzetessége: az összeg a tagok sorrendjétől függ.</p>
+        <p><b>Ellenőrzés:</b> három millió tag után az átrendezett sor részletösszege \(1{,}039721\), míg \(\tfrac32\ln2=1{,}039721\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="x-m">m (blokkok) <input type="range" id="x-m" min="1" max="200000" value="20000" step="1"> <span class="mono" id="x-mv">20000</span></label>
+      </div>
+      <div class="info" id="x-minfo"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Legkisebb hány \(n\)-re lesz \(H_n=1+\tfrac12+\cdots+\tfrac1n>10\)? Becsüld meg, és ellenőrizd.</span></summary>
+      <div class="ans">
+        <p>A \(H_n\approx\ln n+\gamma+\tfrac1{2n}\) közelítéssel \(H_n>T\) körülbelül akkor, ha \(n\approx e^{T-\gamma}\) (a \(\tfrac1{2n}\) tag elhanyagolható). A \(T=10\) esetén \(e^{10-0{,}5772}\approx12\,367\).</p>
+        <p><b>Ellenőrzés:</b> a pontos érték 12367 (\(H_{12366}\le10\lt H_{12367}\)), a becslés \(12\,366{,}97\)-et ad, vagyis a következő egészre kerekítve éppen a pontos eredményt. Az alábbi kísérlet más küszöbökre is megteszi. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="x-t">küszöb T <input type="range" id="x-t" min="2" max="12" value="10"> <span class="mono" id="x-tv">10</span></label>
+      </div>
+      <div class="info" id="x-tinfo"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 9. feladat tanulsága: a végtelen összeg nem „kommutatív”. Csak az abszolút konvergens sorokban szabad a tagokat tetszőlegesen átrendezni (2.7).</p>
+  </aside>
+</section>

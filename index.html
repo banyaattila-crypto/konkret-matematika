@@ -2565,6 +2565,155 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 2.8 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="x-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.8</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat az összegekről, négy nehézségi szinten. A megoldások teljes levezetések, a számszerű eredményeket programmal is ellenőriztük.</p>
+    <div class="formula">\(\displaystyle\sum_{k}a_k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="x-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="x-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az összegekkel úgy lesz az ember otthonos, ha rájön, melyik szerszám melyik feladathoz való. A fejezet szabályai (elosztás, átrendezés, perturbáció, sorrendcsere, differenciaszámítás) mind ugyanazt a célt szolgálják: a szigmát zárt alakra cserélni. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. Az első kettő szinten egy-egy szabályt gyakorolsz, a haladó szinten már választanod kell közülük, a kutatási szinten pedig kísérletezni kell: az utolsó két feladat nem képlet-alkalmazás, hanem megfigyelés, amelyből bizonyítás lesz. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="x-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors összeg</h2>
+    <p>Egy-egy szabály: az összeg linearitása, az Iverson-zárójel és a teleszkópos összeg.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki \(\sum_{k=1}^{20}(3k+2)\)-t a szabályokkal, nem tagonként.</span></summary>
+      <div class="ans">
+        <p>Az összegzés lineáris, ezért \(\sum(3k+2)=3\sum k+2\sum1\). A \(\sum_{k=1}^{20}k=\tfrac{20\cdot21}2=210\), és \(\sum_{k=1}^{20}1=20\).</p>
+        <div class="eq">\[3\cdot210+2\cdot20=630+40=670.\]</div>
+        <p><b>Ellenőrzés:</b> a 20 tag közvetlen összeadása is 670. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Számold ki a \(\sum_{k=1}^{100}k\,[3\mid k\ \text{vagy}\ 5\mid k]\) összeget.</span></summary>
+      <div class="ans">
+        <p>A „vagy” a szitaformulával kezelhető: \([A\lor B]=[A]+[B]-[A\land B]\). A 3 többszöröseinek összege \(3\cdot\tfrac{33\cdot34}2=1683\). Az 5 többszöröseinek összege \(5\cdot\tfrac{20\cdot21}2=1050\). Mindkettővel osztható szám a 15 többszöröse: \(15\cdot\tfrac{6\cdot7}2=315\).</p>
+        <div class="eq">\[1683+1050-315=2418.\]</div>
+        <p><b>Ellenőrzés:</b> a feltételes összeg közvetlen kiszámolása 2418. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Mennyi \(\sum_{k=1}^{\infty}\dfrac1{k(k+2)}\)?</span></summary>
+      <div class="ans">
+        <p>A törtekre bontás: \(\tfrac1{k(k+2)}=\tfrac12\bigl(\tfrac1k-\tfrac1{k+2}\bigr)\). A részletösszeg teleszkópos:</p>
+        <div class="eq">\[\sum_{k=1}^{N}\frac1{k(k+2)}=\frac12\Bigl(1+\frac12-\frac1{N+1}-\frac1{N+2}\Bigr)\ \xrightarrow{N\to\infty}\ \frac34.\]</div>
+        <p><b>Ellenőrzés:</b> \(N=1999\)-re a zárt alak racionális számokkal pontosan egyezik a tagonkénti összeggel. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladatnál érdemes az Iverson-zárójelet kiírni: \([3\mid k]\), és az összegzést az egész \(1\ldots100\) tartományra végezni.</p>
+    <p>A 3. feladatban a teleszkópos összeg azért működik, mert a tagok két szomszédos „lépcsőfok” különbségei.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="x-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Szerszámválasztás</h2>
+    <p>A következő öt feladatban már te választod a szerszámot: differenciaszámítás, sorrendcsere, perturbáció, összegzőtényező.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Számold ki \(\sum_{k=0}^{n-1}k(k-1)(k-2)\)-t eséspolinomokkal. Mennyi ez \(n=10\)-re?</span></summary>
+      <div class="ans">
+        <p>A \(k(k-1)(k-2)=k^{\underline3}\) eséspolinom, és \(\Delta k^{\underline4}=4k^{\underline3}\). Az összegzés alaptétele szerint</p>
+        <div class="eq">\[\sum_{k=0}^{n-1}k^{\underline3}=\frac{k^{\underline4}}4\Big|_0^n=\frac{n(n-1)(n-2)(n-3)}4.\]</div>
+        <p>Az \(n=10\) esetén \(\tfrac{10\cdot9\cdot8\cdot7}4=1260\).</p>
+        <p><b>Ellenőrzés:</b> az összeg közvetlen számolása \(n=1\ldots14\)-re egyezik a képlettel, \(n=10\)-nél 1260. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Hány \((a,b,c)\) egész hármas van, amelyre \(1\le a\le b\le c\le n\)? Mennyi ez \(n=5\)-re?</span></summary>
+      <div class="ans">
+        <p>Rögzített \(b\) mellett \(a\)-ra \(b\) választás van. Rögzített \(c\) mellett így \(\sum_{b=1}^{c}b=\tfrac{c(c+1)}2\) pár \((a,b)\) jön szóba. Összegezve \(c\) szerint:</p>
+        <div class="eq">\[\sum_{c=1}^{n}\frac{c(c+1)}2=\frac12\Bigl(\frac{n(n+1)(2n+1)}6+\frac{n(n+1)}2\Bigr)=\frac{n(n+1)(n+2)}6.\]</div>
+        <p>Az \(n=5\) esetén \(\tfrac{5\cdot6\cdot7}6=35\), vagyis \(\binom{7}{3}\).</p>
+        <p><b>Ellenőrzés:</b> a hármasok kimerítő megszámolása \(n=1\ldots11\)-re egyezik a képlettel, \(n=5\)-re 35. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Perturbációval számold ki \(S_n=\sum_{k=0}^{n}k\,2^k\)-t.</span></summary>
+      <div class="ans">
+        <p>Az \(S_{n+1}\)-et kétféleképpen írjuk fel: az utolsó tag leválasztásával, illetve az első tag (a nulla) leválasztásával és az indexek eltolásával.</p>
+        <div class="eq">\[S_n+(n+1)2^{n+1}=\sum_{k=0}^{n}(k+1)2^{k+1}=2S_n+2\bigl(2^{n+1}-1\bigr).\]</div>
+        <p>Az \(S_n\)-re rendezve \(S_n=(n+1)2^{n+1}-2^{n+2}+2=(n-1)\,2^{n+1}+2\).</p>
+        <p><b>Ellenőrzés:</b> \(n=0\ldots29\)-re a tagonkénti összeg egyezik a képlettel. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Oldd meg az \(a_0=1\), \(a_n=2a_{n-1}+n\) rekurziót összegzőtényezővel.</span></summary>
+      <div class="ans">
+        <p>A 2 hatványaival osztva \(b_n=a_n/2^n\) mellett \(b_n=b_{n-1}+\tfrac n{2^n}\), tehát \(b_n=1+\sum_{k=1}^{n}\tfrac k{2^k}\). A \(\sum_{k=1}^{n}\tfrac k{2^k}=2-\tfrac{n+2}{2^n}\) összeg ugyanúgy perturbációval adódik, mint a 6. feladatban. Így</p>
+        <div class="eq gold">\[b_n=3-\frac{n+2}{2^n},\qquad a_n=3\cdot2^n-n-2.\]</div>
+        <p><b>Ellenőrzés:</b> \(a_0=1,\ a_1=3,\ a_2=8,\ a_3=19,\ a_4=42\), és a rekurzió \(n=0\ldots29\)-ig egyezik a zárt alakkal. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Igazold: \(\sum_{k=1}^{n}k\,H_k=\dfrac{n(n+1)}2H_n-\dfrac{n(n-1)}4\), ahol \(H_k=\sum_{j=1}^{k}\tfrac1j\).</span></summary>
+      <div class="ans">
+        <p>Sorrendcserével: \(H_k\)-t kiírva a feltétel \(1\le j\le k\le n\), és ezt \(j\) szerint külső összegként írva:</p>
+        <div class="eq">\[\sum_{k=1}^{n}k\sum_{j\le k}\frac1j=\sum_{j=1}^{n}\frac1j\sum_{k=j}^{n}k=\sum_{j=1}^{n}\frac1j\Bigl(\frac{n(n+1)}2-\frac{j(j-1)}2\Bigr).\]</div>
+        <p>Az első rész \(\tfrac{n(n+1)}2H_n\). A másodikban \(\tfrac1j\cdot\tfrac{j(j-1)}2=\tfrac{j-1}2\), és \(\sum_{j=1}^{n}\tfrac{j-1}2=\tfrac{n(n-1)}4\). Ezzel a képlet bizonyított.</p>
+        <p><b>Ellenőrzés:</b> \(n=1\ldots24\)-re a képlet racionális számokkal pontosan egyezik az összeggel. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 6. és a 7. feladat összekapcsolódik: az összegzőtényezős megoldás ugyanazt az összeget használja, amelyet a perturbáció adott.</p>
+    <p>A 8. feladatban a sorrendcsere adja a bizonyítást. A \(H_k\) „mögött” egy belső összeg áll, és a felcserélés kiegyenesíti.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="x-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Végtelen összegek, kísérletileg</h2>
+    <p>A végtelen összegekről a legtöbbet kísérletezéssel lehet megtanulni: számoljunk sok tagot, és nézzük meg, mit tesz az összeg.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Az \(1-\tfrac12+\tfrac13-\tfrac14+\cdots\) összege \(\ln2\). Rendezd át úgy, hogy két pozitív tag után jöjjön egy negatív: \(1+\tfrac13-\tfrac12+\tfrac15+\tfrac17-\tfrac14+\cdots\). Mire tart?</span></summary>
+      <div class="ans">
+        <p>Az első \(3m\) tagban \(2m\) páratlan nevezőjű pozitív és \(m\) páros nevezőjű negatív tag van. A pozitívak összege \(H_{4m}-\tfrac12H_{2m}\), a negatívaké \(\tfrac12H_m\). A \(H_n=\ln n+\gamma+o(1)\) felhasználásával a \(\gamma\) kiesik, és</p>
+        <div class="eq gold">\[S_{3m}=H_{4m}-\tfrac12H_{2m}-\tfrac12H_m\ \longrightarrow\ \ln4-\tfrac12\ln2=\tfrac32\ln2\approx1{,}0397.\]</div>
+        <p>Az átrendezés tehát \(\ln2\approx0{,}6931\) helyett az \(1{,}5\)-szeresét adja. Ez a feltételesen konvergens sorok jellegzetessége: az összeg a tagok sorrendjétől függ.</p>
+        <p><b>Ellenőrzés:</b> három millió tag után az átrendezett sor részletösszege \(1{,}039721\), míg \(\tfrac32\ln2=1{,}039721\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="x-m">m (blokkok) <input type="range" id="x-m" min="1" max="200000" value="20000" step="1"> <span class="mono" id="x-mv">20000</span></label>
+      </div>
+      <div class="info" id="x-minfo"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Legkisebb hány \(n\)-re lesz \(H_n=1+\tfrac12+\cdots+\tfrac1n>10\)? Becsüld meg, és ellenőrizd.</span></summary>
+      <div class="ans">
+        <p>A \(H_n\approx\ln n+\gamma+\tfrac1{2n}\) közelítéssel \(H_n>T\) körülbelül akkor, ha \(n\approx e^{T-\gamma}\) (a \(\tfrac1{2n}\) tag elhanyagolható). A \(T=10\) esetén \(e^{10-0{,}5772}\approx12\,367\).</p>
+        <p><b>Ellenőrzés:</b> a pontos érték 12367 (\(H_{12366}\le10\lt H_{12367}\)), a becslés \(12\,366{,}97\)-et ad, vagyis a következő egészre kerekítve éppen a pontos eredményt. Az alábbi kísérlet más küszöbökre is megteszi. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="x-t">küszöb T <input type="range" id="x-t" min="2" max="12" value="10"> <span class="mono" id="x-tv">10</span></label>
+      </div>
+      <div class="info" id="x-tinfo"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 9. feladat tanulsága: a végtelen összeg nem „kommutatív”. Csak az abszolút konvergens sorokban szabad a tagokat tetszőlegesen átrendezni (2.7).</p>
+  </aside>
+</section>
+
 <!-- ================= 3.1 PADLÓ ÉS PLAFON ================= -->
 <header class="hero page" id="p-bevezeto">
   <div>
@@ -3250,6 +3399,154 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </div>
   <aside class="margo">
     <p>A fejezetcím és a szakaszok listája emlékezetből készült: ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 3.6 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="y-bevezeto">
+  <div>
+    <div class="eyebrow">3. fejezet · Egészrész-függvények · 3.6</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a padlóról, a plafonról, a mod műveletről és az egészrészes összegekről, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\lfloor x\rfloor,\ \lceil x\rceil,\ x\bmod y\)</div>
+  </div>
+  <div class="stage">
+    <svg id="y-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="y-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az egészrész-függvényekkel az a nehézség, hogy a kerekítés „kicsi” dolognak látszik, miközben a negatív számoknál és a határeseteknél a legtöbb hiba éppen ott történik. Ezért a feladatok az első szinten a definíció pontos alkalmazását kérik, a következőkön az azonosságok bizonyítását és az intervallumok megszámolását, a haladó szinten a spektrumokat és a rácspont-összegeket, a kutatási szinten pedig általánosítást. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="y-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Definíció, számjegyek, maradék</h2>
+    <p>Három feladat, amelyben a definíciót kell pontosan alkalmazni. Negatív számoknál különösen figyelj a kerekítés irányára.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki: \(\lfloor-2{,}5\rfloor\), \(\lceil-2{,}5\rceil\), \(\lfloor\sqrt{50}\rfloor\), \(\lceil17/5\rceil\).</span></summary>
+      <div class="ans">
+        <p>A padló a \(-2{,}5\)-nél nem nagyobb legnagyobb egész: \(\lfloor-2{,}5\rfloor=-3\). A plafon a nem kisebb legkisebb egész: \(\lceil-2{,}5\rceil=-2\). A \(7^2=49\le50<64=8^2\), ezért \(\lfloor\sqrt{50}\rfloor=7\). A \(17/5=3{,}4\), ezért \(\lceil17/5\rceil=4\).</p>
+        <p>Emlékeztető: \(\lceil x\rceil=-\lfloor-x\rfloor\), így a második érték \(-\lfloor2{,}5\rfloor=-2\) is.</p>
+        <p><b>Ellenőrzés:</b> a négy érték programmal is \(-3,\ -2,\ 7,\ 4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Hány számjegyű a \(2^{100}\)?</span></summary>
+      <div class="ans">
+        <p>Egy \(n\) pozitív egész számjegyeinek száma \(\lfloor\log_{10}n\rfloor+1\). A \(\log_{10}2^{100}=100\cdot0{,}30103=30{,}103\), tehát \(\lfloor30{,}103\rfloor+1=31\) számjegy.</p>
+        <p><b>Ellenőrzés:</b> a \(2^{100}=1\,267\,650\,600\,228\,229\,401\,496\,703\,205\,376\) valóban 31 számjegyű. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Számold ki: \(-100\bmod7\), \(100\bmod-7\), \(7{,}5\bmod-2\).</span></summary>
+      <div class="ans">
+        <div class="eq">\[\begin{aligned}-100\bmod7&=-100-7\lfloor-14{,}29\rfloor=-100+105=5\\100\bmod-7&=100+7\lfloor-14{,}29\rfloor=100-105=-5\\7{,}5\bmod-2&=7{,}5+2\lfloor-3{,}75\rfloor=7{,}5-8=-0{,}5\end{aligned}\]</div>
+        <p>Az eredmény mindig az osztó előjelét követi, és abszolút értéke kisebb az osztóénál.</p>
+        <p><b>Ellenőrzés:</b> a definíció programmal is \(5,\ -5,\ -0{,}5\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A \(2^{100}\) feladatnál a \(\lg2\approx0{,}30103\) értéket érdemes fejből tudni: ezzel bármely kettőhatvány számjegyszáma azonnal adódik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="y-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Azonosságok, spektrumok, rácspontok</h2>
+    <p>Itt azonosságokat kell bizonyítani, intervallumot kell megszámolni, és a Beatty-spektrumokat meg a rácspont-összegeket kell használni.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Hány 7-tel osztható egész szám van \(100\) és \(1000\) között (a két végpontot is beleértve)?</span></summary>
+      <div class="ans">
+        <p>Az \([a,b]\) intervallumban az \(m\) többszöröseinek száma \(\lfloor b/m\rfloor-\lceil a/m\rceil+1\). Itt \(\lfloor1000/7\rfloor=142\) és \(\lceil100/7\rceil=15\), tehát</p>
+        <div class="eq">\[142-15+1=128.\]</div>
+        <p><b>Ellenőrzés:</b> a \(100\le k\le1000\), \(7\mid k\) feltételű számok közvetlen megszámolása is 128. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Igazold: \(\lfloor x\rfloor+\lfloor x+\tfrac12\rfloor=\lfloor2x\rfloor\) minden valós \(x\)-re.</span></summary>
+      <div class="ans">
+        <p>Legyen \(x=n+f\), ahol \(n=\lfloor x\rfloor\) és \(0\le f<1\). Két eset van.</p>
+        <p>Ha \(f<\tfrac12\): \(\lfloor x+\tfrac12\rfloor=n\), a bal oldal \(2n\). A \(2x=2n+2f\) és \(0\le2f<1\), ezért \(\lfloor2x\rfloor=2n\).</p>
+        <p>Ha \(f\ge\tfrac12\): \(\lfloor x+\tfrac12\rfloor=n+1\), a bal oldal \(2n+1\). A \(1\le2f<2\), ezért \(\lfloor2x\rfloor=2n+1\). \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \(x=p/q\) alakú racionálisokra (\(0\le p<40\), \(1\le q\le12\)) pontosan egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Igazold: ha \(m,n\) pozitív egészek, akkor \(\Bigl\lfloor\dfrac{\lfloor x/m\rfloor}{n}\Bigr\rfloor=\Bigl\lfloor\dfrac x{mn}\Bigr\rfloor\).</span></summary>
+      <div class="ans">
+        <p>Legyen \(N=\lfloor x/(mn)\rfloor\), azaz \(mnN\le x\lt mn(N+1)\). Osztva \(m\)-mel: \(nN\le x/m\lt n(N+1)\). Mivel \(nN\) egész és nem nagyobb \(x/m\)-nél, \(nN\le\lfloor x/m\rfloor\). Másrészt \(\lfloor x/m\rfloor\le x/m\lt n(N+1)\). Így \(nN\le\lfloor x/m\rfloor\lt n(N+1)\), és \(n\)-nel osztva \(N\le\lfloor x/m\rfloor/n\lt N+1\), vagyis a bal oldal is \(N\). \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \((m,n)\in\{(2,3),(5,4),(7,7)\}\) esetén racionális \(x\)-ekre pontosan egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Mutasd meg, hogy az \(\alpha=\sqrt2\) és \(\beta=2+\sqrt2\) spektrumai a pozitív egészeket átfedés nélkül lefedik. Melyikben van a 100?</span></summary>
+      <div class="ans">
+        <p>A Beatty-tétel feltétele: \(\alpha\) irracionális és \(\tfrac1\alpha+\tfrac1\beta=1\). Itt \(\tfrac1{\sqrt2}=\tfrac{\sqrt2}2\) és \(\tfrac1{2+\sqrt2}=\tfrac{2-\sqrt2}{2}=1-\tfrac{\sqrt2}2\), az összeg valóban 1.</p>
+        <p>A spektrumok kezdete: \(\lfloor n\sqrt2\rfloor=1,2,4,5,7,8,9,11,\dots\) és \(\lfloor n(2+\sqrt2)\rfloor=3,6,10,13,17,20,\dots\) A 100: \(71\sqrt2\approx100{,}41\), tehát \(\lfloor71\sqrt2\rfloor=100\), vagyis a 100 az \(\alpha\)-spektrumban van. A \(\beta\)-spektrumban nincs: \(29\beta\approx99{,}01\), \(30\beta\approx102{,}4\), a 100-at átlépi.</p>
+        <p><b>Ellenőrzés:</b> \(k<100\,000\)-ig minden \(k\) pontosan az egyik spektrumban fordul elő. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Számold ki \(\sum_{k=1}^{17}\lfloor12k/18\rfloor\)-t a rácspont-képlettel, majd a reciprocitással a megfordítottját: \(\sum_{k=1}^{11}\lfloor18k/12\rfloor\).</span></summary>
+      <div class="ans">
+        <p>A \(g=\gcd(12,18)=6\). A rácspont-képlet:</p>
+        <div class="eq">\[\sum_{k=1}^{b-1}\Bigl\lfloor\frac{ak}b\Bigr\rfloor=\frac{(a-1)(b-1)+g-1}2=\frac{11\cdot17+5}2=96.\]</div>
+        <p>A reciprocitás szerint a két összeg együtt \((a-1)(b-1)+g-1=192\), tehát a megfordított összeg is \(192-96=96\).</p>
+        <p><b>Ellenőrzés:</b> mindkét összeget tagonként kiszámolva 96 adódik. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 5. feladat Hermite azonosságának a legegyszerűbb esete (\(m=2\)). A bizonyítás mintája: írd fel \(x=n+f\)-et, és bontsd esetekre a törtrészt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="y-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Általánosítás</h2>
+    <p>A két utolsó feladat már ismert tételek kiterjesztése: új paraméterrel kell végigvinni a gondolatmenetet.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Josephus-probléma, minden negyedik esik ki (\(q=4\)). Írd fel a \(D_k\) sorozatot, és add meg a túlélő helyét \(n=100\)-nál.</span></summary>
+      <div class="ans">
+        <p>A segédsorozat \(D_0=1\), \(D_{k+1}=\lceil\tfrac43D_k\rceil\), tagjai:</p>
+        <div class="eq">\[\begin{aligned}&1,2,3,4,6,8,11,15,20,27,\\&36,48,64,86,115,154,206,275,367,\dots\end{aligned}\]</div>
+        <p>A küszöb \((q-1)n=3\cdot100=300\). A 300-nál nagyobb első tag a 367, így</p>
+        <div class="eq gold">\[J_4(100)=4\cdot100+1-367=34.\]</div>
+        <p><b>Ellenőrzés:</b> a szimuláció \(J_4(100)=34\)-et ad, és a képlet \(q=2\ldots7\), \(n<400\) esetén mindenütt egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="y-q">q <input type="range" id="y-q" min="2" max="7" value="4"> <span class="mono" id="y-qv">4</span></label>
+        <label class="rng" for="y-n">n <input type="range" id="y-n" min="2" max="300" value="100"> <span class="mono" id="y-nv">100</span></label>
+      </div>
+      <div class="info" id="y-jinfo"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. A \(\sum_{k=1}^{n}\lfloor\sqrt k\rfloor\) zárt alakja ismert (3.5). Keress zárt alakot a \(\sum_{k=1}^{n}\lfloor\sqrt[r]{k}\rfloor\) összegre \(r=3\)-ra és \(r=4\)-re.</span></summary>
+      <div class="ans">
+        <p>Legyen \(m=\lfloor\sqrt[r]n\rfloor\). A \(\lfloor\sqrt[r]k\rfloor\ge j\) pontosan akkor igaz, ha \(k\ge j^r\), tehát \(n+1-j^r\) ilyen \(k\) van, és az összeg \(\sum_{j=1}^{m}(n+1-j^r)=m(n+1)-\sum_{j=1}^{m}j^r\). A hatványösszegekkel:</p>
+        <div class="eq gold">\[r=3:\ m(n+1)-\Bigl(\frac{m(m+1)}2\Bigr)^2,\qquad r=4:\ m(n+1)-\frac{m(m+1)(2m+1)(3m^2+3m-1)}{30}.\]</div>
+        <p>Például \(r=3\), \(n=100\): \(m=4\), az összeg \(4\cdot101-10^2=304\).</p>
+        <p><b>Ellenőrzés:</b> \(r=2,3,4\) és \(n<3000\) esetén a zárt alak egyezik a tagonkénti összeggel. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="y-r">r <select id="y-r"><option value="2">2 (négyzetgyök)</option><option value="3" selected>3 (köbgyök)</option><option value="4">4 (negyedik gyök)</option></select></label>
+        <label class="rng" for="y-m">n <input type="range" id="y-m" min="1" max="500" value="100"> <span class="mono" id="y-mv">100</span></label>
+      </div>
+      <div class="info" id="y-rinfo"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat módszere a „szintenkénti számolás”: ahelyett, hogy minden \(k\)-ra az értéket adnánk össze, minden értékre megszámoljuk a \(k\)-kat.</p>
   </aside>
 </section>
 
@@ -3947,11 +4244,13 @@ const TOPICS={
   modszerek:{"n": "2.5", "t": "Általános módszerek", "ch": 2, "prefix": "f-", "pages": [["bevezeto", "Bevezető"], ["sejtes", "Sejtés és indukció"], ["perturbacio", "Perturbáció"], ["repertoar", "Repertoár"], ["integral", "Integrálás"], ["kibontas", "Kibontás és összevonás"], ["osszevetes", "Összevetés"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.5 Általános módszerek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   veges:{"n": "2.6", "t": "Véges analízis", "ch": 2, "prefix": "g-", "pages": [["bevezeto", "Bevezető"], ["kulonbseg", "A differenciaoperátor"], ["esespoli", "Eséspolinomok"], ["osszegzes", "Összegzés"], ["reszleges", "Összegzés részenként"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.6 Véges analízis. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   vegtelen:{"n": "2.7", "t": "Végtelen összegek", "ch": 2, "prefix": "h-", "pages": [["bevezeto", "Bevezető"], ["geometria", "A geometriai sor"], ["teleszkop", "Teleszkopikus összegek"], ["atrendezes", "Átrendezés"], ["abszolut", "Abszolút konvergencia"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.7 Végtelen összegek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  feladatokosszeg:{"n": "2.8", "t": "Feladatok", "ch": 2, "prefix": "x-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.8 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   padlo:{"n": "3.1", "t": "Padló és plafon", "ch": 3, "prefix": "p-", "pages": [["bevezeto", "Bevezető"], ["definicio", "Definíció"], ["szabalyok", "A szabályok"], ["integralitas", "Az integralitási tétel"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.1 Padló és plafon. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   alkalmazasok:{"n": "3.2", "t": "Alkalmazások", "ch": 3, "prefix": "q-", "pages": [["bevezeto", "Bevezető"], ["intervallum", "Egészek száma egy intervallumban"], ["beatty", "Spektrumok"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.2 Alkalmazások. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   padlorek:{"n": "3.3", "t": "Rekurziók", "ch": 3, "prefix": "r-", "pages": [["bevezeto", "Bevezető"], ["binker", "Bináris keresés"], ["osszefesules", "Összefésülő rendezés"], ["josephusq", "A Josephus-probléma általánosítása"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.3 Rekurziók. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   mod:{"n": "3.4", "t": "A „mod” művelet", "ch": 3, "prefix": "u-", "pages": [["bevezeto", "Bevezető"], ["definicio", "Definíció"], ["tulajdonsag", "Azonosságok"], ["felosztas", "Igazságos felosztás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.4 A „mod” művelet. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   padloosszeg:{"n": "3.5", "t": "Összegek", "ch": 3, "prefix": "t-", "pages": [["bevezeto", "Bevezető"], ["racspont", "Rácspontok"], ["gyokok", "Négyzetgyökök összege"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.5 Összegek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  feladatokpadlo:{"n": "3.6", "t": "Feladatok", "ch": 3, "prefix": "y-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.6 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatok:{"n": "1.4", "t": "Feladatok", "ch": 1, "prefix": "w-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.4 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."}
 };
 const CH=[
@@ -3960,8 +4259,8 @@ const CH=[
   topics:[{id:"hanoi",d:"Hány lépésben költöztethető át egy n korongos torony? Rekurzió, alsó és felső korlát, zárt alak."},
           {id:"egyenesek",d:"Legfeljebb hány részre vágja a síkot n egyenes? És n darab cikkcakk?"},
           {id:"josephus",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."},{id:"feladatok",d:"Kilenc saját feladat négy szinten, a fejezet végén: számolás, bizonyítás, kísérlet. Teljes megoldásokkal."}]},
- {"n": 2, "t": "Összegek", "d": "Szigma-jelölés, összegek és rekurziók, többszörös összegek, véges analízis, végtelen összegek.", "lead": "Az összegek a diszkrét matematika alapműveletei. A fejezet azt tanítja meg, hogyan lehet őket felírni, átalakítani és kiszámolni: a jelöléstől a zárt alakig, véges és végtelen esetben.", "topics": [{"id": "jelolesek", "d": "Szigma-jel, feltétel az összegzés alatt, Iverson-zárójel. Szigma-gép és összeg-téglalapok."}, {"id": "rekurziok", "d": "Minden összeg rekurzió, és sok rekurzió összeggé alakítható. Összegzőtényező, a gyorsrendezés átlagos költsége."}, {"id": "kezeles", "d": "Elosztás, csoportosítás, átrendezés, tükrözés és a perturbáció módszere."}, {"id": "tobbszoros", "d": "Kétszeres összegek, tartományok, a szummák felcserélése."}, {"id": "modszerek", "d": "A négyzetek összege öt módszerrel."}, {"id": "veges", "d": "Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."}, {"id": "vegtelen", "d": "Konvergencia, teleszkópos összegek, az átrendezés tétele."}]},
-  {"n": 3, "t": "Egészrész-függvények", "d": "Alsó és felső egészrész, mod, spektrumok.", "lead": "A padló és a plafon az egész és a valós számok közti híd. A fejezet a szabályaikat, a rekurziókban és összegekben való használatukat, valamint a mod műveletet tárgyalja.", "topics": [{"id": "padlo", "d": "⌊x⌋ és ⌈x⌉, a szabályok és az integralitási tétel."}, {"id": "alkalmazasok", "d": "Egészek intervallumban, Beatty-sorozatok."}, {"id": "padlorek", "d": "Padlós rekurziók: keresés, rendezés, általánosított Josephus."}, {"id": "mod", "d": "A mod mint kétváltozós művelet, igazságos felosztás."}, {"id": "padloosszeg", "d": "Padlós összegek: rácspontok, reciprocitás, ⌊√k⌋ összege."}]},
+ {"n": 2, "t": "Összegek", "d": "Szigma-jelölés, összegek és rekurziók, többszörös összegek, véges analízis, végtelen összegek.", "lead": "Az összegek a diszkrét matematika alapműveletei. A fejezet azt tanítja meg, hogyan lehet őket felírni, átalakítani és kiszámolni: a jelöléstől a zárt alakig, véges és végtelen esetben.", "topics": [{"id": "jelolesek", "d": "Szigma-jel, feltétel az összegzés alatt, Iverson-zárójel. Szigma-gép és összeg-téglalapok."}, {"id": "rekurziok", "d": "Minden összeg rekurzió, és sok rekurzió összeggé alakítható. Összegzőtényező, a gyorsrendezés átlagos költsége."}, {"id": "kezeles", "d": "Elosztás, csoportosítás, átrendezés, tükrözés és a perturbáció módszere."}, {"id": "tobbszoros", "d": "Kétszeres összegek, tartományok, a szummák felcserélése."}, {"id": "modszerek", "d": "A négyzetek összege öt módszerrel."}, {"id": "veges", "d": "Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."}, {"id": "vegtelen", "d": "Konvergencia, teleszkópos összegek, az átrendezés tétele."}, {"id": "feladatokosszeg", "d": "Tíz saját feladat négy szinten az összegekről, megoldással, programmal ellenőrizve."}]},
+  {"n": 3, "t": "Egészrész-függvények", "d": "Alsó és felső egészrész, mod, spektrumok.", "lead": "A padló és a plafon az egész és a valós számok közti híd. A fejezet a szabályaikat, a rekurziókban és összegekben való használatukat, valamint a mod műveletet tárgyalja.", "topics": [{"id": "padlo", "d": "⌊x⌋ és ⌈x⌉, a szabályok és az integralitási tétel."}, {"id": "alkalmazasok", "d": "Egészek intervallumban, Beatty-sorozatok."}, {"id": "padlorek", "d": "Padlós rekurziók: keresés, rendezés, általánosított Josephus."}, {"id": "mod", "d": "A mod mint kétváltozós művelet, igazságos felosztás."}, {"id": "padloosszeg", "d": "Padlós összegek: rácspontok, reciprocitás, ⌊√k⌋ összege."}, {"id": "feladatokpadlo", "d": "Tíz saját feladat négy szinten a padlóról, a plafonról, a modról és az egészrészes összegekről."}]},
  {n:4,t:"Számelmélet",d:"Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa."},
  {n:5,t:"Binomiális együtthatók",d:"Azonosságok, hipergeometrikus függvények."},
  {n:6,t:"Speciális számok",d:"Stirling-, Euler-, harmonikus, Bernoulli- és Fibonacci-számok."},
@@ -4297,6 +4596,22 @@ function c2expr(src){
 }
 const c2ptsum=(v)=>Math.abs(v-Math.round(v))<1e-9?String(Math.round(v)).replace("-","−"):fm(v);
 const c2join=(a)=>a.map((x,i)=>i===0?x:(x.startsWith("−")?" − "+x.slice(1):" + "+x)).join("");
+
+/* közös: a feladat-oldalak hero-ja (oszlopok nehézségi szintenként) */
+function exHero(page,sv,kEl,counts){
+  const tot=counts.reduce((a,b)=>a+b,0),cols=["var(--good)","var(--accent)","var(--accent-2)","var(--bad)"],names=["bemelegítő","alap","haladó","kutatási"];
+  c2hero(page,420,tot+1,fr=>{
+    const s=$(sv),W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+    const bw=70,gap=24,x0=(W-4*bw-3*gap)/2,bh=30;let shown=0,total=0;
+    el("line",{x1:20,x2:W-20,y1:H-44,y2:H-44,style:"stroke:var(--line);stroke-width:2"},s);
+    counts.forEach((cnt,i)=>{const x=x0+i*(bw+gap);
+      for(let j=0;j<cnt;j++){const idx=total+j;if(idx<=fr-1||fr>=tot){shown++;
+        el("rect",{x,y:H-44-(j+1)*(bh+5),width:bw,height:bh,rx:7,style:`fill:${cols[i]};opacity:.88`},s);
+        txt(s,x+bw/2,H-44-(j+1)*(bh+5)+bh/2+4,String(idx+1),"ink");}}
+      total+=cnt;txt(s,x+bw/2,H-24,names[i],"");});
+    $(kEl).textContent=Math.min(tot,shown);
+  });
+}
 
 /* ================= 2.1 JELÖLÉSEK ================= */
 c2hero("jelolesek-bevezeto",650,10,fr=>{
@@ -4869,6 +5184,24 @@ function hAbs(){
 }
 ["#h-b-p","#h-b-q","#h-b-m"].forEach(id=>$(id).addEventListener("input",hAbs));hAbs();
 
+/* ================= 2.8 FELADATOK ================= */
+exHero("feladatokosszeg-bevezeto","#x-hero","#x-hero-k",[3,3,2,2]);
+function xRe(){
+  const m=+$("#x-m").value;$("#x-mv").textContent=m;
+  let a=0;for(let k=1;k<=3*m;k++)a+=(k%2?1:-1)/k;
+  let b=0,p=1,q=2;for(let j=0;j<m;j++){b+=1/p;p+=2;b+=1/p;p+=2;b-=1/q;q+=2;}
+  const L=Math.log(2);
+  $("#x-minfo").innerHTML=`az első ${3*m} tag, eredeti sorrend: ${fm(+a.toFixed(6))} (ln 2 = ${fm(+L.toFixed(6))})<br>az első ${3*m} tag, átrendezve (2 pozitív, 1 negatív): ${fm(+b.toFixed(6))} (3/2·ln 2 = ${fm(+(1.5*L).toFixed(6))}) ${ok(Math.abs(b-1.5*L)<3/m)}`;
+}
+$("#x-m").addEventListener("input",xRe);xRe();
+function xHarm(){
+  const T=+$("#x-t").value;$("#x-tv").textContent=T;
+  const g=0.5772156649015329;let h=0,n=0;while(h<=T){n++;h+=1/n;}
+  const est=Math.exp(T-g);
+  $("#x-tinfo").innerHTML=`legkisebb n, amelyre H<sub>n</sub> &gt; ${T}: <b>${n}</b> &nbsp;·&nbsp; H<sub>${n-1}</sub> = ${fm(+(h-1/n).toFixed(6))} ≤ ${T} &lt; H<sub>${n}</sub> = ${fm(+h.toFixed(6))}<br>becslés e<sup>T−γ</sup> = ${fm(+est.toFixed(2))}, kerekítve fölfelé: ${Math.ceil(est)} ${ok(Math.abs(Math.ceil(est)-n)<=1)}`;
+}
+$("#x-t").addEventListener("input",xHarm);xHarm();
+
 /* ================= 3.1 PADLÓ ÉS PLAFON ================= */
 const pFl=j=>Math.floor(j/12),pCl=j=>-Math.floor(-j/12); /* x = j/12 */
 const pNum=v=>fm(v);
@@ -5170,6 +5503,26 @@ function tGyok(){
   $("#t-g-info").innerHTML=`m = ⌊√${n}⌋ = ${m} &nbsp;·&nbsp; közvetlen összeg = ${S} &nbsp;·&nbsp; m(n+1) − m(m+1)(2m+1)/6 = ${m}·${n+1} − ${m*(m+1)*(2*m+1)/6} = ${f} ${ok(S===f)}`;
 }
 $("#t-g-n").addEventListener("input",tGyok);tGyok();
+
+/* ================= 3.6 FELADATOK ================= */
+exHero("feladatokpadlo-bevezeto","#y-hero","#y-hero-k",[3,3,2,2]);
+function yJ(n,q){let r=0;for(let m=2;m<=n;m++)r=(r+q)%m;return r+1;}
+function yD(q,n){const D=[1];let d=1;while(d<=(q-1)*n){d=Math.ceil(q*d/(q-1)-1e-12);D.push(d);}return D;}
+function yJos(){
+  const q=+$("#y-q").value,n=+$("#y-n").value;$("#y-qv").textContent=q;$("#y-nv").textContent=n;
+  const D=yD(q,n),last=D[D.length-1],f=q*n+1-last,sim=yJ(n,q);
+  $("#y-jinfo").innerHTML=`D: ${D.join(", ")} (küszöb (q−1)n = ${(q-1)*n}, az első nagyobb: ${last})<br>J<sub>${q}</sub>(${n}) = ${q}·${n}+1 − ${last} = <b>${f}</b> &nbsp;·&nbsp; szimuláció: ${sim} ${ok(f===sim)}`;
+}
+["#y-q","#y-n"].forEach(i=>$(i).addEventListener("input",yJos));yJos();
+function yIroot(k,r){let x=Math.round(Math.pow(k,1/r));while(x**r>k)x--;while((x+1)**r<=k)x++;return x;}
+const yPow={2:m=>m*(m+1)*(2*m+1)/6,3:m=>(m*(m+1)/2)**2,4:m=>m*(m+1)*(2*m+1)*(3*m*m+3*m-1)/30};
+function yRoot(){
+  const r=+$("#y-r").value,n=+$("#y-m").value;$("#y-mv").textContent=n;
+  let S=0;for(let k=1;k<=n;k++)S+=yIroot(k,r);
+  const m=yIroot(n,r),f=m*(n+1)-yPow[r](m);
+  $("#y-rinfo").innerHTML=`m = ⌊n<sup>1/${r}</sup>⌋ = ${m} &nbsp;·&nbsp; tagonkénti összeg = ${S}<br>m(n+1) − Σ j<sup>${r}</sup> = ${m}·${n+1} − ${yPow[r](m)} = ${f} ${ok(S===f)}`;
+}
+["#y-r","#y-m"].forEach(i=>$(i).addEventListener("input",yRoot));yRoot();
 
 /* ================= 1.4 FELADATOK ================= */
 c2hero("feladatok-bevezeto",420,10,fr=>{

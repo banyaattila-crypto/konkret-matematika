@@ -11,6 +11,7 @@ MODS=[
  ("modszerek","2.5","Általános módszerek","f-","ch25",[["bevezeto","Bevezető"],["sejtes","Sejtés és indukció"],["perturbacio","Perturbáció"],["repertoar","Repertoár"],["integral","Integrálás"],["kibontas","Kibontás és összevonás"],["osszevetes","Összevetés"]],"A négyzetek összege öt módszerrel."),
  ("veges","2.6","Véges analízis","g-","ch26",[["bevezeto","Bevezető"],["kulonbseg","A differenciaoperátor"],["esespoli","Eséspolinomok"],["osszegzes","Összegzés"],["reszleges","Összegzés részenként"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."),
  ("vegtelen","2.7","Végtelen összegek","h-","ch27",[["bevezeto","Bevezető"],["geometria","A geometriai sor"],["teleszkop","Teleszkopikus összegek"],["atrendezes","Átrendezés"],["abszolut","Abszolút konvergencia"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Konvergencia, teleszkópos összegek, az átrendezés tétele."),
+ ("feladatokosszeg","2.8","Feladatok","x-","ch28",[["bevezeto","Bevezető"],["bemelegito","Bemelegítő"],["halado","Alap és haladó"],["kutatas","Kutatás"]],"Tíz saját feladat négy szinten az összegekről, megoldással, programmal ellenőrizve."),
 ]
 MODS1=[("feladatok","1.4","Feladatok","w-","ch14",[["bevezeto","Bevezető"],["bemelegito","Bemelegítő"],["halado","Alap és haladó"],["kutatas","Kutatás"]],"Kilenc saját feladat négy szinten: bemelegítő, alap, haladó, kutatási. Minden megoldás levezetve és programmal ellenőrizve.")]
 exec(open('tools/mods3.py',encoding='utf-8').read())

@@ -1,0 +1,148 @@
+
+<!-- ================= 3.6 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="y-bevezeto">
+  <div>
+    <div class="eyebrow">3. fejezet · Egészrész-függvények · 3.6</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a padlóról, a plafonról, a mod műveletről és az egészrészes összegekről, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\lfloor x\rfloor,\ \lceil x\rceil,\ x\bmod y\)</div>
+  </div>
+  <div class="stage">
+    <svg id="y-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="y-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az egészrész-függvényekkel az a nehézség, hogy a kerekítés „kicsi” dolognak látszik, miközben a negatív számoknál és a határeseteknél a legtöbb hiba éppen ott történik. Ezért a feladatok az első szinten a definíció pontos alkalmazását kérik, a következőkön az azonosságok bizonyítását és az intervallumok megszámolását, a haladó szinten a spektrumokat és a rácspont-összegeket, a kutatási szinten pedig általánosítást. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="y-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Definíció, számjegyek, maradék</h2>
+    <p>Három feladat, amelyben a definíciót kell pontosan alkalmazni. Negatív számoknál különösen figyelj a kerekítés irányára.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki: \(\lfloor-2{,}5\rfloor\), \(\lceil-2{,}5\rceil\), \(\lfloor\sqrt{50}\rfloor\), \(\lceil17/5\rceil\).</span></summary>
+      <div class="ans">
+        <p>A padló a \(-2{,}5\)-nél nem nagyobb legnagyobb egész: \(\lfloor-2{,}5\rfloor=-3\). A plafon a nem kisebb legkisebb egész: \(\lceil-2{,}5\rceil=-2\). A \(7^2=49\le50<64=8^2\), ezért \(\lfloor\sqrt{50}\rfloor=7\). A \(17/5=3{,}4\), ezért \(\lceil17/5\rceil=4\).</p>
+        <p>Emlékeztető: \(\lceil x\rceil=-\lfloor-x\rfloor\), így a második érték \(-\lfloor2{,}5\rfloor=-2\) is.</p>
+        <p><b>Ellenőrzés:</b> a négy érték programmal is \(-3,\ -2,\ 7,\ 4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Hány számjegyű a \(2^{100}\)?</span></summary>
+      <div class="ans">
+        <p>Egy \(n\) pozitív egész számjegyeinek száma \(\lfloor\log_{10}n\rfloor+1\). A \(\log_{10}2^{100}=100\cdot0{,}30103=30{,}103\), tehát \(\lfloor30{,}103\rfloor+1=31\) számjegy.</p>
+        <p><b>Ellenőrzés:</b> a \(2^{100}=1\,267\,650\,600\,228\,229\,401\,496\,703\,205\,376\) valóban 31 számjegyű. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Számold ki: \(-100\bmod7\), \(100\bmod-7\), \(7{,}5\bmod-2\).</span></summary>
+      <div class="ans">
+        <div class="eq">\[\begin{aligned}-100\bmod7&=-100-7\lfloor-14{,}29\rfloor=-100+105=5\\100\bmod-7&=100+7\lfloor-14{,}29\rfloor=100-105=-5\\7{,}5\bmod-2&=7{,}5+2\lfloor-3{,}75\rfloor=7{,}5-8=-0{,}5\end{aligned}\]</div>
+        <p>Az eredmény mindig az osztó előjelét követi, és abszolút értéke kisebb az osztóénál.</p>
+        <p><b>Ellenőrzés:</b> a definíció programmal is \(5,\ -5,\ -0{,}5\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A \(2^{100}\) feladatnál a \(\lg2\approx0{,}30103\) értéket érdemes fejből tudni: ezzel bármely kettőhatvány számjegyszáma azonnal adódik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="y-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Azonosságok, spektrumok, rácspontok</h2>
+    <p>Itt azonosságokat kell bizonyítani, intervallumot kell megszámolni, és a Beatty-spektrumokat meg a rácspont-összegeket kell használni.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Hány 7-tel osztható egész szám van \(100\) és \(1000\) között (a két végpontot is beleértve)?</span></summary>
+      <div class="ans">
+        <p>Az \([a,b]\) intervallumban az \(m\) többszöröseinek száma \(\lfloor b/m\rfloor-\lceil a/m\rceil+1\). Itt \(\lfloor1000/7\rfloor=142\) és \(\lceil100/7\rceil=15\), tehát</p>
+        <div class="eq">\[142-15+1=128.\]</div>
+        <p><b>Ellenőrzés:</b> a \(100\le k\le1000\), \(7\mid k\) feltételű számok közvetlen megszámolása is 128. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Igazold: \(\lfloor x\rfloor+\lfloor x+\tfrac12\rfloor=\lfloor2x\rfloor\) minden valós \(x\)-re.</span></summary>
+      <div class="ans">
+        <p>Legyen \(x=n+f\), ahol \(n=\lfloor x\rfloor\) és \(0\le f<1\). Két eset van.</p>
+        <p>Ha \(f<\tfrac12\): \(\lfloor x+\tfrac12\rfloor=n\), a bal oldal \(2n\). A \(2x=2n+2f\) és \(0\le2f<1\), ezért \(\lfloor2x\rfloor=2n\).</p>
+        <p>Ha \(f\ge\tfrac12\): \(\lfloor x+\tfrac12\rfloor=n+1\), a bal oldal \(2n+1\). A \(1\le2f<2\), ezért \(\lfloor2x\rfloor=2n+1\). \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \(x=p/q\) alakú racionálisokra (\(0\le p<40\), \(1\le q\le12\)) pontosan egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Igazold: ha \(m,n\) pozitív egészek, akkor \(\Bigl\lfloor\dfrac{\lfloor x/m\rfloor}{n}\Bigr\rfloor=\Bigl\lfloor\dfrac x{mn}\Bigr\rfloor\).</span></summary>
+      <div class="ans">
+        <p>Legyen \(N=\lfloor x/(mn)\rfloor\), azaz \(mnN\le x\lt mn(N+1)\). Osztva \(m\)-mel: \(nN\le x/m\lt n(N+1)\). Mivel \(nN\) egész és nem nagyobb \(x/m\)-nél, \(nN\le\lfloor x/m\rfloor\). Másrészt \(\lfloor x/m\rfloor\le x/m\lt n(N+1)\). Így \(nN\le\lfloor x/m\rfloor\lt n(N+1)\), és \(n\)-nel osztva \(N\le\lfloor x/m\rfloor/n\lt N+1\), vagyis a bal oldal is \(N\). \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \((m,n)\in\{(2,3),(5,4),(7,7)\}\) esetén racionális \(x\)-ekre pontosan egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Mutasd meg, hogy az \(\alpha=\sqrt2\) és \(\beta=2+\sqrt2\) spektrumai a pozitív egészeket átfedés nélkül lefedik. Melyikben van a 100?</span></summary>
+      <div class="ans">
+        <p>A Beatty-tétel feltétele: \(\alpha\) irracionális és \(\tfrac1\alpha+\tfrac1\beta=1\). Itt \(\tfrac1{\sqrt2}=\tfrac{\sqrt2}2\) és \(\tfrac1{2+\sqrt2}=\tfrac{2-\sqrt2}{2}=1-\tfrac{\sqrt2}2\), az összeg valóban 1.</p>
+        <p>A spektrumok kezdete: \(\lfloor n\sqrt2\rfloor=1,2,4,5,7,8,9,11,\dots\) és \(\lfloor n(2+\sqrt2)\rfloor=3,6,10,13,17,20,\dots\) A 100: \(71\sqrt2\approx100{,}41\), tehát \(\lfloor71\sqrt2\rfloor=100\), vagyis a 100 az \(\alpha\)-spektrumban van. A \(\beta\)-spektrumban nincs: \(29\beta\approx99{,}01\), \(30\beta\approx102{,}4\), a 100-at átlépi.</p>
+        <p><b>Ellenőrzés:</b> \(k<100\,000\)-ig minden \(k\) pontosan az egyik spektrumban fordul elő. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Számold ki \(\sum_{k=1}^{17}\lfloor12k/18\rfloor\)-t a rácspont-képlettel, majd a reciprocitással a megfordítottját: \(\sum_{k=1}^{11}\lfloor18k/12\rfloor\).</span></summary>
+      <div class="ans">
+        <p>A \(g=\gcd(12,18)=6\). A rácspont-képlet:</p>
+        <div class="eq">\[\sum_{k=1}^{b-1}\Bigl\lfloor\frac{ak}b\Bigr\rfloor=\frac{(a-1)(b-1)+g-1}2=\frac{11\cdot17+5}2=96.\]</div>
+        <p>A reciprocitás szerint a két összeg együtt \((a-1)(b-1)+g-1=192\), tehát a megfordított összeg is \(192-96=96\).</p>
+        <p><b>Ellenőrzés:</b> mindkét összeget tagonként kiszámolva 96 adódik. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 5. feladat Hermite azonosságának a legegyszerűbb esete (\(m=2\)). A bizonyítás mintája: írd fel \(x=n+f\)-et, és bontsd esetekre a törtrészt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="y-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Általánosítás</h2>
+    <p>A két utolsó feladat már ismert tételek kiterjesztése: új paraméterrel kell végigvinni a gondolatmenetet.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Josephus-probléma, minden negyedik esik ki (\(q=4\)). Írd fel a \(D_k\) sorozatot, és add meg a túlélő helyét \(n=100\)-nál.</span></summary>
+      <div class="ans">
+        <p>A segédsorozat \(D_0=1\), \(D_{k+1}=\lceil\tfrac43D_k\rceil\), tagjai:</p>
+        <div class="eq">\[\begin{aligned}&1,2,3,4,6,8,11,15,20,27,\\&36,48,64,86,115,154,206,275,367,\dots\end{aligned}\]</div>
+        <p>A küszöb \((q-1)n=3\cdot100=300\). A 300-nál nagyobb első tag a 367, így</p>
+        <div class="eq gold">\[J_4(100)=4\cdot100+1-367=34.\]</div>
+        <p><b>Ellenőrzés:</b> a szimuláció \(J_4(100)=34\)-et ad, és a képlet \(q=2\ldots7\), \(n<400\) esetén mindenütt egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="y-q">q <input type="range" id="y-q" min="2" max="7" value="4"> <span class="mono" id="y-qv">4</span></label>
+        <label class="rng" for="y-n">n <input type="range" id="y-n" min="2" max="300" value="100"> <span class="mono" id="y-nv">100</span></label>
+      </div>
+      <div class="info" id="y-jinfo"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. A \(\sum_{k=1}^{n}\lfloor\sqrt k\rfloor\) zárt alakja ismert (3.5). Keress zárt alakot a \(\sum_{k=1}^{n}\lfloor\sqrt[r]{k}\rfloor\) összegre \(r=3\)-ra és \(r=4\)-re.</span></summary>
+      <div class="ans">
+        <p>Legyen \(m=\lfloor\sqrt[r]n\rfloor\). A \(\lfloor\sqrt[r]k\rfloor\ge j\) pontosan akkor igaz, ha \(k\ge j^r\), tehát \(n+1-j^r\) ilyen \(k\) van, és az összeg \(\sum_{j=1}^{m}(n+1-j^r)=m(n+1)-\sum_{j=1}^{m}j^r\). A hatványösszegekkel:</p>
+        <div class="eq gold">\[r=3:\ m(n+1)-\Bigl(\frac{m(m+1)}2\Bigr)^2,\qquad r=4:\ m(n+1)-\frac{m(m+1)(2m+1)(3m^2+3m-1)}{30}.\]</div>
+        <p>Például \(r=3\), \(n=100\): \(m=4\), az összeg \(4\cdot101-10^2=304\).</p>
+        <p><b>Ellenőrzés:</b> \(r=2,3,4\) és \(n<3000\) esetén a zárt alak egyezik a tagonkénti összeggel. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="y-r">r <select id="y-r"><option value="2">2 (négyzetgyök)</option><option value="3" selected>3 (köbgyök)</option><option value="4">4 (negyedik gyök)</option></select></label>
+        <label class="rng" for="y-m">n <input type="range" id="y-m" min="1" max="500" value="100"> <span class="mono" id="y-mv">100</span></label>
+      </div>
+      <div class="info" id="y-rinfo"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat módszere a „szintenkénti számolás”: ahelyett, hogy minden \(k\)-ra az értéket adnánk össze, minden értékre megszámoljuk a \(k\)-kat.</p>
+  </aside>
+</section>

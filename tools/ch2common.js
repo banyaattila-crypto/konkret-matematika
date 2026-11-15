@@ -47,3 +47,19 @@ function c2expr(src){
 }
 const c2ptsum=(v)=>Math.abs(v-Math.round(v))<1e-9?String(Math.round(v)).replace("-","−"):fm(v);
 const c2join=(a)=>a.map((x,i)=>i===0?x:(x.startsWith("−")?" − "+x.slice(1):" + "+x)).join("");
+
+/* közös: a feladat-oldalak hero-ja (oszlopok nehézségi szintenként) */
+function exHero(page,sv,kEl,counts){
+  const tot=counts.reduce((a,b)=>a+b,0),cols=["var(--good)","var(--accent)","var(--accent-2)","var(--bad)"],names=["bemelegítő","alap","haladó","kutatási"];
+  c2hero(page,420,tot+1,fr=>{
+    const s=$(sv),W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+    const bw=70,gap=24,x0=(W-4*bw-3*gap)/2,bh=30;let shown=0,total=0;
+    el("line",{x1:20,x2:W-20,y1:H-44,y2:H-44,style:"stroke:var(--line);stroke-width:2"},s);
+    counts.forEach((cnt,i)=>{const x=x0+i*(bw+gap);
+      for(let j=0;j<cnt;j++){const idx=total+j;if(idx<=fr-1||fr>=tot){shown++;
+        el("rect",{x,y:H-44-(j+1)*(bh+5),width:bw,height:bh,rx:7,style:`fill:${cols[i]};opacity:.88`},s);
+        txt(s,x+bw/2,H-44-(j+1)*(bh+5)+bh/2+4,String(idx+1),"ink");}}
+      total+=cnt;txt(s,x+bw/2,H-24,names[i],"");});
+    $(kEl).textContent=Math.min(tot,shown);
+  });
+}
