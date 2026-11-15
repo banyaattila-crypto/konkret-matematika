@@ -1,0 +1,142 @@
+
+<!-- ================= 5.2 ÖSSZEGEK ================= -->
+<header class="hero page" id="z-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.2</div>
+    <h1>Összegek</h1>
+    <p class="lead">A Pascal-háromszög egy oszlopának összege a következő oszlop egyik eleme. Az összegek zárt alakra hozásához nem is kell tagonként számolni, elég a háromszögre nézni.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{n}\binom km=\binom{n+1}{m+1}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="z-hero" role="img" aria-label="A Pascal-háromszög egy oszlopa és az összeg az átlós szomszédban"></svg>
+    <div class="counter"><span id="z-hero-a">∑ C(k,2), k ≤ 2</span><span>összeg: <b id="z-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen a Pascal-háromszög harmadik oszlopa (a \(\binom k2\) értékek) látszik, és ahogy lefelé adunk össze, a részösszeg mindig a következő oszlop egy elemén áll meg, egy sorral lejjebb. A hokiütő formáról kapta a nevét az azonosság. A fejezet három összegzési szabályt ad: az oszlopok és az átlók összegét, a Vandermonde-konvolúciót (két sor „összeszorzása”) és a súlyozott összegeket, ahol a \(k\) tényező is megjelenik. Mindegyik a kombinatorikus számolás vagy az elnyelés azonosság egyszerű következménye.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="z-hoki">
+  <div class="body">
+    <div class="eyebrow">§1 · Alsó és felső összegzés</div>
+    <h2>A hokiütő</h2>
+    <p>A felső összegzés szabálya:</p>
+    <div class="eq gold">\[\sum_{k=0}^{n}\binom km=\binom{n+1}{m+1}.\]</div>
+    <p>A kombinatorikus magyarázat: az \(\{0,1,\dots,n\}\) halmaz \((m+1)\) elemű részhalmazait osztályozzuk a legnagyobb elemük szerint. Ha az \(k\), akkor a többi \(m\) elemet a \(\{0,\dots,k-1\}\) halmazból kell választani, \(\binom km\) módon. A párhuzamos összegzés az átlót adja össze:</p>
+    <div class="eq">\[\sum_{k=0}^{m}\binom{r+k}{k}=\binom{r+m+1}{m}.\]</div>
+    <p>Mindkettő ugyanabból a Pascal-szabályból jön, ha az összeg utolsó tagját mindig kicseréljük a sor két elemének összegére. Az alábbi kísérlet kiválasztott paraméterekkel összeadja a tagokat.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="z-h-t">összegzés <select id="z-h-t"><option value="u">felső: Σ C(k, m), k ≤ n</option><option value="p">párhuzamos: Σ C(r+k, k), k ≤ m</option></select></label>
+        <label class="rng" for="z-h-a">n (vagy r) <input type="range" id="z-h-a" min="0" max="25" value="10"> <span class="mono" id="z-h-av">10</span></label>
+        <label class="rng" for="z-h-b">m <input type="range" id="z-h-b" min="0" max="25" value="3"> <span class="mono" id="z-h-bv">3</span></label>
+      </div>
+      <div class="info" id="z-h-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A felső összegzésnél a \(k\lt m\) tagok nullák, ezért a kísérletben is „csak” a \(k\ge m\) tagok számítanak.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-vandermonde">
+  <div class="body">
+    <div class="eyebrow">§2 · A Vandermonde-azonosság</div>
+    <h2>Két csoportból választunk</h2>
+    <p>Egy \(r\) és egy \(s\) elemű csoportból együtt \(n\) elemet kiválasztva szétoszthatjuk az esetek a szerint, hogy az első csoportból hányat választottunk:</p>
+    <div class="eq gold">\[\sum_{k}\binom rk\binom s{n-k}=\binom{r+s}n.\]</div>
+    <p>A bal oldalon \(k\) elemet az első csoportból, \(n-k\)-t a másodikból választunk. Az azonosság polinom azonosság \(r\)-ben és \(s\)-ben, ezért tetszőleges valós \(r,s\)-re is igaz marad. Az \(r=s=n\) esetben a szimmetriával \(\sum_k\binom nk^2=\binom{2n}n\) adódik.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="z-v-r">r <input type="range" id="z-v-r" min="0" max="20" value="6"> <span class="mono" id="z-v-rv">6</span></label>
+        <label class="rng" for="z-v-s">s <input type="range" id="z-v-s" min="0" max="20" value="8"> <span class="mono" id="z-v-sv">8</span></label>
+        <label class="rng" for="z-v-n">n <input type="range" id="z-v-n" min="0" max="40" value="5"> <span class="mono" id="z-v-nv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="z-v-t"></table></div>
+      <div class="info" id="z-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(n\) csúszka automatikusan \(r+s\)-nél megáll. Nagyobb \(n\)-re mindkét oldal nulla.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-sulyozott">
+  <div class="body">
+    <div class="eyebrow">§3 · Súlyozott összegek</div>
+    <h2>Amikor a \(k\) is megjelenik</h2>
+    <p>Az elnyelés \(k\binom nk=n\binom{n-1}{k-1}\) leveszi a \(k\) tényezőt, utána a sor összege már ismert:</p>
+    <div class="eq gold">\[\sum_{k}k\binom nk=n\,2^{n-1},\qquad\sum_{k}k^2\binom nk=n(n+1)\,2^{n-2},\qquad\sum_{k=0}^{n}\frac{1}{k+1}\binom nk=\frac{2^{n+1}-1}{n+1}.\]</div>
+    <p>A másodikhoz \(k^2=k(k-1)+k\) bontás kell: \(\sum k(k-1)\binom nk=n(n-1)2^{n-2}\) (az elnyelés kétszer), ehhez jön az első összeg. A harmadiknál \(\tfrac1{k+1}\binom nk=\tfrac1{n+1}\binom{n+1}{k+1}\), és a \(\binom{n+1}{k+1}\) összege \(k=0\ldots n\)-re \(2^{n+1}-1\) (a \(\binom{n+1}0\) hiányzik).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="z-s-n">n <input type="range" id="z-s-n" min="2" max="30" value="10"> <span class="mono" id="z-s-nv">10</span></label>
+      </div>
+      <div class="info" id="z-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az első összeg szemléletes: az \(n\) elemű halmaz részhalmazainak átlagos mérete \(n/2\), és \(2^n\) részhalmaz van, így az összméret \(n\,2^{n-1}\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Oszlopok, átlók, konvolúció</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(\sum_{k=3}^{12}\binom k3\).</span></summary>
+      <div class="ans">
+        <p>A felső összegzéssel (\(k\lt3\) tagok nullák) \(\binom{13}4=715\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki: \(\sum_{k=0}^{5}\binom{4+k}k\).</span></summary>
+      <div class="ans">
+        <p>A párhuzamos összegzéssel \(r=4,\ m=5\): \(\binom{10}5=252\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki: \(\sum_{k}\binom5k\binom7{4-k}\).</span></summary>
+      <div class="ans">
+        <p>Vandermonde szerint \(\binom{12}4=495\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki: \(\sum_{k}k\binom8k\).</span></summary>
+      <div class="ans">
+        <p>\(8\cdot2^7=1024\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A feladatokban minden érték zárt alakból jön. A közvetlen összeadás csak az ellenőrzésre való.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Az összegek zárt alakjai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Összeg</th><th>Zárt alak</th></tr>
+      <tr><th>felső összegzés</th><td>\(\sum_{k\le n}\binom km=\binom{n+1}{m+1}\)</td></tr>
+      <tr><th>párhuzamos összegzés</th><td>\(\sum_{k\le m}\binom{r+k}k=\binom{r+m+1}m\)</td></tr>
+      <tr><th>Vandermonde</th><td>\(\sum_k\binom rk\binom s{n-k}=\binom{r+s}n\)</td></tr>
+      <tr><th>\(\sum k\binom nk\)</th><td>\(n2^{n-1}\)</td></tr>
+      <tr><th>\(\sum k^2\binom nk\)</th><td>\(n(n+1)2^{n-2}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Csoportosíts</b><span>Osztályozd az eseteket egy elem szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Nyelj el</b><span>A \(k\) tényezőt vidd ki.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ismerd fel</b><span>Sor, oszlop, átló vagy konvolúció.</span></div>
+    </div>
+    <p>A következő téma a fortélyok: negatív felső index, Catalan-számok és a binomiális sor.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>

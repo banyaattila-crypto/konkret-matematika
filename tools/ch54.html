@@ -1,0 +1,128 @@
+
+<!-- ================= 5.4 GENERÁTORFÜGGVÉNYEK ================= -->
+<header class="hero page" id="ab-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.4</div>
+    <h1>Generátorfüggvények</h1>
+    <p class="lead">Egy számsorozatot egyetlen hatványsorba csomagolunk. A sorok szorzása ilyenkor a sorozatok konvolúciója, és a binomiális azonosságok polinomszorzásból következnek.</p>
+    <div class="formula">\(\displaystyle(1+x)^n=\sum_k\binom nk x^k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ab-hero" role="img" aria-label="A Pascal-háromszög átlós összegei Fibonacci-számok"></svg>
+    <div class="counter"><span id="ab-hero-a">n = 1</span><span>átlós összeg: <b id="ab-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az \((1+x)^n\) polinom együtthatói a Pascal-háromszög \(n\). sora: a polinom „tárolja” a sort. Két polinom szorzatában az együtthatók konvolúcióként jelennek meg, és a Vandermonde-azonosság nem más, mint \((1+x)^r(1+x)^s=(1+x)^{r+s}\) együtthatóinak összevetése. A képen a háromszög „sekély” átlóit (ahol a sor- és oszlopindex összege állandó) összegezzük, és a Fibonacci-számokat kapjuk. A generátorfüggvény ezt is megmagyarázza, mert a sorozat generátorfüggvénye \(1/(1-x-x^2)\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ab-szorzat">
+  <div class="body">
+    <div class="eyebrow">§1 · Polinomok szorzata</div>
+    <h2>A sorozat mint polinom</h2>
+    <p>Az \((a_k)\) sorozat generátorfüggvénye \(A(x)=\sum a_kx^k\). Ez formális hatványsor, a konvergenciával nem kell törődnünk, csak az együtthatókkal. Két sorozat szorzata konvolúció:</p>
+    <div class="eq">\[A(x)B(x)=\sum_n\Bigl(\sum_k a_kb_{n-k}\Bigr)x^n.\]</div>
+    <p>Az \(a_k=\binom rk\), \(b_k=\binom sk\) választással az \(A=(1+x)^r\), \(B=(1+x)^s\), a szorzat \((1+x)^{r+s}\), és az \(x^n\) együtthatóját összevetve a Vandermonde-azonosság adódik. A kísérlet kiszámolja a konvolúciót, és összeveti a \((1+x)^{r+s}\) együtthatóival.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ab-s-r">r <input type="range" id="ab-s-r" min="0" max="12" value="4"> <span class="mono" id="ab-s-rv">4</span></label>
+        <label class="rng" for="ab-s-s">s <input type="range" id="ab-s-s" min="0" max="12" value="5"> <span class="mono" id="ab-s-sv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="ab-s-t"></table></div>
+      <div class="info" id="ab-s-info"></div>
+    </div>
+    <p>Az oszlopoknak is van generátorfüggvényük: \(\sum_n\binom nm x^n=\dfrac{x^m}{(1-x)^{m+1}}\). Ez az 5.3 negatív indexes sorából következik, mert \(x^m\) eltolja az \(1/(1-x)^{m+1}\) sorát.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ab-o-m">m <input type="range" id="ab-o-m" min="0" max="8" value="3"> <span class="mono" id="ab-o-mv">3</span></label>
+      </div>
+      <div class="info" id="ab-o-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A generátorfüggvények ereje az, hogy a szorzás kombinatorikai jelentést kap: „válasszunk egy elemet az egyik csoportból és egy másikat a másikból”.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ab-fibonacci">
+  <div class="body">
+    <div class="eyebrow">§2 · Átlós összegek</div>
+    <h2>Fibonacci a Pascal-háromszögben</h2>
+    <p>Legyen \(D_n=\sum_{k}\binom{n-k}k\) a háromszög „sekély” átlójának összege. A Pascal-szabállyal \(\binom{n-k}k=\binom{n-1-k}k+\binom{n-1-k}{k-1}\), és a két rész összege rendre \(D_{n-1}\) és \(D_{n-2}\). Ezért</p>
+    <div class="eq gold">\[D_n=D_{n-1}+D_{n-2},\qquad D_0=D_1=1,\qquad D_n=F_{n+1}.\]</div>
+    <p>A generátorfüggvény innen azonnal adódik: \(D(x)=\sum D_nx^n\) esetén \((1-x-x^2)D(x)=1\), mert az \(x^n\) együtthatója \(n\ge2\)-re \(D_n-D_{n-1}-D_{n-2}=0\), és az \(x^0,x^1\) együtthatója \(1,\ 0\). Vagyis \(D(x)=\dfrac1{1-x-x^2}\). A zárt alak (Binet-képlet) \(F_n=\dfrac{\varphi^n-\psi^n}{\sqrt5}\), ahol \(\varphi,\psi=\tfrac{1\pm\sqrt5}2\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ab-f-n">n <input type="range" id="ab-f-n" min="0" max="30" value="10"> <span class="mono" id="ab-f-nv">10</span></label>
+      </div>
+      <div class="info" id="ab-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\varphi\approx1{,}618\) az aránysorozat határértéke: \(F_{n+1}/F_n\to\varphi\). Az átlós összegek így exponenciálisan nőnek, \(\varphi^n\) ütemben.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ab-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Konvolúció és átlók</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki az \(x^3\) együtthatóját \((1+x)^3(1+x)^4\)-ben kétféleképpen.</span></summary>
+      <div class="ans">
+        <p>A konvolúcióval:</p>
+        <div class="eq">\[\sum_k\binom3k\binom4{3-k}=1\cdot4+3\cdot6+3\cdot4+1\cdot1=35.\]</div>
+        <p>A \((1+x)^7\) alapján \(\binom73=35\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(D_7=\sum_k\binom{7-k}k\)-t, és hasonlítsd a Fibonacci-számhoz.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\binom70+\binom61+\binom52+\binom43=1+6+10+4=21=F_8.\]</div>
+        <p>\(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mutasd meg, hogy \(\sum D_nx^n=1/(1-x-x^2)\).</span></summary>
+      <div class="ans">
+        <p>A \((1-x-x^2)\sum D_nx^n\) szorzatban az \(x^n\) együtthatója \(D_n-D_{n-1}-D_{n-2}\) (ha \(n\ge2\)), ami 0. Az \(x^0\) együtthatója \(D_0=1\), az \(x^1\)-é \(D_1-D_0=0\). A szorzat tehát 1.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi az \(x^{10}\) együtthatója az \(1/(1-x)^3\) sorában?</span></summary>
+      <div class="ans">
+        <p>\(\binom{10+3-1}{10}=\binom{12}{10}=\binom{12}2=66\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a lineáris rekurziók generátorfüggvényes megoldásának a modellje: a rekurzióból egy racionális függvény lesz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ab-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A generátorfüggvények szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Sorozat</th><th>Generátorfüggvény</th></tr>
+      <tr><th>\(\binom nk\) (\(n\) rögzített)</th><td>\((1+x)^n\)</td></tr>
+      <tr><th>\(\binom nm\) (\(m\) rögzített)</th><td>\(\dfrac{x^m}{(1-x)^{m+1}}\)</td></tr>
+      <tr><th>\(\binom{r+k-1}k\)</th><td>\(\dfrac1{(1-x)^r}\)</td></tr>
+      <tr><th>Fibonacci \(F_{n+1}\)</th><td>\(\dfrac1{1-x-x^2}\)</td></tr>
+      <tr><th>szorzat</th><td>konvolúció: \(\sum a_kb_{n-k}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Csomagold</b><span>A sorozat egy hatványsor.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorozz</b><span>A szorzat együtthatója a konvolúció.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Olvasd le</b><span>Együtthatók összevetése.</span></div>
+    </div>
+    <p>A fejezet témái itt véget érnek. A fejezetvégi feladatok az 5.5-ben következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A könyv e fejezete tárgyalja a hipergeometrikus függvényeket és a mechanikus összegzést is. Ezt a feldolgozás kihagyja. A szakaszok címei emlékezetből készültek, jelezd, ha eltérnek.</p>
+  </aside>
+</section>

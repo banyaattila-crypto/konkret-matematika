@@ -4390,6 +4390,692 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 5.1 ALAPAZONOSSÁGOK ================= -->
+<header class="hero page" id="i-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.1</div>
+    <h1>Alapazonosságok</h1>
+    <p class="lead">A \(\binom nk\) az \(n\) elemű halmaz \(k\) elemű részhalmazainak száma. Néhány egyszerű azonosság elég ahhoz, hogy a Pascal-háromszög minden összefüggése kiderüljön.</p>
+    <div class="formula">\(\displaystyle\binom nk=\binom{n-1}k+\binom{n-1}{k-1}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="i-hero" role="img" aria-label="A Pascal-háromszög sorai"></svg>
+    <div class="counter"><span id="i-hero-a">n = 0</span><span>a sor összege: <b id="i-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A Pascal-háromszög minden száma a fölötte álló két szám összege. Ez az egyetlen szabály adja az egész táblát, és az \(n\). sorban a \(k\) elemű részhalmazok számát olvashatjuk le. A képen sorról sorra épül fel, és a sorok összege mindig megkétszereződik: egy \(n\) elemű halmaznak \(2^n\) részhalmaza van. A fejezet első része három eszközt ad: a rekurziót (Pascal szabálya), a szimmetriát és az „elnyelést”, valamint a binomiális tételt. Ezekből a későbbi azonosságok jórészt levezethetők.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="i-pascal">
+  <div class="body">
+    <div class="eyebrow">§1 · A Pascal-háromszög</div>
+    <h2>Mindegyik szám a fölötte lévő kettő összege</h2>
+    <p>Az \(n\) elemű halmaz \(k\) elemű részhalmazainak száma \(\binom nk=\dfrac{n!}{k!\,(n-k)!}\), ha \(0\le k\le n\). A számolóképletet a „leeső hatvánnyal” is felírhatjuk: \(\binom nk=\dfrac{n^{\underline k}}{k!}\), és ez tetszőleges valós \(n\)-re értelmes marad. A \(k\lt0\) vagy \(k\gt n\) (egész \(n\ge0\)) esetén az érték 0.</p>
+    <p>A Pascal-szabály kombinatorikus bizonyítása: egy kitüntetett elemet vagy választunk a \(k\) elemű részhalmazba, vagy nem. Ha igen, a maradék \(k-1\) elemet \(n-1\)-ből választjuk, ha nem, mind a \(k\) elemet.</p>
+    <div class="eq gold">\[\binom nk=\binom{n-1}k+\binom{n-1}{k-1}.\]</div>
+    <p>A háromszög rendszere maradékok szerint is látványos. A modulus szerinti színezés a páros-páratlan esetben a Sierpiński-háromszöget adja. Az okot a 4.3 mutatta meg: \(\binom nk\) kettes kitevője a \(k\) és \(n-k\) bináris összeadásának átvitelei száma.</p>
+    <div class="fig">
+      <svg id="i-p-svg" role="img" aria-label="A Pascal-háromszög színezve maradékok szerint"></svg>
+      <div class="info" id="i-p-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="i-p-n">sorok száma <input type="range" id="i-p-n" min="2" max="32" value="12"> <span class="mono" id="i-p-nv">12</span></label>
+        <label class="rng" for="i-p-m">színezés <select id="i-p-m"><option value="0">nincs</option><option value="2" selected>páros / páratlan (mod 2)</option><option value="3">mod 3</option><option value="5">mod 5</option></select></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(k=0\) és \(k=n\) esetben \(\binom n0=\binom nn=1\), ez adja a háromszög két oldalát.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-azonossagok">
+  <div class="body">
+    <div class="eyebrow">§2 · Szimmetria és elnyelés</div>
+    <h2>Három átalakítás</h2>
+    <p>A szimmetria azt mondja, hogy a \(k\) elemű részhalmaz kiválasztása ugyanaz, mint a kimaradó \(n-k\) elemé: \(\binom nk=\binom n{n-k}\). Az elnyelés (vagy kiemelés) azonosság szerint egy \(k\) elemű részhalmaz és egy kitüntetett eleme együtt ugyanannyiféleképpen választható, mint előbb a kitüntetett elemet kiválasztani, majd a többit:</p>
+    <div class="eq gold">\[k\binom nk=n\binom{n-1}{k-1}.\]</div>
+    <p>A harmadik a „háromtagú átalakítás”: \(\binom nm\binom mk=\binom nk\binom{n-k}{m-k}\). Ugyanazt számolja meg kétféleképpen: egy \(m\) elemű részhalmazt és abban egy \(k\) elemű részhalmazt választunk, vagy előbb a belső \(k\) elemet, aztán a külső \(m\) elemű halmaz többi \(m-k\) tagját. Az alábbi kísérlet mindhárom azonosságot ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="i-a-n">n <input type="range" id="i-a-n" min="2" max="40" value="12"> <span class="mono" id="i-a-nv">12</span></label>
+        <label class="rng" for="i-a-m">m <input type="range" id="i-a-m" min="1" max="40" value="6"> <span class="mono" id="i-a-mv">6</span></label>
+        <label class="rng" for="i-a-k">k <input type="range" id="i-a-k" min="1" max="40" value="3"> <span class="mono" id="i-a-kv">3</span></label>
+      </div>
+      <div class="info" id="i-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A csúszkákat a kísérlet automatikusan \(k\le m\le n\) sorrendbe igazítja, mert a háromtagú átalakításhoz ez kell.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-binomtetel">
+  <div class="body">
+    <div class="eyebrow">§3 · A binomiális tétel</div>
+    <h2>\((x+y)^n\) kifejtése</h2>
+    <p>Az \((x+y)^n\) szorzatban minden tényezőből vagy \(x\)-et, vagy \(y\)-t választunk. Az \(x^ky^{n-k}\) tag annyiszor jön elő, ahány módon kiválaszthatjuk, melyik \(k\) tényezőből vettük az \(x\)-et:</p>
+    <div class="eq gold">\[(x+y)^n=\sum_{k=0}^{n}\binom nk x^ky^{n-k}.\]</div>
+    <p>Az \(x=y=1\) helyettesítés a \(2^n\) részhalmazt adja. Az \(x=-1,\ y=1\) helyettesítés \(n\ge1\)-re \(\sum(-1)^k\binom nk=0\)-t, ebből az következik, hogy a páros és a páratlan indexű együtthatók összege azonos, mindkettő \(2^{n-1}\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="i-b-n">n <input type="range" id="i-b-n" min="1" max="20" value="6"> <span class="mono" id="i-b-nv">6</span></label>
+      </div>
+      <div class="info" id="i-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tétel \(n\) természetes szám esetén igaz. Ha \(n\) tört vagy negatív, a sor végtelen lesz, erről az 5.3 szól.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Pascal, szimmetria, binom</h2>
+    <details>
+      <summary><span class="sq">1. Mutasd meg, hogy \(\binom{10}3+\binom{10}4=\binom{11}4\), és számold ki az értéket.</span></summary>
+      <div class="ans">
+        <p>Ez éppen a Pascal-szabály \(n=11,\ k=4\)-re: \(\binom{11}4=\binom{10}4+\binom{10}3\). Az értékek \(120+210=330\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Az elnyelés segítségével számold ki \(\binom73\)-at \(\binom62\)-ből.</span></summary>
+      <div class="ans">
+        <p>\(\binom73=\tfrac73\binom62=\tfrac73\cdot15=35\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi \(\sum_{k\ \text{páros}}\binom{10}k\)?</span></summary>
+      <div class="ans">
+        <p>A páros és páratlan indexű összeg egyenlő, és együtt \(2^{10}=1024\), tehát a páros indexűek összege \(512\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Fejtsd ki \((x+2)^4\)-et.</span></summary>
+      <div class="ans">
+        <p>\(\binom4k2^{4-k}\) együtthatókkal: \(x^4+8x^3+24x^2+32x+16\). Ellenőrzés \(x=1\)-gyel: \(1+8+24+32+16=81=3^4\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat gyorsítja a számolást: a páros indexű összeg nem igényli az egyes tagok kiszámolását.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A binomiális együtthatók alapjai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Azonosság</th><th>Képlet</th></tr>
+      <tr><th>Pascal</th><td>\(\binom nk=\binom{n-1}k+\binom{n-1}{k-1}\)</td></tr>
+      <tr><th>szimmetria</th><td>\(\binom nk=\binom n{n-k}\)</td></tr>
+      <tr><th>elnyelés</th><td>\(k\binom nk=n\binom{n-1}{k-1}\)</td></tr>
+      <tr><th>háromtagú átalakítás</th><td>\(\binom nm\binom mk=\binom nk\binom{n-k}{m-k}\)</td></tr>
+      <tr><th>binomiális tétel</th><td>\((x+y)^n=\sum\binom nk x^ky^{n-k}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Számolj meg</b><span>Részhalmazok kétféle módon.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Egyenlősíts</b><span>A két számolás eredménye azonos.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Helyettesíts</b><span>A tételbe \(x,y\) értékeket.</span></div>
+    </div>
+    <p>A következő téma az összegek: hogyan lehet egy egész sor vagy oszlop elemeit egy lépésben összeadni.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. A könyv hipergeometrikus függvényekről szóló részeit ez a feldolgozás nem tartalmazza. Ha a tartalomjegyzék eltér, jelezd.</p>
+  </aside>
+</section>
+
+<!-- ================= 5.2 ÖSSZEGEK ================= -->
+<header class="hero page" id="z-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.2</div>
+    <h1>Összegek</h1>
+    <p class="lead">A Pascal-háromszög egy oszlopának összege a következő oszlop egyik eleme. Az összegek zárt alakra hozásához nem is kell tagonként számolni, elég a háromszögre nézni.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{n}\binom km=\binom{n+1}{m+1}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="z-hero" role="img" aria-label="A Pascal-háromszög egy oszlopa és az összeg az átlós szomszédban"></svg>
+    <div class="counter"><span id="z-hero-a">∑ C(k,2), k ≤ 2</span><span>összeg: <b id="z-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen a Pascal-háromszög harmadik oszlopa (a \(\binom k2\) értékek) látszik, és ahogy lefelé adunk össze, a részösszeg mindig a következő oszlop egy elemén áll meg, egy sorral lejjebb. A hokiütő formáról kapta a nevét az azonosság. A fejezet három összegzési szabályt ad: az oszlopok és az átlók összegét, a Vandermonde-konvolúciót (két sor „összeszorzása”) és a súlyozott összegeket, ahol a \(k\) tényező is megjelenik. Mindegyik a kombinatorikus számolás vagy az elnyelés azonosság egyszerű következménye.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="z-hoki">
+  <div class="body">
+    <div class="eyebrow">§1 · Alsó és felső összegzés</div>
+    <h2>A hokiütő</h2>
+    <p>A felső összegzés szabálya:</p>
+    <div class="eq gold">\[\sum_{k=0}^{n}\binom km=\binom{n+1}{m+1}.\]</div>
+    <p>A kombinatorikus magyarázat: az \(\{0,1,\dots,n\}\) halmaz \((m+1)\) elemű részhalmazait osztályozzuk a legnagyobb elemük szerint. Ha az \(k\), akkor a többi \(m\) elemet a \(\{0,\dots,k-1\}\) halmazból kell választani, \(\binom km\) módon. A párhuzamos összegzés az átlót adja össze:</p>
+    <div class="eq">\[\sum_{k=0}^{m}\binom{r+k}{k}=\binom{r+m+1}{m}.\]</div>
+    <p>Mindkettő ugyanabból a Pascal-szabályból jön, ha az összeg utolsó tagját mindig kicseréljük a sor két elemének összegére. Az alábbi kísérlet kiválasztott paraméterekkel összeadja a tagokat.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="z-h-t">összegzés <select id="z-h-t"><option value="u">felső: Σ C(k, m), k ≤ n</option><option value="p">párhuzamos: Σ C(r+k, k), k ≤ m</option></select></label>
+        <label class="rng" for="z-h-a">n (vagy r) <input type="range" id="z-h-a" min="0" max="25" value="10"> <span class="mono" id="z-h-av">10</span></label>
+        <label class="rng" for="z-h-b">m <input type="range" id="z-h-b" min="0" max="25" value="3"> <span class="mono" id="z-h-bv">3</span></label>
+      </div>
+      <div class="info" id="z-h-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A felső összegzésnél a \(k\lt m\) tagok nullák, ezért a kísérletben is „csak” a \(k\ge m\) tagok számítanak.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-vandermonde">
+  <div class="body">
+    <div class="eyebrow">§2 · A Vandermonde-azonosság</div>
+    <h2>Két csoportból választunk</h2>
+    <p>Egy \(r\) és egy \(s\) elemű csoportból együtt \(n\) elemet kiválasztva szétoszthatjuk az esetek a szerint, hogy az első csoportból hányat választottunk:</p>
+    <div class="eq gold">\[\sum_{k}\binom rk\binom s{n-k}=\binom{r+s}n.\]</div>
+    <p>A bal oldalon \(k\) elemet az első csoportból, \(n-k\)-t a másodikból választunk. Az azonosság polinom azonosság \(r\)-ben és \(s\)-ben, ezért tetszőleges valós \(r,s\)-re is igaz marad. Az \(r=s=n\) esetben a szimmetriával \(\sum_k\binom nk^2=\binom{2n}n\) adódik.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="z-v-r">r <input type="range" id="z-v-r" min="0" max="20" value="6"> <span class="mono" id="z-v-rv">6</span></label>
+        <label class="rng" for="z-v-s">s <input type="range" id="z-v-s" min="0" max="20" value="8"> <span class="mono" id="z-v-sv">8</span></label>
+        <label class="rng" for="z-v-n">n <input type="range" id="z-v-n" min="0" max="40" value="5"> <span class="mono" id="z-v-nv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="z-v-t"></table></div>
+      <div class="info" id="z-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(n\) csúszka automatikusan \(r+s\)-nél megáll. Nagyobb \(n\)-re mindkét oldal nulla.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-sulyozott">
+  <div class="body">
+    <div class="eyebrow">§3 · Súlyozott összegek</div>
+    <h2>Amikor a \(k\) is megjelenik</h2>
+    <p>Az elnyelés \(k\binom nk=n\binom{n-1}{k-1}\) leveszi a \(k\) tényezőt, utána a sor összege már ismert:</p>
+    <div class="eq gold">\[\sum_{k}k\binom nk=n\,2^{n-1},\qquad\sum_{k}k^2\binom nk=n(n+1)\,2^{n-2},\qquad\sum_{k=0}^{n}\frac{1}{k+1}\binom nk=\frac{2^{n+1}-1}{n+1}.\]</div>
+    <p>A másodikhoz \(k^2=k(k-1)+k\) bontás kell: \(\sum k(k-1)\binom nk=n(n-1)2^{n-2}\) (az elnyelés kétszer), ehhez jön az első összeg. A harmadiknál \(\tfrac1{k+1}\binom nk=\tfrac1{n+1}\binom{n+1}{k+1}\), és a \(\binom{n+1}{k+1}\) összege \(k=0\ldots n\)-re \(2^{n+1}-1\) (a \(\binom{n+1}0\) hiányzik).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="z-s-n">n <input type="range" id="z-s-n" min="2" max="30" value="10"> <span class="mono" id="z-s-nv">10</span></label>
+      </div>
+      <div class="info" id="z-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az első összeg szemléletes: az \(n\) elemű halmaz részhalmazainak átlagos mérete \(n/2\), és \(2^n\) részhalmaz van, így az összméret \(n\,2^{n-1}\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Oszlopok, átlók, konvolúció</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(\sum_{k=3}^{12}\binom k3\).</span></summary>
+      <div class="ans">
+        <p>A felső összegzéssel (\(k\lt3\) tagok nullák) \(\binom{13}4=715\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki: \(\sum_{k=0}^{5}\binom{4+k}k\).</span></summary>
+      <div class="ans">
+        <p>A párhuzamos összegzéssel \(r=4,\ m=5\): \(\binom{10}5=252\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki: \(\sum_{k}\binom5k\binom7{4-k}\).</span></summary>
+      <div class="ans">
+        <p>Vandermonde szerint \(\binom{12}4=495\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki: \(\sum_{k}k\binom8k\).</span></summary>
+      <div class="ans">
+        <p>\(8\cdot2^7=1024\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A feladatokban minden érték zárt alakból jön. A közvetlen összeadás csak az ellenőrzésre való.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="z-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Az összegek zárt alakjai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Összeg</th><th>Zárt alak</th></tr>
+      <tr><th>felső összegzés</th><td>\(\sum_{k\le n}\binom km=\binom{n+1}{m+1}\)</td></tr>
+      <tr><th>párhuzamos összegzés</th><td>\(\sum_{k\le m}\binom{r+k}k=\binom{r+m+1}m\)</td></tr>
+      <tr><th>Vandermonde</th><td>\(\sum_k\binom rk\binom s{n-k}=\binom{r+s}n\)</td></tr>
+      <tr><th>\(\sum k\binom nk\)</th><td>\(n2^{n-1}\)</td></tr>
+      <tr><th>\(\sum k^2\binom nk\)</th><td>\(n(n+1)2^{n-2}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Csoportosíts</b><span>Osztályozd az eseteket egy elem szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Nyelj el</b><span>A \(k\) tényezőt vidd ki.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ismerd fel</b><span>Sor, oszlop, átló vagy konvolúció.</span></div>
+    </div>
+    <p>A következő téma a fortélyok: negatív felső index, Catalan-számok és a binomiális sor.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 5.3 FORTÉLYOK ================= -->
+<header class="hero page" id="aa-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.3</div>
+    <h1>Fortélyok</h1>
+    <p class="lead">A binomiális együttható felső indexe lehet negatív vagy tört is. Ettől a Pascal-háromszög kiterjed, és a Catalan-számok meg a négyzetgyök sora is előkerül.</p>
+    <div class="formula">\(\displaystyle\binom{-r}k=(-1)^k\binom{r+k-1}k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="aa-hero" role="img" aria-label="Rácsutak az átló alatt, négyzetrácson"></svg>
+    <div class="counter"><span id="aa-hero-a">út: 1 / 14</span><span>Catalan: <b>C₄ = 14</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen egy \(4\times4\)-es rácson az átlót át nem lépő utak közül mutatunk néhányat. Összesen 14 van belőlük, a negyedik Catalan-szám. Ez a szám ugyanennyi zárójelezést, háromszögelést és bináris fát is megszámol, és a binomiális együtthatók különbségeként kapjuk: \(\binom84-\binom83=14\). A fejezet három fortélyt mutat: hogyan kell a negatív felső indexet kezelni (ez adja a \(1/(1-x)^r\) együtthatóit), hogyan számoljuk meg az átlót át nem lépő utakat, és hogyan hozható ki a binomiális tételből a \(\sqrt{1+x}\) sora.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="aa-negativ">
+  <div class="body">
+    <div class="eyebrow">§1 · Negatív felső index</div>
+    <h2>\(\binom{-r}k\) és a \(1/(1-x)^r\)</h2>
+    <p>A felső index lehet valós, mert \(\binom nk=n^{\underline k}/k!\), és a leeső hatvány \(n(n-1)\cdots(n-k+1)\) minden \(n\)-re értelmes. Az \(n=-r\) esetben minden tényező negatív:</p>
+    <div class="eq gold">\[\binom{-r}k=\frac{(-r)(-r-1)\cdots(-r-k+1)}{k!}=(-1)^k\frac{r(r+1)\cdots(r+k-1)}{k!}=(-1)^k\binom{r+k-1}k.\]</div>
+    <p>Ennek megfelelően a \(\dfrac1{(1-x)^r}=\sum_{k\ge0}\binom{r+k-1}kx^k\) sor együtthatói éppen a Pascal-háromszög átlói. Az \(r=1\) a mértani sor, az \(r=2\) esetben az együtthatók \(k+1\). A kísérlet a definícióból, a képletből és az \(r\)-szeres sorszorzásból is előállítja ugyanazt.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aa-n-r">r <input type="range" id="aa-n-r" min="1" max="8" value="3"> <span class="mono" id="aa-n-rv">3</span></label>
+        <label class="rng" for="aa-n-k">k <input type="range" id="aa-n-k" min="0" max="12" value="4"> <span class="mono" id="aa-n-kv">4</span></label>
+      </div>
+      <div class="info" id="aa-n-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(1/(1-x)=1+x+x^2+\cdots\) sor \(r\)-edik hatványában az \(x^k\) együtthatója megszámolja, hányféleképpen adható ki \(k\) mint \(r\) nemnegatív egész összege.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-catalan">
+  <div class="body">
+    <div class="eyebrow">§2 · Catalan-számok</div>
+    <h2>Az átlót át nem lépő utak</h2>
+    <p>Az \((0,0)\)-ból \((n,n)\)-be vezető, egységnyi jobbra és fölfelé lépésekből álló utak száma \(\binom{2n}n\). Közülük azok „rosszak”, amelyek átlépik az \(y=x\) átlót, vagyis érintik az \(y=x+1\) egyenest. Az első érintés után az út hátralévő részét az egyenesre tükrözve kapjuk, hogy a rossz utak megfelelnek az \((n-1,n+1)\) pontba vezető utaknak (ez a tükrözési elv). Ezért a jó utak száma:</p>
+    <div class="eq gold">\[C_n=\binom{2n}n-\binom{2n}{n-1}=\frac1{n+1}\binom{2n}n.\]</div>
+    <p>A számok a \(C_{n+1}=\sum_{k=0}^{n}C_kC_{n-k}\) rekurziót is teljesítik (az első visszatérés az átlóra szétvágja az utat). Ugyanezek a számok adják meg a \(n\) pár zárójel helyes elrendezéseit, a konvex \((n+2)\)-szög háromszögeléseit és az \(n\) csúcsú bináris fákat. A kísérlet a három számolást egymás mellé teszi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aa-c-n">n <input type="range" id="aa-c-n" min="1" max="14" value="6"> <span class="mono" id="aa-c-nv">6</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="aa-c-t"></table></div>
+      <div class="info" id="aa-c-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tükrözési elv csak az utak és azok tükörképei közti kölcsönösen egyértelmű megfeleltetést használja. A \(\binom{2n}{n-1}\) számolása az \((n-1,n+1)\) végpontra az utak megszámlálását jelenti.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-newton">
+  <div class="body">
+    <div class="eyebrow">§3 · Newton binomiális sora</div>
+    <h2>Gyökök és hatványok sora</h2>
+    <p>Tetszőleges valós \(r\)-re és \(|x|\lt1\)-re</p>
+    <div class="eq gold">\[(1+x)^r=\sum_{k\ge0}\binom rk x^k.\]</div>
+    <p>Természetes \(r\)-nél a sor véges, és visszaadja a binomiális tételt. Az \(r=\tfrac12\) esetben a gyök sora: \(\sqrt{1+x}=1+\tfrac12x-\tfrac18x^2+\tfrac1{16}x^3-\tfrac5{128}x^4+\cdots\). A \(\binom{1/2}k\) együtthatók nem véletlenek: \(\binom{1/2}k=\dfrac{(-1)^{k-1}}{2^{2k-1}}\,C_{k-1}\), vagyis a Catalan-számok (\(k\ge1\)). A kísérlet az első \(N\) tag összegét vezeti össze a pontos értékkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aa-w-r">r <select id="aa-w-r"><option value="0.5" selected>1/2 (négyzetgyök)</option><option value="-0.5">−1/2</option><option value="-1">−1</option><option value="0.3333333333333333">1/3 (köbgyök)</option><option value="1.5">3/2</option></select></label>
+        <label class="rng" for="aa-w-x">x <input type="range" id="aa-w-x" min="-0.9" max="0.9" step="0.05" value="0.2"> <span class="mono" id="aa-w-xv">0,2</span></label>
+        <label class="rng" for="aa-w-n">tagok száma <input type="range" id="aa-w-n" min="1" max="30" value="4"> <span class="mono" id="aa-w-nv">4</span></label>
+      </div>
+      <div class="info" id="aa-w-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A konvergencia \(|x|\lt1\) esetén garantált, de \(|x|\) közelítésével egyre lassabb. Állítsd \(x\)-et \(0{,}9\)-re, és nézd meg, mennyi tag kell ugyanahhoz a pontossághoz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Negatív index, Catalan, gyök</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(\binom{-4}3\).</span></summary>
+      <div class="ans">
+        <p>\(\binom{-4}3=(-1)^3\binom{4+3-1}3=-\binom63=-20\). Közvetlenül: \((-4)(-5)(-6)/6=-120/6=-20\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mennyi az \(x^5\) együtthatója az \(1/(1-x)^4\) sorában?</span></summary>
+      <div class="ans">
+        <p>\(\binom{4+5-1}5=\binom85=56\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány út vezet \((0,0)\)-ból \((6,6)\)-ba az átlót át nem lépve?</span></summary>
+      <div class="ans">
+        <p>\(C_6=\tfrac17\binom{12}6=\tfrac{924}7=132\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Közelítsd \(\sqrt{1{,}2}\)-t a binomiális sor első négy tagjával.</span></summary>
+      <div class="ans">
+        <p>\(x=0{,}2\): \(1+0{,}1-0{,}005+0{,}0005=1{,}0955\). A pontos érték \(1{,}09545\ldots\), a hiba kb. \(5\cdot10^{-5}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat egyben a hat pár zárójel helyes elrendezéseinek száma is.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A fortélyok</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Fortély</th><th>Képlet</th></tr>
+      <tr><th>negatív felső index</th><td>\(\binom{-r}k=(-1)^k\binom{r+k-1}k\)</td></tr>
+      <tr><th>\(1/(1-x)^r\) sora</th><td>\(\sum\binom{r+k-1}kx^k\)</td></tr>
+      <tr><th>Catalan-szám</th><td>\(C_n=\tfrac1{n+1}\binom{2n}n\)</td></tr>
+      <tr><th>rekurzió</th><td>\(C_{n+1}=\sum C_kC_{n-k}\)</td></tr>
+      <tr><th>binomiális sor</th><td>\((1+x)^r=\sum\binom rkx^k,\ |x|\lt1\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd át</b><span>Leeső hatvány negatív indexre.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Tükrözz</b><span>A rossz utak is utak.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Fejts sorba</b><span>Valós kitevőre a sor végtelen.</span></div>
+    </div>
+    <p>A következő téma a generátorfüggvények: az együtthatók sorozatát egyetlen függvénybe csomagoljuk.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 5.4 GENERÁTORFÜGGVÉNYEK ================= -->
+<header class="hero page" id="ab-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.4</div>
+    <h1>Generátorfüggvények</h1>
+    <p class="lead">Egy számsorozatot egyetlen hatványsorba csomagolunk. A sorok szorzása ilyenkor a sorozatok konvolúciója, és a binomiális azonosságok polinomszorzásból következnek.</p>
+    <div class="formula">\(\displaystyle(1+x)^n=\sum_k\binom nk x^k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ab-hero" role="img" aria-label="A Pascal-háromszög átlós összegei Fibonacci-számok"></svg>
+    <div class="counter"><span id="ab-hero-a">n = 1</span><span>átlós összeg: <b id="ab-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az \((1+x)^n\) polinom együtthatói a Pascal-háromszög \(n\). sora: a polinom „tárolja” a sort. Két polinom szorzatában az együtthatók konvolúcióként jelennek meg, és a Vandermonde-azonosság nem más, mint \((1+x)^r(1+x)^s=(1+x)^{r+s}\) együtthatóinak összevetése. A képen a háromszög „sekély” átlóit (ahol a sor- és oszlopindex összege állandó) összegezzük, és a Fibonacci-számokat kapjuk. A generátorfüggvény ezt is megmagyarázza, mert a sorozat generátorfüggvénye \(1/(1-x-x^2)\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ab-szorzat">
+  <div class="body">
+    <div class="eyebrow">§1 · Polinomok szorzata</div>
+    <h2>A sorozat mint polinom</h2>
+    <p>Az \((a_k)\) sorozat generátorfüggvénye \(A(x)=\sum a_kx^k\). Ez formális hatványsor, a konvergenciával nem kell törődnünk, csak az együtthatókkal. Két sorozat szorzata konvolúció:</p>
+    <div class="eq">\[A(x)B(x)=\sum_n\Bigl(\sum_k a_kb_{n-k}\Bigr)x^n.\]</div>
+    <p>Az \(a_k=\binom rk\), \(b_k=\binom sk\) választással az \(A=(1+x)^r\), \(B=(1+x)^s\), a szorzat \((1+x)^{r+s}\), és az \(x^n\) együtthatóját összevetve a Vandermonde-azonosság adódik. A kísérlet kiszámolja a konvolúciót, és összeveti a \((1+x)^{r+s}\) együtthatóival.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ab-s-r">r <input type="range" id="ab-s-r" min="0" max="12" value="4"> <span class="mono" id="ab-s-rv">4</span></label>
+        <label class="rng" for="ab-s-s">s <input type="range" id="ab-s-s" min="0" max="12" value="5"> <span class="mono" id="ab-s-sv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="ab-s-t"></table></div>
+      <div class="info" id="ab-s-info"></div>
+    </div>
+    <p>Az oszlopoknak is van generátorfüggvényük: \(\sum_n\binom nm x^n=\dfrac{x^m}{(1-x)^{m+1}}\). Ez az 5.3 negatív indexes sorából következik, mert \(x^m\) eltolja az \(1/(1-x)^{m+1}\) sorát.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ab-o-m">m <input type="range" id="ab-o-m" min="0" max="8" value="3"> <span class="mono" id="ab-o-mv">3</span></label>
+      </div>
+      <div class="info" id="ab-o-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A generátorfüggvények ereje az, hogy a szorzás kombinatorikai jelentést kap: „válasszunk egy elemet az egyik csoportból és egy másikat a másikból”.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ab-fibonacci">
+  <div class="body">
+    <div class="eyebrow">§2 · Átlós összegek</div>
+    <h2>Fibonacci a Pascal-háromszögben</h2>
+    <p>Legyen \(D_n=\sum_{k}\binom{n-k}k\) a háromszög „sekély” átlójának összege. A Pascal-szabállyal \(\binom{n-k}k=\binom{n-1-k}k+\binom{n-1-k}{k-1}\), és a két rész összege rendre \(D_{n-1}\) és \(D_{n-2}\). Ezért</p>
+    <div class="eq gold">\[D_n=D_{n-1}+D_{n-2},\qquad D_0=D_1=1,\qquad D_n=F_{n+1}.\]</div>
+    <p>A generátorfüggvény innen azonnal adódik: \(D(x)=\sum D_nx^n\) esetén \((1-x-x^2)D(x)=1\), mert az \(x^n\) együtthatója \(n\ge2\)-re \(D_n-D_{n-1}-D_{n-2}=0\), és az \(x^0,x^1\) együtthatója \(1,\ 0\). Vagyis \(D(x)=\dfrac1{1-x-x^2}\). A zárt alak (Binet-képlet) \(F_n=\dfrac{\varphi^n-\psi^n}{\sqrt5}\), ahol \(\varphi,\psi=\tfrac{1\pm\sqrt5}2\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ab-f-n">n <input type="range" id="ab-f-n" min="0" max="30" value="10"> <span class="mono" id="ab-f-nv">10</span></label>
+      </div>
+      <div class="info" id="ab-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\varphi\approx1{,}618\) az aránysorozat határértéke: \(F_{n+1}/F_n\to\varphi\). Az átlós összegek így exponenciálisan nőnek, \(\varphi^n\) ütemben.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ab-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Konvolúció és átlók</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki az \(x^3\) együtthatóját \((1+x)^3(1+x)^4\)-ben kétféleképpen.</span></summary>
+      <div class="ans">
+        <p>A konvolúcióval:</p>
+        <div class="eq">\[\sum_k\binom3k\binom4{3-k}=1\cdot4+3\cdot6+3\cdot4+1\cdot1=35.\]</div>
+        <p>A \((1+x)^7\) alapján \(\binom73=35\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(D_7=\sum_k\binom{7-k}k\)-t, és hasonlítsd a Fibonacci-számhoz.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\binom70+\binom61+\binom52+\binom43=1+6+10+4=21=F_8.\]</div>
+        <p>\(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mutasd meg, hogy \(\sum D_nx^n=1/(1-x-x^2)\).</span></summary>
+      <div class="ans">
+        <p>A \((1-x-x^2)\sum D_nx^n\) szorzatban az \(x^n\) együtthatója \(D_n-D_{n-1}-D_{n-2}\) (ha \(n\ge2\)), ami 0. Az \(x^0\) együtthatója \(D_0=1\), az \(x^1\)-é \(D_1-D_0=0\). A szorzat tehát 1.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi az \(x^{10}\) együtthatója az \(1/(1-x)^3\) sorában?</span></summary>
+      <div class="ans">
+        <p>\(\binom{10+3-1}{10}=\binom{12}{10}=\binom{12}2=66\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a lineáris rekurziók generátorfüggvényes megoldásának a modellje: a rekurzióból egy racionális függvény lesz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ab-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A generátorfüggvények szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Sorozat</th><th>Generátorfüggvény</th></tr>
+      <tr><th>\(\binom nk\) (\(n\) rögzített)</th><td>\((1+x)^n\)</td></tr>
+      <tr><th>\(\binom nm\) (\(m\) rögzített)</th><td>\(\dfrac{x^m}{(1-x)^{m+1}}\)</td></tr>
+      <tr><th>\(\binom{r+k-1}k\)</th><td>\(\dfrac1{(1-x)^r}\)</td></tr>
+      <tr><th>Fibonacci \(F_{n+1}\)</th><td>\(\dfrac1{1-x-x^2}\)</td></tr>
+      <tr><th>szorzat</th><td>konvolúció: \(\sum a_kb_{n-k}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Csomagold</b><span>A sorozat egy hatványsor.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorozz</b><span>A szorzat együtthatója a konvolúció.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Olvasd le</b><span>Együtthatók összevetése.</span></div>
+    </div>
+    <p>A fejezet témái itt véget érnek. A fejezetvégi feladatok az 5.5-ben következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A könyv e fejezete tárgyalja a hipergeometrikus függvényeket és a mechanikus összegzést is. Ezt a feldolgozás kihagyja. A szakaszok címei emlékezetből készültek, jelezd, ha eltérnek.</p>
+  </aside>
+</section>
+
+<!-- ================= 5.5 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="ac-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.5</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a binomiális együtthatókról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\displaystyle\binom nk\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ac-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="ac-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A binomiális együtthatókkal a legtöbb feladatot kétféleképpen lehet megoldani: algebrai úton (azonosságokkal) vagy megszámolással. A jó megoldó mindkettőt tudja, és a feladatnál eldönti, melyik rövidebb. A bemelegítő feladatok egy-egy azonosságot használnak, az alapszinten az összegzési szabályokkal és a negatív indexszel kell dolgozni, a haladó szinten bizonyítani kell, a kutatási szinten pedig a számítógép sejtést ad, és a bizonyítás a tiéd. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="ac-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>Pascal-szabály, részhalmazok száma és a hokiütő-azonosság.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki \(\binom94+\binom95\)-öt a Pascal-szabállyal, és ellenőrizd közvetlenül.</span></summary>
+      <div class="ans">
+        <p>A Pascal-szabály \(\binom{10}5=\binom94+\binom95\), tehát az összeg \(\binom{10}5=252\).</p>
+        <p><b>Ellenőrzés:</b> \(\binom94=126\), \(\binom95=126\), összegük 252. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Hány páros elemszámú részhalmaza van egy 8 elemű halmaznak?</span></summary>
+      <div class="ans">
+        <p>A páros és páratlan elemszámú részhalmazok száma egyenlő, mert \(\sum(-1)^k\binom8k=(1-1)^8=0\). Az összesen \(2^8=256\) részhalmaz fele páros: \(2^7=128\).</p>
+        <p><b>Ellenőrzés:</b></p>
+        <div class="eq">\[\binom80+\binom82+\binom84+\binom86+\binom88=1+28+70+28+1=128.\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Számold ki: \(\sum_{k=2}^{9}\binom k2\).</span></summary>
+      <div class="ans">
+        <p>A felső összegzéssel \(\sum_{k=0}^{9}\binom k2=\binom{10}3=120\) (a \(k=0,1\) tagok nullák).</p>
+        <p><b>Ellenőrzés:</b> \(1+3+6+10+15+21+28+36=120\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat bizonyítása a binomiális tétel \(x=-1\), \(y=1\) helyettesítése.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ac-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Összegek, negatív index, bizonyítások</h2>
+    <p>Három alapfeladat az összegezési szabályokról, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Számold ki: \(\sum_{k}\binom6k\binom8{5-k}\).</span></summary>
+      <div class="ans">
+        <p>Vandermonde szerint \(\binom{6+8}5=\binom{14}5=2002\).</p>
+        <p><b>Ellenőrzés:</b> a tagonkénti összeg:</p>
+        <div class="eq">\[\begin{aligned}&1\cdot56+6\cdot70+15\cdot56+20\cdot28+15\cdot8+6\cdot1\\&=56+420+840+560+120+6=2002.\ \checkmark\end{aligned}\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Számold ki: \(\sum_{k}k\binom{12}k\).</span></summary>
+      <div class="ans">
+        <p>Az elnyeléssel \(k\binom{12}k=12\binom{11}{k-1}\), így az összeg \(12\cdot2^{11}=24576\).</p>
+        <p><b>Ellenőrzés:</b> a tagonkénti összeadás is 24576. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Számold ki \(\binom{-5}3\)-at, és add meg az \(x^4\) együtthatóját \((1-x)^{-3}\)-ban.</span></summary>
+      <div class="ans">
+        <p>\(\binom{-5}3=(-1)^3\binom{5+3-1}3=-\binom73=-35\). Az \((1-x)^{-3}\) sorában az \(x^4\) együtthatója \(\binom{3+4-1}4=\binom64=15\).</p>
+        <p><b>Ellenőrzés:</b> \((-5)(-6)(-7)/6=-35\), és a sorszorzás \(1/(1-x)^3\)-ra \(x^4\)-nél 15. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: \(\sum_{k}\binom nk^2=\binom{2n}n\). Mennyi ez \(n=6\)-ra?</span></summary>
+      <div class="ans">
+        <p>A szimmetriával \(\binom nk=\binom n{n-k}\), így \(\sum_k\binom nk\binom n{k}=\sum_k\binom nk\binom n{n-k}\). Ez a Vandermonde-azonosság \(r=s=n\) és az \(n\) összegzett indexszel, értéke \(\binom{2n}n\). \(\square\) Az \(n=6\)-ra \(\binom{12}6=924\).</p>
+        <p><b>Ellenőrzés:</b> \(1+36+225+400+225+36+1=924\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Hány út vezet \((0,0)\)-ból \((5,5)\)-be az átló alatt maradva, ha csak jobbra és fölfelé lépünk? Bizonyítsd.</span></summary>
+      <div class="ans">
+        <p>Az összes útból \(\binom{10}5=252\). A rossz utak érintik az \(y=x+1\) egyenest. Az első érintés után az út maradékát tükrözve a végpont \((4,6)\) lesz, és ez kölcsönösen egyértelmű megfeleltetés. A rossz utak száma \(\binom{10}4=210\) (4 jobbra, 6 fölfelé lépés). A jó utak:</p>
+        <div class="eq">\[\binom{10}5-\binom{10}4=252-210=42=C_5.\]</div>
+        <p><b>Ellenőrzés:</b> a rácson végzett dinamikus számolás is 42-t ad. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 7. feladat másik bizonyítása a polinomokkal: \(\sum\binom nk^2\) az \((1+x)^n\) és az \((x+1)^n\) szorzatában az \(x^n\) együtthatója.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ac-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Átlók és páratlan elemek</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. A Pascal-háromszög „sekély” átlóinak összege \(D_n=\sum_k\binom{n-k}k\). Mit sejtesz? Hogyan viselkedik az arány \(D_{n+1}/D_n\)?</span></summary>
+      <div class="ans">
+        <p>A sejtés: \(D_n=F_{n+1}\). Indoklás: a Pascal-szabállyal \(D_n=D_{n-1}+D_{n-2}\), és \(D_0=D_1=1\), ez a Fibonacci-rekurzió. Az arány az \(F_{n+1}/F_n\) lesz, és ez a Binet-képlet szerint az aranymetszéshez tart: \(\varphi=\tfrac{1+\sqrt5}2\approx1{,}618\), mert \(\psi^n/\varphi^n\to0\).</p>
+        <p><b>Ellenőrzés:</b> \(n\le40\)-ig \(D_n=F_{n+1}\), és az arány a \(\varphi\)-hez tart. A kísérlet megmutatja az eltérést. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ac-f-n">n <input type="range" id="ac-f-n" min="1" max="40" value="20"> <span class="mono" id="ac-f-nv">20</span></label>
+      </div>
+      <div class="info" id="ac-f-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Hány páratlan elem van a Pascal-háromszög \(n\). sorában? Keress szabályt, és indokold.</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint a páratlan elemek száma mindig kettőhatvány: \(2^{s_2(n)}\), ahol \(s_2(n)\) az \(n\) bináris alakjában az egyesek száma. A \(n=100=1100100_2\) esetén \(s_2=3\), így 8 páratlan elem van.</p>
+        <p>Indoklás: a 4.3 szerint \(\binom nk\) kettes kitevője \(s_2(k)+s_2(n-k)-s_2(n)\), ez a \(k\) és \(n-k\) bináris összeadásának átvitelei száma. A \(\binom nk\) pontosan akkor páratlan, ha nincs átvitel, vagyis ha a \(k\) egyesei az \(n\) egyeseinek részhalmazát alkotják. Ilyen \(k\) annyi van, ahány részhalmaza az \(s_2(n)\) egyesnek: \(2^{s_2(n)}\).</p>
+        <p><b>Ellenőrzés:</b> \(n<256\)-ig mindkét számolás egyezik (a páratlan elemek száma és a \(k\ \&\ n=k\) feltételű \(k\)-k száma is). \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ac-p-n">n <input type="range" id="ac-p-n" min="0" max="255" value="100"> <span class="mono" id="ac-p-nv">100</span></label>
+      </div>
+      <div class="info" id="ac-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat a Sierpiński-háromszög szerkezetét is megmagyarázza: a páratlan elemek éppen azok, ahol \(k\) bitjei \(n\) bitjeinek részhalmazai.</p>
+  </aside>
+</section>
+
 <!-- ================= 1.4 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="w-bevezeto">
   <div>
@@ -5097,6 +5783,11 @@ const TOPICS={
   sternbrocot:{"n": "4.4", "t": "Relatív prímek", "ch": 4, "prefix": "n-", "pages": [["bevezeto", "Bevezető"], ["fa", "A Stern–Brocot-fa"], ["farey", "A Farey-sorozat"], ["valoszinuseg", "Mennyi a valószínűsége?"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.4 Relatív prímek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   kongruencia:{"n": "4.5", "t": "Kongruenciák", "ch": 4, "prefix": "o-", "pages": [["bevezeto", "Bevezető"], ["szamolas", "Számolás maradékokkal"], ["kinai", "A kínai maradéktétel"], ["euler", "Euler–Fermat és a φ"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.5 Kongruenciák. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokszam:{"n": "4.6", "t": "Feladatok", "ch": 4, "prefix": "v-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.6 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  binomalap:{"n": "5.1", "t": "Alapazonosságok", "ch": 5, "prefix": "i-", "pages": [["bevezeto", "Bevezető"], ["pascal", "A Pascal-háromszög"], ["azonossagok", "Szimmetria és elnyelés"], ["binomtetel", "A binomiális tétel"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.1 Alapazonosságok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  binomosszeg:{"n": "5.2", "t": "Összegek", "ch": 5, "prefix": "z-", "pages": [["bevezeto", "Bevezető"], ["hoki", "Alsó és felső összegzés"], ["vandermonde", "A Vandermonde-azonosság"], ["sulyozott", "Súlyozott összegek"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.2 Összegek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  binomfortely:{"n": "5.3", "t": "Fortélyok", "ch": 5, "prefix": "aa-", "pages": [["bevezeto", "Bevezető"], ["negativ", "Negatív felső index"], ["catalan", "Catalan-számok"], ["newton", "Newton binomiális sora"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.3 Fortélyok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  binomgf:{"n": "5.4", "t": "Generátorfüggvények", "ch": 5, "prefix": "ab-", "pages": [["bevezeto", "Bevezető"], ["szorzat", "Polinomok szorzata"], ["fibonacci", "Fibonacci a Pascal-háromszögben"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.4 Generátorfüggvények. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  feladatokbinom:{"n": "5.5", "t": "Feladatok", "ch": 5, "prefix": "ac-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.5 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatok:{"n": "1.4", "t": "Feladatok", "ch": 1, "prefix": "w-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.4 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."}
 };
 const CH=[
@@ -5108,7 +5799,7 @@ const CH=[
  {"n": 2, "t": "Összegek", "d": "Szigma-jelölés, összegek és rekurziók, többszörös összegek, véges analízis, végtelen összegek.", "lead": "Az összegek a diszkrét matematika alapműveletei. A fejezet azt tanítja meg, hogyan lehet őket felírni, átalakítani és kiszámolni: a jelöléstől a zárt alakig, véges és végtelen esetben.", "topics": [{"id": "jelolesek", "d": "Szigma-jel, feltétel az összegzés alatt, Iverson-zárójel. Szigma-gép és összeg-téglalapok."}, {"id": "rekurziok", "d": "Minden összeg rekurzió, és sok rekurzió összeggé alakítható. Összegzőtényező, a gyorsrendezés átlagos költsége."}, {"id": "kezeles", "d": "Elosztás, csoportosítás, átrendezés, tükrözés és a perturbáció módszere."}, {"id": "tobbszoros", "d": "Kétszeres összegek, tartományok, a szummák felcserélése."}, {"id": "modszerek", "d": "A négyzetek összege öt módszerrel."}, {"id": "veges", "d": "Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."}, {"id": "vegtelen", "d": "Konvergencia, teleszkópos összegek, az átrendezés tétele."}, {"id": "feladatokosszeg", "d": "Tíz saját feladat négy szinten az összegekről, megoldással, programmal ellenőrizve."}]},
   {"n": 3, "t": "Egészrész-függvények", "d": "Alsó és felső egészrész, mod, spektrumok.", "lead": "A padló és a plafon az egész és a valós számok közti híd. A fejezet a szabályaikat, a rekurziókban és összegekben való használatukat, valamint a mod műveletet tárgyalja.", "topics": [{"id": "padlo", "d": "⌊x⌋ és ⌈x⌉, a szabályok és az integralitási tétel."}, {"id": "alkalmazasok", "d": "Egészek intervallumban, Beatty-sorozatok."}, {"id": "padlorek", "d": "Padlós rekurziók: keresés, rendezés, általánosított Josephus."}, {"id": "mod", "d": "A mod mint kétváltozós művelet, igazságos felosztás."}, {"id": "padloosszeg", "d": "Padlós összegek: rácspontok, reciprocitás, ⌊√k⌋ összege."}, {"id": "feladatokpadlo", "d": "Tíz saját feladat négy szinten a padlóról, a plafonról, a modról és az egészrészes összegekről."}]},
   {"n": 4, "t": "Számelmélet", "d": "Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa.", "lead": "A számelmélet az egész számok szerkezetét vizsgálja: ki osztja kit, hogyan bomlik a szám prímekre, és mit tudunk a maradékokról. A fejezet az euklideszi algoritmustól a kínai maradéktételig és az Euler-függvényig vezet.", "topics": [{"id": "oszthatosag", "d": "Legnagyobb közös osztó, Euklidész algoritmusa, Bézout-azonosság."}, {"id": "primek", "d": "Prímek végtelensége, szita, törzstényezős felbontás, π(x)."}, {"id": "faktorialis", "d": "Hányszor osztja a p prím az n!-t: Legendre képlete, egészrészekkel."}, {"id": "sternbrocot", "d": "Törtek a Stern–Brocot-fában, Farey-sorozat, relatív prímek aránya."}, {"id": "kongruencia", "d": "Kongruenciák, inverz, kínai maradéktétel, Euler φ-függvénye."}, {"id": "feladatokszam", "d": "Tíz saját feladat négy szinten a számelméletről, megoldással, programmal ellenőrizve."}]},
- {n:5,t:"Binomiális együtthatók",d:"Azonosságok, hipergeometrikus függvények."},
+  {"n": 5, "t": "Binomiális együtthatók", "d": "Azonosságok, összegek, Catalan-számok, generátorfüggvények.", "lead": "A binomiális együtthatók a kombinatorika és az algebra közös nyelve. A fejezet a Pascal-háromszög azonosságaitól a Vandermonde-konvolúcióig, a Catalan-számokig és az első generátorfüggvényekig vezet.", "topics": [{"id": "binomalap", "d": "Pascal-háromszög, szimmetria, elnyelés, binomiális tétel."}, {"id": "binomosszeg", "d": "Hokiütő-azonosság, Vandermonde-konvolúció, súlyozott összegek."}, {"id": "binomfortely", "d": "Negatív felső index, Catalan-számok, a binomiális sor."}, {"id": "binomgf", "d": "A binomiális együtthatók generátorfüggvénye, átlós összegek."}, {"id": "feladatokbinom", "d": "Tíz saját feladat négy szinten a binomiális együtthatókról, megoldással, programmal ellenőrizve."}]},
  {n:6,t:"Speciális számok",d:"Stirling-, Euler-, harmonikus, Bernoulli- és Fibonacci-számok."},
  {n:7,t:"Generátorfüggvények",d:"Rekurziók megoldása hatványsorokkal."},
  {n:8,t:"Diszkrét valószínűség",d:"Várható érték, szórás, generátorfüggvények a valószínűségben."},
@@ -6629,6 +7320,177 @@ function vCar(){
   $("#v-c-info").innerHTML=`összetett n ≤ ${N}, amelyre 2<sup>n−1</sup> ≡ 1: ${ps.length} db${ps.length?` (${ps.slice(0,10).join(", ")}${ps.length>10?", …":""})`:""}<br>Carmichael-számok (Korselt): ${car.join(", ")||"nincs"} &nbsp;·&nbsp; mindegyikre minden hozzá relatív prím alapra a<sup>n−1</sup> ≡ 1 ${car.length?ok(allOk):""}`;
 }
 $("#v-c-n").addEventListener("input",vCar);vCar();
+
+/* ================= 5.1 ALAPAZONOSSÁGOK ================= */
+const bC=(n,k)=>{if(k<0||k>n)return 0;k=Math.min(k,n-k);let r=1;for(let i=1;i<=k;i++)r=r*(n-k+i)/i;return Math.round(r);};
+c2hero("binomalap-bevezeto",700,8,fr=>{
+  const s=$("#i-hero"),W=420,H=250,n=Math.min(fr,7);clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  for(let r=0;r<=n;r++){let sum=0;for(let k=0;k<=r;k++){const v=bC(r,k);sum+=v;const x=W/2+(k-r/2)*44,y=28+r*28;
+    el("rect",{x:x-18,y:y-12,width:36,height:22,rx:6,style:`fill:var(--accent);opacity:${r===n?.9:.4}`},s);txt(s,x,y+4,v,"ink");}}
+  $("#i-hero-a").textContent="n = "+n;$("#i-hero-b").textContent=2**n;
+});
+function bPas(){
+  const n=+$("#i-p-n").value,m=+$("#i-p-m").value;$("#i-p-nv").textContent=n;
+  const W=640,cw=Math.min(36,(W-20)/n),H=Math.round(n*cw*.9+30),s=c2svg("#i-p-svg",W,H),num=n<=11;
+  const cols=["var(--accent)","var(--accent-2)","var(--good)","var(--bad)","var(--line)"];
+  for(let r=0;r<n;r++)for(let k=0;k<=r;k++){const v=bC(r,k),x=W/2+(k-r/2)*cw,y=16+r*cw*.9;
+    const c=m?(v%m===0?"var(--paper)":cols[(v%m)%4]):"var(--accent)";
+    el("rect",{x:x-cw*.46,y:y-cw*.4,width:cw*.92,height:cw*.8,rx:4,style:`fill:${c};stroke:var(--line);opacity:${m&&v%m===0?1:.85}`},s);
+    if(num&&cw>=30)txt(s,x,y+4,v,v%m===0&&m?"":"ink");}
+  let tot=0;for(let k=0;k<n;k++)tot+=bC(n-1,k);
+  const odd=m===2?(()=>{let c=0;for(let k=0;k<n;k++)if(bC(n-1,k)%2)c++;return c;})():null;
+  $("#i-p-info").innerHTML=`az utolsó (${n-1}.) sor összege: ${tot} = 2<sup>${n-1}</sup> = ${2**(n-1)} ${ok(tot===2**(n-1))}${odd!==null?`<br>páratlan elemek az utolsó sorban: ${odd} = 2<sup>s₂(${n-1})</sup> = ${2**(((n-1)).toString(2).replace(/0/g,"").length)} ${ok(odd===2**((n-1).toString(2).replace(/0/g,"").length))}`:""}`;
+}
+["#i-p-n","#i-p-m"].forEach(i=>$(i).addEventListener("input",bPas));bPas();
+function bAz(){
+  let n=+$("#i-a-n").value,m=+$("#i-a-m").value,k=+$("#i-a-k").value;
+  m=Math.min(m,n);k=Math.min(k,m);$("#i-a-m").value=m;$("#i-a-k").value=k;
+  $("#i-a-nv").textContent=n;$("#i-a-mv").textContent=m;$("#i-a-kv").textContent=k;
+  const s1=bC(n,k),s2=bC(n,n-k),a1=k*bC(n,k),a2=n*bC(n-1,k-1),t1=bC(n,m)*bC(m,k),t2=bC(n,k)*bC(n-k,m-k);
+  $("#i-a-info").innerHTML=`szimmetria: C(${n},${k}) = ${s1} = C(${n},${n-k}) = ${s2} ${ok(s1===s2)}<br>elnyelés: ${k}·C(${n},${k}) = ${a1} = ${n}·C(${n-1},${k-1}) = ${a2} ${ok(a1===a2)}<br>háromtagú: C(${n},${m})·C(${m},${k}) = ${t1} = C(${n},${k})·C(${n-k},${m-k}) = ${t2} ${ok(t1===t2)}`;
+}
+["#i-a-n","#i-a-m","#i-a-k"].forEach(i=>$(i).addEventListener("input",bAz));bAz();
+function bBin(){
+  const n=+$("#i-b-n").value;$("#i-b-nv").textContent=n;
+  const co=[];for(let k=0;k<=n;k++)co.push(bC(n,k));
+  let ev=0,od=0,alt=0;co.forEach((c,k)=>{if(k%2)od+=c;else ev+=c;alt+=(k%2?-c:c);});
+  const sup=i=>String(i).split("").map(c=>"⁰¹²³⁴⁵⁶⁷⁸⁹"[c]).join("");
+  const terms=co.map((c,k)=>`${c>1||(k!==0&&k!==n)?c:""}${k?"x"+(k>1?sup(k):""):""}${n-k?"y"+(n-k>1?sup(n-k):""):""}`.replace(/^$/,"1"));
+  $("#i-b-info").innerHTML=`(x + y)<sup>${n}</sup> = ${terms.join(" + ")}<br>x = y = 1: ${co.reduce((a,b)=>a+b,0)} = 2<sup>${n}</sup> ${ok(co.reduce((a,b)=>a+b,0)===2**n)} &nbsp;·&nbsp; x = −1, y = 1: ${alt} ${ok(alt===0)} &nbsp;·&nbsp; páros indexűek: ${ev}, páratlanok: ${od} ${ok(ev===od&&ev===2**(n-1))}`;
+}
+$("#i-b-n").addEventListener("input",bBin);bBin();
+
+/* ================= 5.2 ÖSSZEGEK ================= */
+c2hero("binomosszeg-bevezeto",800,7,fr=>{
+  const s=$("#z-hero"),W=420,H=250,R=9,r1=2+Math.min(fr,6);clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);let sum=0;
+  for(let r=0;r<R;r++)for(let k=0;k<=r;k++){const x=W/2+(k-r/2)*40,y=20+r*26;
+    const on=k===2&&r>=2&&r<=r1,res=k===3&&r===r1+1;if(on)sum+=bC(r,2);
+    el("rect",{x:x-17,y:y-11,width:34,height:21,rx:5,style:`fill:${on?"var(--accent)":res?"var(--accent-2)":"var(--paper)"};stroke:var(--line);opacity:${on||res?.95:.7}`},s);
+    txt(s,x,y+4,bC(r,k),on||res?"ink":"");}
+  $("#z-hero-a").textContent=`∑ C(k,2), k ≤ ${r1}`;$("#z-hero-b").textContent=sum+" = C("+(r1+1)+",3)";
+});
+function zHoki(){
+  const t=$("#z-h-t").value,a=+$("#z-h-a").value,b=+$("#z-h-b").value;$("#z-h-av").textContent=a;$("#z-h-bv").textContent=b;
+  let S=0,terms=[],rhs,desc;
+  if(t==="u"){for(let k=0;k<=a;k++){S+=bC(k,b);if(k>=b)terms.push(`C(${k},${b})=${bC(k,b)}`);}rhs=bC(a+1,b+1);desc=`Σ C(k,${b}), k = 0…${a}`;
+    $("#z-h-info").innerHTML=`${desc} = ${S} &nbsp;·&nbsp; C(${a+1},${b+1}) = ${rhs} ${ok(S===rhs)}<br>nem nulla tagok: ${terms.slice(0,12).join(" + ")||"nincs"}${terms.length>12?" + …":""}`;}
+  else{for(let k=0;k<=b;k++){S+=bC(a+k,k);terms.push(`C(${a+k},${k})=${bC(a+k,k)}`);}rhs=bC(a+b+1,b);desc=`Σ C(${a}+k, k), k = 0…${b}`;
+    $("#z-h-info").innerHTML=`${desc} = ${S} &nbsp;·&nbsp; C(${a+b+1},${b}) = ${rhs} ${ok(S===rhs)}<br>tagok: ${terms.slice(0,12).join(" + ")}${terms.length>12?" + …":""}`;}
+}
+["#z-h-t","#z-h-a","#z-h-b"].forEach(i=>$(i).addEventListener("input",zHoki));zHoki();
+function zVan(){
+  const r=+$("#z-v-r").value,s=+$("#z-v-s").value;$("#z-v-n").max=r+s;let n=+$("#z-v-n").value;if(n>r+s){n=r+s;$("#z-v-n").value=n;}
+  $("#z-v-rv").textContent=r;$("#z-v-sv").textContent=s;$("#z-v-nv").textContent=n;
+  let h="<tr><th>k</th><th>C(r,k)</th><th>C(s,n−k)</th><th>szorzat</th></tr>",S=0;
+  for(let k=0;k<=n;k++){const p=bC(r,k)*bC(s,n-k);if(p)h+=`<tr><td>${k}</td><td>${bC(r,k)}</td><td>${bC(s,n-k)}</td><td>${p}</td></tr>`;S+=p;}
+  $("#z-v-t").innerHTML=h;const rhs=bC(r+s,n);
+  $("#z-v-info").innerHTML=`összeg = ${S} &nbsp;·&nbsp; C(${r}+${s}, ${n}) = ${rhs} ${ok(S===rhs)}`;
+}
+["#z-v-r","#z-v-s","#z-v-n"].forEach(i=>$(i).addEventListener("input",zVan));zVan();
+function zSul(){
+  const n=+$("#z-s-n").value;$("#z-s-nv").textContent=n;let a=0,b=0,c=0;
+  for(let k=0;k<=n;k++){a+=k*bC(n,k);b+=k*k*bC(n,k);c+=bC(n,k)/(k+1);}
+  const f=(2**(n+1)-1)/(n+1);
+  $("#z-s-info").innerHTML=`Σ k·C(n,k) = ${a} = n·2<sup>n−1</sup> = ${n*2**(n-1)} ${ok(a===n*2**(n-1))}<br>Σ k²·C(n,k) = ${b} = n(n+1)·2<sup>n−2</sup> = ${n*(n+1)*2**(n-2)} ${ok(b===n*(n+1)*2**(n-2))}<br>Σ C(n,k)/(k+1) = ${fm(+c.toFixed(6))} = (2<sup>n+1</sup> − 1)/(n + 1) = ${fm(+f.toFixed(6))} ${ok(Math.abs(c-f)<1e-6*f)}`;
+}
+$("#z-s-n").addEventListener("input",zSul);zSul();
+
+/* ================= 5.3 FORTÉLYOK ================= */
+function aaDyck(n){const out=[];(function rec(p,u,d){if(u===n&&d===n){out.push(p);return;}if(u<n)rec(p+"U",u+1,d);if(d<u)rec(p+"D",u,d+1);})("",0,0);return out;}
+c2hero("binomfortely-bevezeto",900,8,fr=>{
+  const s=$("#aa-hero"),W=420,H=250,n=4,u=44,ox=(W-n*u)/2,oy=28,P=aaDyck(4),idx=[0,3,5,7,9,11,12,13][Math.min(fr,7)];clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  for(let i=0;i<=n;i++){el("line",{x1:ox,x2:ox+n*u,y1:oy+i*u,y2:oy+i*u,style:"stroke:var(--line)"},s);el("line",{x1:ox+i*u,x2:ox+i*u,y1:oy,y2:oy+n*u,style:"stroke:var(--line)"},s);}
+  el("line",{x1:ox,y1:oy+n*u,x2:ox+n*u,y2:oy,style:"stroke:var(--accent-2);stroke-dasharray:5 4;stroke-width:2"},s);
+  let x=0,y=0,d=`M${ox} ${oy+n*u}`;for(const c of P[idx]){if(c==="U")x++;else y++;d+=`L${ox+x*u} ${oy+n*u-y*u}`;}
+  /* fent: U = jobbra, D = fel; az út az átló alatt marad (x ≥ y) */
+  el("path",{d,style:"fill:none;stroke:var(--accent);stroke-width:4;stroke-linejoin:round"},s);
+  $("#aa-hero-a").textContent=`út: ${idx+1} / 14`;
+});
+function aaNeg(){
+  const r=+$("#aa-n-r").value,k=+$("#aa-n-k").value;$("#aa-n-rv").textContent=r;$("#aa-n-kv").textContent=k;
+  let num=1;for(let i=0;i<k;i++)num*=(-r-i);let f=1;for(let i=1;i<=k;i++)f*=i;const d=num/f;
+  const form=(k%2?-1:1)*bC(r+k-1,k);
+  /* sorszorzás: (1+x+x²+…)^r, 13 tagig */
+  let ser=[1,...Array(12).fill(0)];for(let t=0;t<r;t++){const nx=Array(13).fill(0);for(let i=0;i<13;i++)for(let j=0;i+j<13;j++)nx[i+j]+=ser[i];ser=nx;}
+  const coefs=ser.map((c,i)=>bC(r+i-1,i));
+  $("#aa-n-info").innerHTML=`C(−${r}, ${k}) definícióból: ${d} &nbsp;·&nbsp; (−1)<sup>${k}</sup>·C(${r+k-1}, ${k}) = ${form} ${ok(d===form)}<br>1/(1−x)<sup>${r}</sup> sorának együtthatói: ${coefs.join(", ")}<br>az ${r}-szeres sorszorzatból ugyanez ${ok(ser.every((c,i)=>c===coefs[i]))}`;
+}
+["#aa-n-r","#aa-n-k"].forEach(i=>$(i).addEventListener("input",aaNeg));aaNeg();
+function aaCat(){
+  const n=+$("#aa-c-n").value;$("#aa-c-nv").textContent=n;
+  const cf=m=>bC(2*m,m)-bC(2*m,m-1);
+  const rec=[1];for(let m=0;m<14;m++){let s=0;for(let k=0;k<=m;k++)s+=rec[k]*rec[m-k];rec.push(s);}
+  let h="<tr><th>n</th><th>C(2n,n) − C(2n,n−1)</th><th>1/(n+1)·C(2n,n)</th><th>rekurzió</th><th>utak száma</th></tr>",all=true;
+  for(let m=0;m<=n;m++){
+    const dp=Array.from({length:m+1},()=>Array(m+1).fill(0));dp[0][0]=1;for(let x=0;x<=m;x++)for(let y=0;y<=x;y++){if(x||y)dp[x][y]=(x?dp[x-1][y]:0)+(y?dp[x][y-1]:0);}
+    const a=m?cf(m):1,b=bC(2*m,m)/(m+1),c=rec[m],d=dp[m][m];if(!(a===b&&b===c&&c===d))all=false;
+    h+=`<tr><td>${m}</td><td>${a}</td><td>${b}</td><td>${c}</td><td>${d}</td></tr>`;}
+  $("#aa-c-t").innerHTML=h;
+  $("#aa-c-info").innerHTML=`C<sub>${n}</sub> = <b>${rec[n]}</b>; a négy számolás minden n ≤ ${n}-re egyezik ${ok(all)}`;
+}
+$("#aa-c-n").addEventListener("input",aaCat);aaCat();
+function aaNew(){
+  const r=+$("#aa-w-r").value,x=+$("#aa-w-x").value,N=+$("#aa-w-n").value;
+  $("#aa-w-xv").textContent=fm(x);$("#aa-w-nv").textContent=N;
+  let c=1,s=0;const cs=[];for(let k=0;k<N;k++){s+=c*x**k;if(k<6)cs.push(c);c=c*(r-k)/(k+1);}
+  const ex=(1+x)**r;
+  let cat=true;for(let k=1;k<=12;k++){let c2=1;for(let i=0;i<k;i++)c2*=(0.5-i)/(i+1);const cn=bC(2*(k-1),k-1)/k;if(Math.abs(c2-(k%2?1:-1)*cn/2**(2*k-1))>1e-12)cat=false;}
+  $("#aa-w-info").innerHTML=`első ${N} tag összege: ${fm(+s.toFixed(8))} &nbsp;·&nbsp; pontos (1+x)<sup>r</sup>: ${fm(+ex.toFixed(8))} &nbsp;·&nbsp; hiba: ${fm(+(s-ex).toExponential(2))}<br>együtthatók: ${cs.map(v=>fm(+v.toFixed(5))).join(", ")}, …<br>C(1/2,k) = (−1)<sup>k−1</sup>·C<sub>k−1</sub>/2<sup>2k−1</sup>, k ≤ 12 ${ok(cat)}`;
+}
+["#aa-w-r","#aa-w-x","#aa-w-n"].forEach(i=>$(i).addEventListener("input",aaNew));aaNew();
+
+/* ================= 5.4 GENERÁTORFÜGGVÉNYEK ================= */
+const abFib=(n)=>{let a=0,b=1;for(let i=0;i<n;i++)[a,b]=[b,a+b];return a;};
+c2hero("binomgf-bevezeto",900,8,fr=>{
+  const s=$("#ab-hero"),W=420,H=250,R=9,n=1+Math.min(fr,7);clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);let sum=0;
+  for(let r=0;r<R;r++)for(let k=0;k<=r;k++){const x=W/2+(k-r/2)*40,y=20+r*26,on=r+k===n&&k<=r;if(on)sum+=bC(r,k);
+    el("rect",{x:x-17,y:y-11,width:34,height:21,rx:5,style:`fill:${on?"var(--accent)":"var(--paper)"};stroke:var(--line);opacity:${on?.95:.7}`},s);txt(s,x,y+4,bC(r,k),on?"ink":"");}
+  $("#ab-hero-a").textContent="n = "+n;$("#ab-hero-b").textContent=sum+" = F"+c2sub(n+1);
+});
+function abSz(){
+  const r=+$("#ab-s-r").value,s=+$("#ab-s-s").value;$("#ab-s-rv").textContent=r;$("#ab-s-sv").textContent=s;
+  const A=[],B=[],C=[];for(let k=0;k<=r;k++)A.push(bC(r,k));for(let k=0;k<=s;k++)B.push(bC(s,k));
+  let h="<tr><th>k</th><th>(1+x)<sup>r</sup></th><th>(1+x)<sup>s</sup></th><th>konvolúció</th><th>(1+x)<sup>r+s</sup></th></tr>",all=true;
+  for(let n=0;n<=r+s;n++){let c=0;for(let k=0;k<=n;k++)c+=(A[k]||0)*(B[n-k]||0);C.push(c);const ex=bC(r+s,n);if(c!==ex)all=false;h+=`<tr><td>${n}</td><td>${A[n]??0}</td><td>${B[n]??0}</td><td>${c}</td><td>${ex}</td></tr>`;}
+  $("#ab-s-t").innerHTML=h;$("#ab-s-info").innerHTML=`a konvolúció minden együtthatója egyezik a (1+x)<sup>${r+s}</sup> együtthatóival ${ok(all)}`;
+}
+["#ab-s-r","#ab-s-s"].forEach(i=>$(i).addEventListener("input",abSz));abSz();
+function abOl(){
+  const m=+$("#ab-o-m").value;$("#ab-o-mv").textContent=m;const N=20;
+  /* x^m/(1-x)^(m+1) sora: (m+1)-szeres szorzás 1/(1-x)-szel */
+  let ser=Array(N+1).fill(0);ser[m]=1;for(let t=0;t<m+1;t++){let acc=0;for(let i=0;i<=N;i++){acc+=ser[i];ser[i]=acc;}}
+  const ex=[];for(let n=0;n<=N;n++)ex.push(bC(n,m));
+  $("#ab-o-info").innerHTML=`x<sup>${m}</sup>/(1−x)<sup>${m+1}</sup> együtthatói (n = 0…${N}): ${ser.slice(0,12).join(", ")}, …<br>ugyanez C(n, ${m})-mel ${ok(ser.every((c,i)=>c===ex[i]))}`;
+}
+$("#ab-o-m").addEventListener("input",abOl);abOl();
+function abFi(){
+  const n=+$("#ab-f-n").value;$("#ab-f-nv").textContent=n;
+  const t=[];let S=0;for(let k=0;2*k<=n;k++){const v=bC(n-k,k);S+=v;t.push(`C(${n-k},${k})=${v}`);}
+  const ph=(1+Math.sqrt(5))/2,ps=(1-Math.sqrt(5))/2,bi=Math.round((ph**(n+1)-ps**(n+1))/Math.sqrt(5));
+  const D=[1,1];for(let i=2;i<=24;i++)D.push(D[i-1]+D[i-2]);let ok2=true;for(let i=0;i<=24;i++){const e=(i===0?1:0)-0;const c=D[i]-(i>=1?D[i-1]:0)-(i>=2?D[i-2]:0);if(c!==(i===0?1:0)&&i!==1&&i!==0){ok2=false;}}
+  $("#ab-f-info").innerHTML=`${t.join(" + ")} = <b>${S}</b><br>F<sub>${n+1}</sub> = ${abFib(n+1)} ${ok(S===abFib(n+1))} &nbsp;·&nbsp; Binet: ${bi} ${ok(bi===S)}<br>D<sub>n</sub> − D<sub>n−1</sub> − D<sub>n−2</sub> = 0 minden 2 ≤ n ≤ 24-re ${ok(ok2)}`;
+}
+$("#ab-f-n").addEventListener("input",abFi);abFi();
+
+/* ================= 5.5 FELADATOK ================= */
+exHero("feladatokbinom-bevezeto","#ac-hero","#ac-hero-k",[3,3,2,2]);
+function acFi(){
+  const n=+$("#ac-f-n").value;$("#ac-f-nv").textContent=n;
+  const D=m=>{let s=0;for(let k=0;2*k<=m;k++)s+=bC(m-k,k);return s;};
+  const ph=(1+Math.sqrt(5))/2;let all=true;for(let m=0;m<=40;m++)if(D(m)!==abFib(m+1))all=false;
+  $("#ac-f-info").innerHTML=`D<sub>${n}</sub> = ${D(n)} &nbsp;·&nbsp; F<sub>${n+1}</sub> = ${abFib(n+1)} ${ok(D(n)===abFib(n+1))}<br>D<sub>${n+1}</sub>/D<sub>${n}</sub> = ${fm(+(D(n+1)/D(n)).toFixed(9))} &nbsp;·&nbsp; φ = ${fm(+ph.toFixed(9))} &nbsp;·&nbsp; D<sub>m</sub> = F<sub>m+1</sub> minden m ≤ 40-re ${ok(all)}`;
+}
+$("#ac-f-n").addEventListener("input",acFi);acFi();
+/* Pascal-háromszög mod 2 (pontos, nincs lebegőpontos kerekítés) */
+const acRows=(()=>{const R=[[1]];for(let n=1;n<256;n++){const p=R[n-1],r=[1];for(let k=1;k<n;k++)r.push((p[k-1]+p[k])%2);r.push(1);R.push(r);}return R;})();
+function acPar(){
+  const n=+$("#ac-p-n").value;$("#ac-p-nv").textContent=n;
+  const pc=m=>m.toString(2).replace(/0/g,"").length;
+  const odd=acRows[n].reduce((a,b)=>a+b,0);let sub=0;for(let k=0;k<=n;k++)if((n&k)===k)sub++;
+  const s=pc(n);let all=true;for(let m=0;m<256;m++)if(acRows[m].reduce((a,b)=>a+b,0)!==2**pc(m))all=false;
+  $("#ac-p-info").innerHTML=`n = ${n} = ${n.toString(2)}<sub>2</sub>, s₂(n) = ${s}<br>páratlan elemek a ${n}. sorban: ${odd} &nbsp;·&nbsp; 2<sup>s₂(n)</sup> = ${2**s} ${ok(odd===2**s)} &nbsp;·&nbsp; k &amp; n = k feltételű k-k: ${sub} ${ok(sub===odd)}<br>minden n &lt; 256-ra igaz ${ok(all)}`;
+}
+$("#ac-p-n").addEventListener("input",acPar);acPar();
 
 /* ================= 1.4 FELADATOK ================= */
 c2hero("feladatok-bevezeto",420,10,fr=>{

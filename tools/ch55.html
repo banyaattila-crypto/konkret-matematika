@@ -1,0 +1,137 @@
+
+<!-- ================= 5.5 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="ac-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.5</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a binomiális együtthatókról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\displaystyle\binom nk\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ac-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="ac-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A binomiális együtthatókkal a legtöbb feladatot kétféleképpen lehet megoldani: algebrai úton (azonosságokkal) vagy megszámolással. A jó megoldó mindkettőt tudja, és a feladatnál eldönti, melyik rövidebb. A bemelegítő feladatok egy-egy azonosságot használnak, az alapszinten az összegzési szabályokkal és a negatív indexszel kell dolgozni, a haladó szinten bizonyítani kell, a kutatási szinten pedig a számítógép sejtést ad, és a bizonyítás a tiéd. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="ac-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>Pascal-szabály, részhalmazok száma és a hokiütő-azonosság.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki \(\binom94+\binom95\)-öt a Pascal-szabállyal, és ellenőrizd közvetlenül.</span></summary>
+      <div class="ans">
+        <p>A Pascal-szabály \(\binom{10}5=\binom94+\binom95\), tehát az összeg \(\binom{10}5=252\).</p>
+        <p><b>Ellenőrzés:</b> \(\binom94=126\), \(\binom95=126\), összegük 252. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Hány páros elemszámú részhalmaza van egy 8 elemű halmaznak?</span></summary>
+      <div class="ans">
+        <p>A páros és páratlan elemszámú részhalmazok száma egyenlő, mert \(\sum(-1)^k\binom8k=(1-1)^8=0\). Az összesen \(2^8=256\) részhalmaz fele páros: \(2^7=128\).</p>
+        <p><b>Ellenőrzés:</b></p>
+        <div class="eq">\[\binom80+\binom82+\binom84+\binom86+\binom88=1+28+70+28+1=128.\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Számold ki: \(\sum_{k=2}^{9}\binom k2\).</span></summary>
+      <div class="ans">
+        <p>A felső összegzéssel \(\sum_{k=0}^{9}\binom k2=\binom{10}3=120\) (a \(k=0,1\) tagok nullák).</p>
+        <p><b>Ellenőrzés:</b> \(1+3+6+10+15+21+28+36=120\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat bizonyítása a binomiális tétel \(x=-1\), \(y=1\) helyettesítése.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ac-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Összegek, negatív index, bizonyítások</h2>
+    <p>Három alapfeladat az összegezési szabályokról, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Számold ki: \(\sum_{k}\binom6k\binom8{5-k}\).</span></summary>
+      <div class="ans">
+        <p>Vandermonde szerint \(\binom{6+8}5=\binom{14}5=2002\).</p>
+        <p><b>Ellenőrzés:</b> a tagonkénti összeg:</p>
+        <div class="eq">\[\begin{aligned}&1\cdot56+6\cdot70+15\cdot56+20\cdot28+15\cdot8+6\cdot1\\&=56+420+840+560+120+6=2002.\ \checkmark\end{aligned}\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Számold ki: \(\sum_{k}k\binom{12}k\).</span></summary>
+      <div class="ans">
+        <p>Az elnyeléssel \(k\binom{12}k=12\binom{11}{k-1}\), így az összeg \(12\cdot2^{11}=24576\).</p>
+        <p><b>Ellenőrzés:</b> a tagonkénti összeadás is 24576. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Számold ki \(\binom{-5}3\)-at, és add meg az \(x^4\) együtthatóját \((1-x)^{-3}\)-ban.</span></summary>
+      <div class="ans">
+        <p>\(\binom{-5}3=(-1)^3\binom{5+3-1}3=-\binom73=-35\). Az \((1-x)^{-3}\) sorában az \(x^4\) együtthatója \(\binom{3+4-1}4=\binom64=15\).</p>
+        <p><b>Ellenőrzés:</b> \((-5)(-6)(-7)/6=-35\), és a sorszorzás \(1/(1-x)^3\)-ra \(x^4\)-nél 15. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: \(\sum_{k}\binom nk^2=\binom{2n}n\). Mennyi ez \(n=6\)-ra?</span></summary>
+      <div class="ans">
+        <p>A szimmetriával \(\binom nk=\binom n{n-k}\), így \(\sum_k\binom nk\binom n{k}=\sum_k\binom nk\binom n{n-k}\). Ez a Vandermonde-azonosság \(r=s=n\) és az \(n\) összegzett indexszel, értéke \(\binom{2n}n\). \(\square\) Az \(n=6\)-ra \(\binom{12}6=924\).</p>
+        <p><b>Ellenőrzés:</b> \(1+36+225+400+225+36+1=924\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Hány út vezet \((0,0)\)-ból \((5,5)\)-be az átló alatt maradva, ha csak jobbra és fölfelé lépünk? Bizonyítsd.</span></summary>
+      <div class="ans">
+        <p>Az összes útból \(\binom{10}5=252\). A rossz utak érintik az \(y=x+1\) egyenest. Az első érintés után az út maradékát tükrözve a végpont \((4,6)\) lesz, és ez kölcsönösen egyértelmű megfeleltetés. A rossz utak száma \(\binom{10}4=210\) (4 jobbra, 6 fölfelé lépés). A jó utak:</p>
+        <div class="eq">\[\binom{10}5-\binom{10}4=252-210=42=C_5.\]</div>
+        <p><b>Ellenőrzés:</b> a rácson végzett dinamikus számolás is 42-t ad. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 7. feladat másik bizonyítása a polinomokkal: \(\sum\binom nk^2\) az \((1+x)^n\) és az \((x+1)^n\) szorzatában az \(x^n\) együtthatója.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ac-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Átlók és páratlan elemek</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. A Pascal-háromszög „sekély” átlóinak összege \(D_n=\sum_k\binom{n-k}k\). Mit sejtesz? Hogyan viselkedik az arány \(D_{n+1}/D_n\)?</span></summary>
+      <div class="ans">
+        <p>A sejtés: \(D_n=F_{n+1}\). Indoklás: a Pascal-szabállyal \(D_n=D_{n-1}+D_{n-2}\), és \(D_0=D_1=1\), ez a Fibonacci-rekurzió. Az arány az \(F_{n+1}/F_n\) lesz, és ez a Binet-képlet szerint az aranymetszéshez tart: \(\varphi=\tfrac{1+\sqrt5}2\approx1{,}618\), mert \(\psi^n/\varphi^n\to0\).</p>
+        <p><b>Ellenőrzés:</b> \(n\le40\)-ig \(D_n=F_{n+1}\), és az arány a \(\varphi\)-hez tart. A kísérlet megmutatja az eltérést. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ac-f-n">n <input type="range" id="ac-f-n" min="1" max="40" value="20"> <span class="mono" id="ac-f-nv">20</span></label>
+      </div>
+      <div class="info" id="ac-f-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Hány páratlan elem van a Pascal-háromszög \(n\). sorában? Keress szabályt, és indokold.</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint a páratlan elemek száma mindig kettőhatvány: \(2^{s_2(n)}\), ahol \(s_2(n)\) az \(n\) bináris alakjában az egyesek száma. A \(n=100=1100100_2\) esetén \(s_2=3\), így 8 páratlan elem van.</p>
+        <p>Indoklás: a 4.3 szerint \(\binom nk\) kettes kitevője \(s_2(k)+s_2(n-k)-s_2(n)\), ez a \(k\) és \(n-k\) bináris összeadásának átvitelei száma. A \(\binom nk\) pontosan akkor páratlan, ha nincs átvitel, vagyis ha a \(k\) egyesei az \(n\) egyeseinek részhalmazát alkotják. Ilyen \(k\) annyi van, ahány részhalmaza az \(s_2(n)\) egyesnek: \(2^{s_2(n)}\).</p>
+        <p><b>Ellenőrzés:</b> \(n<256\)-ig mindkét számolás egyezik (a páratlan elemek száma és a \(k\ \&\ n=k\) feltételű \(k\)-k száma is). \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ac-p-n">n <input type="range" id="ac-p-n" min="0" max="255" value="100"> <span class="mono" id="ac-p-nv">100</span></label>
+      </div>
+      <div class="info" id="ac-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat a Sierpiński-háromszög szerkezetét is megmagyarázza: a páratlan elemek éppen azok, ahol \(k\) bitjei \(n\) bitjeinek részhalmazai.</p>
+  </aside>
+</section>

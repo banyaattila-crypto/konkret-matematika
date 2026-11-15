@@ -1,0 +1,140 @@
+
+<!-- ================= 5.1 ALAPAZONOSSÁGOK ================= -->
+<header class="hero page" id="i-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.1</div>
+    <h1>Alapazonosságok</h1>
+    <p class="lead">A \(\binom nk\) az \(n\) elemű halmaz \(k\) elemű részhalmazainak száma. Néhány egyszerű azonosság elég ahhoz, hogy a Pascal-háromszög minden összefüggése kiderüljön.</p>
+    <div class="formula">\(\displaystyle\binom nk=\binom{n-1}k+\binom{n-1}{k-1}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="i-hero" role="img" aria-label="A Pascal-háromszög sorai"></svg>
+    <div class="counter"><span id="i-hero-a">n = 0</span><span>a sor összege: <b id="i-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A Pascal-háromszög minden száma a fölötte álló két szám összege. Ez az egyetlen szabály adja az egész táblát, és az \(n\). sorban a \(k\) elemű részhalmazok számát olvashatjuk le. A képen sorról sorra épül fel, és a sorok összege mindig megkétszereződik: egy \(n\) elemű halmaznak \(2^n\) részhalmaza van. A fejezet első része három eszközt ad: a rekurziót (Pascal szabálya), a szimmetriát és az „elnyelést”, valamint a binomiális tételt. Ezekből a későbbi azonosságok jórészt levezethetők.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="i-pascal">
+  <div class="body">
+    <div class="eyebrow">§1 · A Pascal-háromszög</div>
+    <h2>Mindegyik szám a fölötte lévő kettő összege</h2>
+    <p>Az \(n\) elemű halmaz \(k\) elemű részhalmazainak száma \(\binom nk=\dfrac{n!}{k!\,(n-k)!}\), ha \(0\le k\le n\). A számolóképletet a „leeső hatvánnyal” is felírhatjuk: \(\binom nk=\dfrac{n^{\underline k}}{k!}\), és ez tetszőleges valós \(n\)-re értelmes marad. A \(k\lt0\) vagy \(k\gt n\) (egész \(n\ge0\)) esetén az érték 0.</p>
+    <p>A Pascal-szabály kombinatorikus bizonyítása: egy kitüntetett elemet vagy választunk a \(k\) elemű részhalmazba, vagy nem. Ha igen, a maradék \(k-1\) elemet \(n-1\)-ből választjuk, ha nem, mind a \(k\) elemet.</p>
+    <div class="eq gold">\[\binom nk=\binom{n-1}k+\binom{n-1}{k-1}.\]</div>
+    <p>A háromszög rendszere maradékok szerint is látványos. A modulus szerinti színezés a páros-páratlan esetben a Sierpiński-háromszöget adja. Az okot a 4.3 mutatta meg: \(\binom nk\) kettes kitevője a \(k\) és \(n-k\) bináris összeadásának átvitelei száma.</p>
+    <div class="fig">
+      <svg id="i-p-svg" role="img" aria-label="A Pascal-háromszög színezve maradékok szerint"></svg>
+      <div class="info" id="i-p-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="i-p-n">sorok száma <input type="range" id="i-p-n" min="2" max="32" value="12"> <span class="mono" id="i-p-nv">12</span></label>
+        <label class="rng" for="i-p-m">színezés <select id="i-p-m"><option value="0">nincs</option><option value="2" selected>páros / páratlan (mod 2)</option><option value="3">mod 3</option><option value="5">mod 5</option></select></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(k=0\) és \(k=n\) esetben \(\binom n0=\binom nn=1\), ez adja a háromszög két oldalát.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-azonossagok">
+  <div class="body">
+    <div class="eyebrow">§2 · Szimmetria és elnyelés</div>
+    <h2>Három átalakítás</h2>
+    <p>A szimmetria azt mondja, hogy a \(k\) elemű részhalmaz kiválasztása ugyanaz, mint a kimaradó \(n-k\) elemé: \(\binom nk=\binom n{n-k}\). Az elnyelés (vagy kiemelés) azonosság szerint egy \(k\) elemű részhalmaz és egy kitüntetett eleme együtt ugyanannyiféleképpen választható, mint előbb a kitüntetett elemet kiválasztani, majd a többit:</p>
+    <div class="eq gold">\[k\binom nk=n\binom{n-1}{k-1}.\]</div>
+    <p>A harmadik a „háromtagú átalakítás”: \(\binom nm\binom mk=\binom nk\binom{n-k}{m-k}\). Ugyanazt számolja meg kétféleképpen: egy \(m\) elemű részhalmazt és abban egy \(k\) elemű részhalmazt választunk, vagy előbb a belső \(k\) elemet, aztán a külső \(m\) elemű halmaz többi \(m-k\) tagját. Az alábbi kísérlet mindhárom azonosságot ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="i-a-n">n <input type="range" id="i-a-n" min="2" max="40" value="12"> <span class="mono" id="i-a-nv">12</span></label>
+        <label class="rng" for="i-a-m">m <input type="range" id="i-a-m" min="1" max="40" value="6"> <span class="mono" id="i-a-mv">6</span></label>
+        <label class="rng" for="i-a-k">k <input type="range" id="i-a-k" min="1" max="40" value="3"> <span class="mono" id="i-a-kv">3</span></label>
+      </div>
+      <div class="info" id="i-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A csúszkákat a kísérlet automatikusan \(k\le m\le n\) sorrendbe igazítja, mert a háromtagú átalakításhoz ez kell.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-binomtetel">
+  <div class="body">
+    <div class="eyebrow">§3 · A binomiális tétel</div>
+    <h2>\((x+y)^n\) kifejtése</h2>
+    <p>Az \((x+y)^n\) szorzatban minden tényezőből vagy \(x\)-et, vagy \(y\)-t választunk. Az \(x^ky^{n-k}\) tag annyiszor jön elő, ahány módon kiválaszthatjuk, melyik \(k\) tényezőből vettük az \(x\)-et:</p>
+    <div class="eq gold">\[(x+y)^n=\sum_{k=0}^{n}\binom nk x^ky^{n-k}.\]</div>
+    <p>Az \(x=y=1\) helyettesítés a \(2^n\) részhalmazt adja. Az \(x=-1,\ y=1\) helyettesítés \(n\ge1\)-re \(\sum(-1)^k\binom nk=0\)-t, ebből az következik, hogy a páros és a páratlan indexű együtthatók összege azonos, mindkettő \(2^{n-1}\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="i-b-n">n <input type="range" id="i-b-n" min="1" max="20" value="6"> <span class="mono" id="i-b-nv">6</span></label>
+      </div>
+      <div class="info" id="i-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tétel \(n\) természetes szám esetén igaz. Ha \(n\) tört vagy negatív, a sor végtelen lesz, erről az 5.3 szól.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Pascal, szimmetria, binom</h2>
+    <details>
+      <summary><span class="sq">1. Mutasd meg, hogy \(\binom{10}3+\binom{10}4=\binom{11}4\), és számold ki az értéket.</span></summary>
+      <div class="ans">
+        <p>Ez éppen a Pascal-szabály \(n=11,\ k=4\)-re: \(\binom{11}4=\binom{10}4+\binom{10}3\). Az értékek \(120+210=330\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Az elnyelés segítségével számold ki \(\binom73\)-at \(\binom62\)-ből.</span></summary>
+      <div class="ans">
+        <p>\(\binom73=\tfrac73\binom62=\tfrac73\cdot15=35\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi \(\sum_{k\ \text{páros}}\binom{10}k\)?</span></summary>
+      <div class="ans">
+        <p>A páros és páratlan indexű összeg egyenlő, és együtt \(2^{10}=1024\), tehát a páros indexűek összege \(512\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Fejtsd ki \((x+2)^4\)-et.</span></summary>
+      <div class="ans">
+        <p>\(\binom4k2^{4-k}\) együtthatókkal: \(x^4+8x^3+24x^2+32x+16\). Ellenőrzés \(x=1\)-gyel: \(1+8+24+32+16=81=3^4\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat gyorsítja a számolást: a páros indexű összeg nem igényli az egyes tagok kiszámolását.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="i-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A binomiális együtthatók alapjai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Azonosság</th><th>Képlet</th></tr>
+      <tr><th>Pascal</th><td>\(\binom nk=\binom{n-1}k+\binom{n-1}{k-1}\)</td></tr>
+      <tr><th>szimmetria</th><td>\(\binom nk=\binom n{n-k}\)</td></tr>
+      <tr><th>elnyelés</th><td>\(k\binom nk=n\binom{n-1}{k-1}\)</td></tr>
+      <tr><th>háromtagú átalakítás</th><td>\(\binom nm\binom mk=\binom nk\binom{n-k}{m-k}\)</td></tr>
+      <tr><th>binomiális tétel</th><td>\((x+y)^n=\sum\binom nk x^ky^{n-k}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Számolj meg</b><span>Részhalmazok kétféle módon.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Egyenlősíts</b><span>A két számolás eredménye azonos.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Helyettesíts</b><span>A tételbe \(x,y\) értékeket.</span></div>
+    </div>
+    <p>A következő téma az összegek: hogyan lehet egy egész sor vagy oszlop elemeit egy lépésben összeadni.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. A könyv hipergeometrikus függvényekről szóló részeit ez a feldolgozás nem tartalmazza. Ha a tartalomjegyzék eltér, jelezd.</p>
+  </aside>
+</section>

@@ -16,7 +16,8 @@ MODS=[
 MODS1=[("feladatok","1.4","Feladatok","w-","ch14",[["bevezeto","Bevezető"],["bemelegito","Bemelegítő"],["halado","Alap és haladó"],["kutatas","Kutatás"]],"Kilenc saját feladat négy szinten: bemelegítő, alap, haladó, kutatási. Minden megoldás levezetve és programmal ellenőrizve.")]
 exec(open('tools/mods3.py',encoding='utf-8').read())
 exec(open('tools/mods4.py',encoding='utf-8').read())
-MODS=MODS+MODS3+MODS4+MODS1
+exec(open('tools/mods5.py',encoding='utf-8').read())
+MODS=MODS+MODS3+MODS4+MODS5+MODS1
 built=[m for m in MODS if os.path.exists(T+m[4]+'.html') and os.path.exists(T+m[4]+'.js')]
 css=open(T+'ch2.css',encoding='utf-8').read()
 s=base
@@ -51,6 +52,11 @@ for (tid,n,t,pre,fn,pages,d) in MODS4:
     tops4.append({"id":tid,"d":d} if (tid,n,t,pre,fn,pages,d) in built else {"n":n,"t":t,"d":d})
 ch4={k:v for k,v in CH4.items() if k!='old'};ch4['topics']=tops4
 rep(CH4['old'],' '+json.dumps(ch4,ensure_ascii=False)+',')
+tops5=[]
+for (tid,n,t,pre,fn,pages,d) in MODS5:
+    tops5.append({"id":tid,"d":d} if (tid,n,t,pre,fn,pages,d) in built else {"n":n,"t":t,"d":d})
+ch5={k:v for k,v in CH5.items() if k!='old'};ch5['topics']=tops5
+rep(CH5['old'],' '+json.dumps(ch5,ensure_ascii=False)+',')
 html="".join(open(T+m[4]+'.html',encoding='utf-8').read() for m in built)
 js=open(T+'landing.js',encoding='utf-8').read()+"\n"+open(T+'ch2common.js',encoding='utf-8').read()+"\n"+"\n".join(open(T+m[4]+'.js',encoding='utf-8').read() for m in built)
 rep('<footer id="foot"></footer>',html+'\n<footer id="foot"></footer>')

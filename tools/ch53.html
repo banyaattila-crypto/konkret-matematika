@@ -1,0 +1,139 @@
+
+<!-- ================= 5.3 FORTÉLYOK ================= -->
+<header class="hero page" id="aa-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.3</div>
+    <h1>Fortélyok</h1>
+    <p class="lead">A binomiális együttható felső indexe lehet negatív vagy tört is. Ettől a Pascal-háromszög kiterjed, és a Catalan-számok meg a négyzetgyök sora is előkerül.</p>
+    <div class="formula">\(\displaystyle\binom{-r}k=(-1)^k\binom{r+k-1}k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="aa-hero" role="img" aria-label="Rácsutak az átló alatt, négyzetrácson"></svg>
+    <div class="counter"><span id="aa-hero-a">út: 1 / 14</span><span>Catalan: <b>C₄ = 14</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen egy \(4\times4\)-es rácson az átlót át nem lépő utak közül mutatunk néhányat. Összesen 14 van belőlük, a negyedik Catalan-szám. Ez a szám ugyanennyi zárójelezést, háromszögelést és bináris fát is megszámol, és a binomiális együtthatók különbségeként kapjuk: \(\binom84-\binom83=14\). A fejezet három fortélyt mutat: hogyan kell a negatív felső indexet kezelni (ez adja a \(1/(1-x)^r\) együtthatóit), hogyan számoljuk meg az átlót át nem lépő utakat, és hogyan hozható ki a binomiális tételből a \(\sqrt{1+x}\) sora.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="aa-negativ">
+  <div class="body">
+    <div class="eyebrow">§1 · Negatív felső index</div>
+    <h2>\(\binom{-r}k\) és a \(1/(1-x)^r\)</h2>
+    <p>A felső index lehet valós, mert \(\binom nk=n^{\underline k}/k!\), és a leeső hatvány \(n(n-1)\cdots(n-k+1)\) minden \(n\)-re értelmes. Az \(n=-r\) esetben minden tényező negatív:</p>
+    <div class="eq gold">\[\binom{-r}k=\frac{(-r)(-r-1)\cdots(-r-k+1)}{k!}=(-1)^k\frac{r(r+1)\cdots(r+k-1)}{k!}=(-1)^k\binom{r+k-1}k.\]</div>
+    <p>Ennek megfelelően a \(\dfrac1{(1-x)^r}=\sum_{k\ge0}\binom{r+k-1}kx^k\) sor együtthatói éppen a Pascal-háromszög átlói. Az \(r=1\) a mértani sor, az \(r=2\) esetben az együtthatók \(k+1\). A kísérlet a definícióból, a képletből és az \(r\)-szeres sorszorzásból is előállítja ugyanazt.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aa-n-r">r <input type="range" id="aa-n-r" min="1" max="8" value="3"> <span class="mono" id="aa-n-rv">3</span></label>
+        <label class="rng" for="aa-n-k">k <input type="range" id="aa-n-k" min="0" max="12" value="4"> <span class="mono" id="aa-n-kv">4</span></label>
+      </div>
+      <div class="info" id="aa-n-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(1/(1-x)=1+x+x^2+\cdots\) sor \(r\)-edik hatványában az \(x^k\) együtthatója megszámolja, hányféleképpen adható ki \(k\) mint \(r\) nemnegatív egész összege.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-catalan">
+  <div class="body">
+    <div class="eyebrow">§2 · Catalan-számok</div>
+    <h2>Az átlót át nem lépő utak</h2>
+    <p>Az \((0,0)\)-ból \((n,n)\)-be vezető, egységnyi jobbra és fölfelé lépésekből álló utak száma \(\binom{2n}n\). Közülük azok „rosszak”, amelyek átlépik az \(y=x\) átlót, vagyis érintik az \(y=x+1\) egyenest. Az első érintés után az út hátralévő részét az egyenesre tükrözve kapjuk, hogy a rossz utak megfelelnek az \((n-1,n+1)\) pontba vezető utaknak (ez a tükrözési elv). Ezért a jó utak száma:</p>
+    <div class="eq gold">\[C_n=\binom{2n}n-\binom{2n}{n-1}=\frac1{n+1}\binom{2n}n.\]</div>
+    <p>A számok a \(C_{n+1}=\sum_{k=0}^{n}C_kC_{n-k}\) rekurziót is teljesítik (az első visszatérés az átlóra szétvágja az utat). Ugyanezek a számok adják meg a \(n\) pár zárójel helyes elrendezéseit, a konvex \((n+2)\)-szög háromszögeléseit és az \(n\) csúcsú bináris fákat. A kísérlet a három számolást egymás mellé teszi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aa-c-n">n <input type="range" id="aa-c-n" min="1" max="14" value="6"> <span class="mono" id="aa-c-nv">6</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="aa-c-t"></table></div>
+      <div class="info" id="aa-c-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tükrözési elv csak az utak és azok tükörképei közti kölcsönösen egyértelmű megfeleltetést használja. A \(\binom{2n}{n-1}\) számolása az \((n-1,n+1)\) végpontra az utak megszámlálását jelenti.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-newton">
+  <div class="body">
+    <div class="eyebrow">§3 · Newton binomiális sora</div>
+    <h2>Gyökök és hatványok sora</h2>
+    <p>Tetszőleges valós \(r\)-re és \(|x|\lt1\)-re</p>
+    <div class="eq gold">\[(1+x)^r=\sum_{k\ge0}\binom rk x^k.\]</div>
+    <p>Természetes \(r\)-nél a sor véges, és visszaadja a binomiális tételt. Az \(r=\tfrac12\) esetben a gyök sora: \(\sqrt{1+x}=1+\tfrac12x-\tfrac18x^2+\tfrac1{16}x^3-\tfrac5{128}x^4+\cdots\). A \(\binom{1/2}k\) együtthatók nem véletlenek: \(\binom{1/2}k=\dfrac{(-1)^{k-1}}{2^{2k-1}}\,C_{k-1}\), vagyis a Catalan-számok (\(k\ge1\)). A kísérlet az első \(N\) tag összegét vezeti össze a pontos értékkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aa-w-r">r <select id="aa-w-r"><option value="0.5" selected>1/2 (négyzetgyök)</option><option value="-0.5">−1/2</option><option value="-1">−1</option><option value="0.3333333333333333">1/3 (köbgyök)</option><option value="1.5">3/2</option></select></label>
+        <label class="rng" for="aa-w-x">x <input type="range" id="aa-w-x" min="-0.9" max="0.9" step="0.05" value="0.2"> <span class="mono" id="aa-w-xv">0,2</span></label>
+        <label class="rng" for="aa-w-n">tagok száma <input type="range" id="aa-w-n" min="1" max="30" value="4"> <span class="mono" id="aa-w-nv">4</span></label>
+      </div>
+      <div class="info" id="aa-w-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A konvergencia \(|x|\lt1\) esetén garantált, de \(|x|\) közelítésével egyre lassabb. Állítsd \(x\)-et \(0{,}9\)-re, és nézd meg, mennyi tag kell ugyanahhoz a pontossághoz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Negatív index, Catalan, gyök</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(\binom{-4}3\).</span></summary>
+      <div class="ans">
+        <p>\(\binom{-4}3=(-1)^3\binom{4+3-1}3=-\binom63=-20\). Közvetlenül: \((-4)(-5)(-6)/6=-120/6=-20\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mennyi az \(x^5\) együtthatója az \(1/(1-x)^4\) sorában?</span></summary>
+      <div class="ans">
+        <p>\(\binom{4+5-1}5=\binom85=56\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány út vezet \((0,0)\)-ból \((6,6)\)-ba az átlót át nem lépve?</span></summary>
+      <div class="ans">
+        <p>\(C_6=\tfrac17\binom{12}6=\tfrac{924}7=132\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Közelítsd \(\sqrt{1{,}2}\)-t a binomiális sor első négy tagjával.</span></summary>
+      <div class="ans">
+        <p>\(x=0{,}2\): \(1+0{,}1-0{,}005+0{,}0005=1{,}0955\). A pontos érték \(1{,}09545\ldots\), a hiba kb. \(5\cdot10^{-5}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat egyben a hat pár zárójel helyes elrendezéseinek száma is.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aa-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A fortélyok</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Fortély</th><th>Képlet</th></tr>
+      <tr><th>negatív felső index</th><td>\(\binom{-r}k=(-1)^k\binom{r+k-1}k\)</td></tr>
+      <tr><th>\(1/(1-x)^r\) sora</th><td>\(\sum\binom{r+k-1}kx^k\)</td></tr>
+      <tr><th>Catalan-szám</th><td>\(C_n=\tfrac1{n+1}\binom{2n}n\)</td></tr>
+      <tr><th>rekurzió</th><td>\(C_{n+1}=\sum C_kC_{n-k}\)</td></tr>
+      <tr><th>binomiális sor</th><td>\((1+x)^r=\sum\binom rkx^k,\ |x|\lt1\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd át</b><span>Leeső hatvány negatív indexre.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Tükrözz</b><span>A rossz utak is utak.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Fejts sorba</b><span>Valós kitevőre a sor végtelen.</span></div>
+    </div>
+    <p>A következő téma a generátorfüggvények: az együtthatók sorozatát egyetlen függvénybe csomagoljuk.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
