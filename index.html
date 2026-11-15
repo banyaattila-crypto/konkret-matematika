@@ -5670,6 +5670,541 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 5.5 HIPERGEOMETRIKUS FÜGGVÉNYEK ================= -->
+<header class="hero page" id="bc-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.5</div>
+    <h1>Hipergeometrikus függvények</h1>
+    <p class="lead">Sok összeg tagjai közös tulajdonságot mutatnak: két szomszédos tag hányadosa a \(k\) racionális függvénye. Az ilyen összegek egyetlen paraméteres családba rendezhetők, és ezzel egy tucat azonosság egyetlen azonosság különböző alakja lesz.</p>
+    <div class="formula">\(\displaystyle F\!\left({a_1,\dots,a_p\atop b_1,\dots,b_q}\Big|\,z\right)=\sum_{k\ge0}\frac{a_1^{\overline k}\cdots a_p^{\overline k}}{b_1^{\overline k}\cdots b_q^{\overline k}}\,\frac{z^k}{k!}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bc-hero" role="img" aria-label="A \(\binom nk^2\) tagok oszlopdiagramja n = 1…10-re; összegük \(\binom{2n}{n}\)"></svg>
+    <div class="counter"><span id="bc-hero-a">Σ C(n,k)²</span><span id="bc-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A binomiális összegek (5.2) mindegyikéhez külön ötlet kellett: elnyelés, szimmetria, Vandermonde. A hipergeometrikus nyelv azt kérdezi, mi közös bennük. A válasz a tagok hányadosa: a \(\binom nk^2\) tagjainak hányadosa \(\bigl(\tfrac{n-k}{k+1}\bigr)^2\), a Catalan-számoké \(\tfrac{2(2k+1)}{k+2}\) lesz. Az a sor, amelyben ez a hányados racionális függvény, hipergeometrikus, és a függvény az együtthatók (az „a” és „b” paraméterek) listájával megadható. A képen a \(\binom nk^2\) tagjai láthatók: összegük a Vandermonde-azonosság szerint \(\binom{2n}{n}\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bc-tagarany">
+  <div class="body">
+    <div class="eyebrow">§1 · A tagarány-szabály</div>
+    <h2>Mikor hipergeometrikus egy tagsorozat?</h2>
+    <p>A \(t_k\) tagsorozat hipergeometrikus, ha a \(t_{k+1}/t_k\) hányados \(k\)-nak racionális függvénye. Ha ezt szorzatra bontjuk,</p>
+    <div class="eq gold">\[\frac{t_{k+1}}{t_k}=\frac{(k+a_1)(k+a_2)\cdots(k+a_p)}{(k+b_1)\cdots(k+b_q)\,(k+1)}\,z,\]</div>
+    <p>akkor a \(t_0=1\) kezdéssel \(t_k=\dfrac{a_1^{\overline k}\cdots a_p^{\overline k}}{b_1^{\overline k}\cdots b_q^{\overline k}}\,\dfrac{z^k}{k!}\), ahol \(x^{\overline k}=x(x+1)\cdots(x+k-1)\) a növekvő faktoriális. A nevezőben mindig szerepel a \(k+1\), mert ez adja a \(k!\)-t. Ha a racionális függvényben nincs ilyen tényező, felvesszük a \((k+1)/(k+1)\)-et, tehát az \(1\) paramétert a számlálóba tesszük.</p>
+    <p>Példák. A \(\binom nk\) hányadosa \(\tfrac{n-k}{k+1}=\tfrac{k-n}{k+1}\cdot(-1)\), ezért \(\sum_k\binom nkz^k=F(-n\,|\,-z)\) alakban hipergeometrikus. A \(\binom nk^2\) hányadosa \(\tfrac{(k-n)^2}{(k+1)^2}\), tehát \(\sum_k\binom nk^2=F(-n,-n;1\,|\,1)\).</p>
+    <p>Nem minden sor hipergeometrikus. A Fibonacci-számokra \(F_{k+1}/F_k\to\varphi=\tfrac{1+\sqrt5}2\). Ha ez \(k\) racionális együtthatós racionális függvénye volna, a \(k\to\infty\) határértéke vagy a főegyütthatók hányadosa (racionális), vagy végtelen volna. A \(\varphi\) irracionális, ez ellentmondás.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bc-t-s">tagsorozat <select id="bc-t-s"><option value="bin">C(n,k)</option><option value="sq">C(n,k)²</option><option value="cat">Catalan: C(2k,k)/(k+1)</option><option value="fact">k!</option><option value="inv">1/k!</option><option value="fib">Fibonacci Fₖ</option></select></label>
+        <label class="rng" for="bc-t-n">n <input type="range" id="bc-t-n" min="2" max="12" value="6"> <span class="mono" id="bc-t-nv">6</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bc-t-t"></table></div>
+      <div class="info" id="bc-t-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tagarány egyetlen racionális függvény. Ez azt jelenti, hogy a sor „véges leírású”: a tagokat nem kell képlettel megadni, elég az \(a_i\), \(b_j\) listát és \(z\)-t ismerni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bc-fuggveny">
+  <div class="body">
+    <div class="eyebrow">§2 · A függvény</div>
+    <h2>Gauss-féle F(a, b; c | z) és a kapcsolt értékek</h2>
+    <p>A legfontosabb eset \(p=2\), \(q=1\): ez a Gauss-féle hipergeometrikus függvény,</p>
+    <div class="eq">\[F(a,b;c\,|\,z)=\sum_{k\ge0}\frac{a^{\overline k}\,b^{\overline k}}{c^{\overline k}}\frac{z^k}{k!},\qquad\frac{t_{k+1}}{t_k}=\frac{(k+a)(k+b)}{(k+c)(k+1)}\,z.\]</div>
+    <p>Ha az \(a\) vagy a \(b\) nem pozitív egész, a sor véges (a \(0\) tényező miatt): polinomot kapunk. Különben az \(|z|<1\) esetben konvergens. A \(z=1\) értékre két alapvető formula:</p>
+    <div class="eq gold">\[F(-m,b;c\,|\,1)=\frac{(c-b)^{\overline m}}{c^{\overline m}}\quad\text{(Chu–Vandermonde)},\qquad F(a,b;c\,|\,1)=\frac{\Gamma(c)\,\Gamma(c-a-b)}{\Gamma(c-a)\,\Gamma(c-b)}\quad\text{(Gauss)}.\]</div>
+    <p>A Gauss-képlet érvényességi feltétele \(c-a-b>0\) (különben a sor divergál), és a \(c\) nem lehet nem pozitív egész. A Chu–Vandermonde-azonosság a Vandermonde-azonosság (5.2) hipergeometrikus alakja: a \(b=-n\), \(c=r-n\) választással a megszokott \(\sum_k\binom mk\binom n{r-k}\)-t kapjuk vissza. A kísérletben \(a,b,c\) egészek, \(z\) tört; a program a tagokat pontos törtekkel számolja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bc-g-a">a <input type="range" id="bc-g-a" min="-8" max="8" value="-5"> <span class="mono" id="bc-g-av">−5</span></label>
+        <label class="rng" for="bc-g-b">b <input type="range" id="bc-g-b" min="-8" max="8" value="2"> <span class="mono" id="bc-g-bv">2</span></label>
+        <label class="rng" for="bc-g-c">c <input type="range" id="bc-g-c" min="1" max="12" value="4"> <span class="mono" id="bc-g-cv">4</span></label>
+        <label class="rng" for="bc-g-z">z <select id="bc-g-z"><option>1</option><option>-1</option><option>1/2</option><option>-1/2</option><option>1/3</option><option>2</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bc-g-t"></table></div>
+      <div class="info" id="bc-g-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A nevezetes függvények mind hipergeometrikusak: \(\sum z^k=F(1,1;1\,|\,z)\), \(e^z\) a \(p=q=0\) eset, \((1-z)^{-a}=F(a,1;1\,|\,z)\). Az \(F(1,1;1|z)\) azért geometriai sor, mert a \(k+a\) és a \(k+b\) tényező kiegyszerűsödik a nevezővel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bc-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Hányados, paraméterek, értékek</h2>
+    <details>
+      <summary><span class="sq">1. Mi a Catalan-számok \(C_k=\tfrac1{k+1}\binom{2k}k\) tagaránya, és melyik \(F\)-függvény generálja őket?</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{C_{k+1}}{C_k}=\dfrac{2(2k+1)}{k+2}=\dfrac{(k+\tfrac12)(k+1)}{(k+2)(k+1)}\cdot4\), tehát \(\sum_kC_kx^k=F(\tfrac12,1;2\,|\,4x)\). <b>Ellenőrzés:</b> \(k=0,1,2\)-re a hányados \(1,2,\tfrac52\), és \(C_1/C_0=1\), \(C_2/C_1=2\), \(C_3/C_2=5/2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Írd fel \(\sum_k\binom n k^2\)-et \(F\)-ként, és számold ki \(n=3\)-ra.</span></summary>
+      <div class="ans">
+        <p>\(F(-3,-3;1\,|\,1)=1+9+9+1=20=\binom63\). <b>Ellenőrzés:</b> a kísérlet \(a=b=-3\), \(c=1\), \(z=1\) beállítással 20-at ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki az \(F(-3,2;4\,|\,1)\)-et a Chu–Vandermonde képlettel és közvetlenül.</span></summary>
+      <div class="ans">
+        <p>\((c-b)^{\overline3}/c^{\overline3}=\dfrac{2\cdot3\cdot4}{4\cdot5\cdot6}=\dfrac15\). Közvetlenül a tagok \(1,-\tfrac32,\tfrac9{10},-\tfrac15\), összegük \(\tfrac15\). <b>Ellenőrzés:</b> \(1-1{,}5+0{,}9-0{,}2=0{,}2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Miért nem hipergeometrikus a \(t_k=H_k\) (a \(k\)-adik harmonikus szám)?</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{H_{k+1}}{H_k}-1=\dfrac1{(k+1)H_k}\sim\dfrac1{k\ln k}\), mert \(H_k\sim\ln k\). Ha a hányados racionális függvény volna, \(R(k)-1\) vagy azonosan 0, vagy \(\sim c\,k^{-m}\) volna valamely egész \(m\ge1\)-re és \(c\ne0\)-ra. Az \(m=1\) esetben \(k\,(R-1)\to c\), de itt \(k\,(R-1)\sim1/\ln k\to0\). Az \(m\ge2\) esetben \(k^m(R-1)\to c\), itt viszont \(k^m/(k\ln k)\to\infty\). Egyik sem lehetséges. <b>Ellenőrzés:</b> \(H_2/H_1=\tfrac32\), \(H_3/H_2=\tfrac{11}{9}\), a hányados valóban 1-hez közelít, de nem \(c/k^m\) sebességgel. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A harmonikus számok részletösszegekkel való kapcsolata az 5.8-ban jön elő: ott látjuk, hogy \(\sum1/k\) nem összegezhető zárt alakban.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bc-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Hogyan olvasd le a paramétereket?</h2>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Hányados</b><span>Számítsd ki \(t_{k+1}/t_k\)-t.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Tényezők</b><span>Bontsd \((k+a_i)\) és \((k+b_j)\) szorzatra.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Paraméterek</b><span>Pótold a \((k+1)\)-et, és olvasd le \(z\)-t.</span></div>
+    </div>
+    <p>A következő téma, az 5.6, a hipergeometrikus transzformációk: azonosságok, amelyek az \(F\) paramétereit alakítják át.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
+<!-- ================= 5.6 HIPERGEOMETRIKUS TRANSZFORMÁCIÓK ================= -->
+<header class="hero page" id="bd-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.6</div>
+    <h1>Hipergeometrikus transzformációk</h1>
+    <p class="lead">Ugyanaz az érték sokféle \(F\)-alakban írható. Az átalakító szabályok a paramétereket cserélik, és minden alkalommal új azonosságot adnak: ami az egyik alakban nehéz összeg, a másikban egy ismert érték.</p>
+    <div class="formula">\(\displaystyle F(a,b;c\,|\,z)=(1-z)^{-a}\,F\!\left(a,\,c-b;\,c\,\Big|\,\tfrac{z}{z-1}\right)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bd-hero" role="img" aria-label="Egy hipergeometrikus polinom két alakjának tagjai: a tagok mások, az összeg ugyanaz"></svg>
+    <div class="counter"><span id="bd-hero-a">Pfaff-transzformáció</span><span id="bd-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen egy polinom két alakja látható. A bal oldali tagjai az eredeti sor, a jobb oldali tagjai a transzformált sor tagjai. A két oszlopsor teljesen különböző, de az összegük azonos, ha a transzformált sort a \((1-z)^{-a}\) tényezővel szorozzuk. A módszer ereje abban áll, hogy egy bonyolult tagú összeget olyan alakra hozunk, amelyre már ismerjük az értékét, például a Chu–Vandermonde-képlettel (5.5).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bd-pfaff">
+  <div class="body">
+    <div class="eyebrow">§1 · Pfaff</div>
+    <h2>A Pfaff-transzformáció és bizonyítása</h2>
+    <p>Az állítás formális hatványsorokra igaz, és polinomra (ha \(a=-n\)) minden \(z\neq1\)-re is:</p>
+    <div class="eq gold">\[F(a,b;c\,|\,z)=(1-z)^{-a}\,F\!\left(a,\,c-b;\,c\,\Big|\,\frac z{z-1}\right).\]</div>
+    <p>Bizonyítás. A jobb oldal \(k\)-adik tagja \(\dfrac{a^{\overline k}(c-b)^{\overline k}}{c^{\overline k}k!}(-1)^kz^k(1-z)^{-a-k}\). A \((1-z)^{-a-k}=\sum_j\frac{(a+k)^{\overline j}}{j!}z^j\) sorból a \(z^n\) együtthatója a jobb oldalon</p>
+    <div class="eq">\[\sum_{k=0}^n\frac{a^{\overline k}(c-b)^{\overline k}(-1)^k}{c^{\overline k}\,k!}\cdot\frac{(a+k)^{\overline{n-k}}}{(n-k)!}=\frac{a^{\overline n}}{n!}\sum_{k=0}^n\binom nk\frac{(c-b)^{\overline k}(-1)^k}{c^{\overline k}},\]</div>
+    <p>mert \(a^{\overline k}(a+k)^{\overline{n-k}}=a^{\overline n}\). A belső összeg \(F(-n,c-b;c\,|\,1)\), és a Chu–Vandermonde-képlet szerint \(\dfrac{(c-(c-b))^{\overline n}}{c^{\overline n}}=\dfrac{b^{\overline n}}{c^{\overline n}}\). A \(z^n\) együtthatója tehát \(\dfrac{a^{\overline n}b^{\overline n}}{c^{\overline n}n!}\), éppen a bal oldalé. \(\square\) (A bizonyítás a Chu–Vandermonde-képletre támaszkodik, amelyet az 5.5-ben állítottunk, a kísérletekben pontos törtekkel ellenőriztünk, és hipergeometrikus alakja az 5.2-beli Vandermonde-azonosság.)</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bd-p-n">n <input type="range" id="bd-p-n" min="1" max="8" value="3"> <span class="mono" id="bd-p-nv">3</span></label>
+        <label class="rng" for="bd-p-b">b <input type="range" id="bd-p-b" min="-3" max="9" value="2"> <span class="mono" id="bd-p-bv">2</span></label>
+        <label class="rng" for="bd-p-c">c <input type="range" id="bd-p-c" min="1" max="10" value="4"> <span class="mono" id="bd-p-cv">4</span></label>
+        <label class="rng" for="bd-p-z">z <select id="bd-p-z"><option>1/2</option><option>-1/3</option><option>2</option><option>3/2</option><option>-1</option><option>3</option></select></label>
+      </div>
+      <div class="info" id="bd-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(z/(z-1)\) helyettesítés a \(z\in(-\infty,\tfrac12)\) tartományt a \((-1,\ldots)\) tartományba viszi, ezért végtelen sorra a konvergencia tartománya az \(|z/(z-1)|<1\), azaz \(z<\tfrac12\). Polinomra nincs ilyen megkötés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-euler">
+  <div class="body">
+    <div class="eyebrow">§2 · Euler</div>
+    <h2>Az Euler-transzformáció: kétszer Pfaff</h2>
+    <p>Alkalmazzuk a Pfaff-transzformációt a jobb oldalra, a \(c-b\) és az \(a\) szerepét felcserélve. A \(w=z/(z-1)\) jelöléssel \(w/(w-1)=z\) és \(1-w=1/(1-z)\), tehát</p>
+    <div class="eq">\[F(a,b;c|z)=(1-z)^{-a}\,(1-w)^{-(c-b)}\,F(c-b,\,c-a;\,c\,|\,z)=(1-z)^{c-a-b}\,F(c-a,\,c-b;\,c\,|\,z).\]</div>
+    <p>Ez az Euler-transzformáció:</p>
+    <div class="eq gold">\[F(a,b;c\,|\,z)=(1-z)^{c-a-b}\,F(c-a,\,c-b;\,c\,|\,z).\]</div>
+    <p>Szokatlan következménye, hogy a két oldal sorfejtése együtthatónként megegyezik, bár a tagok teljesen különböznek. A kísérletben \(a,b,c\) egész, és a program a két oldal első 8 együtthatóját pontos törtekkel számolja ki.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bd-e-a">a <input type="range" id="bd-e-a" min="-4" max="6" value="1"> <span class="mono" id="bd-e-av">1</span></label>
+        <label class="rng" for="bd-e-b">b <input type="range" id="bd-e-b" min="-4" max="6" value="1"> <span class="mono" id="bd-e-bv">1</span></label>
+        <label class="rng" for="bd-e-c">c <input type="range" id="bd-e-c" min="1" max="10" value="3"> <span class="mono" id="bd-e-cv">3</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bd-e-t"></table></div>
+      <div class="info" id="bd-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(F(1,1;3|z)=(1-z)F(2,2;3|z)\) példában a bal oldal együtthatói \(1,\tfrac13,\tfrac16,\ldots\), a jobb oldalé a \((1-z)\)-vel szorzott \(1,\tfrac43,\tfrac32,\ldots\) sor: \(\tfrac43-1=\tfrac13\), \(\tfrac32-\tfrac43=\tfrac16\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-megfordit">
+  <div class="body">
+    <div class="eyebrow">§3 · Megfordítás</div>
+    <h2>A tagok sorrendjének megfordítása</h2>
+    <p>Ha az \(F\) polinom (\(a=-n\)), az összeget visszafelé is lehet olvasni: a \(t_{n-k}\) tagot felírva a \(k\)-adik tag helyett. Az \(x^{\overline{n-k}}=(-1)^k\,x^{\overline n}/(1-x-n)^{\overline k}\) azonosság minden tényezőre alkalmazva (a \((-n)^{\overline{n-k}}=(-1)^{n-k}n!/k!\) külön) a következőt adja:</p>
+    <div class="eq gold">\[F(-n,b;c\,|\,z)=(-z)^n\,\frac{b^{\overline n}}{c^{\overline n}}\,F\!\left(-n,\,1-c-n;\,1-b-n\,\Big|\,\frac1z\right).\]</div>
+    <p>Az azonosság akkor értelmes, ha a jobb oldal nevezői nem nullák: itt \(b\ge n\) esetén a \(1-b-n+k\) a \(k<n\) tartományban sosem nulla, és \(c\ge1\). A kísérlet erre a tartományra szorítkozik.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bd-r-n">n <input type="range" id="bd-r-n" min="1" max="7" value="3"> <span class="mono" id="bd-r-nv">3</span></label>
+        <label class="rng" for="bd-r-d">b − n <input type="range" id="bd-r-d" min="0" max="6" value="2"> <span class="mono" id="bd-r-dv">2</span></label>
+        <label class="rng" for="bd-r-c">c <input type="range" id="bd-r-c" min="1" max="8" value="4"> <span class="mono" id="bd-r-cv">4</span></label>
+        <label class="rng" for="bd-r-z">z <select id="bd-r-z"><option>1/2</option><option>-2</option><option>3/5</option><option>3</option><option>-1/3</option></select></label>
+      </div>
+      <div class="info" id="bd-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A megfordítás a polinom együtthatóit fordítja meg: a főegyüttható lesz a konstans tag. Ha \(z=1\), a két oldal ugyanannak az összegnek két olvasata.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Átalakítás kézzel</h2>
+    <details>
+      <summary><span class="sq">1. Ellenőrizd a Pfaff-transzformációt az \(F(-2,1;3\,|\,2)\) értékre.</span></summary>
+      <div class="ans">
+        <p>Bal: a tagok \(1,-\tfrac43,\tfrac23\), összeg \(\tfrac13\). Jobb: \((1-2)^2=1\), \(\tfrac z{z-1}=2\), \(F(-2,2;3\,|\,2)\) tagjai \(1,-\tfrac83,2\), összeg \(\tfrac13\). <b>Ellenőrzés:</b> \(1-\tfrac83+2=\tfrac13\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Igazold, hogy \(F(1,1;3\,|\,z)=(1-z)F(2,2;3\,|\,z)\) a \(z^2\) tagig.</span></summary>
+      <div class="ans">
+        <p>Bal: \(1+\tfrac13z+\tfrac16z^2\). Jobb: \(F(2,2;3)=1+\tfrac43z+\tfrac32z^2\), és \((1-z)\) szorzásával \(1+(\tfrac43-1)z+(\tfrac32-\tfrac43)z^2=1+\tfrac13z+\tfrac16z^2\). <b>Ellenőrzés:</b> a §2 kísérlet \(a=b=1\), \(c=3\) beállítással ugyanezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Fordítsd meg az \(F(-2,2;1\,|\,z)\) összeget.</span></summary>
+      <div class="ans">
+        <p>\(F(-2,2;1|z)=1-4z+3z^2\). A megfordított alak (az előtag \((-z)^2\cdot\tfrac{2\cdot3}{1\cdot2}=3z^2\)):</p><div class="eq">\[\begin{aligned}3z^2\,F(-2,-2;-3\,|\,\tfrac1z)&=3z^2\bigl(1-\tfrac4{3z}+\tfrac1{3z^2}\bigr)\\&=3z^2-4z+1.\end{aligned}\]</div><p><b>Ellenőrzés:</b> a két polinom azonos. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Írd a \(\sum_k\binom mk\binom n{r-k}\)-t \(F\)-ként, és számold ki \(m=2\), \(n=3\), \(r=2\)-re a Chu–Vandermonde-képlettel.</span></summary>
+      <div class="ans">
+        <p>A tagok hányadosa \(\dfrac{(k-m)(k-r)}{(k+1)(k+n-r+1)}\), tehát az összeg</p><div class="eq">\[\binom nr\,F(-m,-r;n-r+1\,|\,1)=\binom nr\frac{(n+1)^{\overline m}}{(n-r+1)^{\overline m}}.\]</div><p>Itt \(3\cdot\dfrac{4\cdot5}{2\cdot3}=10=\binom52\). <b>Ellenőrzés:</b></p><div class="eq">\[\begin{aligned}&\tbinom20\tbinom32+\tbinom21\tbinom31+\tbinom22\tbinom30\\&=3+6+1=10.\end{aligned}\]</div><p>\(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt mutatja, hogy az 5.2-beli Vandermonde-azonosság és a Chu–Vandermonde-képlet ugyanaz: csak a paraméterek elnevezése más.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Három szabály</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Név</th><th>Átalakítás</th></tr>
+      <tr><th>Pfaff</th><td>\((1-z)^{-a}F(a,c-b;c\,|\,\tfrac z{z-1})\)</td></tr>
+      <tr><th>Euler</th><td>\((1-z)^{c-a-b}F(c-a,c-b;c\,|\,z)\)</td></tr>
+      <tr><th>megfordítás</th><td>polinomra: \((-z)^n\tfrac{b^{\overline n}}{c^{\overline n}}F(-n,1-c-n;1-b-n\,|\,\tfrac1z)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd át</b><span>Hipergeometrikus alakba.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Transzformálj</b><span>Amíg ismert értéket nem kapsz.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrizd</b><span>Kis paraméterekkel, pontos törtekkel.</span></div>
+    </div>
+    <p>A következő téma, az 5.7, a parciális hipergeometrikus sorok: részleges összegek.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
+<!-- ================= 5.7 PARCIÁLIS HIPERGEOMETRIKUS SOROK ================= -->
+<header class="hero page" id="be-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.7</div>
+    <h1>Parciális hipergeometrikus sorok</h1>
+    <p class="lead">A teljes összeg (az összes \(k\)-ra) gyakran szép. A részletösszeg, amely csak az első \(m\) tagot adja, ritkán az. Néhány esetben mégis zárt alakja van, máskor csak rekurziót tudunk rá.</p>
+    <div class="formula">\(\displaystyle S_m=\sum_{k\le m}t_k,\qquad S_{m+1}-S_m=t_{m+1}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="be-hero" role="img" aria-label="A \(\binom{n}{k}\) részletösszegei a 2ⁿ arányában, m = 0…n-re"></svg>
+    <div class="counter"><span id="be-hero-a">Σ<sub>k≤m</sub> C(n,k) / 2ⁿ</span><span id="be-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A \(\sum_k\binom nk=2^n\) az egész sorra szól. Ha az összegzést félúton megállítjuk, a kép megváltozik: a \(\sum_{k\le m}\binom nk\) nem egyszerű képlet \(n\)-ben és \(m\)-ben. A képen az \(n=12\) sor részletösszegei a teljes összeg arányában látszanak: az arány szépen nő 0-ról 1-re, de \(m\)-ből nem olvasható le zárt alakban. Ezzel szemben a váltakozó előjelű \(\sum_{k\le m}(-1)^k\binom rk\)-nak van egyszerű alakja. A határ azon múlik, hogy a részletösszeg egy hipergeometrikus tag racionális többszöröse-e, ezt az 5.8 dönti el.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="be-zart">
+  <div class="body">
+    <div class="eyebrow">§1 · Amikor van zárt alak</div>
+    <h2>Teleszkópos részletösszegek</h2>
+    <p>A \(S_m\) zárt alakja azt jelenti, hogy \(S_m=R(m)\,t_m\) valamilyen racionális \(R\)-rel. Három példa, mindegyik teleszkópos bizonyítással:</p>
+    <p><b>(a)</b> \(\sum_{k\le m}(-1)^k\binom rk=(-1)^m\binom{r-1}m\). Indukcióval: az \(m\to m+1\) lépésben \((-1)^{m+1}\bigl[\binom{r-1}{m+1}+\binom{r-1}m\bigr]=(-1)^{m+1}\binom r{m+1}\), ami éppen a következő tag (Pascal-szabály). Itt \(S_m/t_m=\dfrac{r-m}r\).</p>
+    <p><b>(b)</b> \(\sum_{k\le m}\binom{n+k}k=\binom{n+m+1}m\) (hoki-ütő, 5.2). Az indukciós lépés ugyanaz a Pascal-szabály. Itt \(S_m/t_m=\dfrac{n+m+1}{n+1}\).</p>
+    <p><b>(c)</b> \(\sum_{k=1}^{m-1}k\cdot k!=m!-1\), mert \(k\cdot k!=(k+1)!-k!\). Az antidifferencia \(m!\), a „−1” a kezdőérték miatt van.</p>
+    <p>A kísérlet az (a) és (b) családra kiszámolja a részletösszeget közvetlenül és a képlettel is, pontos számokkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="be-z-f">család <select id="be-z-f"><option value="alt">(−1)ᵏ·C(r,k)</option><option value="hoki">C(n+k,k)</option></select></label>
+        <label class="rng" for="be-z-p">r vagy n <input type="range" id="be-z-p" min="2" max="14" value="7"> <span class="mono" id="be-z-pv">7</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="be-z-t"></table></div>
+      <div class="info" id="be-z-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A (c) példában a részletösszeg \(m!-1\) nem \(R(m)\cdot m!\)-alakú a „−1” miatt, az antidifferencia azonban \(m!\), és a részletösszeg az antidifferencia két értékének különbsége. Az 5.8 algoritmusa az antidifferenciát keresi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-rekurzio">
+  <div class="body">
+    <div class="eyebrow">§2 · Amikor nincs, de rekurzió van</div>
+    <h2>Binomiális részletösszeg és rekurziója</h2>
+    <p>Legyen \(S(n,m)=\sum_{k\le m}\binom nk x^k\). A Pascal-szabállyal \(\binom{n+1}k=\binom nk+\binom n{k-1}\), tehát</p>
+    <div class="eq">\[S(n+1,m)=S(n,m)+x\,S(n,m-1)=S(n,m)+x\bigl(S(n,m)-\tbinom nm x^m\bigr).\]</div>
+    <p>Innen</p>
+    <div class="eq gold">\[S(n+1,m)=(1+x)\,S(n,m)-\binom nm x^{m+1}.\]</div>
+    <p>Ez az \(n\) szerinti rekurzió pontos, de zárt alakot nem ad: az \(x=1\), azaz \(S(n+1,m)=2S(n,m)-\binom nm\) esetén \(S(n,m)\) a Pascal-háromszög sorainak részletösszege, és nincs olyan racionális \(R(n,m)\), amelyre \(S(n,m)=R(n,m)\binom nm\). Ezt az 5.8-ban a Gosper-algoritmus dönti el. A kísérletben \(x\) választható, és a rekurzió minden \(m\)-re ellenőrizve van.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="be-r-n">n <input type="range" id="be-r-n" min="1" max="16" value="8"> <span class="mono" id="be-r-nv">8</span></label>
+        <label class="rng" for="be-r-x">x <select id="be-r-x"><option>1</option><option>-1</option><option>2</option><option>3</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="be-r-t"></table></div>
+      <div class="info" id="be-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(x=-1\) esetben \(S(n,m)=(-1)^m\binom{n-1}m\) (a §1 (a) példa) zárt alakú, és a rekurzió ezt konzisztensen adja. Az \(x=1\) esetben nincs ilyen zárt alak.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-megfigyeles">
+  <div class="body">
+    <div class="eyebrow">§3 · Meglepő megfigyelés</div>
+    <h2>Egy részletösszeg, amelynek értéke egyszerű</h2>
+    <p>A \(\sum_{k=0}^{n}\binom{n+k}k\,2^{-k}\) összeg a felső határ miatt részletösszeg, mégis szép: \(2^n\). Az \(n=1\)-re \(1+\tfrac22=2\), \(n=2\)-re \(1+\tfrac32+\tfrac64=4\). Az állítás bizonyítása itt nem szerepel (az 5.8 Zeilberger-féle módszerével volna levezethető), a kísérlet \(n\le40\)-ig pontos számokkal ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="be-m-n">n <input type="range" id="be-m-n" min="1" max="40" value="10"> <span class="mono" id="be-m-nv">10</span></label>
+      </div>
+      <div class="info" id="be-m-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az összeg a „határ” példája: a \(\binom{n+k}k\) és a \(2^{-k}\) paraméterei külön-külön nem mutatják, hogy a részletösszeg zárt alakú. Egy ilyen megfigyelés kísérletből indul, és csak később kap bizonyítást.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Teleszkóp és rekurzió</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\sum_{k\le4}\binom{3+k}k\)-t közvetlenül és a képlettel.</span></summary>
+      <div class="ans">
+        <p>\(1+4+10+20+35=70\), a képlet \(\binom{3+4+1}4=\binom84=70\). <b>Ellenőrzés:</b> az indukciós lépés \(\binom{n+m+1}m+\binom{n+m+1}{m+1}=\binom{n+m+2}{m+1}\) a Pascal-szabály. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mennyi \(\sum_{k=1}^{4}k\cdot k!\)?</span></summary>
+      <div class="ans">
+        <p>\(k\cdot k!=(k+1)!-k!\), a teleszkóp \(5!-1!=119\). <b>Ellenőrzés:</b> \(1+4+18+96=119\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki \(\sum_{k\le4}(-1)^k\binom7k\)-t.</span></summary>
+      <div class="ans">
+        <p>\(1-7+21-35+35=15\), a képlet \((-1)^4\binom64=15\). <b>Ellenőrzés:</b> \(S_m/t_m=\tfrac{7-4}7\) és \(t_4=35\), \(\tfrac37\cdot35=15\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Az \(S(n+1,m)=2S(n,m)-\binom nm\) rekurzióval számold ki \(S(6,2)\)-t az \(S(5,2)\)-ből.</span></summary>
+      <div class="ans">
+        <p>\(S(5,2)=1+5+10=16\), \(\binom52=10\), tehát \(S(6,2)=2\cdot16-10=22\). <b>Ellenőrzés:</b> közvetlenül \(1+6+15=22\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat mutatja, hogy a rekurzió pontos eszköz akkor is, ha zárt alak nincs: \(S(n,m)\) minden értéke sorban kiszámítható.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Zárt alak, rekurzió, megfigyelés</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Helyzet</th><th>Eszköz</th></tr>
+      <tr><th>teleszkóp</th><td>\(t_k=z(k+1)-z(k)\), az összeg \(z(m+1)-z(0)\)</td></tr>
+      <tr><th>nincs zárt alak</th><td>rekurzió \(n\) szerint (Pascal-szabály)</td></tr>
+      <tr><th>megfigyelés</th><td>kísérlet, bizonyítás később</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Próbálj teleszkópot</b><span>Keress \(z\)-t, amelyre \(z(k+1)-z(k)=t_k\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Ha nincs, a Pascal-szabály gyakran ad rekurziót.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Dönts</b><span>Az 5.8 algoritmusa eldönti, van-e \(z\).</span></div>
+    </div>
+    <p>A következő téma, az 5.8, a mechanikus összegzés: a Gosper-algoritmus.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
+<!-- ================= 5.8 MECHANIKUS ÖSSZEGZÉS ================= -->
+<header class="hero page" id="bf-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.8</div>
+    <h1>Mechanikus összegzés</h1>
+    <p class="lead">Van-e egy hipergeometrikus tag részletösszegének zárt alakja? Gosper algoritmusa ezt véges számú lépésben eldönti, és ha van, meg is adja. Az algoritmus nem ötlet, hanem számítás.</p>
+    <div class="formula">\(\displaystyle t_k=z(k+1)-z(k),\qquad z(k)=\frac{b(k-1)\,x(k)}{c(k)}\,t_k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bf-hero" role="img" aria-label="A k·k! tagjai a z(k)=k! antidifferencia lépcsőjén"></svg>
+    <div class="counter"><span id="bf-hero-a">k·k! = (k+1)! − k!</span><span id="bf-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A teleszkópos összegzés ötletet kíván: az embernek rá kell jönnie, hogy \(k\cdot k!=(k+1)!-k!\). Az algoritmus ezt az ötletet számítással helyettesíti. A képen a \(k\cdot k!\) tagjai egy lépcsőt építenek: minden oszlop az előző oszlop és a hozzáadott tag, az oszlopok magassága \(k!\). Az algoritmus megkeresi ezt a lépcsőt, vagy kimutatja, hogy nincs. A nevét Gosperről (1978) kapta; a részletes forrást nem ellenőriztem.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bf-gosper">
+  <div class="body">
+    <div class="eyebrow">§1 · A Gosper-algoritmus</div>
+    <h2>Négy lépés</h2>
+    <p>Legyen \(t_{k+1}/t_k=z\prod(k+a_i)/\prod(k+b_j)\) hipergeometrikus tag. Az \(\sum t_k\) <em>határozatlan összege</em> egy \(z(k)\) hipergeometrikus tag, amelyre \(z(k+1)-z(k)=t_k\); ekkor \(\sum_{k=k_0}^{m-1}t_k=z(m)-z(k_0)\).</p>
+    <p><b>1. lépés (normálalak).</b> Keressük az \(a,b,c\) polinomokat, amelyekkel</p>
+    <div class="eq">\[\frac{t_{k+1}}{t_k}=\frac{a(k)}{b(k)}\cdot\frac{c(k+1)}{c(k)},\qquad\gcd\bigl(a(k),b(k+h)\bigr)=1\ \ (h=0,1,2,\ldots).\]</div>
+    <p>Kezdjük \(a=z\prod(k+a_i)\), \(b=\prod(k+b_j)\), \(c=1\)-gyel. Ha valamely \(i,j\) párra \(h=a_i-b_j\) nemnegatív egész, akkor \(g=k+a_i\) közös tényező \(a(k)\) és \(b(k+h)\) között. Ilyenkor \(a\)-ból elhagyjuk a \(g(k)\)-t, \(b\)-ből a \(g(k-h)=k+b_j\)-t, és \(c\)-t megszorozzuk \(\prod_{i'=1}^{h}g(k-i')\)-vel. A hányados nem változik, mert \(c(k+1)/c(k)\) új szorzója \(g(k)/g(k-h)\), ami kiejti az \(a\) és \(b\) változását. Addig ismételjük, amíg van ilyen pár.</p>
+    <p><b>2. lépés (egyenlet).</b> A keresett \(z(k)=\dfrac{b(k-1)x(k)}{c(k)}t_k\) alakban \(z(k+1)-z(k)=t_k\) pontosan akkor áll, ha</p>
+    <div class="eq gold">\[a(k)\,x(k+1)-b(k-1)\,x(k)=c(k).\]</div>
+    <p><b>3. lépés (fokszám).</b> \(x\) polinom, fokszámára korlát adható. Ha \(\deg a\ne\deg b\) vagy a főegyütthatók különböznek, \(\deg x=\deg c-\max(\deg a,\deg b)\). Ha egyeznek (\(m=\deg a\), \(\alpha\) a főegyüttható, \(a_1\) és \(\beta_1\) az \(a(k)\), illetve \(b(k-1)\) \(k^{m-1}\) együtthatója), akkor \(\deg x\le\max\bigl(\deg c-m+1,\ (\beta_1-a_1)/\alpha\bigr)\), utóbbi csak ha nemnegatív egész. Ha a korlát negatív, nincs megoldás.</p>
+    <p><b>4. lépés (lineáris rendszer).</b> Az \(x\) ismeretlen együtthatóira lineáris egyenletrendszert kapunk. Ha megoldható, kész a \(z(k)\). Ha nem, a tagnak nincs hipergeometrikus antidifferenciája: az algoritmus nem „nem talált valamit”, hanem kimutatta, hogy nincs. (A teljességi tétel Gosperé, bizonyítása itt nem szerepel.)</p>
+    <p>A kísérlet ezt a négy lépést végzi pontos törtekkel, majd ellenőrzi, hogy \(z(k+1)-z(k)=t_k\) teljesül-e a tagok konkrét értékein, és a részletösszegek egyeznek-e.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bf-g-s">tag <select id="bf-g-s"></select></label>
+      </div>
+      <div class="info" id="bf-g-info"></div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bf-g-t"></table></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az ellenőrzés független az algoritmustól: a \(z\)-t a program az \(x(k)\), \(b\), \(c\) polinomokból építi, a tagokat pedig a hányados-szabályból, tehát a \(z(k+1)-z(k)=t_k\) egyezés valódi próba. A „nem összegezhető” ítéletet viszont nem lehet így próbálni, ott az algoritmus teljességére támaszkodunk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-nincs">
+  <div class="body">
+    <div class="eyebrow">§2 · Amikor nincs</div>
+    <h2>Mi nem összegezhető, és miért</h2>
+    <p>Az \(\sum1/k\) (harmonikus), \(\sum k!\), \(\sum\binom{2k}k\), \(\sum1/k^2\) mind kudarcot vall: az egyenlet nem oldható meg polinomban. A \(1/k\) tagra a hányados \(k/(k+1)\), nincs nemnegatív egész \(h\), tehát \(a=k\), \(b=k+1\), \(c=1\). Az egyenlet \(k\,x(k+1)-k\,x(k)=1\): a bal oldal minden polinom \(x\)-re \(k\)-val osztható, a jobb oldal 1. Nincs megoldás, tehát a harmonikus számokat nem lehet zárt hipergeometrikus alakban összegezni (ezért kell a \(H_n\) jelölés).</p>
+    <p>A binomiális sor részletösszege is idetartozik. A \(t_k=\binom nk\) hányadosa \(-\dfrac{k-n}{k+1}\), azaz \(a=-(k-n)\), \(b=k+1\). A \(h=a_i-b_j=-n-1<0\), nincs eltolás. Az egyenlet \(-(k-n)x(k+1)-k\,x(k)=1\): a főegyütthatók \(-1\) és \(1\), különböznek, tehát \(\deg x=\deg c-1=-1\). Nincs polinom \(x\), így \(\sum_{k\le m}\binom nk\) (szimbolikus \(n\)-re) nem \(R(m)\binom nm\) alakú. Ez az, amit az 5.7 előre jelzett.</p>
+  </div>
+  <aside class="margo">
+    <p>A „nincs zárt alak” állítás pontos jelentése: nincs hipergeometrikus tag, amelynek differenciája a \(t_k\). Más típusú zárt alak (például több hipergeometrikus tag összege) ettől még lehetséges, de az más kérdés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-zeilberger">
+  <div class="body">
+    <div class="eyebrow">§3 · Zeilberger</div>
+    <h2>Ha a tag két változótól függ</h2>
+    <p>A \(\sum_k F(n,k)\) összeg \(n\)-től is függ, ezért a Gosper-módszer közvetlenül nem alkalmazható. Zeilberger gondolata: keressünk olyan \(G(n,k)=R(n,k)F(n,k)\) „tanúsítványt” és \(\sigma_i(n)\) együtthatókat, amelyekkel</p>
+    <div class="eq">\[\sum_i\sigma_i(n)F(n+i,k)=G(n,k+1)-G(n,k).\]</div>
+    <p>Ha \(G\) eltűnik a határokon, \(k\) szerinti összegzéssel a \(\sum_i\sigma_i(n)S(n+i)=0\) rekurziót kapjuk \(S(n)=\sum_kF(n,k)\)-ra. Az algoritmust itt nem valósítjuk meg: két ismert tanúsítványt ellenőrzünk. A \(\binom nk\)-ra \(F(n+1,k)-2F(n,k)=G(n,k+1)-G(n,k)\) a \(G(n,k)=-\binom n{k-1}\) tanúsítvánnyal (ez a Pascal-szabály), amelyből \(S(n+1)=2S(n)\), azaz \(S(n)=2^n\). A \(\binom nk^2\)-re a megfelelő rekurzió \((n+1)S(n+1)=2(2n+1)S(n)\), tanúsítványa pedig</p>
+    <div class="eq gold">\[G(n,k)=-\frac{k^2(3n+3-2k)}{(n+1)^2}\binom{n+1}k^{2}.\]</div>
+    <p>Ebből \(S(n)=\binom{2n}n\) következik (\(S(0)=1\)-ből indulva). A tanúsítványt én számoltam ki és a kísérlet minden \(n\le30\)-ra és \(k\)-ra pontos törtekkel ellenőrzi, de a racionális azonosság szimbolikus levezetését nem végeztem el. Ezért ez ellenőrzött állítás, nem teljes bizonyítás.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bf-z-f">tag <select id="bf-z-f"><option value="b1">C(n,k) → 2ⁿ</option><option value="b2">C(n,k)² → C(2n,n)</option></select></label>
+        <label class="rng" for="bf-z-n">n-ig <input type="range" id="bf-z-n" min="1" max="30" value="12"> <span class="mono" id="bf-z-nv">12</span></label>
+      </div>
+      <div class="info" id="bf-z-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Zeilberger-algoritmus magja a Gosper-algoritmus egy olyan változata, amelyben a \(\sigma_i(n)\) együtthatók is ismeretlenek. A teljes tárgyalás és a bizonyítás a Petkovšek–Wilf–Zeilberger „A=B” könyvben található, ezt itt nem tárgyaljuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Gosper kézzel</h2>
+    <details>
+      <summary><span class="sq">1. Összegezd a \(k\,2^k\)-t Gosperrel.</span></summary>
+      <div class="ans">
+        <p>A hányados \(2(k+1)/k\): \(a=2(k+1)\), \(b=k\). A \(h=1-0=1\) eltolással \(g=k+1\): \(a=2\), \(b=1\), \(c=k\). Az egyenlet \(2x(k+1)-x(k)=k\), a főegyütthatók különböznek, \(\deg x=1\), \(x=k-2\). Így \(z(k)=\dfrac{1\cdot(k-2)}{k}\cdot k2^k=(k-2)2^k\). <b>Ellenőrzés:</b> \(z(m)-z(1)=(m-2)2^m+2\); \(m=4\)-re \(2\cdot16+2=34=2+8+24\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Összegezd az \(1/(k(k+1))\)-et.</span></summary>
+      <div class="ans">
+        <p>A hányados \(k/(k+2)\): \(a=k\), \(b=k+2\), nincs eltolás, \(c=1\). Az egyenlet \(k\,x(k+1)-(k+1)x(k)=1\), a főegyütthatók egyeznek, a fokszámkorlát \(\max(0,\ 1)=1\). A \(x=\alpha k+\beta\) helyettesítés \(-\beta=1\)-et ad, \(x=-1\). Így \(z(k)=(k+1)(-1)\cdot\tfrac1{k(k+1)}=-\tfrac1k\). <b>Ellenőrzés:</b> \(\sum_{k=1}^{m-1}=1-\tfrac1m\); \(m=3\)-ra \(\tfrac12+\tfrac16=\tfrac23=1-\tfrac13\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Miért nem összegezhető \(\sum k!\)?</span></summary>
+      <div class="ans">
+        <p>A hányados \(k+1\): \(a=k+1\), \(b=1\), \(c=1\), nincs eltolás. Az egyenlet \((k+1)x(k+1)-x(k)=1\), a főegyütthatók: \(a\) foka 1, \(b\) foka 0, különböznek, \(\deg x=\deg c-\max(1,0)=-1\). Nincs megoldás. <b>Ellenőrzés:</b> a kísérlet a \(k!\) tagra is ezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Ellenőrizd a \(\binom nk\) Zeilberger-tanúsítványát \(n=2\), \(k=1\)-re.</span></summary>
+      <div class="ans">
+        <p>Bal oldal: \(F(3,1)-2F(2,1)=3-4=-1\). Jobb oldal:</p><div class="eq">\[\begin{aligned}G(2,2)-G(2,1)&=-\tbinom21+\tbinom20\\&=-2+1=-1.\end{aligned}\]</div><p><b>Ellenőrzés:</b> a két oldal egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat mutatja a legfontosabbat: az eltolás (\(h=1\)) nélkül a \(c\)-polinom nem épült volna fel, és a fokszámkorlát hibás lett volna. A szabály gépi alkalmazása pótolja az ötletet.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A döntési eljárás</h2>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Normálalak</b><span>\(a,b,c\) az eltolások kiejtésével.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Egyenlet</b><span>\(a\,x(k{+}1)-b(k{-}1)\,x(k)=c\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Megoldás</b><span>Fokszámkorlát, lineáris rendszer.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">4</span><b>Ellenőrzés</b><span>\(z(k{+}1)-z(k)=t_k\).</span></div>
+    </div>
+    <p>Ezzel az 5. fejezet minden könyvszakasza elkészült. A következő a 6. fejezet hiányzó szakaszai.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
 <!-- ================= 5.9 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="ac-bevezeto">
   <div>
@@ -9313,6 +9848,10 @@ const TOPICS={
   binomosszeg:{"n": "5.2", "t": "Alapvető gyakorlatok", "ch": 5, "prefix": "z-", "pages": [["bevezeto", "Bevezető"], ["hoki", "Alsó és felső összegzés"], ["vandermonde", "A Vandermonde-azonosság"], ["sulyozott", "Súlyozott összegek"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.2 Alapvető gyakorlatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   binomfortely:{"n": "5.3", "t": "Tippek és trükkök", "ch": 5, "prefix": "aa-", "pages": [["bevezeto", "Bevezető"], ["negativ", "Negatív felső index"], ["catalan", "Catalan-számok"], ["newton", "Newton binomiális sora"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.3 Tippek és trükkök. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   binomgf:{"n": "5.4", "t": "Generátorfüggvények", "ch": 5, "prefix": "ab-", "pages": [["bevezeto", "Bevezető"], ["szorzat", "Polinomok szorzata"], ["fibonacci", "Fibonacci a Pascal-háromszögben"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.4 Generátorfüggvények. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  hipergeom:{"n": "5.5", "t": "Hipergeometrikus függvények", "ch": 5, "prefix": "bc-", "pages": [["bevezeto", "Bevezető"], ["tagarany", "A tagarány-szabály"], ["fuggveny", "A függvény"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.5 Hipergeometrikus függvények. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  hipertrafo:{"n": "5.6", "t": "Hipergeometrikus transzformációk", "ch": 5, "prefix": "bd-", "pages": [["bevezeto", "Bevezető"], ["pfaff", "Pfaff"], ["euler", "Euler"], ["megfordit", "Megfordítás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.6 Hipergeometrikus transzformációk. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  parcialis:{"n": "5.7", "t": "Parciális hipergeometrikus sorok", "ch": 5, "prefix": "be-", "pages": [["bevezeto", "Bevezető"], ["zart", "Zárt alak"], ["rekurzio", "Rekurzió"], ["megfigyeles", "Megfigyelés"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.7 Parciális hipergeometrikus sorok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  gosper:{"n": "5.8", "t": "Mechanikus összegzés", "ch": 5, "prefix": "bf-", "pages": [["bevezeto", "Bevezető"], ["gosper", "Gosper"], ["nincs", "Amikor nincs"], ["zeilberger", "Zeilberger"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.8 Mechanikus összegzés. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokbinom:{"n": "5.9", "t": "Feladatok", "ch": 5, "prefix": "ac-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 5. fejezet, 5.9 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   stirling:{"n": "6.1", "t": "Stirling-számok", "ch": 6, "prefix": "ad-", "pages": [["bevezeto", "Bevezető"], ["partician", "Partíciók és ciklusok"], ["hatvany", "Hatványok és szürjekciók"], ["ciklus", "Permutációk ciklusai"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 6. fejezet, 6.1 Stirling-számok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   harmonikus:{"n": "6.3", "t": "Harmonikus számok", "ch": 6, "prefix": "ae-", "pages": [["bevezeto", "Bevezető"], ["novekedes", "A növekedés üteme"], ["osszegek", "Összegek harmonikus számokkal"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 6. fejezet, 6.3 Harmonikus számok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
@@ -9346,7 +9885,7 @@ const CH=[
  {"n": 2, "t": "Összegek", "d": "Szigma-jelölés, összegek és rekurziók, többszörös összegek, véges analízis, végtelen összegek.", "lead": "Az összegek a diszkrét matematika alapműveletei. A fejezet azt tanítja meg, hogyan lehet őket felírni, átalakítani és kiszámolni: a jelöléstől a zárt alakig, véges és végtelen esetben.", "topics": [{"id": "jelolesek", "d": "Szigma-jel, feltétel az összegzés alatt, Iverson-zárójel. Szigma-gép és összeg-téglalapok."}, {"id": "rekurziok", "d": "Minden összeg rekurzió, és sok rekurzió összeggé alakítható. Összegzőtényező, a gyorsrendezés átlagos költsége."}, {"id": "kezeles", "d": "Elosztás, csoportosítás, átrendezés, tükrözés és a perturbáció módszere."}, {"id": "tobbszoros", "d": "Kétszeres összegek, tartományok, a szummák felcserélése."}, {"id": "modszerek", "d": "A négyzetek összege öt módszerrel."}, {"id": "veges", "d": "Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."}, {"id": "vegtelen", "d": "Konvergencia, teleszkópos összegek, az átrendezés tétele."}, {"id": "feladatokosszeg", "d": "Tíz saját feladat négy szinten az összegekről, megoldással, programmal ellenőrizve."}]},
   {"n": 3, "t": "Egészrész-függvények", "d": "Alsó és felső egészrész, mod, spektrumok.", "lead": "A padló és a plafon az egész és a valós számok közti híd. A fejezet a szabályaikat, a rekurziókban és összegekben való használatukat, valamint a mod műveletet tárgyalja.", "topics": [{"id": "padlo", "d": "⌊x⌋ és ⌈x⌉, a szabályok és az integralitási tétel."}, {"id": "alkalmazasok", "d": "Egészek intervallumban, Beatty-sorozatok."}, {"id": "padlorek", "d": "Padlós rekurziók: keresés, rendezés, általánosított Josephus."}, {"id": "mod", "d": "A mod mint kétváltozós művelet, igazságos felosztás."}, {"id": "padloosszeg", "d": "Padlós összegek: rácspontok, reciprocitás, ⌊√k⌋ összege."}, {"id": "feladatokpadlo", "d": "Tíz saját feladat négy szinten a padlóról, a plafonról, a modról és az egészrészes összegekről."}]},
   {"n": 4, "t": "Számelmélet", "d": "Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa.", "lead": "A számelmélet az egész számok szerkezetét vizsgálja: ki osztja kit, hogyan bomlik a szám prímekre, és mit tudunk a maradékokról. A fejezet az euklideszi algoritmustól a kínai maradéktételig és az Euler-függvényig vezet.", "topics": [{"id": "oszthatosag", "d": "Legnagyobb közös osztó, Euklidész algoritmusa, Bézout-azonosság."}, {"id": "primek", "d": "Prímek végtelensége, szita, törzstényezős felbontás, π(x)."}, {"id": "primpeldak", "d": "Mersenne- és Fermat-számok, a 2kp+1 alakú osztók, Euklidész-számok, prímhézagok."}, {"id": "faktorialis", "d": "Hányszor osztja a p prím az n!-t: Legendre képlete, egészrészekkel."}, {"id": "sternbrocot", "d": "Törtek a Stern–Brocot-fában, Farey-sorozat, relatív prímek aránya."}, {"id": "kongruencia", "d": "Kongruenciák, inverz, kínai maradéktétel, Euler φ-függvénye."}, {"id": "fuggetlen", "d": "A Z_mn ≅ Z_m×Z_n azonosítás, Garner módszere, gyökök száma, nem relatív prím modulusok."}, {"id": "alkalmazasok", "d": "Számelméleti alkalmazások kongruenciákkal."}, {"id": "fimu", "d": "A φ szorzat-szabálya és osztóösszege, a Möbius-féle μ, a Möbius-inverzió és két alkalmazása."}, {"id": "feladatokszam", "d": "Tíz saját feladat négy szinten a számelméletről, megoldással, programmal ellenőrizve."}]},
-  {"n": 5, "t": "Binomiális együtthatók", "d": "Azonosságok, összegek, Catalan-számok, generátorfüggvények.", "lead": "A binomiális együtthatók a kombinatorika és az algebra közös nyelve. A fejezet a Pascal-háromszög azonosságaitól a Vandermonde-konvolúcióig, a Catalan-számokig és az első generátorfüggvényekig vezet.", "topics": [{"id": "binomalap", "d": "Pascal-háromszög, szimmetria, elnyelés, binomiális tétel."}, {"id": "binomosszeg", "d": "Hokiütő-azonosság, Vandermonde-konvolúció, súlyozott összegek."}, {"id": "binomfortely", "d": "Negatív felső index, Catalan-számok, a binomiális sor."}, {"id": "binomgf", "d": "A binomiális együtthatók generátorfüggvénye, átlós összegek."}, {"n": "5.5", "t": "Hipergeometrikus függvények", "d": "A hipergeometrikus sorok és a tagarány-szabály."}, {"n": "5.6", "t": "Hipergeometrikus transzformációk", "d": "Azonosságok hipergeometrikus alakban."}, {"n": "5.7", "t": "Parciális hipergeometrikus sorok", "d": "Részleges összegek hipergeometrikus sorokból."}, {"n": "5.8", "t": "Mechanikus összegzés", "d": "Gosper algoritmusa és a Zeilberger-féle módszer."}, {"id": "feladatokbinom", "d": "Tíz saját feladat négy szinten a binomiális együtthatókról, megoldással, programmal ellenőrizve."}]},
+  {"n": 5, "t": "Binomiális együtthatók", "d": "Azonosságok, összegek, Catalan-számok, generátorfüggvények.", "lead": "A binomiális együtthatók a kombinatorika és az algebra közös nyelve. A fejezet a Pascal-háromszög azonosságaitól a Vandermonde-konvolúcióig, a Catalan-számokig és az első generátorfüggvényekig vezet.", "topics": [{"id": "binomalap", "d": "Pascal-háromszög, szimmetria, elnyelés, binomiális tétel."}, {"id": "binomosszeg", "d": "Hokiütő-azonosság, Vandermonde-konvolúció, súlyozott összegek."}, {"id": "binomfortely", "d": "Negatív felső index, Catalan-számok, a binomiális sor."}, {"id": "binomgf", "d": "A binomiális együtthatók generátorfüggvénye, átlós összegek."}, {"id": "hipergeom", "d": "A hipergeometrikus sorok és a tagarány-szabály."}, {"id": "hipertrafo", "d": "Azonosságok hipergeometrikus alakban."}, {"id": "parcialis", "d": "Részleges összegek hipergeometrikus sorokból."}, {"id": "gosper", "d": "Gosper algoritmusa és a Zeilberger-féle módszer."}, {"id": "feladatokbinom", "d": "Tíz saját feladat négy szinten a binomiális együtthatókról, megoldással, programmal ellenőrizve."}]},
   {"n": 6, "t": "Speciális számok", "d": "Stirling-, harmonikus, Fibonacci- és Bernoulli-számok.", "lead": "Néhány számsorozat újra meg újra felbukkan a diszkrét matematikában. A fejezet a Stirling-számokat, a harmonikus számokat, a Fibonacci-számokat és a Bernoulli-számokat vizsgálja: hogyan születnek, milyen azonosságok kötik össze őket, és mire jók.", "topics": [{"id": "stirling", "d": "Másodfajú és elsőfajú Stirling-számok, hatványok kifejtése, szürjekciók."}, {"n": "6.2", "t": "Euler-számok", "d": "Az eulerian-számok és a permutációk emelkedései."}, {"id": "harmonikus", "d": "H_n növekedése, részleges összegzés, kapcsolat a Stirling-számokkal."}, {"n": "6.4", "t": "Harmonikus számok összegzése", "d": "H_n összegei; a részleges összegzés alapjai már a 6.3-ban szerepelnek."}, {"id": "bernoulli", "d": "Hatványösszegek zárt alakja, Bernoulli-számok rekurziója."}, {"id": "fibonacci", "d": "Cassini-azonosság, gcd-tulajdonság, Zeckendorf-tétel."}, {"n": "6.7", "t": "Kontinuánsok", "d": "Láncműveletek és a kontinuáns polinomok."}, {"id": "feladatokspec", "d": "Tíz saját feladat négy szinten a speciális számokról, megoldással, programmal ellenőrizve."}]},
   {"n": 7, "t": "Generátorfüggvények", "d": "Hatványsorok, rekurziók, partíciók, exponenciális generátorfüggvények.", "lead": "A generátorfüggvény egy sorozatot egyetlen hatványsorba csomagol. A fejezet azt mutatja meg, hogyan lesz a sorozatok közti rekurzióból algebrai egyenlet, és hogyan olvashatók le a megoldások és a megszámolási feladatok válaszai.", "topics": [{"n": "7.1", "t": "Dominók és pénzváltás", "d": "Dominólefedések és pénzváltás generátorfüggvénnyel; a pénzváltás részben a 7.8-ban szerepel."}, {"id": "gfalap", "d": "Hatványsorok mint sorozatok, eltolás, deriválás, részletösszeg."}, {"id": "gfrek", "d": "Lineáris rekurzió megoldása, résztörtek, Catalan-számok generátorfüggvénye."}, {"n": "7.4", "t": "Speciális generátorfüggvények", "d": "Híres generátorfüggvények gyűjteménye."}, {"n": "7.5", "t": "Konvolúciók", "d": "Konvolúciók és a belőlük adódó azonosságok."}, {"id": "gfexp", "d": "Exponenciális generátorfüggvény, Bell-számok, derangementek, involúciók."}, {"n": "7.7", "t": "Dirichlet-féle generátorfüggvény", "d": "Dirichlet-sorok és a számelméleti függvények szorzata."}, {"id": "gfparticio", "d": "Partíciószámok, páratlan és különböző részek, pénzváltás."}, {"id": "feladatokgf", "d": "Tíz saját feladat négy szinten a generátorfüggvényekről, megoldással, programmal ellenőrizve."}]},
   {"n": 8, "t": "Diszkrét valószínűség", "d": "Eseménytér, várható érték, szórás, generáló függvények, klasszikus feladatok.", "lead": "A diszkrét valószínűség megszámlálásra épül, ezért a korábbi fejezetek eszközei itt természetesen kerülnek elő: a binomiális együtthatók, a harmonikus számok és a generátorfüggvények. A fejezet a valószínűségi térből indul, és a klasszikus feladatokig vezet.", "topics": [{"id": "valalap", "d": "Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."}, {"id": "varhato", "d": "Várható érték, indikátorváltozók, variancia, függetlenek összege."}, {"id": "valgf", "d": "G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."}, {"n": "8.4", "t": "Pénzfeldobás", "d": "Mintázatok pénzfeldobásban, várható várakozási idő."}, {"n": "8.5", "t": "Hasítási technikák", "d": "Hash-táblák és ütközések valószínűségi elemzése."}, {"id": "klasszikus", "d": "Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."}, {"id": "feladatokval", "d": "Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."}]},
@@ -9726,7 +10265,7 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.4.0";
+const APP_VERSION="1.5.0";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
@@ -11378,6 +11917,252 @@ function abFi(){
   $("#ab-f-info").innerHTML=`${t.join(" + ")} = <b>${S}</b><br>F<sub>${n+1}</sub> = ${abFib(n+1)} ${ok(S===abFib(n+1))} &nbsp;·&nbsp; Binet: ${bi} ${ok(bi===S)}<br>D<sub>n</sub> − D<sub>n−1</sub> − D<sub>n−2</sub> = 0 minden 2 ≤ n ≤ 24-re ${ok(ok2)}`;
 }
 $("#ab-f-n").addEventListener("input",abFi);abFi();
+
+/* ================= 5.5 HIPERGEOMETRIKUS FÜGGVÉNYEK ================= */
+const bcFact=n=>{let r=1n;for(let i=2n;i<=BigInt(n);i++)r*=i;return r;};
+const bcBin=(n,k)=>k<0||k>n?0n:bcFact(n)/(bcFact(k)*bcFact(n-k));
+const bcRise=(x,m)=>{let r=rat(1);for(let i=0;i<m;i++)r=r.mul(x.add(rat(i)));return r;};
+const bcZ=s=>{const[p,q]=s.split("/");return rat(BigInt(p),BigInt(q||1));};
+const bcMin=v=>(v<0?"−"+(-v):""+v);
+c2hero("hipergeom-bevezeto",420,10,fr=>{
+  const n=fr+1,s=c2svg("#bc-hero",420,250),vals=[];for(let k=0;k<=n;k++)vals.push(Number(bcBin(n,k)**2n));
+  const mx=Math.max(...vals),w=Math.min(30,360/(n+1)),x0=(420-(n+1)*w)/2;
+  vals.forEach((v,k)=>{const h=v/mx*170;el("rect",{x:x0+k*w+2,y:210-h,width:w-4,height:h,rx:3,style:"fill:var(--accent);opacity:.55"},s);txt(s,x0+k*w+w/2,226,k,"","middle");});
+  $("#bc-hero-a").textContent=`n = ${n}`;$("#bc-hero-b").textContent=`Σ = ${vals.reduce((a,b)=>a+b,0)} = C(${2*n},${n}) = ${bcBin(2*n,n)}`;
+});
+function bcT(){
+  const kind=$("#bc-t-s").value,n=+$("#bc-t-n").value;$("#bc-t-nv").textContent=n;
+  const t=k=>{switch(kind){case"bin":return rat(bcBin(n,k));case"sq":return rat(bcBin(n,k)**2n);case"cat":return rat(bcBin(2*k,k),k+1);case"fact":return rat(bcFact(k));case"inv":return rat(1n,bcFact(k));default:{let a=0n,b=1n;for(let i=0;i<k;i++)[a,b]=[b,a+b];return rat(a);}}};
+  const rf={bin:k=>rat(n-k,k+1),sq:k=>rat((n-k)**2,(k+1)**2),cat:k=>rat(2*(2*k+1),k+2),fact:k=>rat(k+1),inv:k=>rat(1,k+1)};
+  const K=Math.min(n,7),start=kind==="fib"?1:0,rows=[];
+  for(let k=start;k<start+K;k++){if(t(k).n===0n)continue;rows.push([k,t(k+1).div(t(k))]);}
+  let h="<tr><th>k</th>"+rows.map(r=>`<td>${r[0]}</td>`).join("")+"</tr><tr><th>t(k+1)/t(k)</th>"+rows.map(r=>`<td>${r[1]}</td>`).join("")+"</tr>";
+  if(rf[kind])h+="<tr><th>képlet</th>"+rows.map(r=>`<td>${rf[kind](r[0])}</td>`).join("")+"</tr>";
+  $("#bc-t-t").innerHTML=h;
+  const names={bin:"(n−k)/(k+1)",sq:"((n−k)/(k+1))²",cat:"2(2k+1)/(k+2)",fact:"k+1",inv:"1/(k+1)"};
+  $("#bc-t-info").innerHTML=rf[kind]?`hányados: ${names[kind]} ${ok(rows.every(r=>r[1].eq(rf[kind](r[0]))))}<br>racionális függvény → hipergeometrikus`:`hányados: 1; 2; 3/2; 5/3; 8/5; … → φ ≈ 1,618 (irracionális)<br>nem racionális függvény → <b>nem</b> hipergeometrikus (az érv a szövegben)`;
+}
+$("#bc-t-s").addEventListener("change",bcT);$("#bc-t-n").addEventListener("input",bcT);bcT();
+function bcG(){
+  const a=+$("#bc-g-a").value,b=+$("#bc-g-b").value,c=+$("#bc-g-c").value,z=bcZ($("#bc-g-z").value);
+  $("#bc-g-av").textContent=bcMin(a);$("#bc-g-bv").textContent=bcMin(b);$("#bc-g-cv").textContent=c;
+  const term=a<=0||b<=0,m=a<=0&&b<=0?Math.min(-a,-b):(a<=0?-a:(b<=0?-b:0)),nt=term?m:0;
+  const isTerm=(a<=0)||(b<=0);let N=isTerm?m:0;
+  const t=[rat(1)];if(isTerm){for(let k=0;k<N;k++)t.push(t[k].mul(rat(k+a)).mul(rat(k+b)).mul(z).div(rat(k+c)).div(rat(k+1)));}
+  else for(let k=0;k<12;k++)t.push(t[k].mul(rat(k+a)).mul(rat(k+b)).mul(z).div(rat(k+c)).div(rat(k+1)));
+  const show=t.slice(0,isTerm?t.length:8);
+  $("#bc-g-t").innerHTML="<tr><th>k</th>"+show.map((_,k)=>`<td>${k}</td>`).join("")+"</tr><tr><th>tₖ</th>"+show.map(x=>`<td>${x}</td>`).join("")+"</tr>";
+  let info="";
+  if(isTerm){
+    const S=t.reduce((s,x)=>s.add(x),rat(0));info=`véges sor (${N+1} tag): F = <b>${S}</b>`;
+    const mm=a<=0?-a:-b,bb=a<=0?b:a;
+    if(z.eq(rat(1))&&mm>=0){const cv=bcRise(rat(c-bb),mm).div(bcRise(rat(c),mm));info+=`<br>Chu–Vandermonde: (c−b)<sup>(${mm})</sup>/c<sup>(${mm})</sup> = ${cv} ${ok(cv.eq(S))}`;}
+  }else{
+    if(z.eq(rat(1))||z.eq(rat(-1))||Math.abs(z.num())>=1){
+      if(z.eq(rat(1))&&c-a-b>=3){let s=0,tt=1;for(let k=0;k<20000;k++){s+=tt;tt*=(k+a)*(k+b)/((k+c)*(k+1));}
+        const f=n=>{let r=1;for(let i=2;i<=n;i++)r*=i;return r;};const g=f(c-1)*f(c-a-b-1)/(f(c-a-1)*f(c-b-1));
+        info=`végtelen sor, z = 1, c − a − b = ${c-a-b} > 0: részletösszeg (20000 tag) ≈ ${fm(s)}<br>Gauss: Γ(c)Γ(c−a−b)/(Γ(c−a)Γ(c−b)) = ${fm(g)} ${ok(Math.abs(s-g)/Math.abs(g)<1e-3)}`;}
+      else info=`végtelen sor, |z| ≥ 1 vagy c − a − b < 3: itt nem számolunk (nem konvergál, vagy lassan). Válassz negatív a-t vagy b-t, vagy |z| < 1-et.`;
+    }else{let s=0,tt=1;for(let k=0;k<400;k++){s+=tt;tt*=(k+a)*(k+b)/((k+c)*(k+1))*z.num();}info=`végtelen sor, |z| < 1: 400 tag összege ≈ <b>${fm(s)}</b> (a hányados-szabály szerint számolva)`;}
+  }
+  $("#bc-g-info").innerHTML=info+`<br>hányados: (k${a>=0?"+":"−"}${Math.abs(a)})(k${b>=0?"+":"−"}${Math.abs(b)}) / ((k+${c})(k+1)) · ${z}`;
+}
+["#bc-g-a","#bc-g-b","#bc-g-c"].forEach(i=>$(i).addEventListener("input",bcG));$("#bc-g-z").addEventListener("change",bcG);bcG();
+
+/* ================= 5.6 HIPERGEOMETRIKUS TRANSZFORMÁCIÓK ================= */
+const bdZ=s=>{const[p,q]=s.split("/");return rat(BigInt(p),BigInt(q||1));};
+const bdMin=v=>(v<0?"−"+(-v):""+v);
+function bdTerms(a,b,c,z,K){/* polinomnál a tagok véget érnek; K a maximális tagszám */
+  const t=[rat(1)];for(let k=0;k<K-1;k++){if(a+k===0||b+k===0)break;t.push(t[k].mul(rat(k+a)).mul(rat(k+b)).mul(z).div(rat(k+c)).div(rat(k+1)));}return t;}
+const bdSum=t=>t.reduce((s,x)=>s.add(x),rat(0));
+const bdPow=(x,e)=>{let r=rat(1);const b=e<0?rat(1).div(x):x;for(let i=0;i<Math.abs(e);i++)r=r.mul(b);return r;};
+const bdRise=(x,m)=>{let r=rat(1);for(let i=0;i<m;i++)r=r.mul(x.add(rat(i)));return r;};
+c2hero("hipertrafo-bevezeto",520,6,fr=>{
+  const n=fr+2,B=2,c=4,z=rat(1,2),s=c2svg("#bd-hero",420,250);
+  const L=bdTerms(-n,B,c,z,n+1),w=z.div(z.sub(rat(1))),R=bdTerms(-n,c-B,c,w,n+1).map(x=>x.mul(bdPow(rat(1).sub(z),n)));
+  const all=[...L,...R].map(x=>Math.abs(x.num())),mx=Math.max(...all),bw=Math.min(22,170/(n+1));
+  [[L,"bal","var(--accent)",20],[R,"jobb","var(--muted, #888)",230]].forEach(([arr,nm,col,x0])=>{
+    arr.forEach((v,k)=>{const h=Math.abs(v.num())/mx*90,pos=v.num()>=0;el("rect",{x:x0+k*bw+1,y:pos?125-h:125,width:bw-2,height:Math.max(h,1),rx:2,style:`fill:${col};opacity:.55`},s);});
+    txt(s,x0+(arr.length*bw)/2,16,nm==="bal"?"F(a,b;c|z)":"(1−z)ⁿ·F(a,c−b;c|z/(z−1))","","middle");});
+  el("line",{x1:10,y1:125,x2:410,y2:125,style:"stroke:var(--line)"},s);
+  const SL=bdSum(L),SR=bdSum(R);
+  txt(s,115,235,"Σ = "+SL,"","middle");txt(s,305,235,"Σ = "+SR,"","middle");
+  $("#bd-hero-a").textContent=`n = ${n}, b = 2, c = 4, z = 1/2`;$("#bd-hero-b").textContent=SL.eq(SR)?"két alak, azonos összeg ✓":"✗";
+});
+function bdP(){
+  const n=+$("#bd-p-n").value,B=+$("#bd-p-b").value,c=+$("#bd-p-c").value,z=bdZ($("#bd-p-z").value);
+  $("#bd-p-nv").textContent=n;$("#bd-p-bv").textContent=bdMin(B);$("#bd-p-cv").textContent=c;
+  const L=bdSum(bdTerms(-n,B,c,z,n+1)),w=z.div(z.sub(rat(1))),R=bdPow(rat(1).sub(z),n).mul(bdSum(bdTerms(-n,c-B,c,w,n+1)));
+  $("#bd-p-info").innerHTML=`bal: F(−${n}, ${bdMin(B)}; ${c} | ${z}) = <b>${L}</b><br>jobb: (1−z)<sup>${n}</sup>·F(−${n}, ${bdMin(c-B)}; ${c} | z/(z−1) = ${w}) = <b>${R}</b> ${ok(L.eq(R))}`;
+}
+["#bd-p-n","#bd-p-b","#bd-p-c"].forEach(i=>$(i).addEventListener("input",bdP));$("#bd-p-z").addEventListener("change",bdP);bdP();
+function bdSer(a,b,c,K){const t=[rat(1)];for(let k=0;k<K-1;k++)t.push(t[k].mul(rat(k+a)).mul(rat(k+b)).div(rat(k+c)).div(rat(k+1)));return t;}
+function bdE(){
+  const a=+$("#bd-e-a").value,b=+$("#bd-e-b").value,c=+$("#bd-e-c").value;
+  $("#bd-e-av").textContent=bdMin(a);$("#bd-e-bv").textContent=bdMin(b);$("#bd-e-cv").textContent=c;
+  const K=8,e=c-a-b,L=bdSer(a,b,c,K),Fs=bdSer(c-a,c-b,c,K);
+  /* (1−z)^e együtthatói: u_k = (−e)^{k rising}/k! */
+  const U=[rat(1)];for(let k=0;k<K-1;k++)U.push(U[k].mul(rat(-e+k)).div(rat(k+1)));
+  const R=Array.from({length:K},(_,n)=>{let s=rat(0);for(let k=0;k<=n;k++)s=s.add(U[k].mul(Fs[n-k]));return s;});
+  $("#bd-e-t").innerHTML="<tr><th>k</th>"+L.map((_,k)=>`<td>${k}</td>`).join("")+"</tr><tr><th>F(a,b;c)</th>"+L.map(x=>`<td>${x}</td>`).join("")+"</tr><tr><th>(1−z)<sup>e</sup>F(c−a,c−b;c)</th>"+R.map(x=>`<td>${x}</td>`).join("")+"</tr>";
+  $("#bd-e-info").innerHTML=`e = c − a − b = ${e}; c − a = ${c-a}, c − b = ${c-b}; az első ${K} együttható egyezik ${ok(L.every((x,i)=>x.eq(R[i])))}`;
+}
+["#bd-e-a","#bd-e-b","#bd-e-c"].forEach(i=>$(i).addEventListener("input",bdE));bdE();
+function bdR(){
+  const n=+$("#bd-r-n").value,d=+$("#bd-r-d").value,c=+$("#bd-r-c").value,z=bdZ($("#bd-r-z").value),b=n+d;
+  $("#bd-r-nv").textContent=n;$("#bd-r-dv").textContent=d;$("#bd-r-cv").textContent=c;
+  const L=bdSum(bdTerms(-n,b,c,z,n+1)),pre=bdPow(z.neg(),n).mul(bdRise(rat(b),n)).div(bdRise(rat(c),n)),R=pre.mul(bdSum(bdTerms(-n,1-c-n,1-b-n,rat(1).div(z),n+1)));
+  $("#bd-r-info").innerHTML=`b = ${b}<br>bal: F(−${n}, ${b}; ${c} | ${z}) = <b>${L}</b><br>jobb: (−z)<sup>${n}</sup>·b<sup>(${n})</sup>/c<sup>(${n})</sup>·F(−${n}, ${bdMin(1-c-n)}; ${bdMin(1-b-n)} | 1/z) = <b>${R}</b> ${ok(L.eq(R))}`;
+}
+["#bd-r-n","#bd-r-d","#bd-r-c"].forEach(i=>$(i).addEventListener("input",bdR));$("#bd-r-z").addEventListener("change",bdR);bdR();
+
+/* ================= 5.7 PARCIÁLIS HIPERGEOMETRIKUS SOROK ================= */
+const beFact=n=>{let r=1n;for(let i=2n;i<=BigInt(n);i++)r*=i;return r;};
+const beBin=(n,k)=>k<0||k>n||n<0?0n:beFact(n)/(beFact(k)*beFact(n-k));
+c2hero("parcialis-bevezeto",380,13,fr=>{
+  const n=12,m=Math.min(fr,n),s=c2svg("#be-hero",420,250),w=26,x0=(420-(n+1)*w)/2;
+  let S=0n;for(let k=0;k<=m;k++)S+=beBin(n,k);
+  for(let k=0;k<=n;k++){let T=0n;for(let j=0;j<=k;j++)T+=beBin(n,j);const h=Number(T*1000n/4096n)/1000*170;
+    el("rect",{x:x0+k*w+2,y:205-h,width:w-4,height:h,rx:3,style:`fill:var(--accent);opacity:${k<=m?.6:.15}`},s);txt(s,x0+k*w+w/2,222,k,"","middle");}
+  el("line",{x1:x0,y1:205-170,x2:x0+(n+1)*w,y2:205-170,style:"stroke:var(--line);stroke-dasharray:3 3"},s);
+  txt(s,x0+(n+1)*w-4,205-174,"2ⁿ = 4096","","end");
+  $("#be-hero-a").textContent="n = 12, Σ C(12,k), k ≤ m";$("#be-hero-b").textContent=`m = ${m}: ${S}/4096 = ${(Number(S)/4096).toFixed(3).replace(".",",")}`;
+});
+function beZ(){
+  const f=$("#be-z-f").value,p=+$("#be-z-p").value;$("#be-z-pv").textContent=p;
+  const M=Math.min(p+3,10),rows=[];let S=0n,all=true;
+  for(let m=0;m<=M;m++){
+    const t=f==="alt"?(m%2?-1n:1n)*beBin(p,m):beBin(p+m,m);S+=t;
+    const form=f==="alt"?(m%2?-1n:1n)*beBin(p-1,m):beBin(p+m+1,m);
+    if(S!==form)all=false;rows.push([m,t,S,form]);}
+  $("#be-z-t").innerHTML="<tr><th>m</th>"+rows.map(r=>`<td>${r[0]}</td>`).join("")+"</tr><tr><th>tₘ</th>"+rows.map(r=>`<td>${r[1]}</td>`).join("")+"</tr><tr><th>Sₘ</th>"+rows.map(r=>`<td>${r[2]}</td>`).join("")+"</tr><tr><th>képlet</th>"+rows.map(r=>`<td>${r[3]}</td>`).join("")+"</tr>";
+  $("#be-z-info").innerHTML=(f==="alt"?`Sₘ = (−1)<sup>m</sup>·C(${p}−1, m)`:`Sₘ = C(${p}+m+1, m)`)+` minden m ≤ ${M}-re ${ok(all)}`;
+}
+$("#be-z-f").addEventListener("change",beZ);$("#be-z-p").addEventListener("input",beZ);beZ();
+function beR(){
+  const n=+$("#be-r-n").value,x=BigInt($("#be-r-x").value);$("#be-r-nv").textContent=n;
+  const S=(N,m)=>{let s=0n,xp=1n;for(let k=0;k<=m;k++){s+=beBin(N,k)*xp;xp*=x;}return s;};
+  const pw=(b,e)=>{let r=1n;for(let i=0;i<e;i++)r*=b;return r;};
+  const rows=[];let all=true;
+  for(let m=0;m<=n+1;m++){const a=S(n,m),b=S(n+1,m),c=(1n+x)*a-beBin(n,m)*pw(x,m+1);if(b!==c)all=false;rows.push([m,a,b,c]);}
+  $("#be-r-t").innerHTML="<tr><th>m</th>"+rows.map(r=>`<td>${r[0]}</td>`).join("")+`</tr><tr><th>S(${n},m)</th>`+rows.map(r=>`<td>${r[1]}</td>`).join("")+`</tr><tr><th>S(${n+1},m)</th>`+rows.map(r=>`<td>${r[2]}</td>`).join("")+"</tr><tr><th>(1+x)S − C·x<sup>m+1</sup></th>"+rows.map(r=>`<td>${r[3]}</td>`).join("")+"</tr>";
+  $("#be-r-info").innerHTML=`S(n+1,m) = (1+x)·S(n,m) − C(n,m)·x<sup>m+1</sup> minden m ≤ ${n+1}-re ${ok(all)}`;
+}
+$("#be-r-n").addEventListener("input",beR);$("#be-r-x").addEventListener("change",beR);beR();
+function beM(){
+  const n=+$("#be-m-n").value;$("#be-m-nv").textContent=n;
+  let num=0n;for(let k=0;k<=n;k++)num+=beBin(n+k,k)<<BigInt(n-k);
+  const target=1n<<BigInt(n)<<BigInt(n);
+  $("#be-m-info").innerHTML=`Σ<sub>k=0..n</sub> C(n+k,k)·2<sup>−k</sup> = ${num}/2<sup>${n}</sup> = ${num===target?"2<sup>"+n+"</sup>":"?"} ${ok(num===target)}<br>minden n ≤ ${n}-re: ${ok((()=>{for(let q=1;q<=n;q++){let s=0n;for(let k=0;k<=q;k++)s+=beBin(q+k,k)<<BigInt(q-k);if(s!==(1n<<BigInt(2*q)))return false;}return true;})())}`;
+}
+$("#be-m-n").addEventListener("input",beM);beM();
+
+/* ================= 5.8 MECHANIKUS ÖSSZEGZÉS ================= */
+/* polinomok: Rat tömb, alacsony fokú tag elöl; a nullpolinom [] */
+const bfTrim=p=>{p=p.slice();while(p.length&&p[p.length-1].n===0n)p.pop();return p;};
+const bfAdd=(p,q)=>{const n=Math.max(p.length,q.length),r=[];for(let i=0;i<n;i++)r.push((p[i]||rat(0)).add(q[i]||rat(0)));return bfTrim(r);};
+const bfSc=(p,s)=>bfTrim(p.map(x=>x.mul(s)));
+const bfSub=(p,q)=>bfAdd(p,bfSc(q,rat(-1)));
+const bfMul=(p,q)=>{if(!p.length||!q.length)return[];const r=Array.from({length:p.length+q.length-1},()=>rat(0));p.forEach((x,i)=>q.forEach((y,j)=>{r[i+j]=r[i+j].add(x.mul(y));}));return bfTrim(r);};
+const bfShift=(p,s)=>{let res=[],pow=[rat(1)];p.forEach(c=>{res=bfAdd(res,bfSc(pow,c));pow=bfMul(pow,[rat(s),rat(1)]);});return res;};
+const bfEv=(p,x)=>p.reduceRight((s,c)=>s.mul(x).add(c),rat(0));
+const bfDeg=p=>p.length-1;
+const bfLin=(al)=>[al,rat(1)];/* k+α */
+const bfProd=(als,lead)=>{let p=[lead];als.forEach(al=>{p=bfMul(p,bfLin(al));});return p;};
+const bfSup=n=>String(n).split("").map(c=>"⁰¹²³⁴⁵⁶⁷⁸⁹"[c]).join("");
+function bfStr(p,v="k"){if(!p.length)return"0";let out="";for(let i=p.length-1;i>=0;i--){const c=p[i];if(c.n===0n)continue;const neg=c.n<0n,a=neg?c.neg():c,one=a.eq(rat(1));let t;
+  if(i===0)t=""+a;else t=(one?"":(a.d===1n?a.n+"":"("+a+")"))+v+(i>1?bfSup(i):"");
+  out+=(out?(neg?" − ":" + "):(neg?"−":""))+t;}return out||"0";}
+function bfSolve(rows,rhs,nu){/* sorok: Rat[nu]; rhs: Rat[] ; Gauss-elimináció; visszaad megoldást vagy null */
+  const M=rows.map((r,i)=>[...r,rhs[i]]),piv=[];let r0=0;
+  for(let c=0;c<nu&&r0<M.length;c++){let p=-1;for(let i=r0;i<M.length;i++)if(M[i][c].n!==0n){p=i;break;}if(p<0)continue;[M[r0],M[p]]=[M[p],M[r0]];const d=M[r0][c];M[r0]=M[r0].map(x=>x.div(d));
+    for(let i=0;i<M.length;i++)if(i!==r0&&M[i][c].n!==0n){const f=M[i][c];M[i]=M[i].map((x,j)=>x.sub(f.mul(M[r0][j])));}piv.push(c);r0++;}
+  for(let i=r0;i<M.length;i++)if(M[i][nu].n!==0n)return null;
+  const x=Array.from({length:nu},()=>rat(0));piv.forEach((c,i)=>{x[c]=M[i][nu];});return x;}
+function bfGosper(S){
+  const log=[];let A=S.num.map(x=>x),B=S.den.map(x=>x),C=[rat(1)];const z=S.z;
+  for(;;){let best=null;for(let i=0;i<A.length;i++)for(let j=0;j<B.length;j++){const d=A[i].sub(B[j]);if(d.d===1n&&d.n>=0n){const h=Number(d.n);if(!best||h<best.h)best={i,j,h};}}
+    if(!best)break;const{i,j,h}=best,al=A[i];log.push(`h = ${h}: közös tényező (k${al.n<0n?"−"+al.neg():"+"+al})`);
+    for(let q=1;q<=h;q++)C=bfMul(C,bfLin(al.sub(rat(q))));A.splice(i,1);B.splice(j,1);}
+  const a=bfProd(A,z),b=bfProd(B,rat(1)),c=C,bm=bfShift(b,-1);
+  /* hányados-azonosság ellenőrzése pontokon */
+  const r=k=>{let t=z;S.num.forEach(x=>{t=t.mul(rat(k).add(x));});S.den.forEach(x=>{t=t.div(rat(k).add(x));});return t;};
+  let idOk=true;[11,12,13].forEach(k=>{const L=r(k),R=bfEv(a,rat(k)).div(bfEv(b,rat(k))).mul(bfEv(c,rat(k+1))).div(bfEv(c,rat(k)));if(!L.eq(R))idOk=false;});
+  /* fokszámkorlát */
+  const da=bfDeg(a),db=bfDeg(b),dc=bfDeg(c);let D,why;
+  const la=a[da]||rat(0),lb=b[db]||rat(0);
+  if(da!==db||!la.eq(lb)){D=dc-Math.max(da,db);why=`deg a = ${da}, deg b = ${db}${da===db?" (a főegyütthatók különböznek)":""} → deg x = deg c − max = ${D}`;}
+  else{const m=da,a1=m>=1?a[m-1]:rat(0),b1=m>=1?bm[m-1]:rat(0),d0=b1.sub(a1).div(la);const cand=[dc-m+1];if(d0.d===1n&&d0.n>=0n)cand.push(Number(d0.n));D=Math.max(...cand);why=`deg a = deg b = ${m}, a főegyütthatók egyeznek → deg x ≤ max(deg c − m + 1 = ${dc-m+1}${d0.d===1n&&d0.n>=0n?`, (β₁−a₁)/α = ${d0}`:""}) = ${D}`;}
+  const res={A,B,a,b,c,log,idOk,D,why,x:null,z:null};
+  if(D<0||D>40){res.fail=D<0?"a fokszámkorlát negatív":"a fokszámkorlát túl nagy";return res;}
+  const N=Math.max(da+D,db+D,dc)+1,cols=[];
+  for(let i=0;i<=D;i++){const xi=[...Array(i).fill(rat(0)),rat(1)];cols.push(bfSub(bfMul(a,bfShift(xi,1)),bfMul(bm,xi)));}
+  const rows=Array.from({length:N},(_,r)=>cols.map(cp=>cp[r]||rat(0))),rhs=Array.from({length:N},(_,r)=>c[r]||rat(0));
+  const sol=bfSolve(rows,rhs,D+1);
+  if(!sol){res.fail="az egyenletrendszer ellentmondásos: nincs polinom x";return res;}
+  res.x=bfTrim(sol);return res;
+}
+const bfPresets=[
+ {id:"kfact",n:"k·k!",tex:"k·k!",k0:1,t0:rat(1),z:rat(1),num:[rat(1),rat(1)],den:[rat(0)]},
+ {id:"k2k",n:"k·2ᵏ",tex:"k·2^k",k0:1,t0:rat(2),z:rat(2),num:[rat(1)],den:[rat(0)]},
+ {id:"ksq",n:"k²",tex:"k²",k0:1,t0:rat(1),z:rat(1),num:[rat(1),rat(1)],den:[rat(0),rat(0)]},
+ {id:"kk1",n:"1/(k(k+1))",tex:"1/(k(k+1))",k0:1,t0:rat(1,2),z:rat(1),num:[rat(0)],den:[rat(2)]},
+ {id:"kk12",n:"1/(k(k+1)(k+2))",tex:"1/(k(k+1)(k+2))",k0:1,t0:rat(1,6),z:rat(1),num:[rat(0)],den:[rat(3)]},
+ {id:"hoki",n:"C(k+3,3)",tex:"C(k+3,3)",k0:0,t0:rat(1),z:rat(1),num:[rat(4)],den:[rat(1)]},
+ {id:"kozep",n:"C(2k,k)/4ᵏ",tex:"C(2k,k)/4^k",k0:0,t0:rat(1),z:rat(1),num:[rat(1,2)],den:[rat(1)]},
+ {id:"harm",n:"1/k",tex:"1/k",k0:1,t0:rat(1),z:rat(1),num:[rat(0)],den:[rat(1)]},
+ {id:"kf",n:"k!",tex:"k!",k0:0,t0:rat(1),z:rat(1),num:[rat(1)],den:[]},
+ {id:"cb",n:"C(2k,k)",tex:"C(2k,k)",k0:0,t0:rat(1),z:rat(4),num:[rat(1,2)],den:[rat(1)]},
+ {id:"inv2",n:"1/k²",tex:"1/k²",k0:1,t0:rat(1),z:rat(1),num:[rat(0),rat(0)],den:[rat(1),rat(1)]}
+];
+$("#bf-g-s").innerHTML=bfPresets.map(s=>`<option value="${s.id}">${s.n}</option>`).join("");
+c2hero("gosper-bevezeto",460,7,fr=>{
+  const s=c2svg("#bf-hero",420,250),K=Math.min(fr+2,7),zf=k=>{let r=1;for(let i=2;i<=k;i++)r*=i;return r;},mx=zf(7),w=40,x0=(420-6*w)/2;
+  for(let k=1;k<K;k++){const h0=zf(k)/mx*185,h1=(zf(k+1)-zf(k))/mx*185,x=x0+(k-1)*w+4;
+    el("rect",{x,y:220-h0,width:w-8,height:h0,rx:2,style:"fill:var(--muted, #888);opacity:.35"},s);
+    el("rect",{x,y:220-h0-h1,width:w-8,height:h1,rx:2,style:"fill:var(--accent);opacity:.6"},s);
+    txt(s,x+(w-8)/2,236,k,"","middle");}
+  $("#bf-hero-b").textContent=`k = ${K-1}: ${K-1}·${K-1}! = ${(K)}! − ${K-1}! = ${zf(K)} − ${zf(K-1)}`;
+});
+function bfG(){
+  const S=bfPresets.find(p=>p.id===$("#bf-g-s").value),R=bfGosper(S);
+  const fac=(als,z)=>(z.eq(rat(1))?"":z+"·")+(als.length?als.map(x=>`(k${x.n<0n?"−"+x.neg():"+"+x})`).join(""):"1");
+  let h=`tag: t<sub>k</sub> = ${S.tex}, t<sub>${S.k0}</sub> = ${S.t0}<br>1. hányados: t(k+1)/t(k) = ${fac(S.num,S.z)} / ${fac(S.den,rat(1))}<br>`;
+  h+=`eltolások: ${R.log.length?R.log.join("; "):"nincs"}<br>a(k) = ${bfStr(R.a)}, b(k) = ${bfStr(R.b)}, c(k) = ${bfStr(R.c)} &nbsp;·&nbsp; a normálalak hányadosa egyezik az eredetivel ${ok(R.idOk)}<br>`;
+  h+=`2. egyenlet: a(k)·x(k+1) − b(k−1)·x(k) = c(k)<br>3. fokszámkorlát: ${R.why}<br>`;
+  const t=[S.t0];const rr=k=>{let q=S.z;S.num.forEach(x=>{q=q.mul(rat(k).add(x));});S.den.forEach(x=>{q=q.div(rat(k).add(x));});return q;};
+  for(let k=S.k0;k<S.k0+9;k++)t.push(t[t.length-1].mul(rr(k)));
+  if(!R.x){h+=`4. <b>nincs hipergeometrikus antidifferencia</b>: ${R.fail}.`;$("#bf-g-info").innerHTML=h;$("#bf-g-t").innerHTML="";return;}
+  h+=`4. megoldás: x(k) = <b>${bfStr(R.x)}</b><br>z(k) = b(k−1)·x(k)/c(k)·t<sub>k</sub>, ahol b(k−1) = ${bfStr(bfShift(R.b,-1))}`;
+  const zf=k=>{const ck=bfEv(R.c,rat(k));if(ck.n===0n)return null;return bfEv(bfShift(R.b,-1),rat(k)).mul(bfEv(R.x,rat(k))).div(ck).mul(t[k-S.k0]);};
+  const ks=[],rows=[];let all=true;
+  for(let k=S.k0;k<S.k0+7;k++){const z1=zf(k+1),z0=zf(k);if(z1===null||z0===null){rows.push([k,t[k-S.k0],"–",false]);continue;}const d=z1.sub(z0),good=d.eq(t[k-S.k0]);if(!good)all=false;rows.push([k,t[k-S.k0],d,good]);}
+  let sums=[],sOk=true,z0=zf(S.k0),acc=rat(0);
+  for(let m=S.k0+1;m<=S.k0+6;m++){acc=acc.add(t[m-1-S.k0]);const zm=zf(m);const good=zm!==null&&z0!==null&&zm.sub(z0).eq(acc);if(!good)sOk=false;sums.push([m,acc,zm&&z0?zm.sub(z0):"–",good]);}
+  $("#bf-g-t").innerHTML="<tr><th>k</th>"+rows.map(r=>`<td>${r[0]}</td>`).join("")+"</tr><tr><th>t(k)</th>"+rows.map(r=>`<td>${r[1]}</td>`).join("")+"</tr><tr><th>z(k+1)−z(k)</th>"+rows.map(r=>`<td>${r[2]}</td>`).join("")+"</tr><tr><th>m</th>"+sums.map(r=>`<td>${r[0]}</td>`).join("")+`</tr><tr><th>Σ<sub>k=${S.k0}</sub><sup>m−1</sup> t</th>`+sums.map(r=>`<td>${r[1]}</td>`).join("")+"</tr><tr><th>z(m)−z(k₀)</th>"+sums.map(r=>`<td>${r[2]}</td>`).join("")+"</tr>";
+  $("#bf-g-info").innerHTML=h+`<br>ellenőrzés: z(k+1) − z(k) = t(k) ${ok(all)} &nbsp;·&nbsp; részletösszegek = z(m) − z(k₀) ${ok(sOk)}`;
+}
+$("#bf-g-s").addEventListener("change",bfG);bfG();
+/* Zeilberger-tanúsítvány ellenőrzése */
+const bfFact=n=>{let r=1n;for(let i=2n;i<=BigInt(n);i++)r*=i;return r;};
+const bfBin=(n,k)=>k<0||k>n||n<0?0n:bfFact(n)/(bfFact(k)*bfFact(n-k));
+function bfZ(){
+  const f=$("#bf-z-f").value,N=+$("#bf-z-n").value;$("#bf-z-nv").textContent=N;let all=true,cnt=0,bad="";
+  for(let n=0;n<=N;n++){
+    for(let k=0;k<=n+2;k++){
+      let L,R;
+      if(f==="b1"){L=rat(bfBin(n+1,k)-2n*bfBin(n,k));const G=kk=>rat(-bfBin(n,kk-1));R=G(k+1).sub(G(k));}
+      else{L=rat(BigInt(n+1)*bfBin(n+1,k)**2n-2n*BigInt(2*n+1)*bfBin(n,k)**2n);const G=kk=>rat(-BigInt(kk*kk)*BigInt(3*n+3-2*kk)*bfBin(n+1,kk)**2n,BigInt((n+1)*(n+1)));R=G(k+1).sub(G(k));}
+      cnt++;if(!L.eq(R)){all=false;if(!bad)bad=`n=${n}, k=${k}`;}
+    }
+  }
+  let S=[1n],rec=true;/* összegek: S(n) és a rekurzió */
+  for(let n=0;n<=N;n++){let s=0n;for(let k=0;k<=n;k++)s+=f==="b1"?bfBin(n,k):bfBin(n,k)**2n;S[n]=s;}
+  for(let n=0;n<N;n++){if(f==="b1"?S[n+1]!==2n*S[n]:BigInt(n+1)*S[n+1]!==2n*BigInt(2*n+1)*S[n])rec=false;}
+  const tgt=n=>f==="b1"?1n<<BigInt(n):bfBin(2*n,n);let ts=true;for(let n=0;n<=N;n++)if(S[n]!==tgt(n))ts=false;
+  $("#bf-z-info").innerHTML=`tanúsítvány-azonosság ${cnt} (n, k) pontra ${ok(all)}${bad?" (első hiba: "+bad+")":""}<br>rekurzió ${f==="b1"?"S(n+1) = 2·S(n)":"(n+1)·S(n+1) = 2(2n+1)·S(n)"} n < ${N}-re ${ok(rec)}<br>S(n) = ${f==="b1"?"2ⁿ":"C(2n,n)"} n ≤ ${N}-re ${ok(ts)}`;
+}
+$("#bf-z-f").addEventListener("change",bfZ);$("#bf-z-n").addEventListener("input",bfZ);bfZ();
 
 /* ================= 5.9 FELADATOK ================= */
 exHero("feladatokbinom-bevezeto","#ac-hero","#ac-hero-k",[3,3,2,2]);

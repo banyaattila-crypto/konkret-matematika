@@ -1,0 +1,118 @@
+
+<!-- ================= 5.5 HIPERGEOMETRIKUS FÜGGVÉNYEK ================= -->
+<header class="hero page" id="bc-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.5</div>
+    <h1>Hipergeometrikus függvények</h1>
+    <p class="lead">Sok összeg tagjai közös tulajdonságot mutatnak: két szomszédos tag hányadosa a \(k\) racionális függvénye. Az ilyen összegek egyetlen paraméteres családba rendezhetők, és ezzel egy tucat azonosság egyetlen azonosság különböző alakja lesz.</p>
+    <div class="formula">\(\displaystyle F\!\left({a_1,\dots,a_p\atop b_1,\dots,b_q}\Big|\,z\right)=\sum_{k\ge0}\frac{a_1^{\overline k}\cdots a_p^{\overline k}}{b_1^{\overline k}\cdots b_q^{\overline k}}\,\frac{z^k}{k!}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bc-hero" role="img" aria-label="A \(\binom nk^2\) tagok oszlopdiagramja n = 1…10-re; összegük \(\binom{2n}{n}\)"></svg>
+    <div class="counter"><span id="bc-hero-a">Σ C(n,k)²</span><span id="bc-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A binomiális összegek (5.2) mindegyikéhez külön ötlet kellett: elnyelés, szimmetria, Vandermonde. A hipergeometrikus nyelv azt kérdezi, mi közös bennük. A válasz a tagok hányadosa: a \(\binom nk^2\) tagjainak hányadosa \(\bigl(\tfrac{n-k}{k+1}\bigr)^2\), a Catalan-számoké \(\tfrac{2(2k+1)}{k+2}\) lesz. Az a sor, amelyben ez a hányados racionális függvény, hipergeometrikus, és a függvény az együtthatók (az „a” és „b” paraméterek) listájával megadható. A képen a \(\binom nk^2\) tagjai láthatók: összegük a Vandermonde-azonosság szerint \(\binom{2n}{n}\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bc-tagarany">
+  <div class="body">
+    <div class="eyebrow">§1 · A tagarány-szabály</div>
+    <h2>Mikor hipergeometrikus egy tagsorozat?</h2>
+    <p>A \(t_k\) tagsorozat hipergeometrikus, ha a \(t_{k+1}/t_k\) hányados \(k\)-nak racionális függvénye. Ha ezt szorzatra bontjuk,</p>
+    <div class="eq gold">\[\frac{t_{k+1}}{t_k}=\frac{(k+a_1)(k+a_2)\cdots(k+a_p)}{(k+b_1)\cdots(k+b_q)\,(k+1)}\,z,\]</div>
+    <p>akkor a \(t_0=1\) kezdéssel \(t_k=\dfrac{a_1^{\overline k}\cdots a_p^{\overline k}}{b_1^{\overline k}\cdots b_q^{\overline k}}\,\dfrac{z^k}{k!}\), ahol \(x^{\overline k}=x(x+1)\cdots(x+k-1)\) a növekvő faktoriális. A nevezőben mindig szerepel a \(k+1\), mert ez adja a \(k!\)-t. Ha a racionális függvényben nincs ilyen tényező, felvesszük a \((k+1)/(k+1)\)-et, tehát az \(1\) paramétert a számlálóba tesszük.</p>
+    <p>Példák. A \(\binom nk\) hányadosa \(\tfrac{n-k}{k+1}=\tfrac{k-n}{k+1}\cdot(-1)\), ezért \(\sum_k\binom nkz^k=F(-n\,|\,-z)\) alakban hipergeometrikus. A \(\binom nk^2\) hányadosa \(\tfrac{(k-n)^2}{(k+1)^2}\), tehát \(\sum_k\binom nk^2=F(-n,-n;1\,|\,1)\).</p>
+    <p>Nem minden sor hipergeometrikus. A Fibonacci-számokra \(F_{k+1}/F_k\to\varphi=\tfrac{1+\sqrt5}2\). Ha ez \(k\) racionális együtthatós racionális függvénye volna, a \(k\to\infty\) határértéke vagy a főegyütthatók hányadosa (racionális), vagy végtelen volna. A \(\varphi\) irracionális, ez ellentmondás.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bc-t-s">tagsorozat <select id="bc-t-s"><option value="bin">C(n,k)</option><option value="sq">C(n,k)²</option><option value="cat">Catalan: C(2k,k)/(k+1)</option><option value="fact">k!</option><option value="inv">1/k!</option><option value="fib">Fibonacci Fₖ</option></select></label>
+        <label class="rng" for="bc-t-n">n <input type="range" id="bc-t-n" min="2" max="12" value="6"> <span class="mono" id="bc-t-nv">6</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bc-t-t"></table></div>
+      <div class="info" id="bc-t-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tagarány egyetlen racionális függvény. Ez azt jelenti, hogy a sor „véges leírású”: a tagokat nem kell képlettel megadni, elég az \(a_i\), \(b_j\) listát és \(z\)-t ismerni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bc-fuggveny">
+  <div class="body">
+    <div class="eyebrow">§2 · A függvény</div>
+    <h2>Gauss-féle F(a, b; c | z) és a kapcsolt értékek</h2>
+    <p>A legfontosabb eset \(p=2\), \(q=1\): ez a Gauss-féle hipergeometrikus függvény,</p>
+    <div class="eq">\[F(a,b;c\,|\,z)=\sum_{k\ge0}\frac{a^{\overline k}\,b^{\overline k}}{c^{\overline k}}\frac{z^k}{k!},\qquad\frac{t_{k+1}}{t_k}=\frac{(k+a)(k+b)}{(k+c)(k+1)}\,z.\]</div>
+    <p>Ha az \(a\) vagy a \(b\) nem pozitív egész, a sor véges (a \(0\) tényező miatt): polinomot kapunk. Különben az \(|z|<1\) esetben konvergens. A \(z=1\) értékre két alapvető formula:</p>
+    <div class="eq gold">\[F(-m,b;c\,|\,1)=\frac{(c-b)^{\overline m}}{c^{\overline m}}\quad\text{(Chu–Vandermonde)},\qquad F(a,b;c\,|\,1)=\frac{\Gamma(c)\,\Gamma(c-a-b)}{\Gamma(c-a)\,\Gamma(c-b)}\quad\text{(Gauss)}.\]</div>
+    <p>A Gauss-képlet érvényességi feltétele \(c-a-b>0\) (különben a sor divergál), és a \(c\) nem lehet nem pozitív egész. A Chu–Vandermonde-azonosság a Vandermonde-azonosság (5.2) hipergeometrikus alakja: a \(b=-n\), \(c=r-n\) választással a megszokott \(\sum_k\binom mk\binom n{r-k}\)-t kapjuk vissza. A kísérletben \(a,b,c\) egészek, \(z\) tört; a program a tagokat pontos törtekkel számolja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bc-g-a">a <input type="range" id="bc-g-a" min="-8" max="8" value="-5"> <span class="mono" id="bc-g-av">−5</span></label>
+        <label class="rng" for="bc-g-b">b <input type="range" id="bc-g-b" min="-8" max="8" value="2"> <span class="mono" id="bc-g-bv">2</span></label>
+        <label class="rng" for="bc-g-c">c <input type="range" id="bc-g-c" min="1" max="12" value="4"> <span class="mono" id="bc-g-cv">4</span></label>
+        <label class="rng" for="bc-g-z">z <select id="bc-g-z"><option>1</option><option>-1</option><option>1/2</option><option>-1/2</option><option>1/3</option><option>2</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bc-g-t"></table></div>
+      <div class="info" id="bc-g-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A nevezetes függvények mind hipergeometrikusak: \(\sum z^k=F(1,1;1\,|\,z)\), \(e^z\) a \(p=q=0\) eset, \((1-z)^{-a}=F(a,1;1\,|\,z)\). Az \(F(1,1;1|z)\) azért geometriai sor, mert a \(k+a\) és a \(k+b\) tényező kiegyszerűsödik a nevezővel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bc-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Hányados, paraméterek, értékek</h2>
+    <details>
+      <summary><span class="sq">1. Mi a Catalan-számok \(C_k=\tfrac1{k+1}\binom{2k}k\) tagaránya, és melyik \(F\)-függvény generálja őket?</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{C_{k+1}}{C_k}=\dfrac{2(2k+1)}{k+2}=\dfrac{(k+\tfrac12)(k+1)}{(k+2)(k+1)}\cdot4\), tehát \(\sum_kC_kx^k=F(\tfrac12,1;2\,|\,4x)\). <b>Ellenőrzés:</b> \(k=0,1,2\)-re a hányados \(1,2,\tfrac52\), és \(C_1/C_0=1\), \(C_2/C_1=2\), \(C_3/C_2=5/2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Írd fel \(\sum_k\binom n k^2\)-et \(F\)-ként, és számold ki \(n=3\)-ra.</span></summary>
+      <div class="ans">
+        <p>\(F(-3,-3;1\,|\,1)=1+9+9+1=20=\binom63\). <b>Ellenőrzés:</b> a kísérlet \(a=b=-3\), \(c=1\), \(z=1\) beállítással 20-at ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki az \(F(-3,2;4\,|\,1)\)-et a Chu–Vandermonde képlettel és közvetlenül.</span></summary>
+      <div class="ans">
+        <p>\((c-b)^{\overline3}/c^{\overline3}=\dfrac{2\cdot3\cdot4}{4\cdot5\cdot6}=\dfrac15\). Közvetlenül a tagok \(1,-\tfrac32,\tfrac9{10},-\tfrac15\), összegük \(\tfrac15\). <b>Ellenőrzés:</b> \(1-1{,}5+0{,}9-0{,}2=0{,}2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Miért nem hipergeometrikus a \(t_k=H_k\) (a \(k\)-adik harmonikus szám)?</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{H_{k+1}}{H_k}-1=\dfrac1{(k+1)H_k}\sim\dfrac1{k\ln k}\), mert \(H_k\sim\ln k\). Ha a hányados racionális függvény volna, \(R(k)-1\) vagy azonosan 0, vagy \(\sim c\,k^{-m}\) volna valamely egész \(m\ge1\)-re és \(c\ne0\)-ra. Az \(m=1\) esetben \(k\,(R-1)\to c\), de itt \(k\,(R-1)\sim1/\ln k\to0\). Az \(m\ge2\) esetben \(k^m(R-1)\to c\), itt viszont \(k^m/(k\ln k)\to\infty\). Egyik sem lehetséges. <b>Ellenőrzés:</b> \(H_2/H_1=\tfrac32\), \(H_3/H_2=\tfrac{11}{9}\), a hányados valóban 1-hez közelít, de nem \(c/k^m\) sebességgel. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A harmonikus számok részletösszegekkel való kapcsolata az 5.8-ban jön elő: ott látjuk, hogy \(\sum1/k\) nem összegezhető zárt alakban.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bc-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Hogyan olvasd le a paramétereket?</h2>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Hányados</b><span>Számítsd ki \(t_{k+1}/t_k\)-t.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Tényezők</b><span>Bontsd \((k+a_i)\) és \((k+b_j)\) szorzatra.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Paraméterek</b><span>Pótold a \((k+1)\)-et, és olvasd le \(z\)-t.</span></div>
+    </div>
+    <p>A következő téma, az 5.6, a hipergeometrikus transzformációk: azonosságok, amelyek az \(F\) paramétereit alakítják át.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

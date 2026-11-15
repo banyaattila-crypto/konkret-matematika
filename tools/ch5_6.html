@@ -1,0 +1,146 @@
+
+<!-- ================= 5.6 HIPERGEOMETRIKUS TRANSZFORMÁCIÓK ================= -->
+<header class="hero page" id="bd-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.6</div>
+    <h1>Hipergeometrikus transzformációk</h1>
+    <p class="lead">Ugyanaz az érték sokféle \(F\)-alakban írható. Az átalakító szabályok a paramétereket cserélik, és minden alkalommal új azonosságot adnak: ami az egyik alakban nehéz összeg, a másikban egy ismert érték.</p>
+    <div class="formula">\(\displaystyle F(a,b;c\,|\,z)=(1-z)^{-a}\,F\!\left(a,\,c-b;\,c\,\Big|\,\tfrac{z}{z-1}\right)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bd-hero" role="img" aria-label="Egy hipergeometrikus polinom két alakjának tagjai: a tagok mások, az összeg ugyanaz"></svg>
+    <div class="counter"><span id="bd-hero-a">Pfaff-transzformáció</span><span id="bd-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen egy polinom két alakja látható. A bal oldali tagjai az eredeti sor, a jobb oldali tagjai a transzformált sor tagjai. A két oszlopsor teljesen különböző, de az összegük azonos, ha a transzformált sort a \((1-z)^{-a}\) tényezővel szorozzuk. A módszer ereje abban áll, hogy egy bonyolult tagú összeget olyan alakra hozunk, amelyre már ismerjük az értékét, például a Chu–Vandermonde-képlettel (5.5).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bd-pfaff">
+  <div class="body">
+    <div class="eyebrow">§1 · Pfaff</div>
+    <h2>A Pfaff-transzformáció és bizonyítása</h2>
+    <p>Az állítás formális hatványsorokra igaz, és polinomra (ha \(a=-n\)) minden \(z\neq1\)-re is:</p>
+    <div class="eq gold">\[F(a,b;c\,|\,z)=(1-z)^{-a}\,F\!\left(a,\,c-b;\,c\,\Big|\,\frac z{z-1}\right).\]</div>
+    <p>Bizonyítás. A jobb oldal \(k\)-adik tagja \(\dfrac{a^{\overline k}(c-b)^{\overline k}}{c^{\overline k}k!}(-1)^kz^k(1-z)^{-a-k}\). A \((1-z)^{-a-k}=\sum_j\frac{(a+k)^{\overline j}}{j!}z^j\) sorból a \(z^n\) együtthatója a jobb oldalon</p>
+    <div class="eq">\[\sum_{k=0}^n\frac{a^{\overline k}(c-b)^{\overline k}(-1)^k}{c^{\overline k}\,k!}\cdot\frac{(a+k)^{\overline{n-k}}}{(n-k)!}=\frac{a^{\overline n}}{n!}\sum_{k=0}^n\binom nk\frac{(c-b)^{\overline k}(-1)^k}{c^{\overline k}},\]</div>
+    <p>mert \(a^{\overline k}(a+k)^{\overline{n-k}}=a^{\overline n}\). A belső összeg \(F(-n,c-b;c\,|\,1)\), és a Chu–Vandermonde-képlet szerint \(\dfrac{(c-(c-b))^{\overline n}}{c^{\overline n}}=\dfrac{b^{\overline n}}{c^{\overline n}}\). A \(z^n\) együtthatója tehát \(\dfrac{a^{\overline n}b^{\overline n}}{c^{\overline n}n!}\), éppen a bal oldalé. \(\square\) (A bizonyítás a Chu–Vandermonde-képletre támaszkodik, amelyet az 5.5-ben állítottunk, a kísérletekben pontos törtekkel ellenőriztünk, és hipergeometrikus alakja az 5.2-beli Vandermonde-azonosság.)</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bd-p-n">n <input type="range" id="bd-p-n" min="1" max="8" value="3"> <span class="mono" id="bd-p-nv">3</span></label>
+        <label class="rng" for="bd-p-b">b <input type="range" id="bd-p-b" min="-3" max="9" value="2"> <span class="mono" id="bd-p-bv">2</span></label>
+        <label class="rng" for="bd-p-c">c <input type="range" id="bd-p-c" min="1" max="10" value="4"> <span class="mono" id="bd-p-cv">4</span></label>
+        <label class="rng" for="bd-p-z">z <select id="bd-p-z"><option>1/2</option><option>-1/3</option><option>2</option><option>3/2</option><option>-1</option><option>3</option></select></label>
+      </div>
+      <div class="info" id="bd-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(z/(z-1)\) helyettesítés a \(z\in(-\infty,\tfrac12)\) tartományt a \((-1,\ldots)\) tartományba viszi, ezért végtelen sorra a konvergencia tartománya az \(|z/(z-1)|<1\), azaz \(z<\tfrac12\). Polinomra nincs ilyen megkötés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-euler">
+  <div class="body">
+    <div class="eyebrow">§2 · Euler</div>
+    <h2>Az Euler-transzformáció: kétszer Pfaff</h2>
+    <p>Alkalmazzuk a Pfaff-transzformációt a jobb oldalra, a \(c-b\) és az \(a\) szerepét felcserélve. A \(w=z/(z-1)\) jelöléssel \(w/(w-1)=z\) és \(1-w=1/(1-z)\), tehát</p>
+    <div class="eq">\[F(a,b;c|z)=(1-z)^{-a}\,(1-w)^{-(c-b)}\,F(c-b,\,c-a;\,c\,|\,z)=(1-z)^{c-a-b}\,F(c-a,\,c-b;\,c\,|\,z).\]</div>
+    <p>Ez az Euler-transzformáció:</p>
+    <div class="eq gold">\[F(a,b;c\,|\,z)=(1-z)^{c-a-b}\,F(c-a,\,c-b;\,c\,|\,z).\]</div>
+    <p>Szokatlan következménye, hogy a két oldal sorfejtése együtthatónként megegyezik, bár a tagok teljesen különböznek. A kísérletben \(a,b,c\) egész, és a program a két oldal első 8 együtthatóját pontos törtekkel számolja ki.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bd-e-a">a <input type="range" id="bd-e-a" min="-4" max="6" value="1"> <span class="mono" id="bd-e-av">1</span></label>
+        <label class="rng" for="bd-e-b">b <input type="range" id="bd-e-b" min="-4" max="6" value="1"> <span class="mono" id="bd-e-bv">1</span></label>
+        <label class="rng" for="bd-e-c">c <input type="range" id="bd-e-c" min="1" max="10" value="3"> <span class="mono" id="bd-e-cv">3</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bd-e-t"></table></div>
+      <div class="info" id="bd-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(F(1,1;3|z)=(1-z)F(2,2;3|z)\) példában a bal oldal együtthatói \(1,\tfrac13,\tfrac16,\ldots\), a jobb oldalé a \((1-z)\)-vel szorzott \(1,\tfrac43,\tfrac32,\ldots\) sor: \(\tfrac43-1=\tfrac13\), \(\tfrac32-\tfrac43=\tfrac16\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-megfordit">
+  <div class="body">
+    <div class="eyebrow">§3 · Megfordítás</div>
+    <h2>A tagok sorrendjének megfordítása</h2>
+    <p>Ha az \(F\) polinom (\(a=-n\)), az összeget visszafelé is lehet olvasni: a \(t_{n-k}\) tagot felírva a \(k\)-adik tag helyett. Az \(x^{\overline{n-k}}=(-1)^k\,x^{\overline n}/(1-x-n)^{\overline k}\) azonosság minden tényezőre alkalmazva (a \((-n)^{\overline{n-k}}=(-1)^{n-k}n!/k!\) külön) a következőt adja:</p>
+    <div class="eq gold">\[F(-n,b;c\,|\,z)=(-z)^n\,\frac{b^{\overline n}}{c^{\overline n}}\,F\!\left(-n,\,1-c-n;\,1-b-n\,\Big|\,\frac1z\right).\]</div>
+    <p>Az azonosság akkor értelmes, ha a jobb oldal nevezői nem nullák: itt \(b\ge n\) esetén a \(1-b-n+k\) a \(k<n\) tartományban sosem nulla, és \(c\ge1\). A kísérlet erre a tartományra szorítkozik.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bd-r-n">n <input type="range" id="bd-r-n" min="1" max="7" value="3"> <span class="mono" id="bd-r-nv">3</span></label>
+        <label class="rng" for="bd-r-d">b − n <input type="range" id="bd-r-d" min="0" max="6" value="2"> <span class="mono" id="bd-r-dv">2</span></label>
+        <label class="rng" for="bd-r-c">c <input type="range" id="bd-r-c" min="1" max="8" value="4"> <span class="mono" id="bd-r-cv">4</span></label>
+        <label class="rng" for="bd-r-z">z <select id="bd-r-z"><option>1/2</option><option>-2</option><option>3/5</option><option>3</option><option>-1/3</option></select></label>
+      </div>
+      <div class="info" id="bd-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A megfordítás a polinom együtthatóit fordítja meg: a főegyüttható lesz a konstans tag. Ha \(z=1\), a két oldal ugyanannak az összegnek két olvasata.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Átalakítás kézzel</h2>
+    <details>
+      <summary><span class="sq">1. Ellenőrizd a Pfaff-transzformációt az \(F(-2,1;3\,|\,2)\) értékre.</span></summary>
+      <div class="ans">
+        <p>Bal: a tagok \(1,-\tfrac43,\tfrac23\), összeg \(\tfrac13\). Jobb: \((1-2)^2=1\), \(\tfrac z{z-1}=2\), \(F(-2,2;3\,|\,2)\) tagjai \(1,-\tfrac83,2\), összeg \(\tfrac13\). <b>Ellenőrzés:</b> \(1-\tfrac83+2=\tfrac13\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Igazold, hogy \(F(1,1;3\,|\,z)=(1-z)F(2,2;3\,|\,z)\) a \(z^2\) tagig.</span></summary>
+      <div class="ans">
+        <p>Bal: \(1+\tfrac13z+\tfrac16z^2\). Jobb: \(F(2,2;3)=1+\tfrac43z+\tfrac32z^2\), és \((1-z)\) szorzásával \(1+(\tfrac43-1)z+(\tfrac32-\tfrac43)z^2=1+\tfrac13z+\tfrac16z^2\). <b>Ellenőrzés:</b> a §2 kísérlet \(a=b=1\), \(c=3\) beállítással ugyanezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Fordítsd meg az \(F(-2,2;1\,|\,z)\) összeget.</span></summary>
+      <div class="ans">
+        <p>\(F(-2,2;1|z)=1-4z+3z^2\). A megfordított alak (az előtag \((-z)^2\cdot\tfrac{2\cdot3}{1\cdot2}=3z^2\)):</p><div class="eq">\[\begin{aligned}3z^2\,F(-2,-2;-3\,|\,\tfrac1z)&=3z^2\bigl(1-\tfrac4{3z}+\tfrac1{3z^2}\bigr)\\&=3z^2-4z+1.\end{aligned}\]</div><p><b>Ellenőrzés:</b> a két polinom azonos. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Írd a \(\sum_k\binom mk\binom n{r-k}\)-t \(F\)-ként, és számold ki \(m=2\), \(n=3\), \(r=2\)-re a Chu–Vandermonde-képlettel.</span></summary>
+      <div class="ans">
+        <p>A tagok hányadosa \(\dfrac{(k-m)(k-r)}{(k+1)(k+n-r+1)}\), tehát az összeg</p><div class="eq">\[\binom nr\,F(-m,-r;n-r+1\,|\,1)=\binom nr\frac{(n+1)^{\overline m}}{(n-r+1)^{\overline m}}.\]</div><p>Itt \(3\cdot\dfrac{4\cdot5}{2\cdot3}=10=\binom52\). <b>Ellenőrzés:</b></p><div class="eq">\[\begin{aligned}&\tbinom20\tbinom32+\tbinom21\tbinom31+\tbinom22\tbinom30\\&=3+6+1=10.\end{aligned}\]</div><p>\(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt mutatja, hogy az 5.2-beli Vandermonde-azonosság és a Chu–Vandermonde-képlet ugyanaz: csak a paraméterek elnevezése más.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bd-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Három szabály</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Név</th><th>Átalakítás</th></tr>
+      <tr><th>Pfaff</th><td>\((1-z)^{-a}F(a,c-b;c\,|\,\tfrac z{z-1})\)</td></tr>
+      <tr><th>Euler</th><td>\((1-z)^{c-a-b}F(c-a,c-b;c\,|\,z)\)</td></tr>
+      <tr><th>megfordítás</th><td>polinomra: \((-z)^n\tfrac{b^{\overline n}}{c^{\overline n}}F(-n,1-c-n;1-b-n\,|\,\tfrac1z)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd át</b><span>Hipergeometrikus alakba.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Transzformálj</b><span>Amíg ismert értéket nem kapsz.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrizd</b><span>Kis paraméterekkel, pontos törtekkel.</span></div>
+    </div>
+    <p>A következő téma, az 5.7, a parciális hipergeometrikus sorok: részleges összegek.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

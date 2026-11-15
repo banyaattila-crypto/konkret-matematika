@@ -7,6 +7,17 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-11-15
+
+### Hozzáadva
+- 5.5 Hipergeometrikus függvények: tagarány-szabály, a Gauss-féle F(a,b;c|z), Chu–Vandermonde és Gauss-képlet ellenőrzése pontos törtekkel.
+- 5.6 Hipergeometrikus transzformációk: Pfaff (bizonyítással a Chu–Vandermonde-ból), Euler, a tagok megfordítása.
+- 5.7 Parciális hipergeometrikus sorok: teleszkópos részletösszegek, a binomiális részletösszeg rekurziója.
+- 5.8 Mechanikus összegzés: a Gosper-algoritmus teljes megvalósítása pontos törtekkel (11 előre megadott tag), Zeilberger-tanúsítványok ellenőrzése.
+
+### Módosítva
+- A négy szakasz helyőrzője kikerült; az 5. fejezet minden könyvszakasza elkészült.
+
 ## [1.4.0] - 2026-11-15
 
 ### Hozzáadva

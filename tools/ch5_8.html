@@ -1,0 +1,132 @@
+
+<!-- ================= 5.8 MECHANIKUS ÖSSZEGZÉS ================= -->
+<header class="hero page" id="bf-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.8</div>
+    <h1>Mechanikus összegzés</h1>
+    <p class="lead">Van-e egy hipergeometrikus tag részletösszegének zárt alakja? Gosper algoritmusa ezt véges számú lépésben eldönti, és ha van, meg is adja. Az algoritmus nem ötlet, hanem számítás.</p>
+    <div class="formula">\(\displaystyle t_k=z(k+1)-z(k),\qquad z(k)=\frac{b(k-1)\,x(k)}{c(k)}\,t_k\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bf-hero" role="img" aria-label="A k·k! tagjai a z(k)=k! antidifferencia lépcsőjén"></svg>
+    <div class="counter"><span id="bf-hero-a">k·k! = (k+1)! − k!</span><span id="bf-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A teleszkópos összegzés ötletet kíván: az embernek rá kell jönnie, hogy \(k\cdot k!=(k+1)!-k!\). Az algoritmus ezt az ötletet számítással helyettesíti. A képen a \(k\cdot k!\) tagjai egy lépcsőt építenek: minden oszlop az előző oszlop és a hozzáadott tag, az oszlopok magassága \(k!\). Az algoritmus megkeresi ezt a lépcsőt, vagy kimutatja, hogy nincs. A nevét Gosperről (1978) kapta; a részletes forrást nem ellenőriztem.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bf-gosper">
+  <div class="body">
+    <div class="eyebrow">§1 · A Gosper-algoritmus</div>
+    <h2>Négy lépés</h2>
+    <p>Legyen \(t_{k+1}/t_k=z\prod(k+a_i)/\prod(k+b_j)\) hipergeometrikus tag. Az \(\sum t_k\) <em>határozatlan összege</em> egy \(z(k)\) hipergeometrikus tag, amelyre \(z(k+1)-z(k)=t_k\); ekkor \(\sum_{k=k_0}^{m-1}t_k=z(m)-z(k_0)\).</p>
+    <p><b>1. lépés (normálalak).</b> Keressük az \(a,b,c\) polinomokat, amelyekkel</p>
+    <div class="eq">\[\frac{t_{k+1}}{t_k}=\frac{a(k)}{b(k)}\cdot\frac{c(k+1)}{c(k)},\qquad\gcd\bigl(a(k),b(k+h)\bigr)=1\ \ (h=0,1,2,\ldots).\]</div>
+    <p>Kezdjük \(a=z\prod(k+a_i)\), \(b=\prod(k+b_j)\), \(c=1\)-gyel. Ha valamely \(i,j\) párra \(h=a_i-b_j\) nemnegatív egész, akkor \(g=k+a_i\) közös tényező \(a(k)\) és \(b(k+h)\) között. Ilyenkor \(a\)-ból elhagyjuk a \(g(k)\)-t, \(b\)-ből a \(g(k-h)=k+b_j\)-t, és \(c\)-t megszorozzuk \(\prod_{i'=1}^{h}g(k-i')\)-vel. A hányados nem változik, mert \(c(k+1)/c(k)\) új szorzója \(g(k)/g(k-h)\), ami kiejti az \(a\) és \(b\) változását. Addig ismételjük, amíg van ilyen pár.</p>
+    <p><b>2. lépés (egyenlet).</b> A keresett \(z(k)=\dfrac{b(k-1)x(k)}{c(k)}t_k\) alakban \(z(k+1)-z(k)=t_k\) pontosan akkor áll, ha</p>
+    <div class="eq gold">\[a(k)\,x(k+1)-b(k-1)\,x(k)=c(k).\]</div>
+    <p><b>3. lépés (fokszám).</b> \(x\) polinom, fokszámára korlát adható. Ha \(\deg a\ne\deg b\) vagy a főegyütthatók különböznek, \(\deg x=\deg c-\max(\deg a,\deg b)\). Ha egyeznek (\(m=\deg a\), \(\alpha\) a főegyüttható, \(a_1\) és \(\beta_1\) az \(a(k)\), illetve \(b(k-1)\) \(k^{m-1}\) együtthatója), akkor \(\deg x\le\max\bigl(\deg c-m+1,\ (\beta_1-a_1)/\alpha\bigr)\), utóbbi csak ha nemnegatív egész. Ha a korlát negatív, nincs megoldás.</p>
+    <p><b>4. lépés (lineáris rendszer).</b> Az \(x\) ismeretlen együtthatóira lineáris egyenletrendszert kapunk. Ha megoldható, kész a \(z(k)\). Ha nem, a tagnak nincs hipergeometrikus antidifferenciája: az algoritmus nem „nem talált valamit”, hanem kimutatta, hogy nincs. (A teljességi tétel Gosperé, bizonyítása itt nem szerepel.)</p>
+    <p>A kísérlet ezt a négy lépést végzi pontos törtekkel, majd ellenőrzi, hogy \(z(k+1)-z(k)=t_k\) teljesül-e a tagok konkrét értékein, és a részletösszegek egyeznek-e.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bf-g-s">tag <select id="bf-g-s"></select></label>
+      </div>
+      <div class="info" id="bf-g-info"></div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bf-g-t"></table></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az ellenőrzés független az algoritmustól: a \(z\)-t a program az \(x(k)\), \(b\), \(c\) polinomokból építi, a tagokat pedig a hányados-szabályból, tehát a \(z(k+1)-z(k)=t_k\) egyezés valódi próba. A „nem összegezhető” ítéletet viszont nem lehet így próbálni, ott az algoritmus teljességére támaszkodunk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-nincs">
+  <div class="body">
+    <div class="eyebrow">§2 · Amikor nincs</div>
+    <h2>Mi nem összegezhető, és miért</h2>
+    <p>Az \(\sum1/k\) (harmonikus), \(\sum k!\), \(\sum\binom{2k}k\), \(\sum1/k^2\) mind kudarcot vall: az egyenlet nem oldható meg polinomban. A \(1/k\) tagra a hányados \(k/(k+1)\), nincs nemnegatív egész \(h\), tehát \(a=k\), \(b=k+1\), \(c=1\). Az egyenlet \(k\,x(k+1)-k\,x(k)=1\): a bal oldal minden polinom \(x\)-re \(k\)-val osztható, a jobb oldal 1. Nincs megoldás, tehát a harmonikus számokat nem lehet zárt hipergeometrikus alakban összegezni (ezért kell a \(H_n\) jelölés).</p>
+    <p>A binomiális sor részletösszege is idetartozik. A \(t_k=\binom nk\) hányadosa \(-\dfrac{k-n}{k+1}\), azaz \(a=-(k-n)\), \(b=k+1\). A \(h=a_i-b_j=-n-1<0\), nincs eltolás. Az egyenlet \(-(k-n)x(k+1)-k\,x(k)=1\): a főegyütthatók \(-1\) és \(1\), különböznek, tehát \(\deg x=\deg c-1=-1\). Nincs polinom \(x\), így \(\sum_{k\le m}\binom nk\) (szimbolikus \(n\)-re) nem \(R(m)\binom nm\) alakú. Ez az, amit az 5.7 előre jelzett.</p>
+  </div>
+  <aside class="margo">
+    <p>A „nincs zárt alak” állítás pontos jelentése: nincs hipergeometrikus tag, amelynek differenciája a \(t_k\). Más típusú zárt alak (például több hipergeometrikus tag összege) ettől még lehetséges, de az más kérdés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-zeilberger">
+  <div class="body">
+    <div class="eyebrow">§3 · Zeilberger</div>
+    <h2>Ha a tag két változótól függ</h2>
+    <p>A \(\sum_k F(n,k)\) összeg \(n\)-től is függ, ezért a Gosper-módszer közvetlenül nem alkalmazható. Zeilberger gondolata: keressünk olyan \(G(n,k)=R(n,k)F(n,k)\) „tanúsítványt” és \(\sigma_i(n)\) együtthatókat, amelyekkel</p>
+    <div class="eq">\[\sum_i\sigma_i(n)F(n+i,k)=G(n,k+1)-G(n,k).\]</div>
+    <p>Ha \(G\) eltűnik a határokon, \(k\) szerinti összegzéssel a \(\sum_i\sigma_i(n)S(n+i)=0\) rekurziót kapjuk \(S(n)=\sum_kF(n,k)\)-ra. Az algoritmust itt nem valósítjuk meg: két ismert tanúsítványt ellenőrzünk. A \(\binom nk\)-ra \(F(n+1,k)-2F(n,k)=G(n,k+1)-G(n,k)\) a \(G(n,k)=-\binom n{k-1}\) tanúsítvánnyal (ez a Pascal-szabály), amelyből \(S(n+1)=2S(n)\), azaz \(S(n)=2^n\). A \(\binom nk^2\)-re a megfelelő rekurzió \((n+1)S(n+1)=2(2n+1)S(n)\), tanúsítványa pedig</p>
+    <div class="eq gold">\[G(n,k)=-\frac{k^2(3n+3-2k)}{(n+1)^2}\binom{n+1}k^{2}.\]</div>
+    <p>Ebből \(S(n)=\binom{2n}n\) következik (\(S(0)=1\)-ből indulva). A tanúsítványt én számoltam ki és a kísérlet minden \(n\le30\)-ra és \(k\)-ra pontos törtekkel ellenőrzi, de a racionális azonosság szimbolikus levezetését nem végeztem el. Ezért ez ellenőrzött állítás, nem teljes bizonyítás.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bf-z-f">tag <select id="bf-z-f"><option value="b1">C(n,k) → 2ⁿ</option><option value="b2">C(n,k)² → C(2n,n)</option></select></label>
+        <label class="rng" for="bf-z-n">n-ig <input type="range" id="bf-z-n" min="1" max="30" value="12"> <span class="mono" id="bf-z-nv">12</span></label>
+      </div>
+      <div class="info" id="bf-z-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Zeilberger-algoritmus magja a Gosper-algoritmus egy olyan változata, amelyben a \(\sigma_i(n)\) együtthatók is ismeretlenek. A teljes tárgyalás és a bizonyítás a Petkovšek–Wilf–Zeilberger „A=B” könyvben található, ezt itt nem tárgyaljuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Gosper kézzel</h2>
+    <details>
+      <summary><span class="sq">1. Összegezd a \(k\,2^k\)-t Gosperrel.</span></summary>
+      <div class="ans">
+        <p>A hányados \(2(k+1)/k\): \(a=2(k+1)\), \(b=k\). A \(h=1-0=1\) eltolással \(g=k+1\): \(a=2\), \(b=1\), \(c=k\). Az egyenlet \(2x(k+1)-x(k)=k\), a főegyütthatók különböznek, \(\deg x=1\), \(x=k-2\). Így \(z(k)=\dfrac{1\cdot(k-2)}{k}\cdot k2^k=(k-2)2^k\). <b>Ellenőrzés:</b> \(z(m)-z(1)=(m-2)2^m+2\); \(m=4\)-re \(2\cdot16+2=34=2+8+24\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Összegezd az \(1/(k(k+1))\)-et.</span></summary>
+      <div class="ans">
+        <p>A hányados \(k/(k+2)\): \(a=k\), \(b=k+2\), nincs eltolás, \(c=1\). Az egyenlet \(k\,x(k+1)-(k+1)x(k)=1\), a főegyütthatók egyeznek, a fokszámkorlát \(\max(0,\ 1)=1\). A \(x=\alpha k+\beta\) helyettesítés \(-\beta=1\)-et ad, \(x=-1\). Így \(z(k)=(k+1)(-1)\cdot\tfrac1{k(k+1)}=-\tfrac1k\). <b>Ellenőrzés:</b> \(\sum_{k=1}^{m-1}=1-\tfrac1m\); \(m=3\)-ra \(\tfrac12+\tfrac16=\tfrac23=1-\tfrac13\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Miért nem összegezhető \(\sum k!\)?</span></summary>
+      <div class="ans">
+        <p>A hányados \(k+1\): \(a=k+1\), \(b=1\), \(c=1\), nincs eltolás. Az egyenlet \((k+1)x(k+1)-x(k)=1\), a főegyütthatók: \(a\) foka 1, \(b\) foka 0, különböznek, \(\deg x=\deg c-\max(1,0)=-1\). Nincs megoldás. <b>Ellenőrzés:</b> a kísérlet a \(k!\) tagra is ezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Ellenőrizd a \(\binom nk\) Zeilberger-tanúsítványát \(n=2\), \(k=1\)-re.</span></summary>
+      <div class="ans">
+        <p>Bal oldal: \(F(3,1)-2F(2,1)=3-4=-1\). Jobb oldal:</p><div class="eq">\[\begin{aligned}G(2,2)-G(2,1)&=-\tbinom21+\tbinom20\\&=-2+1=-1.\end{aligned}\]</div><p><b>Ellenőrzés:</b> a két oldal egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat mutatja a legfontosabbat: az eltolás (\(h=1\)) nélkül a \(c\)-polinom nem épült volna fel, és a fokszámkorlát hibás lett volna. A szabály gépi alkalmazása pótolja az ötletet.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bf-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A döntési eljárás</h2>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Normálalak</b><span>\(a,b,c\) az eltolások kiejtésével.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Egyenlet</b><span>\(a\,x(k{+}1)-b(k{-}1)\,x(k)=c\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Megoldás</b><span>Fokszámkorlát, lineáris rendszer.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">4</span><b>Ellenőrzés</b><span>\(z(k{+}1)-z(k)=t_k\).</span></div>
+    </div>
+    <p>Ezzel az 5. fejezet minden könyvszakasza elkészült. A következő a 6. fejezet hiányzó szakaszai.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

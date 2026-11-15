@@ -1,0 +1,139 @@
+
+<!-- ================= 5.7 PARCIÁLIS HIPERGEOMETRIKUS SOROK ================= -->
+<header class="hero page" id="be-bevezeto">
+  <div>
+    <div class="eyebrow">5. fejezet · Binomiális együtthatók · 5.7</div>
+    <h1>Parciális hipergeometrikus sorok</h1>
+    <p class="lead">A teljes összeg (az összes \(k\)-ra) gyakran szép. A részletösszeg, amely csak az első \(m\) tagot adja, ritkán az. Néhány esetben mégis zárt alakja van, máskor csak rekurziót tudunk rá.</p>
+    <div class="formula">\(\displaystyle S_m=\sum_{k\le m}t_k,\qquad S_{m+1}-S_m=t_{m+1}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="be-hero" role="img" aria-label="A \(\binom{n}{k}\) részletösszegei a 2ⁿ arányában, m = 0…n-re"></svg>
+    <div class="counter"><span id="be-hero-a">Σ<sub>k≤m</sub> C(n,k) / 2ⁿ</span><span id="be-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A \(\sum_k\binom nk=2^n\) az egész sorra szól. Ha az összegzést félúton megállítjuk, a kép megváltozik: a \(\sum_{k\le m}\binom nk\) nem egyszerű képlet \(n\)-ben és \(m\)-ben. A képen az \(n=12\) sor részletösszegei a teljes összeg arányában látszanak: az arány szépen nő 0-ról 1-re, de \(m\)-ből nem olvasható le zárt alakban. Ezzel szemben a váltakozó előjelű \(\sum_{k\le m}(-1)^k\binom rk\)-nak van egyszerű alakja. A határ azon múlik, hogy a részletösszeg egy hipergeometrikus tag racionális többszöröse-e, ezt az 5.8 dönti el.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="be-zart">
+  <div class="body">
+    <div class="eyebrow">§1 · Amikor van zárt alak</div>
+    <h2>Teleszkópos részletösszegek</h2>
+    <p>A \(S_m\) zárt alakja azt jelenti, hogy \(S_m=R(m)\,t_m\) valamilyen racionális \(R\)-rel. Három példa, mindegyik teleszkópos bizonyítással:</p>
+    <p><b>(a)</b> \(\sum_{k\le m}(-1)^k\binom rk=(-1)^m\binom{r-1}m\). Indukcióval: az \(m\to m+1\) lépésben \((-1)^{m+1}\bigl[\binom{r-1}{m+1}+\binom{r-1}m\bigr]=(-1)^{m+1}\binom r{m+1}\), ami éppen a következő tag (Pascal-szabály). Itt \(S_m/t_m=\dfrac{r-m}r\).</p>
+    <p><b>(b)</b> \(\sum_{k\le m}\binom{n+k}k=\binom{n+m+1}m\) (hoki-ütő, 5.2). Az indukciós lépés ugyanaz a Pascal-szabály. Itt \(S_m/t_m=\dfrac{n+m+1}{n+1}\).</p>
+    <p><b>(c)</b> \(\sum_{k=1}^{m-1}k\cdot k!=m!-1\), mert \(k\cdot k!=(k+1)!-k!\). Az antidifferencia \(m!\), a „−1” a kezdőérték miatt van.</p>
+    <p>A kísérlet az (a) és (b) családra kiszámolja a részletösszeget közvetlenül és a képlettel is, pontos számokkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="be-z-f">család <select id="be-z-f"><option value="alt">(−1)ᵏ·C(r,k)</option><option value="hoki">C(n+k,k)</option></select></label>
+        <label class="rng" for="be-z-p">r vagy n <input type="range" id="be-z-p" min="2" max="14" value="7"> <span class="mono" id="be-z-pv">7</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="be-z-t"></table></div>
+      <div class="info" id="be-z-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A (c) példában a részletösszeg \(m!-1\) nem \(R(m)\cdot m!\)-alakú a „−1” miatt, az antidifferencia azonban \(m!\), és a részletösszeg az antidifferencia két értékének különbsége. Az 5.8 algoritmusa az antidifferenciát keresi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-rekurzio">
+  <div class="body">
+    <div class="eyebrow">§2 · Amikor nincs, de rekurzió van</div>
+    <h2>Binomiális részletösszeg és rekurziója</h2>
+    <p>Legyen \(S(n,m)=\sum_{k\le m}\binom nk x^k\). A Pascal-szabállyal \(\binom{n+1}k=\binom nk+\binom n{k-1}\), tehát</p>
+    <div class="eq">\[S(n+1,m)=S(n,m)+x\,S(n,m-1)=S(n,m)+x\bigl(S(n,m)-\tbinom nm x^m\bigr).\]</div>
+    <p>Innen</p>
+    <div class="eq gold">\[S(n+1,m)=(1+x)\,S(n,m)-\binom nm x^{m+1}.\]</div>
+    <p>Ez az \(n\) szerinti rekurzió pontos, de zárt alakot nem ad: az \(x=1\), azaz \(S(n+1,m)=2S(n,m)-\binom nm\) esetén \(S(n,m)\) a Pascal-háromszög sorainak részletösszege, és nincs olyan racionális \(R(n,m)\), amelyre \(S(n,m)=R(n,m)\binom nm\). Ezt az 5.8-ban a Gosper-algoritmus dönti el. A kísérletben \(x\) választható, és a rekurzió minden \(m\)-re ellenőrizve van.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="be-r-n">n <input type="range" id="be-r-n" min="1" max="16" value="8"> <span class="mono" id="be-r-nv">8</span></label>
+        <label class="rng" for="be-r-x">x <select id="be-r-x"><option>1</option><option>-1</option><option>2</option><option>3</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="be-r-t"></table></div>
+      <div class="info" id="be-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(x=-1\) esetben \(S(n,m)=(-1)^m\binom{n-1}m\) (a §1 (a) példa) zárt alakú, és a rekurzió ezt konzisztensen adja. Az \(x=1\) esetben nincs ilyen zárt alak.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-megfigyeles">
+  <div class="body">
+    <div class="eyebrow">§3 · Meglepő megfigyelés</div>
+    <h2>Egy részletösszeg, amelynek értéke egyszerű</h2>
+    <p>A \(\sum_{k=0}^{n}\binom{n+k}k\,2^{-k}\) összeg a felső határ miatt részletösszeg, mégis szép: \(2^n\). Az \(n=1\)-re \(1+\tfrac22=2\), \(n=2\)-re \(1+\tfrac32+\tfrac64=4\). Az állítás bizonyítása itt nem szerepel (az 5.8 Zeilberger-féle módszerével volna levezethető), a kísérlet \(n\le40\)-ig pontos számokkal ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="be-m-n">n <input type="range" id="be-m-n" min="1" max="40" value="10"> <span class="mono" id="be-m-nv">10</span></label>
+      </div>
+      <div class="info" id="be-m-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az összeg a „határ” példája: a \(\binom{n+k}k\) és a \(2^{-k}\) paraméterei külön-külön nem mutatják, hogy a részletösszeg zárt alakú. Egy ilyen megfigyelés kísérletből indul, és csak később kap bizonyítást.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Teleszkóp és rekurzió</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\sum_{k\le4}\binom{3+k}k\)-t közvetlenül és a képlettel.</span></summary>
+      <div class="ans">
+        <p>\(1+4+10+20+35=70\), a képlet \(\binom{3+4+1}4=\binom84=70\). <b>Ellenőrzés:</b> az indukciós lépés \(\binom{n+m+1}m+\binom{n+m+1}{m+1}=\binom{n+m+2}{m+1}\) a Pascal-szabály. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mennyi \(\sum_{k=1}^{4}k\cdot k!\)?</span></summary>
+      <div class="ans">
+        <p>\(k\cdot k!=(k+1)!-k!\), a teleszkóp \(5!-1!=119\). <b>Ellenőrzés:</b> \(1+4+18+96=119\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki \(\sum_{k\le4}(-1)^k\binom7k\)-t.</span></summary>
+      <div class="ans">
+        <p>\(1-7+21-35+35=15\), a képlet \((-1)^4\binom64=15\). <b>Ellenőrzés:</b> \(S_m/t_m=\tfrac{7-4}7\) és \(t_4=35\), \(\tfrac37\cdot35=15\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Az \(S(n+1,m)=2S(n,m)-\binom nm\) rekurzióval számold ki \(S(6,2)\)-t az \(S(5,2)\)-ből.</span></summary>
+      <div class="ans">
+        <p>\(S(5,2)=1+5+10=16\), \(\binom52=10\), tehát \(S(6,2)=2\cdot16-10=22\). <b>Ellenőrzés:</b> közvetlenül \(1+6+15=22\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat mutatja, hogy a rekurzió pontos eszköz akkor is, ha zárt alak nincs: \(S(n,m)\) minden értéke sorban kiszámítható.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="be-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Zárt alak, rekurzió, megfigyelés</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Helyzet</th><th>Eszköz</th></tr>
+      <tr><th>teleszkóp</th><td>\(t_k=z(k+1)-z(k)\), az összeg \(z(m+1)-z(0)\)</td></tr>
+      <tr><th>nincs zárt alak</th><td>rekurzió \(n\) szerint (Pascal-szabály)</td></tr>
+      <tr><th>megfigyelés</th><td>kísérlet, bizonyítás később</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Próbálj teleszkópot</b><span>Keress \(z\)-t, amelyre \(z(k+1)-z(k)=t_k\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Ha nincs, a Pascal-szabály gyakran ad rekurziót.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Dönts</b><span>Az 5.8 algoritmusa eldönti, van-e \(z\).</span></div>
+    </div>
+    <p>A következő téma, az 5.8, a mechanikus összegzés: a Gosper-algoritmus.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
