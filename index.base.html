@@ -694,7 +694,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
       <div class="ar" aria-hidden="true">→</div>
       <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Sejtés + indukció, vagy jóslás nélkül: transzformáció (1.3).</span></div>
     </div>
-    <p>A könyv a továbbiakban főleg a harmadik lépéssel foglalkozik: hogyan lehet egy rekurziót „jóstehetség nélkül” megoldani. A következő modul (1.2, Egyenesek a síkban) ugyanezt a hármas lépést viszi végig egy geometriai kérdésen.</p>
+    <p>A könyv a továbbiakban főleg a harmadik lépéssel foglalkozik: hogyan lehet egy rekurziót „jóstehetség nélkül” megoldani. A következő modul (1.2, Egyenesek a síkon) ugyanezt a hármas lépést viszi végig egy geometriai kérdésen.</p>
   </div>
   <aside class="margo">
     <p>A §5 (fa), §7 (fixpont) és §9 (bináris) három független út ugyanahhoz a képlethez. Ha három irányból is ugyanaz jön ki, az a legjobb ellenőrzés.</p>
@@ -706,7 +706,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <header class="hero page" id="e-bevezeto">
   <div>
     <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.2</div>
-    <h1>Egyenesek a síkban</h1>
+    <h1>Egyenesek a síkon</h1>
     <p class="lead">Hány darabra vágható egy pizza n egyenes vágással? Matematikusabban: legfeljebb hány tartományra osztja a síkot n egyenes? A válasz a Hanoi tornyaival rokon, mégis egészen más jellegű növekedést mutat.</p>
     <div class="formula">\(L_n = \dfrac{n(n+1)}{2} + 1\)</div>
   </div>
@@ -935,7 +935,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
       <div class="ar" aria-hidden="true">→</div>
       <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Kibontás összegre, majd Gauss-trükk.</span></div>
     </div>
-    <p>A következő téma (1.3, Josephus-probléma) egy harmadik típust hoz: a rekurzió felezi az argumentumot, és a megoldás a kettes számrendszerben válik átláthatóvá.</p>
+    <p>A következő téma (1.3, A Josephus probléma) egy harmadik típust hoz: a rekurzió felezi az argumentumot, és a megoldás a kettes számrendszerben válik átláthatóvá.</p>
   </div>
   <aside class="margo">
     <p>A táblázat utolsó sora a léptékkülönbséget mutatja: n = 20-nál már közel 5000-szeres a különbség.</p>
@@ -952,7 +952,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <header class="hero page" id="j-bevezeto">
   <div>
     <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.3</div>
-    <h1>A Josephus-probléma</h1>
+    <h1>A Josephus probléma</h1>
     <p class="lead">Körben állnak az emberek, és minden második kiesik, amíg csak egy marad. Hova kell állni, hogy te legyél az? A válasz a kettes számrendszerben szinte magától kiolvasható.</p>
     <div class="formula">\(J(2^m + l) = 2l + 1\)</div>
   </div>
@@ -1741,13 +1741,13 @@ const TOPICS={
   hanoi:{n:"1.1",t:"Hanoi tornyai",prefix:"s-",
     pages:[["bevezeto","Bevezető"],["feladat","A feladat – játék"],["kis","Kis esetek"],["felso","Felső korlát"],["also","Alsó korlát"],["fa","A rekurzió kibontva"],["indukcio","Sejtés és indukció"],["fixpont","Jóslás nélkül: a +1 trükk"],["leptek","Léptékek"],["binaris","Bináris szerkezet"],["gyak","Gyakorlatok"],["modszer","A módszer"]],
     foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.1 Hanoi tornyai. A szöveg saját feldolgozás; a §5, a §7 második fele, a §8 ellenőrzései, a §9 és a §10 kiegészítések."},
-  egyenesek:{n:"1.2",t:"Egyenesek a síkban",prefix:"e-",
+  egyenesek:{n:"1.2",t:"Egyenesek a síkon",prefix:"e-",
     pages:[["bevezeto","Bevezető"],["feladat","A feladat – rajzolás"],["kis","Kis esetek"],["rekurzio","A rekurzió"],["zart","Zárt alak"],["cikkcakk","Cikkcakk"],["korlatos","Korlátos tartományok"],["gyak","Gyakorlatok"],["modszer","Összevetés"]],
-    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.2 Egyenesek a síkban. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §4 metszéspont-értelmezése, a §6 és a §7 kiegészítések."}
+    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.2 Egyenesek a síkon. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §4 metszéspont-értelmezése, a §6 és a §7 kiegészítések."}
 ,
-  josephus:{n:"1.3",t:"A Josephus-probléma",prefix:"j-",
+  josephus:{n:"1.3",t:"A Josephus probléma",prefix:"j-",
     pages:[["bevezeto","Bevezető"],["feladat","A feladat – játék"],["kis","Kis esetek"],["rekurzio","A rekurzió"],["zart","Zárt alak"],["binaris","Bináris szerkezet"],["altalanos","Általánosítás"],["gyak","Gyakorlatok"],["modszer","Összevetés"]],
-    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.3 A Josephus-probléma. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §5 iterációs állítása, a §6 számjegycseréje és a §7 kiegészítések."}
+    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.3 A Josephus probléma. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §5 iterációs állítása, a §6 számjegycseréje és a §7 kiegészítések."}
 };
 const CH=[
  {n:1,t:"Rekurziós problémák",d:"Három klasszikus feladat, amelyek megoldása egy kisebb, hasonló feladat megoldására épül.",
@@ -1756,7 +1756,7 @@ const CH=[
           {id:"egyenesek",d:"Legfeljebb hány részre vágja a síkot n egyenes? És n darab cikkcakk?"},
           {id:"josephus",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."}]},
  {n:2,t:"Összegek",d:"Összegzési jelölés, perturbáció, többszörös összegek."},
- {n:3,t:"Egészrész-függvények",d:"Alsó és felső egészrész, mod, spektrumok."},
+ {n:3,t:"Egész függvények",d:"Alsó és felső egészrész, mod, spektrumok."},
  {n:4,t:"Számelmélet",d:"Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa."},
  {n:5,t:"Binomiális együtthatók",d:"Azonosságok, hipergeometrikus függvények."},
  {n:6,t:"Speciális számok",d:"Stirling-, Euler-, harmonikus, Bernoulli- és Fibonacci-számok."},

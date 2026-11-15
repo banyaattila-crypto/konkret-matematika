@@ -3,18 +3,18 @@ const TOPICS={
   hanoi:{n:"1.1",t:"Hanoi tornyai",prefix:"s-",
     pages:[["bevezeto","Bevezető"],["feladat","A feladat – játék"],["kis","Kis esetek"],["felso","Felső korlát"],["also","Alsó korlát"],["fa","A rekurzió kibontva"],["indukcio","Sejtés és indukció"],["fixpont","Jóslás nélkül: a +1 trükk"],["leptek","Léptékek"],["binaris","Bináris szerkezet"],["gyak","Gyakorlatok"],["modszer","A módszer"]],
     foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.1 Hanoi tornyai. A szöveg saját feldolgozás; a §5, a §7 második fele, a §8 ellenőrzései, a §9 és a §10 kiegészítések."},
-  egyenesek:{n:"1.2",t:"Egyenesek a síkban",prefix:"e-",
+  egyenesek:{n:"1.2",t:"Egyenesek a síkon",prefix:"e-",
     pages:[["bevezeto","Bevezető"],["feladat","A feladat – rajzolás"],["kis","Kis esetek"],["rekurzio","A rekurzió"],["zart","Zárt alak"],["cikkcakk","Cikkcakk"],["korlatos","Korlátos tartományok"],["gyak","Gyakorlatok"],["modszer","Összevetés"]],
-    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.2 Egyenesek a síkban. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §4 metszéspont-értelmezése, a §6 és a §7 kiegészítések."}
+    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.2 Egyenesek a síkon. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §4 metszéspont-értelmezése, a §6 és a §7 kiegészítések."}
 };
 const CH=[
  {n:1,t:"Rekurziós problémák",d:"Három klasszikus feladat, amelyek megoldása egy kisebb, hasonló feladat megoldására épül.",
   lead:"Mindhárom feladatot újra és újra vizsgálták a matematikusok, és mindháromban ugyanaz a gondolat dolgozik: a megoldás egy kisebb, ugyanilyen feladat megoldására épül. A cél mindenütt a rekurzióból zárt képlethez jutni.",
   topics:[{id:"hanoi",d:"Hány lépésben költöztethető át egy n korongos torony? Rekurzió, alsó és felső korlát, zárt alak."},
           {id:"egyenesek",d:"Legfeljebb hány részre vágja a síkot n egyenes? És n darab cikkcakk?"},
-          {n:"1.3",t:"A Josephus-probléma",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."}]},
+          {n:"1.3",t:"A Josephus probléma",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."}]},
  {n:2,t:"Összegek",d:"Összegzési jelölés, perturbáció, többszörös összegek."},
- {n:3,t:"Egészrész-függvények",d:"Alsó és felső egészrész, mod, spektrumok."},
+ {n:3,t:"Egész függvények",d:"Alsó és felső egészrész, mod, spektrumok."},
  {n:4,t:"Számelmélet",d:"Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa."},
  {n:5,t:"Binomiális együtthatók",d:"Azonosságok, hipergeometrikus függvények."},
  {n:6,t:"Speciális számok",d:"Stirling-, Euler-, harmonikus, Bernoulli- és Fibonacci-számok."},

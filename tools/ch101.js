@@ -1,5 +1,5 @@
 /* ================= 10.1 A KÖTET TÉRKÉPE ================= */
-const axCh=["","Rekurziós problémák","Összegek","Egészrész-függvények","Számelmélet","Binomiális együtthatók","Speciális számok","Generátorfüggvények","Diszkrét valószínűség","Aszimptotika"];
+const axCh=["","Rekurziós problémák","Összegek","Egész függvények","Számelmélet","Binomiális együtthatók","Speciális számok","Generátorfüggvények","Diszkrét valószínűség","Aszimptotika"];
 const axE=[[1,2,"rekurzió és összeg kölcsönös átírása"],[1,7,"rekurzió megoldása hatványsorral"],[2,6,"teleszkópos összeg és perturbáció: harmonikus és Bernoulli-számok"],[2,9,"összeg közelítése integrállal (Euler–Maclaurin)"],[3,4,"egészrész és mod a számelméletben"],[4,5,"oszthatóság és paritás a binomiális együtthatókban"],[5,7,"binomiális tétel és generátorfüggvény"],[5,8,"binomiális eloszlás"],[5,9,"a C(2n,n) aszimptotikája"],[6,8,"harmonikus és Stirling-számok a valószínűségben"],[6,9,"Bernoulli-számok az Euler–Maclaurin-sorban"],[7,8,"generátorfüggvény és valószínűség-generáló függvény"],[8,9,"a kupongyűjtő aszimptotikája"]];
 function axDraw(svg,sel,upto){
   const W=420,H=300,cx=W/2,cy=H/2,R=110,P=i=>[cx+R*Math.sin(2*Math.PI*(i-1)/9),cy-R*Math.cos(2*Math.PI*(i-1)/9)];

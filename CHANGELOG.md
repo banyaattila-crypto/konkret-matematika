@@ -7,6 +7,11 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-11-15
+
+### Módosítva
+- Az 1–3. fejezet szakaszcímei a magyar kiadás tartalomjegyzékéhez igazítva (pl. 2.2 Összeg és rekurzió, 2.6 Véges és végtelen kalkulus, 3.2 Alsó/felső egész alkalmazások, 3.4 „mod”: A binér művelet); a 3. fejezet címe: Egész függvények.
+
 ## [1.6.0] - 2026-11-15
 
 ### Hozzáadva
