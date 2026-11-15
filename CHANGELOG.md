@@ -7,6 +7,14 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-11-15
+
+### Hozzáadva
+- 7.1 Dominók és pénzváltás: 2×n és 3×n lefedések rekurzióval és generátorfüggvénnyel, pénzváltás, oszlopprofil-számolás ellenőrzésre.
+- 7.4 Speciális generátorfüggvények: harmonikus számok, Stirling-számok, Bernoulli-számok.
+- 7.5 Konvolúciók: Vandermonde-azonosság és változata, a központi binomiális együtthatók és a Catalan-konvolúció, a Fibonacci-számok önkonvolúciója.
+- 7.7 Dirichlet-féle generátorfüggvény: Dirichlet-konvolúció, multiplikativitás, Euler-szorzat.
+
 ## [1.6.2] - 2026-11-15
 
 ### Módosítva

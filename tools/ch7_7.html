@@ -1,0 +1,131 @@
+
+<!-- ================= 7.7 DIRICHLET-FÉLE GENERÁTORFÜGGVÉNY ================= -->
+<header class="hero page" id="bm-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.7</div>
+    <h1>Dirichlet-féle generátorfüggvény</h1>
+    <p class="lead">A hatványsor az additív felosztásokat követi. A számelméleti függvényeknél az osztók a fontosak, ott a \(\sum a_nn^{-s}\) alakú Dirichlet-sor a megfelelő eszköz: szorzata az osztók szerinti konvolúciót adja.</p>
+    <div class="formula">\(\displaystyle\sum_{n\ge1}\frac{(f\ast g)(n)}{n^s}=\Bigl(\sum\frac{f(n)}{n^s}\Bigr)\Bigl(\sum\frac{g(n)}{n^s}\Bigr)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bm-hero" role="img" aria-label="Az osztók számának, τ(n)-nek az értékei n=1..30-ra"></svg>
+    <div class="counter"><span id="bm-hero-a">τ = 1 ∗ 1</span><span id="bm-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>Egy szám osztóinak száma, összege és az \(n\)-hez relatív prím maradékok száma mind az \(n\) prímfelbontásából jön. Ha két függvényt „összeszorzunk” úgy, hogy \(n\)-nél az \(n\) minden \(n=d\cdot e\) felbontását összegezzük, a prímek külön-külön viselkednek. A Dirichlet-sor ezt a szorzást közönséges szorzássá alakítja.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bm-konvolucio">
+  <div class="body">
+    <div class="eyebrow">§1 · Dirichlet-konvolúció</div>
+    <h2>A sor szorzata az osztók szerinti konvolúció</h2>
+    <p>Az \(F(s)=\sum_{n\ge1}f(n)n^{-s}\) és \(G(s)=\sum g(n)n^{-s}\) sorok szorzatában a tagok \(f(d)g(e)(de)^{-s}\) alakúak, mert \(d^{-s}e^{-s}=(de)^{-s}\). Az \(N^{-s}\) együtthatóját az \(N=de\) felbontások adják:</p>
+    <div class="eq gold">\[(f\ast g)(N)=\sum_{d\mid N}f(d)\,g\!\left(\frac Nd\right).\]</div>
+    <p>A fontos függvények: \(\varepsilon(n)=[n=1]\) (a konvolúció egysége, sora \(1\)), \(\mathbf 1(n)=1\) (sora \(\zeta(s)\)), \(\mathrm{id}(n)=n\) (sora \(\zeta(s-1)\)), a Möbius-féle \(\mu\) és az Euler-féle \(\varphi\) (4.9). A 4.9 \(\mathbf1\ast\mu=\varepsilon\) tételéből \(\sum\mu(n)n^{-s}=1/\zeta(s)\). További azonosságok:</p>
+    <div class="eq">\[\tau=\mathbf1\ast\mathbf1,\qquad\sigma=\mathbf1\ast\mathrm{id},\qquad\mathrm{id}=\mathbf1\ast\varphi,\qquad\varphi=\mathrm{id}\ast\mu.\]</div>
+    <p>Ezek sorai: \(\sum\tau(n)n^{-s}=\zeta(s)^2\), \(\sum\sigma(n)n^{-s}=\zeta(s)\zeta(s-1)\), \(\sum\varphi(n)n^{-s}=\zeta(s-1)/\zeta(s)\) (ott, ahol a sorok abszolút konvergálnak; ezt itt nem tárgyaljuk). A konvolúció kommutatív és asszociatív, mert a sorok szorzása az.</p>
+    <p>Multiplikativitás: ha \(f\) és \(g\) multiplikatív (azaz \(f(mn)=f(m)f(n)\) relatív prím \(m,n\)-re), akkor \(f\ast g\) is az. Valóban, relatív prím \(m,n\) esetén \(mn\) minden osztója egyértelműen \(d_1d_2\) alakú, ahol \(d_1\mid m\), \(d_2\mid n\), tehát</p>
+    <div class="eq">\[(f\ast g)(mn)=\sum_{d_1\mid m}\sum_{d_2\mid n}f(d_1)f(d_2)\,g\!\left(\tfrac m{d_1}\right)g\!\left(\tfrac n{d_2}\right)=(f\ast g)(m)\,(f\ast g)(n).\]</div>
+    <p>A kísérlet két függvény konvolúcióját számolja, felismeri az ismert azonosságokat, ellenőrzi a kommutativitást és a multiplikativitást.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bm-d-f">f <select id="bm-d-f"><option value="0">ε</option><option value="1" selected>1</option><option value="2">id</option><option value="3">μ</option><option value="4">φ</option><option value="5">τ</option><option value="6">σ</option></select></label>
+        <label class="rng" for="bm-d-g">g <select id="bm-d-g"><option value="0">ε</option><option value="1" selected>1</option><option value="2">id</option><option value="3">μ</option><option value="4">φ</option><option value="5">τ</option><option value="6">σ</option></select></label>
+        <label class="rng" for="bm-d-n">n-ig <input type="range" id="bm-d-n" min="6" max="120" value="60"> <span class="mono" id="bm-d-nv">60</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bm-d-t"></table></div>
+      <div class="info" id="bm-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A táblázat az első 14 értéket mutatja, az ellenőrzések a csúszka által adott \(n\)-ig futnak. Az ismert azonosságokat a program a függvények értéktáblájából ismeri fel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bm-euler">
+  <div class="body">
+    <div class="eyebrow">§2 · Euler-szorzat</div>
+    <h2>A sor mint szorzat a prímeken</h2>
+    <p>Ha \(f\) multiplikatív, akkor az egyértelmű prímfelbontás miatt</p>
+    <div class="eq gold">\[\sum_{n\ge1}\frac{f(n)}{n^s}=\prod_{p}\Bigl(1+\frac{f(p)}{p^s}+\frac{f(p^2)}{p^{2s}}+\cdots\Bigr).\]</div>
+    <p>A jobb oldalt kifejtve minden tag \(\prod_p f(p^{k_p})p^{-k_ps}\) alakú, vagyis egy \(n=\prod p^{k_p}\) tagja, és minden \(n\) pontosan egyszer szerepel. (Formális egyenlőség; konvergencia esetén számértékként is igaz, ezt itt nem bizonyítjuk.) Az \(f=\mathbf1\) esetben</p>
+    <div class="eq">\[\zeta(s)=\prod_p\frac1{1-p^{-s}},\qquad\frac1{\zeta(s)}=\prod_p\bigl(1-p^{-s}\bigr).\]</div>
+    <p>A második képlet összhangban van a \(\mu\) sorával: \(\mu(p)=-1\), \(\mu(p^k)=0\) \(k\ge2\)-re, így a \(p\)-edik tényező \(1-p^{-s}\). A kísérlet a \(\zeta(s)\) közelítését mutatja a prímekre vett véges szorzattal és az \(N\)-ig vett részletösszeggel, az ismert értékekhez (\(\zeta(2)=\pi^2/6\), \(\zeta(4)=\pi^4/90\), \(\zeta(3)\approx1{,}2020569\)) viszonyítva.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bm-e-s">s <select id="bm-e-s"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
+        <label class="rng" for="bm-e-p">prímek ≤ <input type="range" id="bm-e-p" min="2" max="200" value="30"> <span class="mono" id="bm-e-pv">30</span></label>
+        <label class="rng" for="bm-e-n">N <input type="range" id="bm-e-n" min="2" max="2000" value="200"> <span class="mono" id="bm-e-nv">200</span></label>
+      </div>
+      <div class="info" id="bm-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szorzat hibája az elhagyott nagy prímekből, a részletösszegé a lecsonkított \(n>N\) tagokból jön; a kísérlet csak a közelítést mutatja, a konvergencia tárgyalása nélkül.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bm-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\tau(12)\)-t a \(\mathbf1\ast\mathbf1\) konvolúcióval.</span></summary>
+      <div class="ans">
+        <p>\(\tau(12)=\sum_{d\mid12}1\cdot1=6\), az osztók: 1, 2, 3, 4, 6, 12. <b>Ellenőrzés:</b> multiplikativitással \(\tau(4)\tau(3)=3\cdot2=6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sigma(12)\)-t.</span></summary>
+      <div class="ans">
+        <p>Az osztók összege \(1+2+3+4+6+12=28\). <b>Ellenőrzés:</b> \(\sigma(4)\sigma(3)=7\cdot4=28\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki \(\varphi(12)\)-t a \(\varphi=\mathrm{id}\ast\mu\) képlettel.</span></summary>
+      <div class="ans">
+        <p>A nem nulla tagok a \(\mu(12/d)\neq0\) osztókra jönnek: \(d=2,4,6,12\).</p>
+        <div class="eq">\[2\mu(6)+4\mu(3)+6\mu(2)+12\mu(1)=2-4-6+12=4.\]</div>
+        <p><b>Ellenőrzés:</b> \(\varphi(4)\varphi(3)=2\cdot2=4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mutasd meg, hogy az \(\mathrm{id}\) Dirichlet-inverze \(n\mu(n)\).</span></summary>
+      <div class="ans">
+        <p>Legyen \(g(n)=n\mu(n)\). Ekkor</p>
+        <div class="eq">\[(\mathrm{id}\ast g)(N)=\sum_{d\mid N}d\cdot\frac Nd\,\mu\!\left(\frac Nd\right)=N\sum_{e\mid N}\mu(e)=N\,[N=1].\]</div>
+        <p>Ez \(\varepsilon(N)\), mert a 4.9 szerint \(\sum_{e\mid N}\mu(e)=[N=1]\). <b>Ellenőrzés:</b> \(N=6\)-ra a tagok \(d=1,2,3,6\)-ra \(d\cdot\frac6d\mu(\frac6d)\): \(6,-6,-6,6\), összegük 0. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt mutatja, hogy a Dirichlet-inverz egy szorzattényezővel eltér az eredeti inverzétől: \(\mu\) a \(\mathbf1\), \(n\mu(n)\) az \(\mathrm{id}\) inverze.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bm-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Hatványsor és Dirichlet-sor</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>Hatványsor</th><th>Dirichlet-sor</th></tr>
+      <tr><th>tag</th><td>\(a_nz^n\)</td><td>\(a_nn^{-s}\)</td></tr>
+      <tr><th>szorzat</th><td>\(\sum_ka_kb_{n-k}\)</td><td>\(\sum_{d\mid n}a_db_{n/d}\)</td></tr>
+      <tr><th>egység</th><td>\(1\)</td><td>\(\varepsilon\leftrightarrow1\)</td></tr>
+      <tr><th>mértani sor</th><td>\(\frac1{1-z}\)</td><td>\(\zeta(s)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Konvolúció</b><span>Osztók szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Sor</b><span>Dirichlet-szorzat.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Euler-szorzat</b><span>Prímenként.</span></div>
+    </div>
+    <p>A következő téma a 7.8, a partíciók.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

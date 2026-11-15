@@ -1,0 +1,142 @@
+
+<!-- ================= 7.1 DOMINÓK ÉS PÉNZVÁLTÁS ================= -->
+<header class="hero page" id="bj-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.1</div>
+    <h1>Dominók és pénzváltás</h1>
+    <p class="lead">Hányféleképpen lehet egy téglalapot dominókkal lefedni, és hányféleképpen lehet egy összeget érmékkel kifizetni? Mindkét kérdés sorozatot ad, és a sorozat generátorfüggvénye egyszerű tört.</p>
+    <div class="formula">\(\displaystyle\sum_{n\ge0}u_nz^n=\frac{1-z}{1-4z+z^2}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bj-hero" role="img" aria-label="A 3×2n dominólefedések számának egymás utáni hányadosai a 2+√3 felé tartanak"></svg>
+    <div class="counter"><span id="bj-hero-a">u(n) / u(n−1)</span><span id="bj-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A \(3\times2\) téglalapot háromféleképpen lehet lefedni, a \(3\times4\)-et tizenegyféleképpen, a \(3\times6\)-ot 41-féleképpen. A hányadosok gyorsan egy állandóhoz közelednek, mert a sorozat rekurzióját egy másodfokú polinom gyökei vezérlik. A generátorfüggvény ezt a polinomot a nevezőben mutatja, és abból a gyökök, a zárt képlet és a növekedési ütem is leolvasható.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bj-domino2">
+  <div class="body">
+    <div class="eyebrow">§1 · Két sor</div>
+    <h2>Kétsoros lefedések: a Fibonacci-számok</h2>
+    <p>A \(2\times n\) téglalap bal szélét kétféleképpen fedhetjük: egy függőleges dominóval (marad \(2\times(n-1)\)), vagy két egymás fölé fektetett vízszintes dominóval (marad \(2\times(n-2)\)). Ezért \(t_n=t_{n-1}+t_{n-2}\), \(t_0=t_1=1\), vagyis \(t_n=F_{n+1}\).</p>
+    <p>A generátorfüggvény a 7.3 módszerével kapható: \(T(z)=1+zT(z)+z^2T(z)\), tehát</p>
+    <div class="eq">\[T(z)=\sum_{n\ge0}t_nz^n=\frac1{1-z-z^2}.\]</div>
+    <p>A kísérlet mátrix-DP-vel (oszlopprofil szerinti számolással, a rekurzió ismerete nélkül) megszámolja a \(m\times n\) lefedéseket, és összeveti a rekurzióval. Az \(m=2\) esetben a Fibonacci-szám jön ki, az \(m=3\) és \(m=4\) esetet a következő szakaszok elemzik.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bj-d-m">sorok <select id="bj-d-m"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
+        <label class="rng" for="bj-d-n">oszlopok <input type="range" id="bj-d-n" min="0" max="24" value="8"> <span class="mono" id="bj-d-nv">8</span></label>
+      </div>
+      <div class="info" id="bj-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A számolás oszloponként halad, és egy bitmaszkot visz magával: melyik cellákat foglalták el az előző oszlopból benyúló vízszintes dominók. Ez független az itt levezetett rekurzióktól, ezért alkalmas ellenőrzésre.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-domino3">
+  <div class="body">
+    <div class="eyebrow">§2 · Három sor</div>
+    <h2>A \(3\times n\) eset</h2>
+    <p>Páratlan \(n\)-re a \(3n\) cellaszám páratlan, tehát nincs lefedés. Legyen \(a_n\) a \(3\times n\) téglalap lefedéseinek száma, \(b_n\) pedig azé az alakzaté, amelyet a \(3\times n\) téglalapból egy sarokcella elhagyásával kapunk. A bal szélső oszlop felső cellájának lefedése szerint esetet bontunk.</p>
+    <div class="eq">\[a_n=a_{n-2}+2b_{n-1},\qquad b_n=a_{n-1}+b_{n-2}.\]</div>
+    <p>Az első egyenlet: a bal felső cellát egy függőleges domino fedi (ekkor a harmadik sor bal cellája csak vízszintesen fedhető, és a maradék a \(b_{n-1}\) alakzat), vagy egy vízszintes domino. Utóbbi esetben a második sor bal cellája vagy függőleges dominóval megy az alsó cellával (maradék \(b_{n-1}\)), vagy vízszintessel, és akkor az alsó sor is vízszintesen záródik (maradék \(a_{n-2}\)). Ez \(a_{n-2}+2b_{n-1}\). A második egyenlet hasonló esetszétválasztás a csonka alakzat bal szélén: a második sor bal cellája függőlegesen az alsóval (maradék \(a_{n-1}\)), vagy vízszintesen, és akkor az alsó vízszintes, a felső pedig vízszintes lesz, vagyis a maradék \(b_{n-2}\). A kezdőértékek \(a_0=1\), \(a_1=0\), \(b_0=0\), \(b_1=1\). Az első értékek: \(a_2=3\), \(a_4=11\); a kísérlet minden \(n\)-re összeveti őket a közvetlen számolással.</p>
+    <p>Kiküszöbölés: az elsőből \(2b_{n-1}=a_n-a_{n-2}\). A másodikból \(2b_{n-1}=2a_{n-2}+2b_{n-3}\), és \(2b_{n-3}=a_{n-2}-a_{n-4}\), tehát \(a_n-a_{n-2}=3a_{n-2}-a_{n-4}\), azaz \(a_n=4a_{n-2}-a_{n-4}\). A páros indexű \(u_k=a_{2k}\) értékekre:</p>
+    <div class="eq gold">\[u_k=4u_{k-1}-u_{k-2},\qquad u_0=1,\ u_1=3.\]</div>
+    <p>A generátorfüggvény: \(U(z)=\sum u_kz^k\)-ra \(U(z)(1-4z+z^2)=u_0+(u_1-4u_0)z=1-z\), tehát</p>
+    <div class="eq gold">\[U(z)=\frac{1-z}{1-4z+z^2}.\]</div>
+    <p>A nevező gyökei \(z=2\pm\sqrt3\), az együtthatók növekedési üteme a reciprokuk, \(2+\sqrt3\approx3{,}732\). Résztörtekre bontással, vagy az \((2+\sqrt3)^k=p_k+q_k\sqrt3\) felírással:</p>
+    <div class="eq">\[u_k=p_k+q_k,\qquad (2+\sqrt3)^k=p_k+q_k\sqrt3.\]</div>
+    <p>Ellenőrzés kézzel: \(k=2\)-re \((2+\sqrt3)^2=7+4\sqrt3\), tehát \(u_2=11\); \(k=3\)-ra \(26+15\sqrt3\), tehát \(u_3=41\). Az \(m=4\) esetre a kísérlet egy negyedrendű rekurziót is mutat, \(c_n=c_{n-1}+5c_{n-2}+c_{n-3}-c_{n-4}\); ezt itt nem bizonyítjuk, csak ellenőrizzük.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bj-u-k">k <input type="range" id="bj-u-k" min="0" max="16" value="6"> <span class="mono" id="bj-u-kv">6</span></label>
+      </div>
+      <div class="info" id="bj-u-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(p_k+q_k\) képlet a \(\sqrt3\) irracionalitása miatt egész szám marad: \((2+\sqrt3)^k+(2-\sqrt3)^k=2p_k\) egész, a másik tag viszont \(q_k\)-ból jön. A sorozat \(1,3,11,41,153,571,\dots\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-penz">
+  <div class="body">
+    <div class="eyebrow">§3 · Pénzváltás</div>
+    <h2>Érmék egy összeghez</h2>
+    <p>Ha az érmék értékei \(c_1,\dots,c_r\), akkor az \(n\) forint kifizetéseinek száma az \(\prod_i 1/(1-z^{c_i})\) szorzat \(z^n\)-együtthatója: az \(i\)-edik tényező megmondja, hányszor használjuk a \(c_i\) értékű érmét. Az 1 és 2 értékű érmékre \(\frac1{(1-z)(1-z^2)}\), amelynek együtthatója \(\lfloor n/2\rfloor+1\) (a kettesek száma \(0,\dots,\lfloor n/2\rfloor\), a többit egyesek adják).</p>
+    <p>A kísérlet a számolást két független úton végzi: a szorzat soronkénti kiszorzásával, és az összes érmeszám-kombináció rekurzív felsorolásával (kis \(n\)-re). A részletes elmélet, a partíciók és a szorzat bevezetése a 7.8-ban szerepel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bj-c-s">érmék <select id="bj-c-s"><option value="1,2">1, 2</option><option value="1,5">1, 5</option><option value="1,5,10,25">1, 5, 10, 25</option><option value="1,5,10,25,50" selected>1, 5, 10, 25, 50</option><option value="1,2,5,10,20,50,100">1, 2, 5, 10, 20, 50, 100</option></select></label>
+        <label class="rng" for="bj-c-n">összeg <input type="range" id="bj-c-n" min="0" max="200" value="100"> <span class="mono" id="bj-c-nv">100</span></label>
+      </div>
+      <div class="info" id="bj-c-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az 1, 5, 10, 25, 50 értékű érmékkel 100-at 292-féleképpen lehet kifizetni. Ez a számolás kézzel fáradságos, a generátorfüggvény viszont egyetlen soronkénti szorzás.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Hányféleképpen fedhető le a \(2\times 6\) téglalap dominókkal?</span></summary>
+      <div class="ans">
+        <p>\(t_n=F_{n+1}\), tehát \(t_6=F_7=13\). <b>Ellenőrzés:</b> \(t_2=2\), \(t_3=3\), \(t_4=5\), \(t_5=8\), \(t_6=13\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(u_4\)-et a rekurzióval, és a \(p_k+q_k\) képlettel.</span></summary>
+      <div class="ans">
+        <p>\(u_3=41\), \(u_4=4\cdot41-11=153\). A \(k=4\) hatvány: \((2+\sqrt3)^4=(7+4\sqrt3)^2=97+56\sqrt3\), tehát \(u_4=97+56=153\). <b>Ellenőrzés:</b> a két érték egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hányféleképpen fizethető ki 10 az 1 és 5 értékű érmékkel?</span></summary>
+      <div class="ans">
+        <p>Az 5-ösök száma 0, 1 vagy 2, a többit egyesek adják: 3 mód. <b>Ellenőrzés:</b> \(\lfloor10/5\rfloor+1=3\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mekkora a \(3\times 2k\) lefedések számának növekedési üteme?</span></summary>
+      <div class="ans">
+        <p>A \(1-4z+z^2\) nevező legkisebb gyöke \(2-\sqrt3\), ezért \(u_k\) \((2+\sqrt3)^k\)-val nő, \(k\) lépésenként. <b>Ellenőrzés:</b> \(u_{10}/u_9\) a kísérletben \(3{,}732\ldots\)-hoz közel van, és \(2+\sqrt3=3{,}7320\ldots\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat mutatja, hogy a zárt képlet nem kell lebegőpontos számolás: a \(\mathbb Z[\sqrt3]\) elemeivel pontosan számolunk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Lefedés és váltás generátorfüggvénnyel</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Probléma</th><th>Generátorfüggvény</th></tr>
+      <tr><th>\(2\times n\) dominó</th><td>\(\dfrac1{1-z-z^2}\)</td></tr>
+      <tr><th>\(3\times 2k\) dominó</th><td>\(\dfrac{1-z}{1-4z+z^2}\)</td></tr>
+      <tr><th>érmék \(c_i\)</th><td>\(\prod_i\dfrac1{1-z^{c_i}}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Esetszétválasztás</b><span>Az első cella lefedése szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Állapotok közti egyenletek.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Generátorfüggvény</b><span>Tört, gyökök, zárt alak.</span></div>
+    </div>
+    <p>A következő téma a 7.2, a technikai alapozás.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

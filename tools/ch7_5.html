@@ -1,0 +1,152 @@
+
+<!-- ================= 7.5 KONVOLÚCIÓK ================= -->
+<header class="hero page" id="bl-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.5</div>
+    <h1>Konvolúciók</h1>
+    <p class="lead">Két generátorfüggvény szorzatának együtthatói az eredeti sorozatok konvolúciója. Így egy-egy függvényazonosságból sok kombinatorikus összegazonosság lesz.</p>
+    <div class="formula">\(\displaystyle\Bigl(\sum a_nz^n\Bigr)\Bigl(\sum b_nz^n\Bigr)=\sum_n\Bigl(\sum_{k=0}^na_kb_{n-k}\Bigr)z^n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bl-hero" role="img" aria-label="A binomiális együtthatók sorainak konvolúciója a kétszeres sort adja"></svg>
+    <div class="counter"><span id="bl-hero-a">C(r,·) ∗ C(r,·) = C(2r,·)</span><span id="bl-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A konvolúció azt számolja, hányféleképpen lehet egy \(n\)-es mennyiséget két részre osztani úgy, hogy az első rész \(k\), a második \(n-k\), és minden felosztás súlya a két sorozat megfelelő tagjának szorzata. A binomiális tétel szerint \((1+z)^r(1+z)^s=(1+z)^{r+s}\), és ebből a Vandermonde-azonosság egy sorban következik.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bl-vandermonde">
+  <div class="body">
+    <div class="eyebrow">§1 · Vandermonde</div>
+    <h2>A Vandermonde-azonosság és az alsó index változata</h2>
+    <p>A \((1+z)^r(1+z)^s=(1+z)^{r+s}\) egyenlőségben a \(z^n\) együtthatóját két módon számolva</p>
+    <div class="eq gold">\[\sum_{k}\binom rk\binom s{n-k}=\binom{r+s}n.\]</div>
+    <p>A felső index szerinti változathoz a \(\sum_k\binom km z^k=\dfrac{z^m}{(1-z)^{m+1}}\) sort használjuk (ez a \(\frac1{(1-z)^{m+1}}=\sum\binom{j+m}mz^j\) sor \(z^m\)-mel szorozva). Két ilyen sor szorzata \(\frac{z^{m+l}}{(1-z)^{m+l+2}}\), amelynek \(z^n\)-együtthatója \(\binom{n+1}{m+l+1}\). Tehát</p>
+    <div class="eq gold">\[\sum_{k=0}^n\binom km\binom{n-k}l=\binom{n+1}{m+l+1}.\]</div>
+    <p>A kísérlet mindkét azonosságot pontosan ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bl-v-r">r <input type="range" id="bl-v-r" min="0" max="14" value="6"> <span class="mono" id="bl-v-rv">6</span></label>
+        <label class="rng" for="bl-v-s">s <input type="range" id="bl-v-s" min="0" max="14" value="5"> <span class="mono" id="bl-v-sv">5</span></label>
+        <label class="rng" for="bl-v-n">n <input type="range" id="bl-v-n" min="0" max="28" value="7"> <span class="mono" id="bl-v-nv">7</span></label>
+      </div>
+      <div class="info" id="bl-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet a második azonosságot az \(m=\lfloor r/2\rfloor\), \(l=\lfloor s/2\rfloor\) értékekkel ellenőrzi, \(n\) a közös felső határ.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-kozponti">
+  <div class="body">
+    <div class="eyebrow">§2 · Központi binomiális együtthatók</div>
+    <h2>\(\binom{2k}k\) önmagával, és a Catalan-konvolúció</h2>
+    <p>A binomiális sorból</p>
+    <div class="eq">\[(1-4z)^{-1/2}=\sum_k\binom{-1/2}k(-4z)^k,\qquad\binom{-1/2}k(-4)^k=\binom{2k}k.\]</div>
+    <p>(A \(\binom{-1/2}k=(-1)^k\binom{2k}k/4^k\) azonosság a számlálók szorzatából rendezhető ki.) Tehát</p>
+    <div class="eq">\[\sum_{k\ge0}\binom{2k}kz^k=\frac1{\sqrt{1-4z}}.\]</div>
+    <p>Négyzetre emelve \(\frac1{1-4z}=\sum4^nz^n\), amiből</p>
+    <div class="eq gold">\[\sum_{k=0}^n\binom{2k}k\binom{2n-2k}{n-k}=4^n.\]</div>
+    <p>A Catalan-számok generátorfüggvénye (7.3) \(C(z)=1+zC(z)^2\)-et teljesít. A \(z^{n+1}\)-együtthatót összehasonlítva</p>
+    <div class="eq gold">\[C_{n+1}=\sum_{k=0}^nC_kC_{n-k}.\]</div>
+    <p>A kísérlet mindkét összeget ellenőrzi, a Catalan-számokat \(C_n=\binom{2n}n/(n+1)\) szerint számolva.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bl-k-n">n <input type="range" id="bl-k-n" min="0" max="30" value="10"> <span class="mono" id="bl-k-nv">10</span></label>
+      </div>
+      <div class="info" id="bl-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(4^n\)-azonosság a \(\frac1{\sqrt{1-4z}}\) négyzetre emelésén múlik. Más összegek (például a \(\binom{2k}k\) és a Catalan-számok konvolúciója) hasonlóan számolhatók.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-fibonacci">
+  <div class="body">
+    <div class="eyebrow">§3 · Fibonacci</div>
+    <h2>A Fibonacci-számok önkonvolúciója</h2>
+    <p>A generátorfüggvény négyzete \(\frac{z^2}{(1-z-z^2)^2}\). Együtthatói a Binet-képlettel számolhatók. \(F_k=(\varphi^k-\psi^k)/\sqrt5\) és \(\varphi\psi=-1\) mellett</p>
+    <div class="eq">\[5\sum_{k=0}^nF_kF_{n-k}=\sum_{k=0}^n\bigl(\varphi^n+\psi^n-\varphi^k\psi^{n-k}-\psi^k\varphi^{n-k}\bigr).\]</div>
+    <p>Az első két tag \((n+1)L_n\)-t ad, ahol \(L_n=\varphi^n+\psi^n\) a Lucas-szám. A másik kettő mértani összeg: \(\sum_k\varphi^k\psi^{n-k}=\frac{\varphi^{n+1}-\psi^{n+1}}{\varphi-\psi}=F_{n+1}\), és a másik ugyanennyi. Tehát \(5(F\ast F)_n=(n+1)L_n-2F_{n+1}\). Mivel \(L_n=F_{n+1}+F_{n-1}\), ez \(nL_n-F_n\)-nel egyenlő:</p>
+    <div class="eq gold">\[\sum_{k=0}^nF_kF_{n-k}=\frac{nL_n-F_n}5.\]</div>
+    <p>Példa: \(n=4\)-re \(F_1F_3+F_2F_2+F_3F_1=2+1+2=5\), és \((4\cdot7-3)/5=5\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bl-f-n">n <input type="range" id="bl-f-n" min="0" max="60" value="12"> <span class="mono" id="bl-f-nv">12</span></label>
+      </div>
+      <div class="info" id="bl-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(n=0\) és \(n=1\) esetben az összeg 0, és \(nL_n-F_n\) is 0 (\(0\cdot2-0\), illetve \(1\cdot1-1\)), tehát a képlet minden \(n\ge0\)-ra igaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\sum_k\binom4k\binom5{3-k}\)-t.</span></summary>
+      <div class="ans">
+        <p>A Vandermonde-azonosság szerint \(\binom93=84\).</p>
+        <div class="eq">\[1\cdot10+4\cdot10+6\cdot5+4\cdot1=84.\]</div>
+        <p><b>Ellenőrzés:</b> \(10+40+30+4=84\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_{k=0}^6\binom k2\)-t.</span></summary>
+      <div class="ans">
+        <p>Az alsó index változatában \(l=0\), \(m=2\), \(n=6\): \(\binom73=35\). <b>Ellenőrzés:</b> \(0+0+1+3+6+10+15=35\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi \(\sum_{k=0}^3\binom{2k}k\binom{6-2k}{3-k}\)?</span></summary>
+      <div class="ans">
+        <p>\(4^3=64\).</p>
+        <div class="eq">\[1\cdot20+2\cdot6+6\cdot2+20\cdot1=64.\]</div>
+        <p><b>Ellenőrzés:</b> \(20+12+12+20=64\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki \(C_4\)-et a konvolúcióval.</span></summary>
+      <div class="ans">
+        <p>\(C_0,\dots,C_3=1,1,2,5\), és</p>
+        <div class="eq">\[C_4=C_0C_3+C_1C_2+C_2C_1+C_3C_0=14.\]</div>
+        <p><b>Ellenőrzés:</b> \(5+2+2+5=14\), és \(\binom84/5=14\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat az \(n=3\) eset a \(4^n\)-azonosságban.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Konvolúció mint szerszám</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Függvények</th><th>Azonosság</th></tr>
+      <tr><th>\((1+z)^r(1+z)^s\)</th><td>Vandermonde</td></tr>
+      <tr><th>\(\dfrac{z^m}{(1-z)^{m+1}}\cdot\dfrac{z^l}{(1-z)^{l+1}}\)</th><td>\(\binom{n+1}{m+l+1}\)</td></tr>
+      <tr><th>\((1-4z)^{-1/2}\) négyzete</th><td>\(4^n\)</td></tr>
+      <tr><th>\(C(z)=1+zC(z)^2\)</th><td>Catalan-konvolúció</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Két sor</b><span>Ismert generátorfüggvények.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorzat</b><span>Zárt alakban.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Együttható</b><span>Két úton számolva.</span></div>
+    </div>
+    <p>A következő téma a 7.6, az exponenciális generátorfüggvények.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

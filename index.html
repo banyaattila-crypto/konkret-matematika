@@ -7426,6 +7426,148 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 7.1 DOMINÓK ÉS PÉNZVÁLTÁS ================= -->
+<header class="hero page" id="bj-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.1</div>
+    <h1>Dominók és pénzváltás</h1>
+    <p class="lead">Hányféleképpen lehet egy téglalapot dominókkal lefedni, és hányféleképpen lehet egy összeget érmékkel kifizetni? Mindkét kérdés sorozatot ad, és a sorozat generátorfüggvénye egyszerű tört.</p>
+    <div class="formula">\(\displaystyle\sum_{n\ge0}u_nz^n=\frac{1-z}{1-4z+z^2}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bj-hero" role="img" aria-label="A 3×2n dominólefedések számának egymás utáni hányadosai a 2+√3 felé tartanak"></svg>
+    <div class="counter"><span id="bj-hero-a">u(n) / u(n−1)</span><span id="bj-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A \(3\times2\) téglalapot háromféleképpen lehet lefedni, a \(3\times4\)-et tizenegyféleképpen, a \(3\times6\)-ot 41-féleképpen. A hányadosok gyorsan egy állandóhoz közelednek, mert a sorozat rekurzióját egy másodfokú polinom gyökei vezérlik. A generátorfüggvény ezt a polinomot a nevezőben mutatja, és abból a gyökök, a zárt képlet és a növekedési ütem is leolvasható.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bj-domino2">
+  <div class="body">
+    <div class="eyebrow">§1 · Két sor</div>
+    <h2>Kétsoros lefedések: a Fibonacci-számok</h2>
+    <p>A \(2\times n\) téglalap bal szélét kétféleképpen fedhetjük: egy függőleges dominóval (marad \(2\times(n-1)\)), vagy két egymás fölé fektetett vízszintes dominóval (marad \(2\times(n-2)\)). Ezért \(t_n=t_{n-1}+t_{n-2}\), \(t_0=t_1=1\), vagyis \(t_n=F_{n+1}\).</p>
+    <p>A generátorfüggvény a 7.3 módszerével kapható: \(T(z)=1+zT(z)+z^2T(z)\), tehát</p>
+    <div class="eq">\[T(z)=\sum_{n\ge0}t_nz^n=\frac1{1-z-z^2}.\]</div>
+    <p>A kísérlet mátrix-DP-vel (oszlopprofil szerinti számolással, a rekurzió ismerete nélkül) megszámolja a \(m\times n\) lefedéseket, és összeveti a rekurzióval. Az \(m=2\) esetben a Fibonacci-szám jön ki, az \(m=3\) és \(m=4\) esetet a következő szakaszok elemzik.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bj-d-m">sorok <select id="bj-d-m"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
+        <label class="rng" for="bj-d-n">oszlopok <input type="range" id="bj-d-n" min="0" max="24" value="8"> <span class="mono" id="bj-d-nv">8</span></label>
+      </div>
+      <div class="info" id="bj-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A számolás oszloponként halad, és egy bitmaszkot visz magával: melyik cellákat foglalták el az előző oszlopból benyúló vízszintes dominók. Ez független az itt levezetett rekurzióktól, ezért alkalmas ellenőrzésre.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-domino3">
+  <div class="body">
+    <div class="eyebrow">§2 · Három sor</div>
+    <h2>A \(3\times n\) eset</h2>
+    <p>Páratlan \(n\)-re a \(3n\) cellaszám páratlan, tehát nincs lefedés. Legyen \(a_n\) a \(3\times n\) téglalap lefedéseinek száma, \(b_n\) pedig azé az alakzaté, amelyet a \(3\times n\) téglalapból egy sarokcella elhagyásával kapunk. A bal szélső oszlop felső cellájának lefedése szerint esetet bontunk.</p>
+    <div class="eq">\[a_n=a_{n-2}+2b_{n-1},\qquad b_n=a_{n-1}+b_{n-2}.\]</div>
+    <p>Az első egyenlet: a bal felső cellát egy függőleges domino fedi (ekkor a harmadik sor bal cellája csak vízszintesen fedhető, és a maradék a \(b_{n-1}\) alakzat), vagy egy vízszintes domino. Utóbbi esetben a második sor bal cellája vagy függőleges dominóval megy az alsó cellával (maradék \(b_{n-1}\)), vagy vízszintessel, és akkor az alsó sor is vízszintesen záródik (maradék \(a_{n-2}\)). Ez \(a_{n-2}+2b_{n-1}\). A második egyenlet hasonló esetszétválasztás a csonka alakzat bal szélén: a második sor bal cellája függőlegesen az alsóval (maradék \(a_{n-1}\)), vagy vízszintesen, és akkor az alsó vízszintes, a felső pedig vízszintes lesz, vagyis a maradék \(b_{n-2}\). A kezdőértékek \(a_0=1\), \(a_1=0\), \(b_0=0\), \(b_1=1\). Az első értékek: \(a_2=3\), \(a_4=11\); a kísérlet minden \(n\)-re összeveti őket a közvetlen számolással.</p>
+    <p>Kiküszöbölés: az elsőből \(2b_{n-1}=a_n-a_{n-2}\). A másodikból \(2b_{n-1}=2a_{n-2}+2b_{n-3}\), és \(2b_{n-3}=a_{n-2}-a_{n-4}\), tehát \(a_n-a_{n-2}=3a_{n-2}-a_{n-4}\), azaz \(a_n=4a_{n-2}-a_{n-4}\). A páros indexű \(u_k=a_{2k}\) értékekre:</p>
+    <div class="eq gold">\[u_k=4u_{k-1}-u_{k-2},\qquad u_0=1,\ u_1=3.\]</div>
+    <p>A generátorfüggvény: \(U(z)=\sum u_kz^k\)-ra \(U(z)(1-4z+z^2)=u_0+(u_1-4u_0)z=1-z\), tehát</p>
+    <div class="eq gold">\[U(z)=\frac{1-z}{1-4z+z^2}.\]</div>
+    <p>A nevező gyökei \(z=2\pm\sqrt3\), az együtthatók növekedési üteme a reciprokuk, \(2+\sqrt3\approx3{,}732\). Résztörtekre bontással, vagy az \((2+\sqrt3)^k=p_k+q_k\sqrt3\) felírással:</p>
+    <div class="eq">\[u_k=p_k+q_k,\qquad (2+\sqrt3)^k=p_k+q_k\sqrt3.\]</div>
+    <p>Ellenőrzés kézzel: \(k=2\)-re \((2+\sqrt3)^2=7+4\sqrt3\), tehát \(u_2=11\); \(k=3\)-ra \(26+15\sqrt3\), tehát \(u_3=41\). Az \(m=4\) esetre a kísérlet egy negyedrendű rekurziót is mutat, \(c_n=c_{n-1}+5c_{n-2}+c_{n-3}-c_{n-4}\); ezt itt nem bizonyítjuk, csak ellenőrizzük.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bj-u-k">k <input type="range" id="bj-u-k" min="0" max="16" value="6"> <span class="mono" id="bj-u-kv">6</span></label>
+      </div>
+      <div class="info" id="bj-u-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(p_k+q_k\) képlet a \(\sqrt3\) irracionalitása miatt egész szám marad: \((2+\sqrt3)^k+(2-\sqrt3)^k=2p_k\) egész, a másik tag viszont \(q_k\)-ból jön. A sorozat \(1,3,11,41,153,571,\dots\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-penz">
+  <div class="body">
+    <div class="eyebrow">§3 · Pénzváltás</div>
+    <h2>Érmék egy összeghez</h2>
+    <p>Ha az érmék értékei \(c_1,\dots,c_r\), akkor az \(n\) forint kifizetéseinek száma az \(\prod_i 1/(1-z^{c_i})\) szorzat \(z^n\)-együtthatója: az \(i\)-edik tényező megmondja, hányszor használjuk a \(c_i\) értékű érmét. Az 1 és 2 értékű érmékre \(\frac1{(1-z)(1-z^2)}\), amelynek együtthatója \(\lfloor n/2\rfloor+1\) (a kettesek száma \(0,\dots,\lfloor n/2\rfloor\), a többit egyesek adják).</p>
+    <p>A kísérlet a számolást két független úton végzi: a szorzat soronkénti kiszorzásával, és az összes érmeszám-kombináció rekurzív felsorolásával (kis \(n\)-re). A részletes elmélet, a partíciók és a szorzat bevezetése a 7.8-ban szerepel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bj-c-s">érmék <select id="bj-c-s"><option value="1,2">1, 2</option><option value="1,5">1, 5</option><option value="1,5,10,25">1, 5, 10, 25</option><option value="1,5,10,25,50" selected>1, 5, 10, 25, 50</option><option value="1,2,5,10,20,50,100">1, 2, 5, 10, 20, 50, 100</option></select></label>
+        <label class="rng" for="bj-c-n">összeg <input type="range" id="bj-c-n" min="0" max="200" value="100"> <span class="mono" id="bj-c-nv">100</span></label>
+      </div>
+      <div class="info" id="bj-c-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az 1, 5, 10, 25, 50 értékű érmékkel 100-at 292-féleképpen lehet kifizetni. Ez a számolás kézzel fáradságos, a generátorfüggvény viszont egyetlen soronkénti szorzás.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Hányféleképpen fedhető le a \(2\times 6\) téglalap dominókkal?</span></summary>
+      <div class="ans">
+        <p>\(t_n=F_{n+1}\), tehát \(t_6=F_7=13\). <b>Ellenőrzés:</b> \(t_2=2\), \(t_3=3\), \(t_4=5\), \(t_5=8\), \(t_6=13\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(u_4\)-et a rekurzióval, és a \(p_k+q_k\) képlettel.</span></summary>
+      <div class="ans">
+        <p>\(u_3=41\), \(u_4=4\cdot41-11=153\). A \(k=4\) hatvány: \((2+\sqrt3)^4=(7+4\sqrt3)^2=97+56\sqrt3\), tehát \(u_4=97+56=153\). <b>Ellenőrzés:</b> a két érték egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hányféleképpen fizethető ki 10 az 1 és 5 értékű érmékkel?</span></summary>
+      <div class="ans">
+        <p>Az 5-ösök száma 0, 1 vagy 2, a többit egyesek adják: 3 mód. <b>Ellenőrzés:</b> \(\lfloor10/5\rfloor+1=3\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mekkora a \(3\times 2k\) lefedések számának növekedési üteme?</span></summary>
+      <div class="ans">
+        <p>A \(1-4z+z^2\) nevező legkisebb gyöke \(2-\sqrt3\), ezért \(u_k\) \((2+\sqrt3)^k\)-val nő, \(k\) lépésenként. <b>Ellenőrzés:</b> \(u_{10}/u_9\) a kísérletben \(3{,}732\ldots\)-hoz közel van, és \(2+\sqrt3=3{,}7320\ldots\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat mutatja, hogy a zárt képlet nem kell lebegőpontos számolás: a \(\mathbb Z[\sqrt3]\) elemeivel pontosan számolunk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bj-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Lefedés és váltás generátorfüggvénnyel</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Probléma</th><th>Generátorfüggvény</th></tr>
+      <tr><th>\(2\times n\) dominó</th><td>\(\dfrac1{1-z-z^2}\)</td></tr>
+      <tr><th>\(3\times 2k\) dominó</th><td>\(\dfrac{1-z}{1-4z+z^2}\)</td></tr>
+      <tr><th>érmék \(c_i\)</th><td>\(\prod_i\dfrac1{1-z^{c_i}}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Esetszétválasztás</b><span>Az első cella lefedése szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Rekurzió</b><span>Állapotok közti egyenletek.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Generátorfüggvény</b><span>Tört, gyökök, zárt alak.</span></div>
+    </div>
+    <p>A következő téma a 7.2, a technikai alapozás.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
 <!-- ================= 7.2 ALAPFOGALMAK ================= -->
 <header class="hero page" id="ai-bevezeto">
   <div>
@@ -7698,6 +7840,304 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 7.4 SPECIÁLIS GENERÁTORFÜGGVÉNYEK ================= -->
+<header class="hero page" id="bk-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.4</div>
+    <h1>Speciális generátorfüggvények</h1>
+    <p class="lead">Néhány sorozat generátorfüggvénye annyiszor kerül elő, hogy érdemes fejből tudni: a harmonikus számoké, a másodfajú Stirling-számoké és a Bernoulli-számoké. Mindháromra rövid bizonyítás van.</p>
+    <div class="formula">\(\displaystyle\sum_{n}{n\brace k}z^n=\frac{z^k}{(1-z)(1-2z)\cdots(1-kz)}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bk-hero" role="img" aria-label="A másodfajú Stirling-számok k=3 sorában az értékek logaritmusa"></svg>
+    <div class="counter"><span id="bk-hero-a">{n, 3} (log skála)</span><span id="bk-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A Stirling-számok a partíciók számolásából jönnek: \({n\brace k}\) az \(n\)-elemű halmaz \(k\) nemüres részre bontásainak száma. A nevezőben álló \(1-jz\) tényezők a \(j\)-edik rész „mérete” szerinti geometriai sorok. Így a generátorfüggvény egyszerre mutatja a rekurziót, a gyökök miatt a növekedést (\(k^n\)) és a zárt képletet is.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bk-harmonikus">
+  <div class="body">
+    <div class="eyebrow">§1 · Harmonikus számok</div>
+    <h2>A harmonikus számok generátorfüggvénye</h2>
+    <p>Az \(L(z)=\ln\frac1{1-z}=\sum_{k\ge1}z^k/k\) sor és a \(\frac1{1-z}=\sum z^n\) geometriai sor szorzatában a \(z^n\) együtthatója \(\sum_{k=1}^n\frac1k=H_n\). Tehát</p>
+    <div class="eq gold">\[\sum_{n\ge0}H_nz^n=\frac1{1-z}\ln\frac1{1-z}.\]</div>
+    <p>Általánosítás: minden \(m\ge0\)-ra</p>
+    <div class="eq">\[\begin{aligned}&\frac1{(1-z)^{m+1}}\ln\frac1{1-z}\\&\quad=\sum_{n\ge0}\binom{n+m}{m}\bigl(H_{n+m}-H_m\bigr)z^n.\end{aligned}\]</div>
+    <p>Bizonyítás \(m\)-re szóló indukcióval. Az \(m=0\) eset az előbbi. Ha igaz \(m-1\)-re, akkor az \(m\)-edik függvény az \((m-1)\)-edik és \(\frac1{1-z}\) szorzata, azaz az együtthatók részletösszegei. A 6.4 azonossága szerint</p>
+    <div class="eq">\[\sum_{k=m-1}^{n+m-1}\binom k{m-1}H_k=\binom{n+m}m\Bigl(H_{n+m}-\frac1m\Bigr),\]</div>
+    <p>és \(\sum_{j=0}^n\binom{j+m-1}{m-1}H_{m-1}=\binom{n+m}mH_{m-1}\). A különbség:</p>
+    <div class="eq">\[\binom{n+m}m\Bigl(H_{n+m}-\frac1m-H_{m-1}\Bigr)=\binom{n+m}m(H_{n+m}-H_m).\ \square\]</div>
+    <p>A kísérlet a sor együtthatóit a szorzásból számolja pontos törtekkel, és összeveti a zárt alakkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bk-h-m">m <input type="range" id="bk-h-m" min="0" max="6" value="1"> <span class="mono" id="bk-h-mv">1</span></label>
+        <label class="rng" for="bk-h-n">n <input type="range" id="bk-h-n" min="0" max="12" value="6"> <span class="mono" id="bk-h-nv">6</span></label>
+      </div>
+      <div class="info" id="bk-h-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(m=1\) esetben az együttható \((n+1)H_n-n\), a 6.4 \(m=0\) esetének megfelelője.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-stirling">
+  <div class="body">
+    <div class="eyebrow">§2 · Stirling-számok</div>
+    <h2>Másodfajú és elsőfajú Stirling-számok</h2>
+    <p>A másodfajú Stirling-számokra \({n\brace k}={n-1\brace k-1}+k{n-1\brace k}\). Legyen \(S_k(z)=\sum_n{n\brace k}z^n\). A rekurziót \(z^n\)-nel szorozva és összegezve (a \(k\ge1\) esetben \({0\brace k}=0\)) kapjuk, hogy \(S_k=zS_{k-1}+kzS_k\), tehát \(S_k=\dfrac{z}{1-kz}S_{k-1}\), és \(S_0=1\). Ebből</p>
+    <div class="eq gold">\[S_k(z)=\frac{z^k}{(1-z)(1-2z)\cdots(1-kz)}.\]</div>
+    <p>Példa: \(k=2\)-re \(\frac{z^2}{(1-z)(1-2z)}=z^2\Bigl(\frac2{1-2z}-\frac1{1-z}\Bigr)\), tehát \({n\brace2}=2^{n-1}-1\). Az elsőfajú (előjel nélküli) számokra \({n\brack k}=(n-1){n-1\brack k}+{n-1\brack k-1}\), és az \(P_n(x)=\sum_k{n\brack k}x^k\) polinomra \(P_n=(x+n-1)P_{n-1}\), vagyis</p>
+    <div class="eq">\[\sum_k{n\brack k}x^k=x(x+1)\cdots(x+n-1).\]</div>
+    <p>A kísérlet az \(S_k\) együtthatóit a nevező tényezőinek geometriai sorából szorozza ki, és összeveti a rekurzióval számolt Stirling-háromszöggel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bk-s-k">k <input type="range" id="bk-s-k" min="1" max="6" value="3"> <span class="mono" id="bk-s-kv">3</span></label>
+        <label class="rng" for="bk-s-n">n-ig <input type="range" id="bk-s-n" min="1" max="14" value="9"> <span class="mono" id="bk-s-nv">9</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bk-s-t"></table></div>
+      <div class="info" id="bk-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\frac1{1-kz}\) tényezőhöz tartozó résztört együtthatója \(\frac1{k!}\) (a többi tényezőt \(z=\frac1k\)-nál kiértékelve), ezért \({n\brace k}\approx k^n/k!\) nagy \(n\)-re; a kisebb gyökök hatása \(j^n\) nagyságrendű.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-bernoulli">
+  <div class="body">
+    <div class="eyebrow">§3 · Bernoulli-számok</div>
+    <h2>A Bernoulli-számok generátorfüggvénye</h2>
+    <p>A Bernoulli-számokat (6.5) az exponenciális generátorfüggvény definiálja: \(\dfrac z{e^z-1}=\sum_{n\ge0}B_n\dfrac{z^n}{n!}\). Mivel \(\frac{e^z-1}z=\sum_{k\ge0}\frac{z^k}{(k+1)!}\), a \(\frac{e^z-1}z\cdot\frac z{e^z-1}=1\) szorzatból a \(z^m\)-együtthatókat összehasonlítva és \((m+1)!\)-sal szorozva</p>
+    <div class="eq gold">\[\sum_{j=0}^m\binom{m+1}jB_j=[m=0].\]</div>
+    <p>Ebből a \(B_m=-\frac1{m+1}\sum_{j<m}\binom{m+1}jB_j\) rekurzióval \(B_0=1\), \(B_1=-\frac12\), \(B_2=\frac16\), \(B_4=-\frac1{30}\). A páratlan indexek eltűnnek: \(\frac z{e^z-1}+\frac z2=\frac z2\cdot\frac{e^z+1}{e^z-1}\) páros függvény (a \(z\to-z\) helyettesítés ugyanazt adja), tehát \(B_n=0\) minden páratlan \(n\ge3\)-ra.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bk-b-m">m-ig <input type="range" id="bk-b-m" min="2" max="20" value="12"> <span class="mono" id="bk-b-mv">12</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bk-b-t"></table></div>
+      <div class="info" id="bk-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet a rekurzióból számolt \(B_j\) értékekkel pontosan ellenőrzi a \(\sum\binom{m+1}jB_j=0\) összefüggést minden \(1\le m\le M\)-re, és a páratlan indexek eltűnését.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi \({5\brace3}\)?</span></summary>
+      <div class="ans">
+        <p>A rekurzióval \({5\brace3}={4\brace2}+3{4\brace3}=7+3\cdot6=25\). <b>Ellenőrzés:</b> \(S_3\) együtthatója: \({4\brace2}=2^3-1=7\), \({4\brace3}=6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_n H_nz^n\) első három nemnulla együtthatóját a szorzatból.</span></summary>
+      <div class="ans">
+        <p>\(\ln\frac1{1-z}=z+\frac{z^2}2+\frac{z^3}3+\dots\), szorozva \(1+z+z^2+\dots\)-tel: \(z\) együtthatója 1, \(z^2\)-é \(1+\frac12=\frac32\), \(z^3\)-é \(1+\frac12+\frac13=\frac{11}6\). <b>Ellenőrzés:</b> \(H_1=1\), \(H_2=\frac32\), \(H_3=\frac{11}6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. A rekurzióval számold ki \(B_3\)-at és \(B_4\)-et.</span></summary>
+      <div class="ans">
+        <p>\(m=3\): \(B_0+4B_1+6B_2+4B_3=0\), azaz \(1-2+1+4B_3=0\), tehát \(B_3=0\). \(m=4\): \(B_0+5B_1+10B_2+10B_3+5B_4=0\), azaz \(1-\frac52+\frac53+5B_4=0\), tehát \(B_4=-\frac1{30}\). <b>Ellenőrzés:</b> \(1-\frac52+\frac53=\frac{6-15+10}6=\frac16\), és \(5B_4=-\frac16\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Bizonyítsd, hogy \(\sum_k{n\brack k}=n!\).</span></summary>
+      <div class="ans">
+        <p>A \(\sum_k{n\brack k}x^k=x(x+1)\cdots(x+n-1)\) azonosságba \(x=1\)-et helyettesítve \(1\cdot2\cdots n=n!\). <b>Ellenőrzés:</b> \(n=3\): \({3\brack1}+{3\brack2}+{3\brack3}=2+3+1=6\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a \(B_3=0\) esetet is mutatja: a páratlan Bernoulli-számok eltűnése a generátorfüggvény paritásából jön.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A szótár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Sorozat</th><th>Generátorfüggvény</th></tr>
+      <tr><th>\(H_n\)</th><td>\(\dfrac1{1-z}\ln\dfrac1{1-z}\)</td></tr>
+      <tr><th>\({n\brace k}\)</th><td>\(\dfrac{z^k}{\prod_{j=1}^k(1-jz)}\)</td></tr>
+      <tr><th>\({n\brack k}\)</th><td>\(x(x+1)\cdots(x+n-1)\)</td></tr>
+      <tr><th>\(B_n/n!\)</th><td>\(\dfrac z{e^z-1}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Rekurzió</b><span>A sorozat egyenlete.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Függvényegyenlet</b><span>A generátorfüggvényre.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Gyökök, résztörtek.</span></div>
+    </div>
+    <p>A következő téma a 7.5, a konvolúciók.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
+<!-- ================= 7.5 KONVOLÚCIÓK ================= -->
+<header class="hero page" id="bl-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.5</div>
+    <h1>Konvolúciók</h1>
+    <p class="lead">Két generátorfüggvény szorzatának együtthatói az eredeti sorozatok konvolúciója. Így egy-egy függvényazonosságból sok kombinatorikus összegazonosság lesz.</p>
+    <div class="formula">\(\displaystyle\Bigl(\sum a_nz^n\Bigr)\Bigl(\sum b_nz^n\Bigr)=\sum_n\Bigl(\sum_{k=0}^na_kb_{n-k}\Bigr)z^n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bl-hero" role="img" aria-label="A binomiális együtthatók sorainak konvolúciója a kétszeres sort adja"></svg>
+    <div class="counter"><span id="bl-hero-a">C(r,·) ∗ C(r,·) = C(2r,·)</span><span id="bl-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A konvolúció azt számolja, hányféleképpen lehet egy \(n\)-es mennyiséget két részre osztani úgy, hogy az első rész \(k\), a második \(n-k\), és minden felosztás súlya a két sorozat megfelelő tagjának szorzata. A binomiális tétel szerint \((1+z)^r(1+z)^s=(1+z)^{r+s}\), és ebből a Vandermonde-azonosság egy sorban következik.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bl-vandermonde">
+  <div class="body">
+    <div class="eyebrow">§1 · Vandermonde</div>
+    <h2>A Vandermonde-azonosság és az alsó index változata</h2>
+    <p>A \((1+z)^r(1+z)^s=(1+z)^{r+s}\) egyenlőségben a \(z^n\) együtthatóját két módon számolva</p>
+    <div class="eq gold">\[\sum_{k}\binom rk\binom s{n-k}=\binom{r+s}n.\]</div>
+    <p>A felső index szerinti változathoz a \(\sum_k\binom km z^k=\dfrac{z^m}{(1-z)^{m+1}}\) sort használjuk (ez a \(\frac1{(1-z)^{m+1}}=\sum\binom{j+m}mz^j\) sor \(z^m\)-mel szorozva). Két ilyen sor szorzata \(\frac{z^{m+l}}{(1-z)^{m+l+2}}\), amelynek \(z^n\)-együtthatója \(\binom{n+1}{m+l+1}\). Tehát</p>
+    <div class="eq gold">\[\sum_{k=0}^n\binom km\binom{n-k}l=\binom{n+1}{m+l+1}.\]</div>
+    <p>A kísérlet mindkét azonosságot pontosan ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bl-v-r">r <input type="range" id="bl-v-r" min="0" max="14" value="6"> <span class="mono" id="bl-v-rv">6</span></label>
+        <label class="rng" for="bl-v-s">s <input type="range" id="bl-v-s" min="0" max="14" value="5"> <span class="mono" id="bl-v-sv">5</span></label>
+        <label class="rng" for="bl-v-n">n <input type="range" id="bl-v-n" min="0" max="28" value="7"> <span class="mono" id="bl-v-nv">7</span></label>
+      </div>
+      <div class="info" id="bl-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet a második azonosságot az \(m=\lfloor r/2\rfloor\), \(l=\lfloor s/2\rfloor\) értékekkel ellenőrzi, \(n\) a közös felső határ.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-kozponti">
+  <div class="body">
+    <div class="eyebrow">§2 · Központi binomiális együtthatók</div>
+    <h2>\(\binom{2k}k\) önmagával, és a Catalan-konvolúció</h2>
+    <p>A binomiális sorból</p>
+    <div class="eq">\[(1-4z)^{-1/2}=\sum_k\binom{-1/2}k(-4z)^k,\qquad\binom{-1/2}k(-4)^k=\binom{2k}k.\]</div>
+    <p>(A \(\binom{-1/2}k=(-1)^k\binom{2k}k/4^k\) azonosság a számlálók szorzatából rendezhető ki.) Tehát</p>
+    <div class="eq">\[\sum_{k\ge0}\binom{2k}kz^k=\frac1{\sqrt{1-4z}}.\]</div>
+    <p>Négyzetre emelve \(\frac1{1-4z}=\sum4^nz^n\), amiből</p>
+    <div class="eq gold">\[\sum_{k=0}^n\binom{2k}k\binom{2n-2k}{n-k}=4^n.\]</div>
+    <p>A Catalan-számok generátorfüggvénye (7.3) \(C(z)=1+zC(z)^2\)-et teljesít. A \(z^{n+1}\)-együtthatót összehasonlítva</p>
+    <div class="eq gold">\[C_{n+1}=\sum_{k=0}^nC_kC_{n-k}.\]</div>
+    <p>A kísérlet mindkét összeget ellenőrzi, a Catalan-számokat \(C_n=\binom{2n}n/(n+1)\) szerint számolva.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bl-k-n">n <input type="range" id="bl-k-n" min="0" max="30" value="10"> <span class="mono" id="bl-k-nv">10</span></label>
+      </div>
+      <div class="info" id="bl-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(4^n\)-azonosság a \(\frac1{\sqrt{1-4z}}\) négyzetre emelésén múlik. Más összegek (például a \(\binom{2k}k\) és a Catalan-számok konvolúciója) hasonlóan számolhatók.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-fibonacci">
+  <div class="body">
+    <div class="eyebrow">§3 · Fibonacci</div>
+    <h2>A Fibonacci-számok önkonvolúciója</h2>
+    <p>A generátorfüggvény négyzete \(\frac{z^2}{(1-z-z^2)^2}\). Együtthatói a Binet-képlettel számolhatók. \(F_k=(\varphi^k-\psi^k)/\sqrt5\) és \(\varphi\psi=-1\) mellett</p>
+    <div class="eq">\[5\sum_{k=0}^nF_kF_{n-k}=\sum_{k=0}^n\bigl(\varphi^n+\psi^n-\varphi^k\psi^{n-k}-\psi^k\varphi^{n-k}\bigr).\]</div>
+    <p>Az első két tag \((n+1)L_n\)-t ad, ahol \(L_n=\varphi^n+\psi^n\) a Lucas-szám. A másik kettő mértani összeg: \(\sum_k\varphi^k\psi^{n-k}=\frac{\varphi^{n+1}-\psi^{n+1}}{\varphi-\psi}=F_{n+1}\), és a másik ugyanennyi. Tehát \(5(F\ast F)_n=(n+1)L_n-2F_{n+1}\). Mivel \(L_n=F_{n+1}+F_{n-1}\), ez \(nL_n-F_n\)-nel egyenlő:</p>
+    <div class="eq gold">\[\sum_{k=0}^nF_kF_{n-k}=\frac{nL_n-F_n}5.\]</div>
+    <p>Példa: \(n=4\)-re \(F_1F_3+F_2F_2+F_3F_1=2+1+2=5\), és \((4\cdot7-3)/5=5\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bl-f-n">n <input type="range" id="bl-f-n" min="0" max="60" value="12"> <span class="mono" id="bl-f-nv">12</span></label>
+      </div>
+      <div class="info" id="bl-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(n=0\) és \(n=1\) esetben az összeg 0, és \(nL_n-F_n\) is 0 (\(0\cdot2-0\), illetve \(1\cdot1-1\)), tehát a képlet minden \(n\ge0\)-ra igaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\sum_k\binom4k\binom5{3-k}\)-t.</span></summary>
+      <div class="ans">
+        <p>A Vandermonde-azonosság szerint \(\binom93=84\).</p>
+        <div class="eq">\[1\cdot10+4\cdot10+6\cdot5+4\cdot1=84.\]</div>
+        <p><b>Ellenőrzés:</b> \(10+40+30+4=84\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_{k=0}^6\binom k2\)-t.</span></summary>
+      <div class="ans">
+        <p>Az alsó index változatában \(l=0\), \(m=2\), \(n=6\): \(\binom73=35\). <b>Ellenőrzés:</b> \(0+0+1+3+6+10+15=35\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mennyi \(\sum_{k=0}^3\binom{2k}k\binom{6-2k}{3-k}\)?</span></summary>
+      <div class="ans">
+        <p>\(4^3=64\).</p>
+        <div class="eq">\[1\cdot20+2\cdot6+6\cdot2+20\cdot1=64.\]</div>
+        <p><b>Ellenőrzés:</b> \(20+12+12+20=64\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki \(C_4\)-et a konvolúcióval.</span></summary>
+      <div class="ans">
+        <p>\(C_0,\dots,C_3=1,1,2,5\), és</p>
+        <div class="eq">\[C_4=C_0C_3+C_1C_2+C_2C_1+C_3C_0=14.\]</div>
+        <p><b>Ellenőrzés:</b> \(5+2+2+5=14\), és \(\binom84/5=14\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat az \(n=3\) eset a \(4^n\)-azonosságban.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bl-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Konvolúció mint szerszám</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Függvények</th><th>Azonosság</th></tr>
+      <tr><th>\((1+z)^r(1+z)^s\)</th><td>Vandermonde</td></tr>
+      <tr><th>\(\dfrac{z^m}{(1-z)^{m+1}}\cdot\dfrac{z^l}{(1-z)^{l+1}}\)</th><td>\(\binom{n+1}{m+l+1}\)</td></tr>
+      <tr><th>\((1-4z)^{-1/2}\) négyzete</th><td>\(4^n\)</td></tr>
+      <tr><th>\(C(z)=1+zC(z)^2\)</th><td>Catalan-konvolúció</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Két sor</b><span>Ismert generátorfüggvények.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorzat</b><span>Zárt alakban.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Együttható</b><span>Két úton számolva.</span></div>
+    </div>
+    <p>A következő téma a 7.6, az exponenciális generátorfüggvények.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
 <!-- ================= 7.6 EXPONENCIÁLIS GENERÁTORFÜGGVÉNYEK ================= -->
 <header class="hero page" id="al-bevezeto">
   <div>
@@ -7827,6 +8267,137 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </div>
   <aside class="margo">
     <p>A „halmaz = részek halmaza” szerkezet az exponenciális formulához vezet: ha a részek EGF-je \(g\), akkor a halmazé \(e^{g}\), a ciklusoké \(\ln\tfrac1{1-x}\). A permutáció így \(e^{\ln\frac1{1-x}}=\tfrac1{1-x}\). Ez a könyv e fejezetének legszebb szemlélete, de itt csak a példákon mutatom meg.</p>
+  </aside>
+</section>
+
+<!-- ================= 7.7 DIRICHLET-FÉLE GENERÁTORFÜGGVÉNY ================= -->
+<header class="hero page" id="bm-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.7</div>
+    <h1>Dirichlet-féle generátorfüggvény</h1>
+    <p class="lead">A hatványsor az additív felosztásokat követi. A számelméleti függvényeknél az osztók a fontosak, ott a \(\sum a_nn^{-s}\) alakú Dirichlet-sor a megfelelő eszköz: szorzata az osztók szerinti konvolúciót adja.</p>
+    <div class="formula">\(\displaystyle\sum_{n\ge1}\frac{(f\ast g)(n)}{n^s}=\Bigl(\sum\frac{f(n)}{n^s}\Bigr)\Bigl(\sum\frac{g(n)}{n^s}\Bigr)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bm-hero" role="img" aria-label="Az osztók számának, τ(n)-nek az értékei n=1..30-ra"></svg>
+    <div class="counter"><span id="bm-hero-a">τ = 1 ∗ 1</span><span id="bm-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>Egy szám osztóinak száma, összege és az \(n\)-hez relatív prím maradékok száma mind az \(n\) prímfelbontásából jön. Ha két függvényt „összeszorzunk” úgy, hogy \(n\)-nél az \(n\) minden \(n=d\cdot e\) felbontását összegezzük, a prímek külön-külön viselkednek. A Dirichlet-sor ezt a szorzást közönséges szorzássá alakítja.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bm-konvolucio">
+  <div class="body">
+    <div class="eyebrow">§1 · Dirichlet-konvolúció</div>
+    <h2>A sor szorzata az osztók szerinti konvolúció</h2>
+    <p>Az \(F(s)=\sum_{n\ge1}f(n)n^{-s}\) és \(G(s)=\sum g(n)n^{-s}\) sorok szorzatában a tagok \(f(d)g(e)(de)^{-s}\) alakúak, mert \(d^{-s}e^{-s}=(de)^{-s}\). Az \(N^{-s}\) együtthatóját az \(N=de\) felbontások adják:</p>
+    <div class="eq gold">\[(f\ast g)(N)=\sum_{d\mid N}f(d)\,g\!\left(\frac Nd\right).\]</div>
+    <p>A fontos függvények: \(\varepsilon(n)=[n=1]\) (a konvolúció egysége, sora \(1\)), \(\mathbf 1(n)=1\) (sora \(\zeta(s)\)), \(\mathrm{id}(n)=n\) (sora \(\zeta(s-1)\)), a Möbius-féle \(\mu\) és az Euler-féle \(\varphi\) (4.9). A 4.9 \(\mathbf1\ast\mu=\varepsilon\) tételéből \(\sum\mu(n)n^{-s}=1/\zeta(s)\). További azonosságok:</p>
+    <div class="eq">\[\tau=\mathbf1\ast\mathbf1,\qquad\sigma=\mathbf1\ast\mathrm{id},\qquad\mathrm{id}=\mathbf1\ast\varphi,\qquad\varphi=\mathrm{id}\ast\mu.\]</div>
+    <p>Ezek sorai: \(\sum\tau(n)n^{-s}=\zeta(s)^2\), \(\sum\sigma(n)n^{-s}=\zeta(s)\zeta(s-1)\), \(\sum\varphi(n)n^{-s}=\zeta(s-1)/\zeta(s)\) (ott, ahol a sorok abszolút konvergálnak; ezt itt nem tárgyaljuk). A konvolúció kommutatív és asszociatív, mert a sorok szorzása az.</p>
+    <p>Multiplikativitás: ha \(f\) és \(g\) multiplikatív (azaz \(f(mn)=f(m)f(n)\) relatív prím \(m,n\)-re), akkor \(f\ast g\) is az. Valóban, relatív prím \(m,n\) esetén \(mn\) minden osztója egyértelműen \(d_1d_2\) alakú, ahol \(d_1\mid m\), \(d_2\mid n\), tehát</p>
+    <div class="eq">\[(f\ast g)(mn)=\sum_{d_1\mid m}\sum_{d_2\mid n}f(d_1)f(d_2)\,g\!\left(\tfrac m{d_1}\right)g\!\left(\tfrac n{d_2}\right)=(f\ast g)(m)\,(f\ast g)(n).\]</div>
+    <p>A kísérlet két függvény konvolúcióját számolja, felismeri az ismert azonosságokat, ellenőrzi a kommutativitást és a multiplikativitást.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bm-d-f">f <select id="bm-d-f"><option value="0">ε</option><option value="1" selected>1</option><option value="2">id</option><option value="3">μ</option><option value="4">φ</option><option value="5">τ</option><option value="6">σ</option></select></label>
+        <label class="rng" for="bm-d-g">g <select id="bm-d-g"><option value="0">ε</option><option value="1" selected>1</option><option value="2">id</option><option value="3">μ</option><option value="4">φ</option><option value="5">τ</option><option value="6">σ</option></select></label>
+        <label class="rng" for="bm-d-n">n-ig <input type="range" id="bm-d-n" min="6" max="120" value="60"> <span class="mono" id="bm-d-nv">60</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bm-d-t"></table></div>
+      <div class="info" id="bm-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A táblázat az első 14 értéket mutatja, az ellenőrzések a csúszka által adott \(n\)-ig futnak. Az ismert azonosságokat a program a függvények értéktáblájából ismeri fel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bm-euler">
+  <div class="body">
+    <div class="eyebrow">§2 · Euler-szorzat</div>
+    <h2>A sor mint szorzat a prímeken</h2>
+    <p>Ha \(f\) multiplikatív, akkor az egyértelmű prímfelbontás miatt</p>
+    <div class="eq gold">\[\sum_{n\ge1}\frac{f(n)}{n^s}=\prod_{p}\Bigl(1+\frac{f(p)}{p^s}+\frac{f(p^2)}{p^{2s}}+\cdots\Bigr).\]</div>
+    <p>A jobb oldalt kifejtve minden tag \(\prod_p f(p^{k_p})p^{-k_ps}\) alakú, vagyis egy \(n=\prod p^{k_p}\) tagja, és minden \(n\) pontosan egyszer szerepel. (Formális egyenlőség; konvergencia esetén számértékként is igaz, ezt itt nem bizonyítjuk.) Az \(f=\mathbf1\) esetben</p>
+    <div class="eq">\[\zeta(s)=\prod_p\frac1{1-p^{-s}},\qquad\frac1{\zeta(s)}=\prod_p\bigl(1-p^{-s}\bigr).\]</div>
+    <p>A második képlet összhangban van a \(\mu\) sorával: \(\mu(p)=-1\), \(\mu(p^k)=0\) \(k\ge2\)-re, így a \(p\)-edik tényező \(1-p^{-s}\). A kísérlet a \(\zeta(s)\) közelítését mutatja a prímekre vett véges szorzattal és az \(N\)-ig vett részletösszeggel, az ismert értékekhez (\(\zeta(2)=\pi^2/6\), \(\zeta(4)=\pi^4/90\), \(\zeta(3)\approx1{,}2020569\)) viszonyítva.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bm-e-s">s <select id="bm-e-s"><option value="2">2</option><option value="3">3</option><option value="4">4</option></select></label>
+        <label class="rng" for="bm-e-p">prímek ≤ <input type="range" id="bm-e-p" min="2" max="200" value="30"> <span class="mono" id="bm-e-pv">30</span></label>
+        <label class="rng" for="bm-e-n">N <input type="range" id="bm-e-n" min="2" max="2000" value="200"> <span class="mono" id="bm-e-nv">200</span></label>
+      </div>
+      <div class="info" id="bm-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szorzat hibája az elhagyott nagy prímekből, a részletösszegé a lecsonkított \(n>N\) tagokból jön; a kísérlet csak a közelítést mutatja, a konvergencia tárgyalása nélkül.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bm-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\tau(12)\)-t a \(\mathbf1\ast\mathbf1\) konvolúcióval.</span></summary>
+      <div class="ans">
+        <p>\(\tau(12)=\sum_{d\mid12}1\cdot1=6\), az osztók: 1, 2, 3, 4, 6, 12. <b>Ellenőrzés:</b> multiplikativitással \(\tau(4)\tau(3)=3\cdot2=6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sigma(12)\)-t.</span></summary>
+      <div class="ans">
+        <p>Az osztók összege \(1+2+3+4+6+12=28\). <b>Ellenőrzés:</b> \(\sigma(4)\sigma(3)=7\cdot4=28\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki \(\varphi(12)\)-t a \(\varphi=\mathrm{id}\ast\mu\) képlettel.</span></summary>
+      <div class="ans">
+        <p>A nem nulla tagok a \(\mu(12/d)\neq0\) osztókra jönnek: \(d=2,4,6,12\).</p>
+        <div class="eq">\[2\mu(6)+4\mu(3)+6\mu(2)+12\mu(1)=2-4-6+12=4.\]</div>
+        <p><b>Ellenőrzés:</b> \(\varphi(4)\varphi(3)=2\cdot2=4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mutasd meg, hogy az \(\mathrm{id}\) Dirichlet-inverze \(n\mu(n)\).</span></summary>
+      <div class="ans">
+        <p>Legyen \(g(n)=n\mu(n)\). Ekkor</p>
+        <div class="eq">\[(\mathrm{id}\ast g)(N)=\sum_{d\mid N}d\cdot\frac Nd\,\mu\!\left(\frac Nd\right)=N\sum_{e\mid N}\mu(e)=N\,[N=1].\]</div>
+        <p>Ez \(\varepsilon(N)\), mert a 4.9 szerint \(\sum_{e\mid N}\mu(e)=[N=1]\). <b>Ellenőrzés:</b> \(N=6\)-ra a tagok \(d=1,2,3,6\)-ra \(d\cdot\frac6d\mu(\frac6d)\): \(6,-6,-6,6\), összegük 0. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt mutatja, hogy a Dirichlet-inverz egy szorzattényezővel eltér az eredeti inverzétől: \(\mu\) a \(\mathbf1\), \(n\mu(n)\) az \(\mathrm{id}\) inverze.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bm-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Hatványsor és Dirichlet-sor</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>Hatványsor</th><th>Dirichlet-sor</th></tr>
+      <tr><th>tag</th><td>\(a_nz^n\)</td><td>\(a_nn^{-s}\)</td></tr>
+      <tr><th>szorzat</th><td>\(\sum_ka_kb_{n-k}\)</td><td>\(\sum_{d\mid n}a_db_{n/d}\)</td></tr>
+      <tr><th>egység</th><td>\(1\)</td><td>\(\varepsilon\leftrightarrow1\)</td></tr>
+      <tr><th>mértani sor</th><td>\(\frac1{1-z}\)</td><td>\(\zeta(s)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Konvolúció</b><span>Osztók szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Sor</b><span>Dirichlet-szorzat.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Euler-szorzat</b><span>Prímenként.</span></div>
+    </div>
+    <p>A következő téma a 7.8, a partíciók.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
   </aside>
 </section>
 
@@ -10257,9 +10828,13 @@ const TOPICS={
   fibonacci:{"n": "6.6", "t": "Fibonacci-számok", "ch": 6, "prefix": "af-", "pages": [["bevezeto", "Bevezető"], ["azonossagok", "Cassini és a mátrixszorzat"], ["oszthatosag", "Oszthatóság és Euklidész"], ["zeckendorf", "Zeckendorf-felbontás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 6. fejezet, 6.6 Fibonacci-számok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   kontinuans:{"n": "6.7", "t": "Kontinuánsok", "ch": 6, "prefix": "bi-", "pages": [["bevezeto", "Bevezető"], ["definicio", "Definíció"], ["euklidesz", "Euklidész és a lánctört"], ["determinans", "Determináns"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 6. fejezet, 6.7 Kontinuánsok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokspec:{"n": "6.8", "t": "Feladatok", "ch": 6, "prefix": "ah-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 6. fejezet, 6.8 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  dominok:{"n": "7.1", "t": "Dominók és pénzváltás", "ch": 7, "prefix": "bj-", "pages": [["bevezeto", "Bevezető"], ["domino2", "Két sor"], ["domino3", "Három sor"], ["penz", "Pénzváltás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.1 Dominók és pénzváltás. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   gfalap:{"n": "7.2", "t": "Technikai alapozás", "ch": 7, "prefix": "ai-", "pages": [["bevezeto", "Bevezető"], ["muveletek", "Műveletek sorokkal"], ["alapsorok", "Az alapsorok"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.2 Technikai alapozás. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   gfrek:{"n": "7.3", "t": "Rekurziók megoldása", "ch": 7, "prefix": "aj-", "pages": [["bevezeto", "Bevezető"], ["racionalis", "Racionális generátorfüggvény"], ["reszlet", "Résztörtekre bontás"], ["catalan", "Nemlineáris rekurzió: Catalan"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.3 Rekurziók megoldása. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  gfspec:{"n": "7.4", "t": "Speciális generátorfüggvények", "ch": 7, "prefix": "bk-", "pages": [["bevezeto", "Bevezető"], ["harmonikus", "Harmonikus számok"], ["stirling", "Stirling-számok"], ["bernoulli", "Bernoulli-számok"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.4 Speciális generátorfüggvények. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  konvolucio:{"n": "7.5", "t": "Konvolúciók", "ch": 7, "prefix": "bl-", "pages": [["bevezeto", "Bevezető"], ["vandermonde", "Vandermonde"], ["kozponti", "Központi együtthatók"], ["fibonacci", "Fibonacci"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.5 Konvolúciók. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   gfexp:{"n": "7.6", "t": "Exponenciális generátorfüggvények", "ch": 7, "prefix": "al-", "pages": [["bevezeto", "Bevezető"], ["szorzat", "A binomiális konvolúció"], ["derang", "Fixpontmentes permutációk"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.6 Exponenciális generátorfüggvények. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  dirichlet:{"n": "7.7", "t": "Dirichlet-féle generátorfüggvény", "ch": 7, "prefix": "bm-", "pages": [["bevezeto", "Bevezető"], ["konvolucio", "Dirichlet-konvolúció"], ["euler", "Euler-szorzat"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.7 Dirichlet-féle generátorfüggvény. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   gfparticio:{"n": "7.8", "t": "Partíciók (kiegészítés)", "ch": 7, "prefix": "ak-", "pages": [["bevezeto", "Bevezető"], ["szorzat", "Végtelen szorzat"], ["euler", "Euler tétele"], ["penz", "Pénzváltás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.8 Partíciók (kiegészítés). A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokgf:{"n": "7.9", "t": "Feladatok", "ch": 7, "prefix": "am-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 7. fejezet, 7.9 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   valalap:{"n": "8.1", "t": "Definíciók", "ch": 8, "prefix": "an-", "pages": [["bevezeto", "Bevezető"], ["kocka", "Kockadobások"], ["feltetel", "Feltételes valószínűség"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.1 Definíciók. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
@@ -10286,7 +10861,7 @@ const CH=[
   {"n": 4, "t": "Számelmélet", "d": "Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa.", "lead": "A számelmélet az egész számok szerkezetét vizsgálja: ki osztja kit, hogyan bomlik a szám prímekre, és mit tudunk a maradékokról. A fejezet az euklideszi algoritmustól a kínai maradéktételig és az Euler-függvényig vezet.", "topics": [{"id": "oszthatosag", "d": "Legnagyobb közös osztó, Euklidész algoritmusa, Bézout-azonosság."}, {"id": "primek", "d": "Prímek végtelensége, szita, törzstényezős felbontás, π(x)."}, {"id": "primpeldak", "d": "Mersenne- és Fermat-számok, a 2kp+1 alakú osztók, Euklidész-számok, prímhézagok."}, {"id": "faktorialis", "d": "Hányszor osztja a p prím az n!-t: Legendre képlete, egészrészekkel."}, {"id": "sternbrocot", "d": "Törtek a Stern–Brocot-fában, Farey-sorozat, relatív prímek aránya."}, {"id": "kongruencia", "d": "Kongruenciák, inverz, kínai maradéktétel, Euler φ-függvénye."}, {"id": "fuggetlen", "d": "A Z_mn ≅ Z_m×Z_n azonosítás, Garner módszere, gyökök száma, nem relatív prím modulusok."}, {"id": "tovabbialk", "d": "Számelméleti alkalmazások kongruenciákkal."}, {"id": "fimu", "d": "A φ szorzat-szabálya és osztóösszege, a Möbius-féle μ, a Möbius-inverzió és két alkalmazása."}, {"id": "feladatokszam", "d": "Tíz saját feladat négy szinten a számelméletről, megoldással, programmal ellenőrizve."}]},
   {"n": 5, "t": "Binomiális együtthatók", "d": "Azonosságok, összegek, Catalan-számok, generátorfüggvények.", "lead": "A binomiális együtthatók a kombinatorika és az algebra közös nyelve. A fejezet a Pascal-háromszög azonosságaitól a Vandermonde-konvolúcióig, a Catalan-számokig és az első generátorfüggvényekig vezet.", "topics": [{"id": "binomalap", "d": "Pascal-háromszög, szimmetria, elnyelés, binomiális tétel."}, {"id": "binomosszeg", "d": "Hokiütő-azonosság, Vandermonde-konvolúció, súlyozott összegek."}, {"id": "binomfortely", "d": "Negatív felső index, Catalan-számok, a binomiális sor."}, {"id": "binomgf", "d": "A binomiális együtthatók generátorfüggvénye, átlós összegek."}, {"id": "hipergeom", "d": "A hipergeometrikus sorok és a tagarány-szabály."}, {"id": "hipertrafo", "d": "Azonosságok hipergeometrikus alakban."}, {"id": "parcialis", "d": "Részleges összegek hipergeometrikus sorokból."}, {"id": "gosper", "d": "Gosper algoritmusa és a Zeilberger-féle módszer."}, {"id": "feladatokbinom", "d": "Tíz saját feladat négy szinten a binomiális együtthatókról, megoldással, programmal ellenőrizve."}]},
   {"n": 6, "t": "Speciális számok", "d": "Stirling-, harmonikus, Fibonacci- és Bernoulli-számok.", "lead": "Néhány számsorozat újra meg újra felbukkan a diszkrét matematikában. A fejezet a Stirling-számokat, a harmonikus számokat, a Fibonacci-számokat és a Bernoulli-számokat vizsgálja: hogyan születnek, milyen azonosságok kötik össze őket, és mire jók.", "topics": [{"id": "stirling", "d": "Másodfajú és elsőfajú Stirling-számok, hatványok kifejtése, szürjekciók."}, {"id": "eulerszam", "d": "Az eulerian-számok és a permutációk emelkedései."}, {"id": "harmonikus", "d": "H_n növekedése, részleges összegzés, kapcsolat a Stirling-számokkal."}, {"id": "harmosszeg", "d": "Abel-féle részleges összegzés, a Σ C(k,m)·H_k képlet, binomiális inverzió."}, {"id": "bernoulli", "d": "Hatványösszegek zárt alakja, Bernoulli-számok rekurziója."}, {"id": "fibonacci", "d": "Cassini-azonosság, gcd-tulajdonság, Zeckendorf-tétel."}, {"id": "kontinuans", "d": "A kontinuáns rekurziója, az Euler-szabály, lánctörtek és az Euklideszi-algoritmus."}, {"id": "feladatokspec", "d": "Tíz saját feladat négy szinten a speciális számokról, megoldással, programmal ellenőrizve."}]},
-  {"n": 7, "t": "Generátorfüggvények", "d": "Hatványsorok, rekurziók, partíciók, exponenciális generátorfüggvények.", "lead": "A generátorfüggvény egy sorozatot egyetlen hatványsorba csomagol. A fejezet azt mutatja meg, hogyan lesz a sorozatok közti rekurzióból algebrai egyenlet, és hogyan olvashatók le a megoldások és a megszámolási feladatok válaszai.", "topics": [{"n": "7.1", "t": "Dominók és pénzváltás", "d": "Dominólefedések és pénzváltás generátorfüggvénnyel; a pénzváltás részben a 7.8-ban szerepel."}, {"id": "gfalap", "d": "Hatványsorok mint sorozatok, eltolás, deriválás, részletösszeg."}, {"id": "gfrek", "d": "Lineáris rekurzió megoldása, résztörtek, Catalan-számok generátorfüggvénye."}, {"n": "7.4", "t": "Speciális generátorfüggvények", "d": "Híres generátorfüggvények gyűjteménye."}, {"n": "7.5", "t": "Konvolúciók", "d": "Konvolúciók és a belőlük adódó azonosságok."}, {"id": "gfexp", "d": "Exponenciális generátorfüggvény, Bell-számok, derangementek, involúciók."}, {"n": "7.7", "t": "Dirichlet-féle generátorfüggvény", "d": "Dirichlet-sorok és a számelméleti függvények szorzata."}, {"id": "gfparticio", "d": "Partíciószámok, páratlan és különböző részek, pénzváltás."}, {"id": "feladatokgf", "d": "Tíz saját feladat négy szinten a generátorfüggvényekről, megoldással, programmal ellenőrizve."}]},
+  {"n": 7, "t": "Generátorfüggvények", "d": "Hatványsorok, rekurziók, partíciók, exponenciális generátorfüggvények.", "lead": "A generátorfüggvény egy sorozatot egyetlen hatványsorba csomagol. A fejezet azt mutatja meg, hogyan lesz a sorozatok közti rekurzióból algebrai egyenlet, és hogyan olvashatók le a megoldások és a megszámolási feladatok válaszai.", "topics": [{"id": "dominok", "d": "Dominólefedések és pénzváltás generátorfüggvénnyel; a pénzváltás részben a 7.8-ban szerepel."}, {"id": "gfalap", "d": "Hatványsorok mint sorozatok, eltolás, deriválás, részletösszeg."}, {"id": "gfrek", "d": "Lineáris rekurzió megoldása, résztörtek, Catalan-számok generátorfüggvénye."}, {"id": "gfspec", "d": "Híres generátorfüggvények gyűjteménye."}, {"id": "konvolucio", "d": "Konvolúciók és a belőlük adódó azonosságok."}, {"id": "gfexp", "d": "Exponenciális generátorfüggvény, Bell-számok, derangementek, involúciók."}, {"id": "dirichlet", "d": "Dirichlet-sorok és a számelméleti függvények szorzata."}, {"id": "gfparticio", "d": "Partíciószámok, páratlan és különböző részek, pénzváltás."}, {"id": "feladatokgf", "d": "Tíz saját feladat négy szinten a generátorfüggvényekről, megoldással, programmal ellenőrizve."}]},
   {"n": 8, "t": "Diszkrét valószínűség", "d": "Eseménytér, várható érték, szórás, generáló függvények, klasszikus feladatok.", "lead": "A diszkrét valószínűség megszámlálásra épül, ezért a korábbi fejezetek eszközei itt természetesen kerülnek elő: a binomiális együtthatók, a harmonikus számok és a generátorfüggvények. A fejezet a valószínűségi térből indul, és a klasszikus feladatokig vezet.", "topics": [{"id": "valalap", "d": "Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."}, {"id": "varhato", "d": "Várható érték, indikátorváltozók, variancia, függetlenek összege."}, {"id": "valgf", "d": "G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."}, {"n": "8.4", "t": "Pénzfeldobás", "d": "Mintázatok pénzfeldobásban, várható várakozási idő."}, {"n": "8.5", "t": "Hasítási technikák", "d": "Hash-táblák és ütközések valószínűségi elemzése."}, {"id": "klasszikus", "d": "Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."}, {"id": "feladatokval", "d": "Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."}]},
   {"n": 9, "t": "Aszimptotika", "d": "Nagy O, Stirling-formula, Euler–Maclaurin-összegzés, alkalmazások.", "lead": "Ha egy összegnek vagy sorozatnak nincs zárt alakja, még mindig megkérdezhetjük, hogyan viselkedik nagy n-re. A fejezet a nagy O jelöléssel kezdődik, és az Euler–Maclaurin-összegzésen át a Stirling-formuláig és a gyorsrendezés elemzéséig jut.", "topics": [{"id": "nagyo", "d": "O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."}, {"id": "stirfej", "d": "Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."}, {"n": "9.4", "t": "Két aszimptotikával kapcsolatos fogás", "d": "Csavaró és perturbációs módszerek az aszimptotikában."}, {"id": "eulermac", "d": "Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."}, {"n": "9.6", "t": "Véges összegzés", "d": "Véges összegek aszimptotikus becslése."}, {"id": "aszalk", "d": "C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."}, {"id": "feladatokasz", "d": "Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."}]},
  {"n": 10, "t": "Összegzés", "d": "Saját záró rész: a fejezetek közötti kapcsolatok és a visszatérő eszközök.", "lead": "A Konkrét matematika kilenc fejezetes, ez a rész nem a könyv fejezete, hanem saját összegzés. Megmutatja, hogyan kapcsolódik egymáshoz a kilenc fejezet, és hogy ugyanaz a néhány eszköz hányféle helyzetben tér vissza.", "topics": [{"id": "osszegzes", "d": "A kilenc fejezet kapcsolatai, visszatérő eszközök, egy szám öt helyen."}]}];
@@ -10664,7 +11239,7 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.6.2";
+const APP_VERSION="1.7.0";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
@@ -12842,6 +13417,56 @@ function ahP(){
 }
 $("#ah-p-m").addEventListener("input",ahP);ahP();
 
+/* ================= 7.1 DOMINÓK ÉS PÉNZVÁLTÁS ================= */
+function bjTile(m,n){
+  let dp=new Map([[0,1n]]);
+  for(let c=0;c<n;c++)for(let r=0;r<m;r++){const nd=new Map(),add=(k,v)=>nd.set(k,(nd.get(k)||0n)+v);
+    for(const [mask,v] of dp){
+      if((mask>>r)&1){add(mask&~(1<<r),v);}
+      else{ if(c+1<n)add(mask|(1<<r),v); if(r+1<m&&!((mask>>(r+1))&1))add(mask|(1<<(r+1)),v); }
+    } dp=nd;}
+  return dp.get(0)||0n;
+}
+function bjFib(n){let a=0n,b=1n;for(let i=0;i<n;i++)[a,b]=[b,a+b];return a;}
+function bjU(k){let a=1n,b=3n;if(k===0)return a;for(let i=1;i<k;i++)[a,b]=[b,4n*b-a];return b;}
+function bjRec(m,n){
+  if(m===2)return bjFib(n+1);
+  if(m===3){return n%2?0n:bjU(n/2);}
+  const c=[1n,1n,5n,11n];for(let i=4;i<=n;i++)c.push(c[i-1]+5n*c[i-2]+c[i-3]-c[i-4]);return c[n];
+}
+function bjPQ(k){let p=1n,q=0n;for(let i=0;i<k;i++)[p,q]=[2n*p+3n*q,p+2n*q];return [p,q];}
+c2hero("dominok-bevezeto",900,12,fr=>{
+  const s=c2svg("#bj-hero",420,250),N=Math.min(fr+2,12),r=2+Math.sqrt(3),x0=34,w=29;
+  el("line",{x1:x0,x2:x0+12*w,y1:205-(r-3)*150,y2:205-(r-3)*150,style:"stroke:var(--accent);stroke-dasharray:4 4;opacity:.8"},s);
+  for(let k=1;k<=12;k++){const q=Number(bjU(k))/Number(bjU(k-1)),h=(q-3)*150;
+    el("rect",{x:x0+(k-1)*w+3,y:205-h,width:w-6,height:h,rx:2,style:`fill:var(--accent);opacity:${k<=N?.6:.14}`},s);
+    if(k%2===1)txt(s,x0+(k-1)*w+w/2,222,k,"","middle");}
+  txt(s,x0+12*w,205-(r-3)*150-6,"2+√3","","end");
+  $("#bj-hero-b").textContent=`k = ${N}: ${(Number(bjU(N))/Number(bjU(N-1))).toFixed(5)}`;
+});
+function bjD(){
+  const m=+$("#bj-d-m").value,n=+$("#bj-d-n").value;$("#bj-d-nv").textContent=n;
+  const b=bjTile(m,n),r=bjRec(m,n);
+  $("#bj-d-info").innerHTML=`${m}×${n} lefedés (oszlopprofil-számolás): <b>${b}</b><br>rekurzió: ${r} ${ok(b===r)}`+(m===2?`<br>F<sub>${n+1}</sub> = ${bjFib(n+1)}`:m===3&&n%2?`<br>páratlan cellaszám: nincs lefedés`:"");
+}
+$("#bj-d-m").addEventListener("change",bjD);$("#bj-d-n").addEventListener("input",bjD);bjD();
+function bjUk(){
+  const k=+$("#bj-u-k").value;$("#bj-u-kv").textContent=k;
+  const [p,q]=bjPQ(k),t=bjTile(3,2*k),re=bjU(k);
+  /* a_n és b_n csatolt rekurziója */
+  const a=[1n,0n],b=[0n,1n];for(let n=2;n<=2*k+1;n++){a[n]=a[n-2]+2n*b[n-1];b[n]=a[n-1]+b[n-2];}
+  $("#bj-u-info").innerHTML=`u<sub>${k}</sub> (3×${2*k} közvetlenül) = <b>${t}</b><br>u<sub>k</sub> = 4u<sub>k−1</sub> − u<sub>k−2</sub>: ${re} ${ok(t===re)}<br>(2+√3)<sup>${k}</sup> = ${p} + ${q}√3, p+q = ${p+q} ${ok(p+q===t)}<br>a<sub>n</sub> = a<sub>n−2</sub> + 2b<sub>n−1</sub> rekurzióval: a<sub>${2*k}</sub> = ${a[2*k]} ${ok(a[2*k]===t)}`;
+}
+$("#bj-u-k").addEventListener("input",bjUk);bjUk();
+function bjCoin(n,c){const ways=Array(n+1).fill(0n);ways[0]=1n;for(const v of c)for(let i=v;i<=n;i++)ways[i]+=ways[i-v];return ways[n];}
+function bjBrute(n,c,i=0){if(n===0)return 1n;if(i>=c.length||n<0)return 0n;let t=0n;for(let k=0;k*c[i]<=n;k++)t+=bjBrute(n-k*c[i],c,i+1);return t;}
+function bjC(){
+  const c=$("#bj-c-s").value.split(",").map(Number),n=+$("#bj-c-n").value;$("#bj-c-nv").textContent=n;
+  const g=bjCoin(n,c);
+  $("#bj-c-info").innerHTML=`kifizetések száma (${c.join(", ")} érmékkel, ${n}): <b>${g}</b> (soronkénti szorzás)`+(n<=120?`<br>összes kombináció felsorolva: ${bjBrute(n,c)} ${ok(bjBrute(n,c)===g)}`:`<br>(a felsorolás 120 fölött kimarad)`)+(c.join()==="1,2"?`<br>⌊n/2⌋+1 = ${Math.floor(n/2)+1} ${ok(BigInt(Math.floor(n/2)+1)===g)}`:"")+(c.join()==="1,5"?`<br>⌊n/5⌋+1 = ${Math.floor(n/5)+1} ${ok(BigInt(Math.floor(n/5)+1)===g)}`:"");
+}
+$("#bj-c-s").addEventListener("change",bjC);$("#bj-c-n").addEventListener("input",bjC);bjC();
+
 /* ================= 7.2 ALAPFOGALMAK ================= */
 const gN=14;
 const gfMul=(a,b,N=gN)=>{const c=Array(N).fill(0);for(let i=0;i<N;i++)for(let j=0;i+j<N;j++)c[i+j]+=(a[i]||0)*(b[j]||0);return c;};
@@ -12926,6 +13551,81 @@ function ajC(){
 }
 $("#aj-c-n").addEventListener("input",ajC);ajC();
 
+/* ================= 7.4 SPECIÁLIS GENERÁTORFÜGGVÉNYEK ================= */
+const bkFact=n=>{let r=1n;for(let i=2n;i<=BigInt(n);i++)r*=i;return r;};
+const bkBin=(n,k)=>k<0||k>n||n<0?0n:bkFact(n)/(bkFact(k)*bkFact(n-k));
+const bkH=n=>{let s=rat(0);for(let k=1;k<=n;k++)s=s.add(rat(1,k));return s;};
+function bkStir(N,K){const S=[];for(let n=0;n<=N;n++){S[n]=[];for(let k=0;k<=K;k++)S[n][k]=(n===0&&k===0)?1n:(n===0||k===0)?0n:S[n-1][k-1]+BigInt(k)*S[n-1][k];}return S;}
+function bkSer(k,N){/* z^k / prod(1-jz) együtthatói n=0..N */
+  let c=Array(N+1).fill(0n);c[0]=1n;
+  for(let j=1;j<=k;j++){for(let n=1;n<=N;n++)c[n]+=BigInt(j)*c[n-1];}
+  const r=Array(N+1).fill(0n);for(let n=k;n<=N;n++)r[n]=c[n-k];return r;
+}
+function bkBern(M){const B=[rat(1)];for(let m=1;m<=M;m++){let s=rat(0);for(let j=0;j<m;j++)s=s.add(rat(bkBin(m+1,j)).mul(B[j]));B[m]=s.neg().div(rat(m+1));}return B;}
+c2hero("gfspec-bevezeto",900,14,fr=>{
+  const s=c2svg("#bk-hero",420,250),S=bkStir(18,3),N=Math.min(fr+3,16),x0=26,w=24;
+  const lg=n=>Math.log10(Number(S[n][3])),mx=lg(16);
+  for(let n=3;n<=16;n++){const h=lg(n)/mx*170;el("rect",{x:x0+(n-3)*w+3,y:205-h,width:w-6,height:h,rx:2,style:`fill:var(--accent);opacity:${n<=N?.6:.14}`},s);if(n%3===0)txt(s,x0+(n-3)*w+w/2,222,n,"","middle");}
+  $("#bk-hero-b").textContent=`n = ${N}: ${S[N][3]}`;
+});
+function bkHm(){
+  const m=+$("#bk-h-m").value,n=+$("#bk-h-n").value;$("#bk-h-mv").textContent=m;$("#bk-h-nv").textContent=n;
+  let c=rat(0);for(let k=1;k<=n;k++)c=c.add(rat(1,k).mul(rat(bkBin(n-k+m,m))));
+  const f=rat(bkBin(n+m,m)).mul(bkH(n+m).sub(bkH(m)));
+  $("#bk-h-info").innerHTML=`z<sup>${n}</sup> együtthatója a ln(1/(1−z))/(1−z)<sup>${m+1}</sup> sorban = <b>${c}</b><br>C(n+m,m)·(H<sub>n+m</sub> − H<sub>m</sub>) = ${f} ${ok(c.eq(f))}`+(m===0?`<br>H<sub>${n}</sub> = ${bkH(n)} ${ok(c.eq(bkH(n)))}`:"");
+}
+["#bk-h-m","#bk-h-n"].forEach(i=>$(i).addEventListener("input",bkHm));bkHm();
+function bkSt(){
+  const k=+$("#bk-s-k").value,N=+$("#bk-s-n").value;$("#bk-s-kv").textContent=k;$("#bk-s-nv").textContent=N;
+  const ser=bkSer(k,N),S=bkStir(N,k);let good=true;const row=[];
+  for(let n=0;n<=N;n++){row.push(ser[n]);if(ser[n]!==S[n][k])good=false;}
+  $("#bk-s-t").innerHTML="<tr><th>n</th>"+row.map((_,n)=>`<td>${n}</td>`).join("")+"</tr><tr><th>[zⁿ] S<sub>k</sub></th>"+row.map(v=>`<td>${v}</td>`).join("")+"</tr>";
+  $("#bk-s-info").innerHTML=`S<sub>${k}</sub>(z) = z<sup>${k}</sup>/∏(1−jz), együtthatók n ≤ ${N}-ig<br>egyezés a rekurzióval számolt {n,${k}} értékekkel: ${ok(good)}`+(k===2?`<br>{n,2} = 2<sup>n−1</sup> − 1: ${ok(row.every((v,n)=>n<2?v===0n:v===(2n**BigInt(n-1))-1n))}`:"");
+}
+["#bk-s-k","#bk-s-n"].forEach(i=>$(i).addEventListener("input",bkSt));bkSt();
+function bkBr(){
+  const M=+$("#bk-b-m").value;$("#bk-b-mv").textContent=M;const B=bkBern(M);let good=true;
+  for(let m=1;m<=M;m++){let s=rat(0);for(let j=0;j<=m;j++)s=s.add(rat(bkBin(m+1,j)).mul(B[j]));if(!s.eq(rat(0)))good=false;}
+  let odd=true;for(let j=3;j<=M;j+=2)if(!B[j].eq(rat(0)))odd=false;
+  $("#bk-b-t").innerHTML="<tr><th>j</th>"+B.map((_,j)=>`<td>${j}</td>`).join("")+"</tr><tr><th>B<sub>j</sub></th>"+B.map(b=>`<td>${b}</td>`).join("")+"</tr>";
+  $("#bk-b-info").innerHTML=`Σ C(m+1,j)·B<sub>j</sub> = 0, 1 ≤ m ≤ ${M}: ${ok(good)}<br>páratlan j ≥ 3: B<sub>j</sub> = 0: ${ok(odd)}`;
+}
+$("#bk-b-m").addEventListener("input",bkBr);bkBr();
+
+/* ================= 7.5 KONVOLÚCIÓK ================= */
+const blFact=n=>{let r=1n;for(let i=2n;i<=BigInt(n);i++)r*=i;return r;};
+const blBin=(n,k)=>k<0||k>n||n<0?0n:blFact(n)/(blFact(k)*blFact(n-k));
+const blCat=n=>blBin(2*n,n)/BigInt(n+1);
+function blF(n){let a=0n,b=1n;for(let i=0;i<n;i++)[a,b]=[b,a+b];return a;}
+function blL(n){let a=2n,b=1n;for(let i=0;i<n;i++)[a,b]=[b,a+b];return a;}
+c2hero("konvolucio-bevezeto",900,8,fr=>{
+  const r=fr+1,s=c2svg("#bl-hero",420,250),w=Math.min(22,380/(2*r+1)),x0=(420-(2*r+1)*w)/2,mx=Number(blBin(2*r,r));
+  for(let n=0;n<=2*r;n++){let c=0n;for(let k=0;k<=n;k++)c+=blBin(r,k)*blBin(r,n-k);
+    const h=Number(c)/mx*170;el("rect",{x:x0+n*w+2,y:205-h,width:w-4,height:h,rx:2,style:"fill:var(--accent);opacity:.6"},s);}
+  $("#bl-hero-b").textContent=`r = ${r}: középső = ${blBin(2*r,r)}`;
+});
+function blV(){
+  const r=+$("#bl-v-r").value,s=+$("#bl-v-s").value,n=+$("#bl-v-n").value;["r","s","n"].forEach((k,i)=>$("#bl-v-"+k+"v").textContent=[r,s,n][i]);
+  let a=0n;for(let k=0;k<=n;k++)a+=blBin(r,k)*blBin(s,n-k);
+  const m=Math.floor(r/2),l=Math.floor(s/2);let b=0n;for(let k=0;k<=n;k++)b+=blBin(k,m)*blBin(n-k,l);
+  $("#bl-v-info").innerHTML=`Σ C(${r},k)·C(${s},${n}−k) = <b>${a}</b>, C(${r+s},${n}) = ${blBin(r+s,n)} ${ok(a===blBin(r+s,n))}<br>Σ<sub>k=0..${n}</sub> C(k,${m})·C(${n}−k,${l}) = <b>${b}</b>, C(${n+1},${m+l+1}) = ${blBin(n+1,m+l+1)} ${ok(b===blBin(n+1,m+l+1))}`;
+}
+["#bl-v-r","#bl-v-s","#bl-v-n"].forEach(i=>$(i).addEventListener("input",blV));blV();
+function blK(){
+  const n=+$("#bl-k-n").value;$("#bl-k-nv").textContent=n;
+  let a=0n;for(let k=0;k<=n;k++)a+=blBin(2*k,k)*blBin(2*n-2*k,n-k);
+  let c=0n;for(let k=0;k<=n;k++)c+=blCat(k)*blCat(n-k);
+  $("#bl-k-info").innerHTML=`Σ C(2k,k)·C(2n−2k,n−k) = <b>${a}</b>, 4<sup>${n}</sup> = ${4n**BigInt(n)} ${ok(a===4n**BigInt(n))}<br>Σ C<sub>k</sub>·C<sub>${n}−k</sub> = <b>${c}</b>, C<sub>${n+1}</sub> = ${blCat(n+1)} ${ok(c===blCat(n+1))}`;
+}
+$("#bl-k-n").addEventListener("input",blK);blK();
+function blFi(){
+  const n=+$("#bl-f-n").value;$("#bl-f-nv").textContent=n;
+  let a=0n;for(let k=0;k<=n;k++)a+=blF(k)*blF(n-k);
+  const num=BigInt(n)*blL(n)-blF(n),f=num/5n;
+  $("#bl-f-info").innerHTML=`Σ F<sub>k</sub>·F<sub>${n}−k</sub> = <b>${a}</b><br>(nL<sub>n</sub> − F<sub>n</sub>)/5 = (${n}·${blL(n)} − ${blF(n)})/5 = ${f} ${ok(a===f&&num%5n===0n)}`;
+}
+$("#bl-f-n").addEventListener("input",blFi);blFi();
+
 /* ================= 7.6 EXPONENCIÁLIS GENERÁTORFÜGGVÉNYEK ================= */
 const eFact=n=>{let r=1n;for(let i=2;i<=n;i++)r*=BigInt(i);return r;};
 const eRat=(seq,N)=>Array.from({length:N},(_,n)=>rat(seq(n),eFact(n)));
@@ -12972,6 +13672,41 @@ function alD(){
   $("#al-d-info").innerHTML=`D<sub>${n}</sub> képlettel: <b>${fm1}</b> &nbsp;·&nbsp; rekurzióval: ${Dr[n]} ${ok(fm1===Dr[n])}<br>involúciók I<sub>${n}</sub> = ${Ir[n]}${brute}<br>D<sub>n</sub>/n! = ${fm(+(Number(fm1)/Number(f)).toFixed(8))} &nbsp;·&nbsp; 1/e = 0,36787944<br>${n<=15?`D<sub>n</sub> = kerekítés(n!/e) = ${rnd} ${ok(BigInt(rnd)===fm1)}`:"(a kerekítéses ellenőrzés n ≤ 15-ig pontos lebegőpontosan)"}`;
 }
 $("#al-d-n").addEventListener("input",alD);alD();
+
+/* ================= 7.7 DIRICHLET-FÉLE GENERÁTORFÜGGVÉNY ================= */
+const bmN=240,bmDiv=n=>{const r=[];for(let d=1;d<=n;d++)if(n%d===0)r.push(d);return r;};
+const bmMu=n=>{let r=1;for(let p=2;p*p<=n;p++)if(n%p===0){n/=p;if(n%p===0)return 0;r=-r;}return n>1?-r:r;};
+const bmGcd=(a,b)=>b?bmGcd(b,a%b):a;
+const bmFn=[n=>n===1?1:0,n=>1,n=>n,bmMu,n=>{let c=0;for(let k=1;k<=n;k++)if(bmGcd(k,n)===1)c++;return c;},n=>bmDiv(n).length,n=>bmDiv(n).reduce((a,b)=>a+b,0)];
+const bmNm=["ε","1","id","μ","φ","τ","σ"];
+const bmConv=(f,g,n)=>bmDiv(n).reduce((s,d)=>s+bmFn[f](d)*bmFn[g](n/d),0);
+const bmKnown={"1,1":5,"1,2":6,"1,3":0,"2,3":4,"1,4":2};
+c2hero("dirichlet-bevezeto",800,12,fr=>{
+  const s=c2svg("#bm-hero",420,250),N=Math.min(fr*3+6,30),w=13.2,x0=12,mx=8;
+  for(let n=1;n<=30;n++){const t=bmFn[5](n),h=t/mx*170;el("rect",{x:x0+(n-1)*w+1.5,y:205-h,width:w-3,height:h,rx:2,style:`fill:var(--accent);opacity:${n<=N?.6:.14}`},s);if(n%5===0)txt(s,x0+(n-1)*w+w/2,222,n,"","middle");}
+  $("#bm-hero-b").textContent=`n = ${N}: τ = ${bmFn[5](N)}`;
+});
+function bmD(){
+  const f=+$("#bm-d-f").value,g=+$("#bm-d-g").value,N=+$("#bm-d-n").value;$("#bm-d-nv").textContent=N;
+  const vals=[];for(let n=1;n<=N;n++)vals.push(bmConv(f,g,n));
+  const sh=vals.slice(0,14);
+  $("#bm-d-t").innerHTML="<tr><th>n</th>"+sh.map((_,i)=>`<td>${i+1}</td>`).join("")+`</tr><tr><th>(${bmNm[f]}∗${bmNm[g]})(n)</th>`+sh.map(v=>`<td>${v}</td>`).join("")+"</tr>";
+  let comm=true;for(let n=1;n<=N;n++)if(bmConv(g,f,n)!==vals[n-1])comm=false;
+  let mult=true,cnt=0;for(let m=2;m<=15;m++)for(let n=2;n<=15;n++)if(bmGcd(m,n)===1&&m*n<=N){cnt++;if(vals[m*n-1]!==vals[m-1]*vals[n-1])mult=false;}
+  const key=[f,g].sort().join(","),k=bmKnown[f+","+g]!==undefined?bmKnown[f+","+g]:bmKnown[g+","+f];
+  let known="";if(f===0||g===0){const h=f===0?g:f;known=`ε egység: ε∗${bmNm[h]} = ${bmNm[h]} ${ok(vals.every((v,i)=>v===bmFn[h](i+1)))}`;}
+  else if(k!==undefined){const h=k;known=`ismert azonosság: ${bmNm[Math.min(f,g)]}∗${bmNm[Math.max(f,g)]} = ${bmNm[h]} ${ok(vals.every((v,i)=>v===bmFn[h](i+1)))}`;}
+  $("#bm-d-info").innerHTML=`n ≤ ${N}: kommutatív ${ok(comm)} · multiplikatív (${cnt} relatív prím pár, mn ≤ ${N}) ${ok(mult)}`+(known?`<br>${known}`:"");
+}
+["#bm-d-f","#bm-d-g"].forEach(i=>$(i).addEventListener("change",bmD));$("#bm-d-n").addEventListener("input",bmD);bmD();
+function bmE(){
+  const s=+$("#bm-e-s").value,P=+$("#bm-e-p").value,N=+$("#bm-e-n").value;$("#bm-e-pv").textContent=P;$("#bm-e-nv").textContent=N;
+  const zt={2:Math.PI**2/6,3:1.2020569031595942,4:Math.PI**4/90}[s];
+  let prod=1;for(let p=2;p<=P;p++){let pr=true;for(let q=2;q*q<=p;q++)if(p%q===0){pr=false;break;}if(pr)prod*=1/(1-Math.pow(p,-s));}
+  let sum=0;for(let n=1;n<=N;n++)sum+=Math.pow(n,-s);
+  $("#bm-e-info").innerHTML=`ζ(${s}) ≈ ${zt.toFixed(8)}<br>∏<sub>p ≤ ${P}</sub> 1/(1−p<sup>−${s}</sup>) = ${prod.toFixed(8)}, hiba ${(zt-prod).toExponential(2)}<br>Σ<sub>n ≤ ${N}</sub> n<sup>−${s}</sup> = ${sum.toFixed(8)}, hiba ${(zt-sum).toExponential(2)}`;
+}
+["#bm-e-s"].forEach(i=>$(i).addEventListener("change",bmE));["#bm-e-p","#bm-e-n"].forEach(i=>$(i).addEventListener("input",bmE));bmE();
 
 /* ================= 7.8 PARTÍCIÓK ================= */
 const pcWays=(coins,N)=>{const c=Array(N+1).fill(0);c[0]=1;for(const a of coins)for(let i=a;i<=N;i++)c[i]+=c[i-a];return c;};

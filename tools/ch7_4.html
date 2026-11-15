@@ -1,0 +1,146 @@
+
+<!-- ================= 7.4 SPECIÁLIS GENERÁTORFÜGGVÉNYEK ================= -->
+<header class="hero page" id="bk-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.4</div>
+    <h1>Speciális generátorfüggvények</h1>
+    <p class="lead">Néhány sorozat generátorfüggvénye annyiszor kerül elő, hogy érdemes fejből tudni: a harmonikus számoké, a másodfajú Stirling-számoké és a Bernoulli-számoké. Mindháromra rövid bizonyítás van.</p>
+    <div class="formula">\(\displaystyle\sum_{n}{n\brace k}z^n=\frac{z^k}{(1-z)(1-2z)\cdots(1-kz)}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bk-hero" role="img" aria-label="A másodfajú Stirling-számok k=3 sorában az értékek logaritmusa"></svg>
+    <div class="counter"><span id="bk-hero-a">{n, 3} (log skála)</span><span id="bk-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A Stirling-számok a partíciók számolásából jönnek: \({n\brace k}\) az \(n\)-elemű halmaz \(k\) nemüres részre bontásainak száma. A nevezőben álló \(1-jz\) tényezők a \(j\)-edik rész „mérete” szerinti geometriai sorok. Így a generátorfüggvény egyszerre mutatja a rekurziót, a gyökök miatt a növekedést (\(k^n\)) és a zárt képletet is.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bk-harmonikus">
+  <div class="body">
+    <div class="eyebrow">§1 · Harmonikus számok</div>
+    <h2>A harmonikus számok generátorfüggvénye</h2>
+    <p>Az \(L(z)=\ln\frac1{1-z}=\sum_{k\ge1}z^k/k\) sor és a \(\frac1{1-z}=\sum z^n\) geometriai sor szorzatában a \(z^n\) együtthatója \(\sum_{k=1}^n\frac1k=H_n\). Tehát</p>
+    <div class="eq gold">\[\sum_{n\ge0}H_nz^n=\frac1{1-z}\ln\frac1{1-z}.\]</div>
+    <p>Általánosítás: minden \(m\ge0\)-ra</p>
+    <div class="eq">\[\begin{aligned}&\frac1{(1-z)^{m+1}}\ln\frac1{1-z}\\&\quad=\sum_{n\ge0}\binom{n+m}{m}\bigl(H_{n+m}-H_m\bigr)z^n.\end{aligned}\]</div>
+    <p>Bizonyítás \(m\)-re szóló indukcióval. Az \(m=0\) eset az előbbi. Ha igaz \(m-1\)-re, akkor az \(m\)-edik függvény az \((m-1)\)-edik és \(\frac1{1-z}\) szorzata, azaz az együtthatók részletösszegei. A 6.4 azonossága szerint</p>
+    <div class="eq">\[\sum_{k=m-1}^{n+m-1}\binom k{m-1}H_k=\binom{n+m}m\Bigl(H_{n+m}-\frac1m\Bigr),\]</div>
+    <p>és \(\sum_{j=0}^n\binom{j+m-1}{m-1}H_{m-1}=\binom{n+m}mH_{m-1}\). A különbség:</p>
+    <div class="eq">\[\binom{n+m}m\Bigl(H_{n+m}-\frac1m-H_{m-1}\Bigr)=\binom{n+m}m(H_{n+m}-H_m).\ \square\]</div>
+    <p>A kísérlet a sor együtthatóit a szorzásból számolja pontos törtekkel, és összeveti a zárt alakkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bk-h-m">m <input type="range" id="bk-h-m" min="0" max="6" value="1"> <span class="mono" id="bk-h-mv">1</span></label>
+        <label class="rng" for="bk-h-n">n <input type="range" id="bk-h-n" min="0" max="12" value="6"> <span class="mono" id="bk-h-nv">6</span></label>
+      </div>
+      <div class="info" id="bk-h-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(m=1\) esetben az együttható \((n+1)H_n-n\), a 6.4 \(m=0\) esetének megfelelője.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-stirling">
+  <div class="body">
+    <div class="eyebrow">§2 · Stirling-számok</div>
+    <h2>Másodfajú és elsőfajú Stirling-számok</h2>
+    <p>A másodfajú Stirling-számokra \({n\brace k}={n-1\brace k-1}+k{n-1\brace k}\). Legyen \(S_k(z)=\sum_n{n\brace k}z^n\). A rekurziót \(z^n\)-nel szorozva és összegezve (a \(k\ge1\) esetben \({0\brace k}=0\)) kapjuk, hogy \(S_k=zS_{k-1}+kzS_k\), tehát \(S_k=\dfrac{z}{1-kz}S_{k-1}\), és \(S_0=1\). Ebből</p>
+    <div class="eq gold">\[S_k(z)=\frac{z^k}{(1-z)(1-2z)\cdots(1-kz)}.\]</div>
+    <p>Példa: \(k=2\)-re \(\frac{z^2}{(1-z)(1-2z)}=z^2\Bigl(\frac2{1-2z}-\frac1{1-z}\Bigr)\), tehát \({n\brace2}=2^{n-1}-1\). Az elsőfajú (előjel nélküli) számokra \({n\brack k}=(n-1){n-1\brack k}+{n-1\brack k-1}\), és az \(P_n(x)=\sum_k{n\brack k}x^k\) polinomra \(P_n=(x+n-1)P_{n-1}\), vagyis</p>
+    <div class="eq">\[\sum_k{n\brack k}x^k=x(x+1)\cdots(x+n-1).\]</div>
+    <p>A kísérlet az \(S_k\) együtthatóit a nevező tényezőinek geometriai sorából szorozza ki, és összeveti a rekurzióval számolt Stirling-háromszöggel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bk-s-k">k <input type="range" id="bk-s-k" min="1" max="6" value="3"> <span class="mono" id="bk-s-kv">3</span></label>
+        <label class="rng" for="bk-s-n">n-ig <input type="range" id="bk-s-n" min="1" max="14" value="9"> <span class="mono" id="bk-s-nv">9</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bk-s-t"></table></div>
+      <div class="info" id="bk-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\frac1{1-kz}\) tényezőhöz tartozó résztört együtthatója \(\frac1{k!}\) (a többi tényezőt \(z=\frac1k\)-nál kiértékelve), ezért \({n\brace k}\approx k^n/k!\) nagy \(n\)-re; a kisebb gyökök hatása \(j^n\) nagyságrendű.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-bernoulli">
+  <div class="body">
+    <div class="eyebrow">§3 · Bernoulli-számok</div>
+    <h2>A Bernoulli-számok generátorfüggvénye</h2>
+    <p>A Bernoulli-számokat (6.5) az exponenciális generátorfüggvény definiálja: \(\dfrac z{e^z-1}=\sum_{n\ge0}B_n\dfrac{z^n}{n!}\). Mivel \(\frac{e^z-1}z=\sum_{k\ge0}\frac{z^k}{(k+1)!}\), a \(\frac{e^z-1}z\cdot\frac z{e^z-1}=1\) szorzatból a \(z^m\)-együtthatókat összehasonlítva és \((m+1)!\)-sal szorozva</p>
+    <div class="eq gold">\[\sum_{j=0}^m\binom{m+1}jB_j=[m=0].\]</div>
+    <p>Ebből a \(B_m=-\frac1{m+1}\sum_{j<m}\binom{m+1}jB_j\) rekurzióval \(B_0=1\), \(B_1=-\frac12\), \(B_2=\frac16\), \(B_4=-\frac1{30}\). A páratlan indexek eltűnnek: \(\frac z{e^z-1}+\frac z2=\frac z2\cdot\frac{e^z+1}{e^z-1}\) páros függvény (a \(z\to-z\) helyettesítés ugyanazt adja), tehát \(B_n=0\) minden páratlan \(n\ge3\)-ra.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bk-b-m">m-ig <input type="range" id="bk-b-m" min="2" max="20" value="12"> <span class="mono" id="bk-b-mv">12</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bk-b-t"></table></div>
+      <div class="info" id="bk-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet a rekurzióból számolt \(B_j\) értékekkel pontosan ellenőrzi a \(\sum\binom{m+1}jB_j=0\) összefüggést minden \(1\le m\le M\)-re, és a páratlan indexek eltűnését.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi \({5\brace3}\)?</span></summary>
+      <div class="ans">
+        <p>A rekurzióval \({5\brace3}={4\brace2}+3{4\brace3}=7+3\cdot6=25\). <b>Ellenőrzés:</b> \(S_3\) együtthatója: \({4\brace2}=2^3-1=7\), \({4\brace3}=6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_n H_nz^n\) első három nemnulla együtthatóját a szorzatból.</span></summary>
+      <div class="ans">
+        <p>\(\ln\frac1{1-z}=z+\frac{z^2}2+\frac{z^3}3+\dots\), szorozva \(1+z+z^2+\dots\)-tel: \(z\) együtthatója 1, \(z^2\)-é \(1+\frac12=\frac32\), \(z^3\)-é \(1+\frac12+\frac13=\frac{11}6\). <b>Ellenőrzés:</b> \(H_1=1\), \(H_2=\frac32\), \(H_3=\frac{11}6\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. A rekurzióval számold ki \(B_3\)-at és \(B_4\)-et.</span></summary>
+      <div class="ans">
+        <p>\(m=3\): \(B_0+4B_1+6B_2+4B_3=0\), azaz \(1-2+1+4B_3=0\), tehát \(B_3=0\). \(m=4\): \(B_0+5B_1+10B_2+10B_3+5B_4=0\), azaz \(1-\frac52+\frac53+5B_4=0\), tehát \(B_4=-\frac1{30}\). <b>Ellenőrzés:</b> \(1-\frac52+\frac53=\frac{6-15+10}6=\frac16\), és \(5B_4=-\frac16\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Bizonyítsd, hogy \(\sum_k{n\brack k}=n!\).</span></summary>
+      <div class="ans">
+        <p>A \(\sum_k{n\brack k}x^k=x(x+1)\cdots(x+n-1)\) azonosságba \(x=1\)-et helyettesítve \(1\cdot2\cdots n=n!\). <b>Ellenőrzés:</b> \(n=3\): \({3\brack1}+{3\brack2}+{3\brack3}=2+3+1=6\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a \(B_3=0\) esetet is mutatja: a páratlan Bernoulli-számok eltűnése a generátorfüggvény paritásából jön.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bk-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A szótár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Sorozat</th><th>Generátorfüggvény</th></tr>
+      <tr><th>\(H_n\)</th><td>\(\dfrac1{1-z}\ln\dfrac1{1-z}\)</td></tr>
+      <tr><th>\({n\brace k}\)</th><td>\(\dfrac{z^k}{\prod_{j=1}^k(1-jz)}\)</td></tr>
+      <tr><th>\({n\brack k}\)</th><td>\(x(x+1)\cdots(x+n-1)\)</td></tr>
+      <tr><th>\(B_n/n!\)</th><td>\(\dfrac z{e^z-1}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Rekurzió</b><span>A sorozat egyenlete.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Függvényegyenlet</b><span>A generátorfüggvényre.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Zárt alak</b><span>Gyökök, résztörtek.</span></div>
+    </div>
+    <p>A következő téma a 7.5, a konvolúciók.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
