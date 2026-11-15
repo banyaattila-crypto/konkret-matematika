@@ -198,3 +198,10 @@ a.spine:hover .dots i.on{transform:scaleY(1.7)}
 @media (prefers-reduced-motion:reduce){.land-float span,.land-title,.tk-track,.spine{animation:none}.land-ticker{overflow-x:auto}.pillar:hover,.land-cta .btn:hover{transform:none}}
 
 .land-cta{gap:10px}.land-cta .btn{padding:10px 15px;font-size:.95rem}
+
+/* ---- matematikai eső a főoldalon ---- */
+#mrain{position:fixed;top:0;left:0;z-index:0;pointer-events:none;opacity:.42}
+:root[data-theme="light"] #mrain{opacity:.34}
+#view-home>section,#view-home>.land-ticker{position:relative;z-index:1}
+.land-float{display:none}
+@media (prefers-reduced-motion:reduce){#mrain{opacity:.35}}
