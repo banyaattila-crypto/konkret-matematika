@@ -7,6 +7,13 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.9.3] - 2026-11-15
+
+### Javítva
+- A 7.1 Dominók és pénzváltás „Két sor” és „Három sor” oldala nem nyílt meg a léptető gombbal és a hash-útvonalról: az útvonalválasztó nem fogadta el a számjegyet tartalmazó oldalazonosítót.
+- Mobilon a hosszú kiemelt képletek nem zsugorodnak 70% alá: a szélesebb képlet vízszintesen görgethető (korábban akár 50% alá is kicsinyedt, olvashatatlanul).
+- Mobilon 12 témánál a bevezető oldal képlete kilógott a képernyőből; most befér vagy görgethető.
+
 ## [1.9.2] - 2026-11-15
 
 ### Javítva

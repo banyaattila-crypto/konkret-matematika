@@ -191,6 +191,8 @@ ol.steps{margin:0;padding-left:1.3em;display:grid;gap:8px}
 .hero{padding:56px clamp(16px,4vw,56px) 40px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:40px;align-items:center;border-bottom:1px solid var(--line)}
 .hero h1{font-size:clamp(2rem,5.5vw,3.3rem);letter-spacing:-.01em}
 .hero .formula{font-size:clamp(1.1rem,2.6vw,1.4rem);margin-top:14px;color:var(--accent)}
+.hero .formula{max-width:100%;overflow-x:auto;box-sizing:border-box}
+.hero .formula mjx-container svg{max-width:100%;height:auto}
 .hero .lead{margin-top:16px;max-width:34em}
 .hero .stage{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px 16px 10px}
 .hero .counter{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.85rem;color:var(--muted);padding:4px 4px 0}
@@ -296,7 +298,7 @@ footer{padding:36px clamp(16px,4vw,56px) 60px;color:var(--muted);font-size:.9rem
   .topbar{padding:8px 16px}
   .pager button{min-width:0}
   .pager .mid .pt{display:none}
-  .hero{grid-template-columns:1fr;padding-top:28px;gap:22px}
+  .hero{grid-template-columns:minmax(0,1fr);padding-top:28px;gap:22px}
   .sec{padding:40px 16px}
 }
 @media (max-width:560px){
@@ -551,7 +553,8 @@ a.spine:hover .dots i.on{transform:scaleY(1.7)}
 
 </style>
 <script>
-window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{typeset:true}};
+window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{pageReady:()=>MathJax.startup.defaultPageReady().then(()=>eqFloor(document))}};
+function eqFloor(node){node.querySelectorAll(".eq mjx-container svg,.hero .formula mjx-container svg").forEach(v=>{const w=v.getAttribute("width");if(w&&w.endsWith("ex"))v.style.minWidth=(parseFloat(w)*0.7)+"ex";});}
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
 </head>
@@ -10813,7 +10816,7 @@ const big=b=>b.toString().replace(/\B(?=(\d{3})+(?!\d))/g," ");
 const PEG="ABC";
 let curPage="";
 const az=k=>(k===1||k===5||(k>=50&&k<60))?"az":"a";
-function typeset(node){const mj=window.MathJax;if(mj&&mj.typesetPromise){(mj.startup&&mj.startup.promise?mj.startup.promise:Promise.resolve()).then(()=>mj.typesetPromise([node])).catch(()=>{});}}
+function typeset(node){const mj=window.MathJax;if(mj&&mj.typesetPromise){(mj.startup&&mj.startup.promise?mj.startup.promise:Promise.resolve()).then(()=>mj.typesetPromise([node])).then(()=>eqFloor(node)).catch(()=>{});}}
 
 /* Optimális megoldás tetszőleges szabályos állásból a target rúdra (a pegs-et szimulálja és módosítja). */
 function* solveFrom(pegs,k,target){
@@ -11788,7 +11791,7 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.9.2";
+const APP_VERSION="1.9.3";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
@@ -14907,7 +14910,7 @@ function crumb(r){
 }
 function parse(){
   const h=decodeURIComponent(location.hash.slice(1));
-  const m=h.match(/^([a-z]+)-([a-z]+)$/);
+  const m=h.match(/^([a-z0-9_]+)-([a-z0-9_]+)$/);
   if(m&&TOPICS[m[1]]&&TOPICS[m[1]].pages.some(p=>p[0]===m[2]))return {ch:TOPICS[m[1]].ch||1,topic:m[1],page:m[2]};
   const f=h.match(/^fejezet-(\d+)$/);if(f&&CH.find(c=>c.n===+f[1]&&c.topics))return {ch:+f[1]};
   const old=h.match(/^s-([a-z]+)$/);if(old&&TOPICS.hanoi.pages.some(p=>p[0]===old[1]))return {ch:1,topic:"hanoi",page:old[1]};

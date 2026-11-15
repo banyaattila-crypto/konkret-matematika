@@ -61,7 +61,7 @@ function crumb(r){
 }
 function parse(){
   const h=decodeURIComponent(location.hash.slice(1));
-  const m=h.match(/^([a-z]+)-([a-z]+)$/);
+  const m=h.match(/^([a-z0-9_]+)-([a-z0-9_]+)$/);
   if(m&&TOPICS[m[1]]&&TOPICS[m[1]].pages.some(p=>p[0]===m[2]))return {ch:1,topic:m[1],page:m[2]};
   const f=h.match(/^fejezet-(\d+)$/);if(f&&CH.find(c=>c.n===+f[1]&&c.topics))return {ch:+f[1]};
   const old=h.match(/^s-([a-z]+)$/);if(old&&TOPICS.hanoi.pages.some(p=>p[0]===old[1]))return {ch:1,topic:"hanoi",page:old[1]};

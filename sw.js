@@ -1,5 +1,5 @@
 /* Konkrét Matematika – service worker. A verzió a VERSION fájllal egyezik; változáskor a régi gyorsítótár törlődik. */
-const VERSION = "1.9.2";
+const VERSION = "1.9.3";
 const CORE = `km-core-${VERSION}`;
 const RUNTIME = "km-runtime";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "icon.svg"];
