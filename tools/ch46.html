@@ -1,0 +1,144 @@
+
+<!-- ================= 4.6 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="v-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.6</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat az oszthatóságról, a prímekről, a faktoriálisról, a törtekről és a kongruenciákról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(a\equiv b\pmod m\)</div>
+  </div>
+  <div class="stage">
+    <svg id="v-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="v-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A számelméletben a számolás ritkán nehéz, a nehéz az, hogy melyik szerszámot kell elővenni. Ezért a feladatok szintenként váltanak: a bemelegítőben egy-egy szerszámot használsz (euklideszi algoritmus, Legendre-képlet), az alapszinten a kongruenciákkal és a kínai maradéktétellel dolgozol, a haladó szinten bizonyítani kell, a kutatási szinten pedig a számítógép segít sejteni, és te indokolsz. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="v-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>Euklidész, Bézout és a faktoriális nullái: egy-egy szerszám, mindegyik a fejezet elejéről.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki \(\gcd(1001,770)\)-et és \(\operatorname{lcm}(1001,770)\)-et.</span></summary>
+      <div class="ans">
+        <p>\(1001=1\cdot770+231\), \(770=3\cdot231+77\), \(231=3\cdot77\). A legnagyobb közös osztó 77. A legkisebb közös többszörös \(1001\cdot770/77=10010\).</p>
+        <p><b>Ellenőrzés:</b> \(1001=7\cdot11\cdot13\) és \(770=2\cdot5\cdot7\cdot11\), a közös tényezők \(7\cdot11=77\), és \(2\cdot5\cdot7\cdot11\cdot13=10010\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Keress egész \(x,y\)-t, amelyre \(91x+35y=\gcd(91,35)\).</span></summary>
+      <div class="ans">
+        <p>\(91=2\cdot35+21\), \(35=1\cdot21+14\), \(21=1\cdot14+7\), \(14=2\cdot7\), tehát a legnagyobb közös osztó 7. Visszafelé:</p>
+        <div class="eq">\[7=21-14=21-(35-21)=2\cdot21-35=2(91-2\cdot35)-35=2\cdot91-5\cdot35.\]</div>
+        <p><b>Ellenőrzés:</b> \(x=2\), \(y=-5\): \(182-175=7\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Hány nullára végződik a \(200!\)?</span></summary>
+      <div class="ans">
+        <p>A záró nullák száma \(\varepsilon_5(200!)\), vagyis</p>
+        <div class="eq">\[\Bigl\lfloor\frac{200}5\Bigr\rfloor+\Bigl\lfloor\frac{200}{25}\Bigr\rfloor+\Bigl\lfloor\frac{200}{125}\Bigr\rfloor=40+8+1=49.\]</div>
+        <p><b>Ellenőrzés:</b> a \(200!\) tényleges számjegyeit kiszámolva 49 záró nullát kapunk. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladatban a két felbontás is megadja az eredményt, de az euklideszi algoritmus akkor is működik, ha a felbontás nem ismert.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="v-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Kongruenciák, felbontás, bizonyítás</h2>
+    <p>Három alapfeladat a maradékokról és a prímfelbontásról, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Mi a \(3^{2026}\) utolsó három számjegye?</span></summary>
+      <div class="ans">
+        <p>Az utolsó három számjegy a \(3^{2026}\bmod1000\) maradék. Mivel \(\gcd(3,1000)=1\) és \(\varphi(1000)=1000\cdot\tfrac12\cdot\tfrac45=400\), az Euler-tétel szerint \(3^{400}\equiv1\). A \(2026=5\cdot400+26\), így \(3^{2026}\equiv3^{26}\pmod{1000}\). A hatványozás négyzetre emeléssel:</p>
+        <div class="eq">\[3^8\equiv561,\quad3^{16}\equiv561^2\equiv721,\quad3^{26}=3^{16}\cdot3^8\cdot3^2\equiv721\cdot561\cdot9\equiv481\cdot9\equiv329.\]</div>
+        <p><b>Ellenőrzés:</b> a közvetlen modulo hatványozás 329-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Oldd meg: \(x\equiv3\pmod8\), \(x\equiv4\pmod9\), \(x\equiv2\pmod5\).</span></summary>
+      <div class="ans">
+        <p>A modulusok páronként relatív prímek, \(M=360\). Legyen \(M_1=45\equiv5\pmod8\), inverze 5 (\(25\equiv1\)). Legyen \(M_2=40\equiv4\pmod9\), inverze 7 (\(28\equiv1\)). Legyen \(M_3=72\equiv2\pmod5\), inverze 3 (\(6\equiv1\)). Ekkor</p>
+        <div class="eq">\[x\equiv3\cdot45\cdot5+4\cdot40\cdot7+2\cdot72\cdot3=675+1120+432=2227\equiv67\pmod{360}.\]</div>
+        <p><b>Ellenőrzés:</b> \(67=8\cdot8+3=7\cdot9+4=13\cdot5+2\), és 0 és 359 között más megoldás nincs. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Hány pozitív osztója van a \(360\)-nak, és mennyi az osztók összege?</span></summary>
+      <div class="ans">
+        <p>\(360=2^3\cdot3^2\cdot5\). Az osztók száma \(\tau=(3+1)(2+1)(1+1)=24\). Az osztók összege multiplikatív:</p>
+        <div class="eq">\[\sigma(360)=(1+2+4+8)(1+3+9)(1+5)=15\cdot13\cdot6=1170.\]</div>
+        <p><b>Ellenőrzés:</b> a 360 osztóinak közvetlen összeadása 1170. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: \(\varepsilon_2(n!)\le n-1\), egyenlőség pontosan a kettőhatványoknál. Mennyi \(\varepsilon_2(100!)\)?</span></summary>
+      <div class="ans">
+        <p>A Legendre-képlet számjegyösszeges alakja szerint \(\varepsilon_2(n!)=n-s_2(n)\), ahol \(s_2(n)\) az \(n\) bináris alakjában az egyesek száma. Minden \(n\ge1\)-nek legalább egy egyese van, tehát \(s_2(n)\ge1\), és \(s_2(n)=1\) pontosan akkor, ha \(n\) kettőhatvány. Ebből az állítás következik.</p>
+        <p>A \(100=1100100_2\) három egyest tartalmaz, így \(\varepsilon_2(100!)=100-3=97\).</p>
+        <p><b>Ellenőrzés:</b> Legendre szerint \(50+25+12+6+3+1=97\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Add meg az \(5/12\) két szomszédját az \(\mathcal F_{12}\) Farey-sorozatban.</span></summary>
+      <div class="ans">
+        <p>A bal szomszéd \(c/d\), amelyre \(5d-12c=1\) és \(d\le12\), a lehető legnagyobb \(d\)-vel. A \(5d\equiv1\pmod{12}\) megoldása \(d\equiv5\), vagyis \(d=5\) (a következő, 17, túl nagy), és \(c=(25-1)/12=2\). A jobb szomszéd \(c'/d'\), amelyre \(12c'-5d'=1\): \(5d'\equiv-1\equiv11\pmod{12}\), így \(d'=7\) és \(c'=(1+35)/12=3\).</p>
+        <p>A szomszédok \(2/5\) és \(3/7\), és a nevezők összege \(5+7=12\): az \(5/12\) pont ezek mediánsa.</p>
+        <p><b>Ellenőrzés:</b> az \(\mathcal F_{12}\) kiszámolt sorozatában \(2/5,\ 5/12,\ 3/7\) szerepel egymás mellett. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladatban az Euler-tétel csak a kitevőt rövidíti le. A hatványozást ezután is négyzetre emeléssel kell elvégezni.</p>
+    <p>A 8. feladatban a szomszédok nevezői mindig összeadódnak, amikor a tört az \(\mathcal F_n\)-ben éppen az \(n\) nevezőjű új elem.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="v-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Kísérlet, majd indoklás</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Mekkora a valószínűsége, hogy három véletlen egész szám legnagyobb közös osztója 1? Általánosítsd a \(6/\pi^2\) eredményt.</span></summary>
+      <div class="ans">
+        <p>A 4.4 Möbius-szitája három számra is működik: az \(1\ldots N\) közötti hármasok közül azok, amelyekben \(d\) mindhárom számot osztja, \(\lfloor N/d\rfloor^3\) darab, tehát</p>
+        <div class="eq">\[\#\{\gcd(a,b,c)=1\}=\sum_{d=1}^{N}\mu(d)\Bigl\lfloor\frac Nd\Bigr\rfloor^3\ \Longrightarrow\ \frac1{N^3}\#\to\sum_{d\ge1}\frac{\mu(d)}{d^3}=\frac1{\zeta(3)}\approx0{,}8319.\]</div>
+        <p>Itt \(\zeta(3)=\sum1/k^3\approx1{,}2021\). Hasonlóan \(k\) számra \(1/\zeta(k)\) adódik. Háromnál nagyobb az esély, mint kettőnél, mert közös osztót három számnak nehezebb találnia.</p>
+        <p><b>Ellenőrzés:</b> \(N=100\)-ra a megszámolt hármasok aránya \(832693/10^6=0{,}8327\), míg \(1/\zeta(3)=0{,}8319\). A kísérlet más \(N\)-re is összeveti a számolást. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="v-t-n">N <input type="range" id="v-t-n" min="10" max="100" value="60"> <span class="mono" id="v-t-nv">60</span></label>
+      </div>
+      <div class="info" id="v-t-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Keress olyan összetett \(n\)-et, amelyre \(2^{n-1}\equiv1\pmod n\). Léteznek-e olyan összetett \(n\)-ek, amelyekre ez minden hozzá relatív prím \(a\)-ra igaz?</span></summary>
+      <div class="ans">
+        <p>Az első példa \(n=341=11\cdot31\): \(2^{10}=1024=3\cdot341+1\equiv1\), és \(340=34\cdot10\), így \(2^{340}\equiv1\pmod{341}\). A kis Fermat-tétel megfordítása tehát hamis.</p>
+        <p>Az olyan összetett számokat, amelyekre \(a^{n-1}\equiv1\) minden \(\gcd(a,n)=1\) esetén igaz, Carmichael-számoknak hívják. A legkisebb a \(561=3\cdot11\cdot17\). Korselt kritériuma: egy összetett \(n\) pontosan akkor ilyen, ha négyzetmentes, és minden \(p\mid n\) prímre \(p-1\mid n-1\). A \(561\)-nél \(560\) osztható 2-vel, 10-zel és 16-tal. Az ok: ha \(p-1\mid n-1\), akkor \(a^{n-1}=(a^{p-1})^{(n-1)/(p-1)}\equiv1\pmod p\) minden prímre, és a kínai maradéktétel összerakja ezeket \(n\)-re.</p>
+        <p><b>Ellenőrzés:</b> \(10\,000\)-ig hét Carmichael-szám van: 561, 1105, 1729, 2465, 2821, 6601, 8911, és mindegyikre a Fermat-feltétel minden hozzá relatív prím alapra teljesül. A kísérlet kilistázza őket. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="v-c-n">határ N <input type="range" id="v-c-n" min="100" max="10000" step="100" value="3000"> <span class="mono" id="v-c-nv">3000</span></label>
+      </div>
+      <div class="info" id="v-c-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(a^{n-1}\equiv1\) teszt az \(a=2\) alappal is sokszor jól különbözteti meg a prímeket az összetettektől: \(10\,000\)-ig csak 22 összetett szám téveszt meg. A Carmichael-számok viszont minden alapnál átcsúsznak.</p>
+  </aside>
+</section>

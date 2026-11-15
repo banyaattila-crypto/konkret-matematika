@@ -1,0 +1,122 @@
+
+<!-- ================= 4.3 A FAKTORIÁLIS OSZTÓI ================= -->
+<header class="hero page" id="m-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.3</div>
+    <h1>A faktoriális osztói</h1>
+    <p class="lead">Hányszor osztja a \(p\) prím az \(n!\)-t? A válasz egy egészrészes összeg, és a 3. fejezet eszközei adják.</p>
+    <div class="formula">\(\displaystyle\varepsilon_p(n!)=\Bigl\lfloor\frac np\Bigr\rfloor+\Bigl\lfloor\frac n{p^2}\Bigr\rfloor+\Bigl\lfloor\frac n{p^3}\Bigr\rfloor+\cdots\)</div>
+  </div>
+  <div class="stage">
+    <svg id="m-hero" role="img" aria-label="A 2, 3, 5, 7 kitevője az n! felbontásában, n növekedésével"></svg>
+    <div class="counter"><span id="m-hero-a">n = 5</span><span>kitevők: <b id="m-hero-b">–</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az \(n!=1\cdot2\cdots n\) szorzatban minden tényező hozzáad a prímkitevőkhöz. A kettes kitevőjét például úgy kapjuk, hogy megszámoljuk, hány páros szám van \(n\)-ig, aztán hány néggyel osztható, aztán hány nyolccal osztható, és így tovább. Minden szint egy egészrész. A képen a \(2,3,5,7\) kitevője látszik, ahogy \(n\) nő: a kettesé a leggyorsabb, mert a páros számok a leggyakoribbak. A fejezet ebből levezet egy mélyebb összefüggést a számjegyösszeggel, és megmondja, hány nullára végződik az \(n!\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="m-legendre">
+  <div class="body">
+    <div class="eyebrow">§1 · Legendre képlete</div>
+    <h2>Szintenkénti számolás</h2>
+    <p>Jelölje \(\varepsilon_p(m)\) a \(p\) kitevőjét az \(m\) felbontásában. Az \(n!=\prod_{k\le n}k\) szorzatban a kitevők összeadódnak. Egy \(k\) szám pontosan \(\varepsilon_p(k)\)-szor ad egy \(p\) tényezőt, ami úgy számolható, hogy minden \(j\ge1\)-re megszámoljuk, hány \(k\le n\) osztható \(p^j\)-vel: ez \(\lfloor n/p^j\rfloor\) darab. Ezt az átrendezést „szintenkénti számolásnak” hívtuk a 3.5-ben.</p>
+    <div class="eq gold">\[\varepsilon_p(n!)=\sum_{j\ge1}\Bigl\lfloor\frac n{p^j}\Bigr\rfloor.\]</div>
+    <p>Az összeg véges, mert \(p^j\gt n\) után minden tag nulla. Van egy meglepően szép alak is. Ha az \(n\) számjegyeinek összege \(p\)-es számrendszerben \(s_p(n)\), akkor</p>
+    <div class="eq">\[\varepsilon_p(n!)=\frac{n-s_p(n)}{p-1}.\]</div>
+    <p>Az ok: \(n=\sum d_jp^j\) esetén \(\lfloor n/p^i\rfloor=\sum_{j\ge i}d_jp^{j-i}\), és az összegzés mértani sorokat ad. Az alábbi kísérlet mindhárom módon kiszámolja a kitevőt: a faktoriális tényezőkre bontásával, Legendre képletével és a számjegyösszeges alakkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="m-l-n">n <input type="range" id="m-l-n" min="2" max="300" value="100"> <span class="mono" id="m-l-nv">100</span></label>
+        <label class="rng" for="m-l-p">p <select id="m-l-p"><option>2</option><option>3</option><option>5</option><option>7</option><option>11</option><option>13</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="m-l-t"></table></div>
+      <div class="info" id="m-l-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(p=2\) esetben \(\varepsilon_2(n!)=n-s_2(n)\), ahol \(s_2(n)\) az \(n\) bináris alakjában az egyesek száma. A \(100=1100100_2\) három egyest tartalmaz, így \(\varepsilon_2(100!)=97\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="m-nullak">
+  <div class="body">
+    <div class="eyebrow">§2 · Záró nullák</div>
+    <h2>Hány nullára végződik az \(n!\)?</h2>
+    <p>Egy szám annyi nullára végződik, ahányszor 10-zel osztható, vagyis \(\min(\varepsilon_2,\varepsilon_5)\) a kitevők minimuma. A faktoriálisban a 2 kitevője mindig legalább akkora, mint az 5-é, hiszen az 5 többszöröseinél gyakoribbak a párosak. Ezért a záró nullák száma</p>
+    <div class="eq gold">\[z(n)=\varepsilon_5(n!)=\Bigl\lfloor\frac n5\Bigr\rfloor+\Bigl\lfloor\frac n{25}\Bigr\rfloor+\Bigl\lfloor\frac n{125}\Bigr\rfloor+\cdots\]</div>
+    <p>Például \(z(100)=20+4=24\) és \(z(1000)=200+40+8+1=249\). Érdekesség, hogy nem minden nullaszám fordul elő: a \(z(n)\) csak az 5 többszöröseinél ugrik, a 25 többszöröseinél egyszerre kettőt. Így \(z(24)=4\), de \(z(25)=6\), tehát az 5 nullát semelyik faktoriális sem éri el. A kísérlet második fele megmondja egy célértékről, melyik \(n\)-nél lép be, vagy hogy kimarad.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="m-n-n">n <input type="range" id="m-n-n" min="1" max="2000" value="100"> <span class="mono" id="m-n-nv">100</span></label>
+        <label class="rng" for="m-n-z">célérték z <input type="range" id="m-n-z" min="0" max="60" value="5"> <span class="mono" id="m-n-zv">5</span></label>
+      </div>
+      <div class="info" id="m-n-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 300 alatti nullaszámok közül 58 hiányzik: 5, 11, 17, 23, 29, 30, 36, … A kimaradó értékek ott vannak, ahol \(n\) egy 25-nek vagy 125-nek a többszörösén lépi át a küszöböt, és a \(z(n)\) egyszerre kettőt vagy hármat ugrik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="m-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Kitevők és nullák</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\varepsilon_3(50!)\)-t kétféleképpen.</span></summary>
+      <div class="ans">
+        <p>Legendre: \(\lfloor50/3\rfloor+\lfloor50/9\rfloor+\lfloor50/27\rfloor=16+5+1=22\). Számjegyösszeggel: \(50=1212_3\) (\(27+18+3+2\)), \(s_3(50)=1+2+1+2=6\), így \((50-6)/2=22\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány nullára végződik a \(125!\)?</span></summary>
+      <div class="ans">
+        <p>\(z(125)=25+5+1=31\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igazold, hogy a \(\binom{2n}{n}\) páros, ha \(n\ge1\).</span></summary>
+      <div class="ans">
+        <p>A \(\binom{2n}n=\tfrac{(2n)!}{n!\,n!}\) kettes kitevője:</p>
+        <div class="eq">\[\varepsilon_2((2n)!)-2\varepsilon_2(n!)=(2n-s_2(2n))-2(n-s_2(n))=2s_2(n)-s_2(2n).\]</div>
+        <p>A \(2n\) bináris alakja \(n\)-é egy nullával kiegészítve, így \(s_2(2n)=s_2(n)\), és a kitevő \(s_2(n)\ge1\).</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mi a legkisebb \(n\), amelyre \(n!\) legalább 10 nullára végződik?</span></summary>
+      <div class="ans">
+        <p>A \(z(n)\) az 5 többszöröseinél ugrik. \(z(40)=8+1=9\) és \(z(45)=9+1=10\), tehát \(n=45\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat kitevője \(s_2(n)\) pontosan a \(\binom{2n}{n}\) kettes kitevője. Ez Kummer tételének egy esete: egy binomiális együttható \(p\)-kitevője a \(p\)-es számrendszerbeli összeadás átvitelei számával egyenlő.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="m-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A faktoriális prímkitevői</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Kérdés</th><th>Képlet</th></tr>
+      <tr><th>\(p\) kitevője \(n!\)-ban</th><td>\(\sum_{j\ge1}\lfloor n/p^j\rfloor\)</td></tr>
+      <tr><th>számjegyösszeges alak</th><td>\((n-s_p(n))/(p-1)\)</td></tr>
+      <tr><th>záró nullák</th><td>\(\varepsilon_5(n!)\)</td></tr>
+      <tr><th>\(\binom{2n}{n}\) kettes kitevője</th><td>\(s_2(n)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Számolj szintenként</b><span>Hány tag osztható \(p^j\)-vel?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Add össze</b><span>Egészrészek összege.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Számjegyek</b><span>Átírás \(p\)-es számrendszerbe.</span></div>
+    </div>
+    <p>A következő téma a törtek számelmélete: melyek a legegyszerűbb alakú törtek, és hogyan sorakoznak fel.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>

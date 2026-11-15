@@ -1,0 +1,137 @@
+
+<!-- ================= 4.4 RELATÍV PRÍMEK ================= -->
+<header class="hero page" id="n-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.4</div>
+    <h1>Relatív prímek</h1>
+    <p class="lead">Két szám relatív prím, ha nincs közös osztójuk 1-en kívül. A pozitív törtek mind pontosan egyszer szerepelnek egy fában, amelyet az „összeadott számlálók és nevezők” szabálya épít.</p>
+    <div class="formula">\(\dfrac ab\ \oplus\ \dfrac cd=\dfrac{a+c}{b+d}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="n-hero" role="img" aria-label="A Stern–Brocot-fa első szintjei"></svg>
+    <div class="counter"><span id="n-hero-a">szint: 0</span><span>törtek: <b id="n-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A fa gyökerében az \(1/1\) áll. Minden újabb törtet két már meglévő szomszédjából kapunk úgy, hogy a számlálókat és a nevezőket külön összeadjuk. Ez a „mediáns”, és mindig a két szomszéd között van. A képen az első négy szint látható. A meglepő az, hogy ez az egyszerű szabály minden pozitív racionális számot pontosan egyszer ad, és mindegyiket eleve legegyszerűbb alakban. A fejezet megmutatja, miért, hogyan olvasható le egy tört helye a fában, hogyan kapcsolódik ez az euklideszi algoritmushoz, és mekkora eséllyel relatív prím két véletlen szám.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="n-fa">
+  <div class="body">
+    <div class="eyebrow">§1 · A Stern–Brocot-fa</div>
+    <h2>Balra vagy jobbra</h2>
+    <p>Kezdjünk a \(0/1\) és az \(1/0\) „törtekkel” (a második a végtelent jelöli). Bármely két szomszédjuk közé beszúrjuk a mediánsukat. Az \(\tfrac ab\) és \(\tfrac cd\) szomszédokra \(bc-ad=1\) teljesül: a kezdő párnál \(1\cdot1-0\cdot0=1\), és a beszúrás megőrzi ezt, mert \((a+c)b-a(b+d)=bc-ad=1\), és hasonlóan a másik oldalon is. Ebből két dolog következik. A mediáns legegyszerűbb alakú, mert közös osztója mindkét egyenletet, így az 1-et is osztaná. A tört pedig a két szomszédja között van.</p>
+    <p>Egy tört helyét a gyökértől vezető út adja: \(L\) (balra, ha a tört kisebb a mediánsnál) és \(R\) (jobbra, ha nagyobb). Az út és a lánctört között szoros kapcsolat van: ha \(\tfrac pq=[a_0;a_1,\dots,a_n]\), akkor az út \(R^{a_0}L^{a_1}R^{a_2}\cdots\) alakú, az utolsó csoportban \(a_n-1\) betűvel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="n-f-p">p <input type="range" id="n-f-p" min="1" max="60" value="5"> <span class="mono" id="n-f-pv">5</span></label>
+        <label class="rng" for="n-f-q">q <input type="range" id="n-f-q" min="1" max="60" value="7"> <span class="mono" id="n-f-qv">7</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="n-f-t"></table></div>
+      <div class="info" id="n-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kezdő \(1/0\) nem valódi szám, csak „felső szomszéd”. Nélküle az \(1/1\)-nek nem lenne jobb szomszédja a fa elején.</p>
+    <p>Az út hossza arányos az euklideszi algoritmus lépéseivel: ugyanazok a hányadosok, csak egyesével olvasva.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-farey">
+  <div class="body">
+    <div class="eyebrow">§2 · A Farey-sorozat</div>
+    <h2>Törtek nagyság szerint</h2>
+    <p>A \(\mathcal F_n\) Farey-sorozat a 0 és 1 közötti, legfeljebb \(n\) nevezőjű, egyszerűsített törtek növekvő sora. Az \(\mathcal F_n\) és az \(\mathcal F_{n+1}\) között annyi a különbség, hogy az \(n+1\) nevezőjű törtek bekerülnek. Mindegyik két szomszédja mediánsa, ami pontosan akkor lehet, ha a két szomszéd nevezőjének összege \(n+1\). Szomszédos \(\tfrac ab\) és \(\tfrac cd\) törtekre mindig \(bc-ad=1\).</p>
+    <p>Az elemek száma \(|\mathcal F_n|=1+\sum_{k=1}^{n}\varphi(k)\), ahol \(\varphi(k)\) az \(1\ldots k\) közül a \(k\)-hoz relatív prímek száma (Euler-függvény, lásd 4.5).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="n-r-n">n <input type="range" id="n-r-n" min="1" max="12" value="5"> <span class="mono" id="n-r-nv">5</span></label>
+      </div>
+      <div class="jt" id="n-r-t" aria-label="A Farey-sorozat elemei"></div>
+      <div class="info" id="n-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kiemelt cellák az újonnan beszúrt, \(n\) nevezőjű törtek. Tipp: állítsd \(n\)-et 1-ről 12-re, és figyeld, hová kerülnek az új törtek.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-valoszinuseg">
+  <div class="body">
+    <div class="eyebrow">§3 · Mennyi a valószínűsége?</div>
+    <h2>Két szám relatív prím</h2>
+    <p>Hány \((a,b)\) pár van az \(1\ldots N\) között úgy, hogy \(\gcd(a,b)=1\)? A Möbius-függvényes szitaformula pontos választ ad. A \(\mu(d)\) értéke 0, ha \(d\)-nek van négyzetes osztója, különben \((-1)^{k}\), ahol \(k\) a prímtényezők száma. Azon párok száma, amelyekben \(d\) mindkét számot osztja, \(\lfloor N/d\rfloor^2\). A szitálás így összegez:</p>
+    <div class="eq gold">\[\#\{(a,b):\gcd(a,b)=1\}=\sum_{d=1}^{N}\mu(d)\Bigl\lfloor\frac Nd\Bigr\rfloor^2.\]</div>
+    <p>\(N^2\)-tel osztva és \(N\to\infty\) esetén az arány \(\sum_{d\ge1}\mu(d)/d^2\)-hez tart. Mivel \(\sum1/d^2=\pi^2/6\) (Euler) és \(\bigl(\sum\mu(d)/d^2\bigr)\bigl(\sum1/d^2\bigr)=1\), a határérték \(6/\pi^2\approx0{,}6079\). A kísérlet az egzakt számolást három módon veti össze.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="n-v-n">N <input type="range" id="n-v-n" min="5" max="400" value="100"> <span class="mono" id="n-v-nv">100</span></label>
+      </div>
+      <div class="info" id="n-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Heurisztika a háttérben: egy \(p\) prím \(1/p\) „eséllyel” osztja az \(a\)-t és \(1/p\) eséllyel a \(b\)-t, így \(1/p^2\) eséllyel mindkettőt. A „függetlenségből” a \(\prod_p(1-p^{-2})=6/\pi^2\) szorzat adódik. A Möbius-szitaformula ezt precízzé teszi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Fa, sorozat, szomszédok</h2>
+    <details>
+      <summary><span class="sq">1. Add meg a \(3/8\) útját a Stern–Brocot-fában.</span></summary>
+      <div class="ans">
+        <p>Gyökér: \(1/1\), és \(3/8\lt1\), tehát \(L\) (\(1/2\)). Még mindig kisebb, \(L\) (\(1/3\)). Most \(3/8\gt1/3\), tehát \(R\), a mediáns \(\tfrac{1+1}{2+3}\)-nél, vagyis \(2/5\)-nél. Végül \(3/8\lt2/5\): \(L\), mediáns \(\tfrac{1+2}{3+5}=3/8\). Az út \(LLRL\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Melyik tört útja \(RLLR\)?</span></summary>
+      <div class="ans">
+        <p>\(R\): \(2/1\). \(L\): \(1/1\) és \(2/1\) mediánsa, \(3/2\). \(L\): \(1/1\) és \(3/2\) mediánsa, \(4/3\). \(R\): \(4/3\) és \(3/2\) mediánsa, \(7/5\). A tört \(7/5\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igazold, hogy ha \(\tfrac ab\lt\tfrac cd\) és \(bc-ad=1\), akkor a mediáns mindkettővel szomszédos.</span></summary>
+      <div class="ans">
+        <p>Az \(\tfrac{a+c}{b+d}\) és \(\tfrac ab\) esetén \((a+c)b-a(b+d)=bc-ad=1\). A \(\tfrac{a+c}{b+d}\) és \(\tfrac cd\) esetén \(c(b+d)-(a+c)d=bc-ad=1\). Így mindkét szomszédsági feltétel teljesül.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány eleme van az \(\mathcal F_8\) sorozatnak?</span></summary>
+      <div class="ans">
+        <p>\(\varphi(1),\dots,\varphi(8)=1,1,2,2,4,2,6,4\), összegük 22. Így \(|\mathcal F_8|=1+22=23\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat az alapja annak, hogy a Stern–Brocot-fa minden törtet pontosan egyszer és eleve egyszerűsítve tartalmaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Törtek és relatív prímek</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Fogalom</th><th>Lényeg</th></tr>
+      <tr><th>mediáns</th><td>\(\tfrac{a+c}{b+d}\), a két szomszéd között van</td></tr>
+      <tr><th>szomszédság</th><td>\(bc-ad=1\), a mediáns megtartja</td></tr>
+      <tr><th>út a fában</th><td>\(L,R\) szó, a lánctört hányadosaiból</td></tr>
+      <tr><th>Farey-sorozat mérete</th><td>\(1+\sum_{k\le n}\varphi(k)\)</td></tr>
+      <tr><th>relatív prím párok</th><td>\(\sum\mu(d)\lfloor N/d\rfloor^2\to6N^2/\pi^2\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Mediáns</b><span>Számlálót és nevezőt külön adunk.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Determináns</b><span>\(bc-ad=1\) megmarad.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Számolj</b><span>Szitával vagy a φ összegével.</span></div>
+    </div>
+    <p>A következő téma a kongruenciák: maradékokkal számolni, ahol az „egyszerű alak” fogalma a legnagyobb közös osztón múlik.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>

@@ -1,0 +1,127 @@
+
+<!-- ================= 4.1 OSZTHATÓSÁG ================= -->
+<header class="hero page" id="k-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.1</div>
+    <h1>Oszthatóság</h1>
+    <p class="lead">Két szám közös osztói pontosan azok, amelyek a kisebbet és az osztási maradékot is osztják. Ebből egy rövid ciklus lesz: az euklideszi algoritmus.</p>
+    <div class="formula">\(\gcd(a,b)=\gcd(b,\ a\bmod b)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="k-hero" role="img" aria-label="Egy téglalap négyzetekre vágása az euklideszi algoritmus szerint"></svg>
+    <div class="counter"><span id="k-hero-a">252 × 105</span><span>gcd: <b id="k-hero-b">?</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az euklideszi algoritmus az egyik legrégebbi eljárás, amelyet ma is változatlanul használunk. A képen egy \(252\times105\)-ös téglalapot vágunk négyzetekre: előbb a lehető legnagyobbakat, aztán a maradékot, és így tovább. Amikor a maradék téglalap maga is négyzetekre bomlik, megvan a legnagyobb olyan négyzet, amellyel az egész lefedhető. Ennek az oldala a legnagyobb közös osztó. A fejezet azt mutatja meg, miért működik ez, mennyi lépés kell hozzá, és hogyan ad a lépésekből visszafelé számolva egy hasznos azonosságot is.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="k-euklidesz">
+  <div class="body">
+    <div class="eyebrow">§1 · Az algoritmus</div>
+    <h2>Maradékos osztás újra és újra</h2>
+    <p>Az \(a\) és \(b\) pozitív egészek legnagyobb közös osztója \(\gcd(a,b)\), a legkisebb közös többszörösük \(\operatorname{lcm}(a,b)\). Ha \(a=qb+r\), akkor \(a\) és \(b\) közös osztói megegyeznek \(b\) és \(r\) közös osztóival: ami \(a\)-t és \(b\)-t osztja, az az \(r=a-qb\)-t is, és fordítva. Ezért a legnagyobb közös osztó is ugyanaz.</p>
+    <div class="eq gold">\[\gcd(a,b)=\gcd(b,\ a\bmod b),\qquad \gcd(a,0)=a.\]</div>
+    <p>A maradék minden lépésben szigorúan csökken, ezért az eljárás véges sok lépésben nullához ér. Az utolsó nem nulla maradék a legnagyobb közös osztó. A legkisebb közös többszörös innen egy lépés: \(\gcd(a,b)\cdot\operatorname{lcm}(a,b)=ab\), mert a prímtényezőkben a kisebb és a nagyobb kitevő összege éppen az összeg.</p>
+    <p>A lépések száma kicsi marad. Ha az algoritmus \(n\) lépésből áll, akkor \(a\ge F_{n+2}\) (Lamé tétele, ahol \(F_k\) a Fibonacci-számok sora). A legrosszabb eset tehát két szomszédos Fibonacci-szám, és a lépésszám az \(a\) logaritmusával arányos. Próbáld ki a legrosszabb esetet: válaszd a \(233,144\) előbeállítást.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="k-e-p">előbeállítás <select id="k-e-p"><option value="252,105">252 és 105</option><option value="233,144">233 és 144 (Fibonacci)</option><option value="1001,770">1001 és 770</option><option value="997,991">997 és 991 (prímek)</option><option value="0,0">saját</option></select></label>
+        <label class="rng" for="k-e-a">a <input type="range" id="k-e-a" min="1" max="999" value="252"> <span class="mono" id="k-e-av">252</span></label>
+        <label class="rng" for="k-e-b">b <input type="range" id="k-e-b" min="1" max="999" value="105"> <span class="mono" id="k-e-bv">105</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="k-e-t"></table></div>
+      <div class="info" id="k-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Fibonacci-számok azért a legrosszabb esetek, mert minden hányados 1: a maradék csak a lehető legkisebb mértékben csökken.</p>
+    <p>A \(\gcd(a,b)\cdot\operatorname{lcm}(a,b)=ab\) csak két számra igaz. Három számnál ez már nem teljesül.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="k-bezout">
+  <div class="body">
+    <div class="eyebrow">§2 · Bézout-azonosság</div>
+    <h2>A legnagyobb közös osztó mint lineáris kombináció</h2>
+    <p>Az euklideszi lépéseket visszafelé végigkövetve a legnagyobb közös osztó \(a\) és \(b\) egész együtthatós kombinációja lesz:</p>
+    <div class="eq gold">\[\gcd(a,b)=ax+by\qquad(x,y\in\mathbb Z).\]</div>
+    <p>A kiterjesztett algoritmus ezt egy menetben adja. Minden maradékhoz két számot visz magával, \(x_i\)-t és \(y_i\)-t, úgy, hogy \(r_i=ax_i+by_i\) mindig igaz maradjon. A kezdőértékek \(r_0=a\) (\(x_0=1,y_0=0\)) és \(r_1=b\) (\(x_1=0,y_1=1\)), a lépés pedig \(r_{i+1}=r_{i-1}-q_ir_i\) ugyanazzal a \(q_i\)-vel az \(x\)-ekre és az \(y\)-okra is.</p>
+    <p>Ebből a megoldhatóság egyszerűen adódik: az \(ax+by=c\) egyenletnek akkor és csak akkor van egész megoldása, ha \(\gcd(a,b)\mid c\). Ha \((x_0,y_0)\) egy megoldás, az összes megoldás \((x_0+t\,b/g,\ y_0-t\,a/g)\), ahol \(g=\gcd(a,b)\) és \(t\in\mathbb Z\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="k-b-a">a <input type="range" id="k-b-a" min="1" max="200" value="91"> <span class="mono" id="k-b-av">91</span></label>
+        <label class="rng" for="k-b-b">b <input type="range" id="k-b-b" min="1" max="200" value="35"> <span class="mono" id="k-b-bv">35</span></label>
+        <label class="rng" for="k-b-c">c <input type="range" id="k-b-c" min="1" max="400" value="14"> <span class="mono" id="k-b-cv">14</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="k-b-t"></table></div>
+      <div class="info" id="k-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Bézout-azonosságból a számelmélet fele következik. Például: ha \(p\) prím és \(p\mid ab\), akkor \(p\mid a\) vagy \(p\mid b\), mert ha \(p\nmid a\), akkor \(\gcd(p,a)=1\), így \(1=px+ay\), és \(b=pbx+aby\) mindkét tagja osztható \(p\)-vel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="k-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Algoritmus és azonosság</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\gcd(612,468)\)-at és \(\operatorname{lcm}(612,468)\)-at.</span></summary>
+      <div class="ans">
+        <p>\(612=1\cdot468+144\), \(468=3\cdot144+36\), \(144=4\cdot36\). A legnagyobb közös osztó 36, a legkisebb közös többszörös \(612\cdot468/36=7956\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Igazold: \(\gcd(a,b)=\gcd(a-b,b)\).</span></summary>
+      <div class="ans">
+        <p>Ha \(d\mid a\) és \(d\mid b\), akkor \(d\mid a-b\). Fordítva, ha \(d\mid a-b\) és \(d\mid b\), akkor \(d\mid(a-b)+b=a\). A közös osztók halmaza megegyezik, így a legnagyobb elemük is.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mutasd meg, hogy két szomszédos Fibonacci-szám relatív prím.</span></summary>
+      <div class="ans">
+        <p>Mivel \(F_{n+1}=F_n+F_{n-1}\), a 2. feladat szerint \(\gcd(F_{n+1},F_n)=\gcd(F_n,F_{n-1})\). Ez a lánc lefelé \(\gcd(F_2,F_1)=\gcd(1,1)=1\)-ig megy, tehát minden szomszédos pár legnagyobb közös osztója 1.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Keress egész \(x,y\)-t, amelyre \(17x+29y=1\).</span></summary>
+      <div class="ans">
+        <p>\(29=1\cdot17+12\), \(17=1\cdot12+5\), \(12=2\cdot5+2\), \(5=2\cdot2+1\). Visszafelé:</p>
+        <div class="eq">\[\begin{aligned}1&=5-2\cdot2=5-2(12-2\cdot5)=5\cdot5-2\cdot12\\&=5(17-12)-2\cdot12=5\cdot17-7\cdot12\\&=5\cdot17-7(29-17)=12\cdot17-7\cdot29.\end{aligned}\]</div>
+        <p>Tehát \(x=12,\ y=-7\), és \(204-203=1\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat eredménye egyben azt is jelenti, hogy \(17\cdot12\equiv1\pmod{29}\): a 12 a 17 inverze 29 szerint. Ezt a 4.5-ben használjuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="k-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Az oszthatóság szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Képlet</th></tr>
+      <tr><th>euklideszi lépés</th><td>\(\gcd(a,b)=\gcd(b,a\bmod b)\)</td></tr>
+      <tr><th>legkisebb közös többszörös</th><td>\(\gcd(a,b)\cdot\operatorname{lcm}(a,b)=ab\)</td></tr>
+      <tr><th>Bézout</th><td>\(\gcd(a,b)=ax+by\)</td></tr>
+      <tr><th>lineáris diofantoszi egyenlet</th><td>\(ax+by=c\) megoldható \(\iff\gcd(a,b)\mid c\)</td></tr>
+      <tr><th>lépésszám (Lamé)</th><td>\(n\) lépéshez \(a\ge F_{n+2}\) kell</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Oszd el</b><span>Maradékos osztás, a maradék csökken.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Ismételd</b><span>Az utolsó nem nulla maradék a gcd.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Fordítsd vissza</b><span>A lépésekből jön az \(x,y\).</span></div>
+    </div>
+    <p>A következő téma a prímek: azok a számok, amelyekből minden más szorzással felépül.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>

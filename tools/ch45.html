@@ -1,0 +1,143 @@
+
+<!-- ================= 4.5 KONGRUENCIÁK ================= -->
+<header class="hero page" id="o-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.5</div>
+    <h1>Kongruenciák</h1>
+    <p class="lead">Két szám kongruens \(m\) szerint, ha ugyanazt a maradékot adják. Maradékokkal ugyanúgy lehet számolni, mint számokkal, de az osztás csak akkor működik, ha az osztó relatív prím a modulushoz.</p>
+    <div class="formula">\(a\equiv b\pmod m\iff m\mid a-b\)</div>
+  </div>
+  <div class="stage">
+    <svg id="o-hero" role="img" aria-label="Szorzótábla-kör: minden k pontot az a·k mod 60 ponttal kötünk össze"></svg>
+    <div class="counter"><span id="o-hero-a">a = 2</span><span>modulus: <b>60</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen 60 pont áll egy körön, és minden \(k\)-t összekötünk az \(a\cdot k\bmod60\) ponttal. A \(2\)-es szorzónál szív alakú burkológörbe jön elő, a 3-asnál egy kétszirmú alakzat, és minden \(a\) újabb mintát ad. A számelmélet nyelvén ez a „maradékok szorzása”. A fejezet három dolgot tisztáz: mikor lehet maradékokkal osztani (az inverz), hogyan lehet több modulust egyszerre kezelni (a kínai maradéktétel), és mi történik a hatványokkal (az Euler–Fermat-tétel).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="o-szamolas">
+  <div class="body">
+    <div class="eyebrow">§1 · Számolás maradékokkal</div>
+    <h2>Összeadás, szorzás, osztás</h2>
+    <p>Ha \(a\equiv a'\) és \(b\equiv b'\pmod m\), akkor \(a+b\equiv a'+b'\) és \(ab\equiv a'b'\). Ezért egy hosszú kifejezést bármikor „redukálhatunk” \(m\)-mel, akár minden lépés után. Így működnek az oszthatósági szabályok is: mivel \(10\equiv1\pmod9\), egy szám \(9\)-es maradéka a számjegyei összegének maradéka. Hasonlóan \(10\equiv-1\pmod{11}\), ezért a \(11\)-es maradékot a számjegyek váltakozó összege adja.</p>
+    <p>Az osztás kényesebb. A \(2\cdot3\equiv2\cdot0\pmod6\), de \(3\not\equiv0\): a 2-vel nem lehet egyszerűsíteni. Általában \(ak\equiv bk\pmod m\) csak azt adja, hogy \(a\equiv b\pmod{m/\gcd(m,k)}\). A \(k\)-nak akkor van inverze, azaz van olyan \(k'\), hogy \(kk'\equiv1\), ha \(\gcd(k,m)=1\): ekkor a Bézout-azonosság (4.1) \(1=kx+my\)-t ad, és \(k'=x\bmod m\). Az inverzzel rendelkező maradékok száma \(\varphi(m)\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="o-s-m">modulus m <input type="range" id="o-s-m" min="2" max="40" value="12"> <span class="mono" id="o-s-mv">12</span></label>
+      </div>
+      <div class="jt" id="o-s-t" aria-label="A maradékok és inverzeik"></div>
+      <div class="info" id="o-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A cellákban a maradék alatt az inverze áll, vagy – ha nincs inverze. A kiemelt cellák az „egységek”, vagyis az invertálható maradékok.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-kinai">
+  <div class="body">
+    <div class="eyebrow">§2 · A kínai maradéktétel</div>
+    <h2>Több modulus egyszerre</h2>
+    <p>Ha az \(m_1,\dots,m_k\) modulusok páronként relatív prímek, akkor minden \((r_1,\dots,r_k)\) maradékrendszerhez pontosan egy \(x\bmod M\) van, ahol \(M=m_1\cdots m_k\), és \(x\equiv r_i\pmod{m_i}\). A klasszikus példa a Sun Zi-féle feladat: \(x\equiv2\pmod3\), \(x\equiv3\pmod5\), \(x\equiv2\pmod7\) megoldása \(x=23\) modulo \(105\).</p>
+    <p>A megoldás konstruktív. Legyen \(M_i=M/m_i\). Az \(M_i\) relatív prím \(m_i\)-hez, így van inverze: \(y_i\) úgy, hogy \(M_iy_i\equiv1\pmod{m_i}\). Ekkor</p>
+    <div class="eq gold">\[x=\sum_{i}r_iM_iy_i\bmod M.\]</div>
+    <p>Valóban, a \(j\)-edik modulusnál minden \(i\ne j\) tag osztható \(m_j\)-vel, a \(j\)-edik pedig \(r_j\cdot1\)-et ad. Az egyértelműség abból jön, hogy két megoldás különbsége minden \(m_i\)-vel osztható, így az \(M\)-mel is. Ebből a bijekcióból az \(\varphi(mn)=\varphi(m)\varphi(n)\) is következik relatív prím \(m,n\)-re.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="o-k-p">modulusok <select id="o-k-p"><option value="3,5,7">3, 5, 7</option><option value="4,9,5">4, 9, 5</option><option value="5,7,11">5, 7, 11</option><option value="8,9,5">8, 9, 5</option></select></label>
+        <label class="rng" for="o-k-1">r₁ <input type="range" id="o-k-1" min="0" max="2" value="2"> <span class="mono" id="o-k-1v">2</span></label>
+        <label class="rng" for="o-k-2">r₂ <input type="range" id="o-k-2" min="0" max="4" value="3"> <span class="mono" id="o-k-2v">3</span></label>
+        <label class="rng" for="o-k-3">r₃ <input type="range" id="o-k-3" min="0" max="6" value="2"> <span class="mono" id="o-k-3v">2</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="o-k-t"></table></div>
+      <div class="info" id="o-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tétel hamis, ha a modulusok nem relatív prímek: \(x\equiv1\pmod4\) és \(x\equiv2\pmod6\) között ellentmondás van, mert az első páratlan, a második páros számot ír elő.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-euler">
+  <div class="body">
+    <div class="eyebrow">§3 · Euler–Fermat</div>
+    <h2>Hatványok maradékai</h2>
+    <p>Ha \(\gcd(a,m)=1\), akkor az \(a\)-val való szorzás az invertálható maradékok halmazát önmagára képezi (nem veszít el és nem ismétel értéket). Ezért a halmaz minden elemének szorzata ugyanaz marad, ha mindet \(a\)-val szorozzuk, vagyis \(a^{\varphi(m)}P\equiv P\), ahol \(P\) invertálható, és lehet vele egyszerűsíteni:</p>
+    <div class="eq gold">\[a^{\varphi(m)}\equiv1\pmod m\qquad(\gcd(a,m)=1).\]</div>
+    <p>Prím \(m=p\)-re ez a kis Fermat-tétel: \(a^{p-1}\equiv1\pmod p\). A \(\varphi\) a prímfelbontásból számolható: \(\varphi(m)=m\prod_{p\mid m}(1-\tfrac1p)\), és érvényes a Gauss-azonosság is, \(\sum_{d\mid m}\varphi(d)=m\). Az \(a\) rendje (a legkisebb \(k\ge1\), amelyre \(a^k\equiv1\)) osztja \(\varphi(m)\)-et, de lehet kisebb is.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="o-e-a">a <input type="range" id="o-e-a" min="1" max="200" value="3"> <span class="mono" id="o-e-av">3</span></label>
+        <label class="rng" for="o-e-m">m <input type="range" id="o-e-m" min="2" max="200" value="40"> <span class="mono" id="o-e-mv">40</span></label>
+      </div>
+      <div class="info" id="o-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tétel akkor is hasznos, ha nem teljes: a modulus prímfelbontásán egyenként számolhatunk, és a kínai maradéktétellel rakhatjuk össze az eredményt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Inverz, hatvány, négyzetek</h2>
+    <details>
+      <summary><span class="sq">1. Keresd meg a \(7\) inverzét \(40\) szerint.</span></summary>
+      <div class="ans">
+        <p>Euklidész: \(40=5\cdot7+5\), \(7=1\cdot5+2\), \(5=2\cdot2+1\). Visszafelé:</p>
+        <div class="eq">\[\begin{aligned}1&=5-2\cdot2=5-2(7-5)=3\cdot5-2\cdot7\\&=3(40-5\cdot7)-2\cdot7=3\cdot40-17\cdot7.\end{aligned}\]</div>
+        <p>Tehát \(-17\equiv23\) az inverz. Ellenőrzés: \(7\cdot23=161=4\cdot40+1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mi a \(7^{2026}\) utolsó két számjegye?</span></summary>
+      <div class="ans">
+        <p>\(7^2=49\), \(7^4=2401\equiv1\pmod{100}\). Mivel \(2026=4\cdot506+2\), \(7^{2026}\equiv7^2=49\). Az utolsó két számjegy 49. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mutasd meg, hogy az \(x^2+y^2=4k+3\) egyenletnek nincs egész megoldása.</span></summary>
+      <div class="ans">
+        <p>Egy négyzet 4-es maradéka 0 vagy 1 (\(0^2,1^2,2^2\equiv0,1,0\) és \(3^2\equiv1\)). Két négyzet összegének 4-es maradéka így 0, 1 vagy 2, soha nem 3.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki \(\varphi(36)\)-ot, és ellenőrizd a Gauss-azonosságot \(36\)-ra.</span></summary>
+      <div class="ans">
+        <p>\(36=2^2\cdot3^2\), \(\varphi(36)=36\cdot\tfrac12\cdot\tfrac23=12\). A \(36\) osztói: 1, 2, 3, 4, 6, 9, 12, 18, 36, a \(\varphi\) értékeik 1, 1, 2, 2, 2, 6, 4, 6, 12, összegük 36. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat gyorsítható az Euler-tétellel is: \(\varphi(100)=40\), de a rend itt 4, ami sokkal kisebb.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A kongruenciák szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Feltétel, képlet</th></tr>
+      <tr><th>összeadás, szorzás</th><td>mindig kompatibilis a kongruenciával</td></tr>
+      <tr><th>inverz</th><td>létezik \(\iff\gcd(a,m)=1\); a Bézout-együttható</td></tr>
+      <tr><th>kínai maradéktétel</th><td>páronként relatív prím \(m_i\): egyetlen \(x\bmod M\)</td></tr>
+      <tr><th>Euler</th><td>\(a^{\varphi(m)}\equiv1\pmod m\), ha \(\gcd(a,m)=1\)</td></tr>
+      <tr><th>\(\varphi\)</th><td>\(m\prod(1-1/p)\); \(\sum_{d\mid m}\varphi(d)=m\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Redukálj</b><span>Minden lépés után mod \(m\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Invertálj</b><span>Csak relatív prímmel lehet.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Bontsd szét</b><span>Prímhatványokra, majd rakd össze.</span></div>
+    </div>
+    <p>A 4. fejezet témái itt véget érnek. A fejezetvégi feladatok a 4.6-ban következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>

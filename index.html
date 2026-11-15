@@ -3550,6 +3550,846 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 4.1 OSZTHATÓSÁG ================= -->
+<header class="hero page" id="k-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.1</div>
+    <h1>Oszthatóság</h1>
+    <p class="lead">Két szám közös osztói pontosan azok, amelyek a kisebbet és az osztási maradékot is osztják. Ebből egy rövid ciklus lesz: az euklideszi algoritmus.</p>
+    <div class="formula">\(\gcd(a,b)=\gcd(b,\ a\bmod b)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="k-hero" role="img" aria-label="Egy téglalap négyzetekre vágása az euklideszi algoritmus szerint"></svg>
+    <div class="counter"><span id="k-hero-a">252 × 105</span><span>gcd: <b id="k-hero-b">?</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az euklideszi algoritmus az egyik legrégebbi eljárás, amelyet ma is változatlanul használunk. A képen egy \(252\times105\)-ös téglalapot vágunk négyzetekre: előbb a lehető legnagyobbakat, aztán a maradékot, és így tovább. Amikor a maradék téglalap maga is négyzetekre bomlik, megvan a legnagyobb olyan négyzet, amellyel az egész lefedhető. Ennek az oldala a legnagyobb közös osztó. A fejezet azt mutatja meg, miért működik ez, mennyi lépés kell hozzá, és hogyan ad a lépésekből visszafelé számolva egy hasznos azonosságot is.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="k-euklidesz">
+  <div class="body">
+    <div class="eyebrow">§1 · Az algoritmus</div>
+    <h2>Maradékos osztás újra és újra</h2>
+    <p>Az \(a\) és \(b\) pozitív egészek legnagyobb közös osztója \(\gcd(a,b)\), a legkisebb közös többszörösük \(\operatorname{lcm}(a,b)\). Ha \(a=qb+r\), akkor \(a\) és \(b\) közös osztói megegyeznek \(b\) és \(r\) közös osztóival: ami \(a\)-t és \(b\)-t osztja, az az \(r=a-qb\)-t is, és fordítva. Ezért a legnagyobb közös osztó is ugyanaz.</p>
+    <div class="eq gold">\[\gcd(a,b)=\gcd(b,\ a\bmod b),\qquad \gcd(a,0)=a.\]</div>
+    <p>A maradék minden lépésben szigorúan csökken, ezért az eljárás véges sok lépésben nullához ér. Az utolsó nem nulla maradék a legnagyobb közös osztó. A legkisebb közös többszörös innen egy lépés: \(\gcd(a,b)\cdot\operatorname{lcm}(a,b)=ab\), mert a prímtényezőkben a kisebb és a nagyobb kitevő összege éppen az összeg.</p>
+    <p>A lépések száma kicsi marad. Ha az algoritmus \(n\) lépésből áll, akkor \(a\ge F_{n+2}\) (Lamé tétele, ahol \(F_k\) a Fibonacci-számok sora). A legrosszabb eset tehát két szomszédos Fibonacci-szám, és a lépésszám az \(a\) logaritmusával arányos. Próbáld ki a legrosszabb esetet: válaszd a \(233,144\) előbeállítást.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="k-e-p">előbeállítás <select id="k-e-p"><option value="252,105">252 és 105</option><option value="233,144">233 és 144 (Fibonacci)</option><option value="1001,770">1001 és 770</option><option value="997,991">997 és 991 (prímek)</option><option value="0,0">saját</option></select></label>
+        <label class="rng" for="k-e-a">a <input type="range" id="k-e-a" min="1" max="999" value="252"> <span class="mono" id="k-e-av">252</span></label>
+        <label class="rng" for="k-e-b">b <input type="range" id="k-e-b" min="1" max="999" value="105"> <span class="mono" id="k-e-bv">105</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="k-e-t"></table></div>
+      <div class="info" id="k-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Fibonacci-számok azért a legrosszabb esetek, mert minden hányados 1: a maradék csak a lehető legkisebb mértékben csökken.</p>
+    <p>A \(\gcd(a,b)\cdot\operatorname{lcm}(a,b)=ab\) csak két számra igaz. Három számnál ez már nem teljesül.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="k-bezout">
+  <div class="body">
+    <div class="eyebrow">§2 · Bézout-azonosság</div>
+    <h2>A legnagyobb közös osztó mint lineáris kombináció</h2>
+    <p>Az euklideszi lépéseket visszafelé végigkövetve a legnagyobb közös osztó \(a\) és \(b\) egész együtthatós kombinációja lesz:</p>
+    <div class="eq gold">\[\gcd(a,b)=ax+by\qquad(x,y\in\mathbb Z).\]</div>
+    <p>A kiterjesztett algoritmus ezt egy menetben adja. Minden maradékhoz két számot visz magával, \(x_i\)-t és \(y_i\)-t, úgy, hogy \(r_i=ax_i+by_i\) mindig igaz maradjon. A kezdőértékek \(r_0=a\) (\(x_0=1,y_0=0\)) és \(r_1=b\) (\(x_1=0,y_1=1\)), a lépés pedig \(r_{i+1}=r_{i-1}-q_ir_i\) ugyanazzal a \(q_i\)-vel az \(x\)-ekre és az \(y\)-okra is.</p>
+    <p>Ebből a megoldhatóság egyszerűen adódik: az \(ax+by=c\) egyenletnek akkor és csak akkor van egész megoldása, ha \(\gcd(a,b)\mid c\). Ha \((x_0,y_0)\) egy megoldás, az összes megoldás \((x_0+t\,b/g,\ y_0-t\,a/g)\), ahol \(g=\gcd(a,b)\) és \(t\in\mathbb Z\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="k-b-a">a <input type="range" id="k-b-a" min="1" max="200" value="91"> <span class="mono" id="k-b-av">91</span></label>
+        <label class="rng" for="k-b-b">b <input type="range" id="k-b-b" min="1" max="200" value="35"> <span class="mono" id="k-b-bv">35</span></label>
+        <label class="rng" for="k-b-c">c <input type="range" id="k-b-c" min="1" max="400" value="14"> <span class="mono" id="k-b-cv">14</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="k-b-t"></table></div>
+      <div class="info" id="k-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Bézout-azonosságból a számelmélet fele következik. Például: ha \(p\) prím és \(p\mid ab\), akkor \(p\mid a\) vagy \(p\mid b\), mert ha \(p\nmid a\), akkor \(\gcd(p,a)=1\), így \(1=px+ay\), és \(b=pbx+aby\) mindkét tagja osztható \(p\)-vel.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="k-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Algoritmus és azonosság</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\gcd(612,468)\)-at és \(\operatorname{lcm}(612,468)\)-at.</span></summary>
+      <div class="ans">
+        <p>\(612=1\cdot468+144\), \(468=3\cdot144+36\), \(144=4\cdot36\). A legnagyobb közös osztó 36, a legkisebb közös többszörös \(612\cdot468/36=7956\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Igazold: \(\gcd(a,b)=\gcd(a-b,b)\).</span></summary>
+      <div class="ans">
+        <p>Ha \(d\mid a\) és \(d\mid b\), akkor \(d\mid a-b\). Fordítva, ha \(d\mid a-b\) és \(d\mid b\), akkor \(d\mid(a-b)+b=a\). A közös osztók halmaza megegyezik, így a legnagyobb elemük is.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mutasd meg, hogy két szomszédos Fibonacci-szám relatív prím.</span></summary>
+      <div class="ans">
+        <p>Mivel \(F_{n+1}=F_n+F_{n-1}\), a 2. feladat szerint \(\gcd(F_{n+1},F_n)=\gcd(F_n,F_{n-1})\). Ez a lánc lefelé \(\gcd(F_2,F_1)=\gcd(1,1)=1\)-ig megy, tehát minden szomszédos pár legnagyobb közös osztója 1.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Keress egész \(x,y\)-t, amelyre \(17x+29y=1\).</span></summary>
+      <div class="ans">
+        <p>\(29=1\cdot17+12\), \(17=1\cdot12+5\), \(12=2\cdot5+2\), \(5=2\cdot2+1\). Visszafelé:</p>
+        <div class="eq">\[\begin{aligned}1&=5-2\cdot2=5-2(12-2\cdot5)=5\cdot5-2\cdot12\\&=5(17-12)-2\cdot12=5\cdot17-7\cdot12\\&=5\cdot17-7(29-17)=12\cdot17-7\cdot29.\end{aligned}\]</div>
+        <p>Tehát \(x=12,\ y=-7\), és \(204-203=1\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat eredménye egyben azt is jelenti, hogy \(17\cdot12\equiv1\pmod{29}\): a 12 a 17 inverze 29 szerint. Ezt a 4.5-ben használjuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="k-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Az oszthatóság szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Képlet</th></tr>
+      <tr><th>euklideszi lépés</th><td>\(\gcd(a,b)=\gcd(b,a\bmod b)\)</td></tr>
+      <tr><th>legkisebb közös többszörös</th><td>\(\gcd(a,b)\cdot\operatorname{lcm}(a,b)=ab\)</td></tr>
+      <tr><th>Bézout</th><td>\(\gcd(a,b)=ax+by\)</td></tr>
+      <tr><th>lineáris diofantoszi egyenlet</th><td>\(ax+by=c\) megoldható \(\iff\gcd(a,b)\mid c\)</td></tr>
+      <tr><th>lépésszám (Lamé)</th><td>\(n\) lépéshez \(a\ge F_{n+2}\) kell</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Oszd el</b><span>Maradékos osztás, a maradék csökken.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Ismételd</b><span>Az utolsó nem nulla maradék a gcd.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Fordítsd vissza</b><span>A lépésekből jön az \(x,y\).</span></div>
+    </div>
+    <p>A következő téma a prímek: azok a számok, amelyekből minden más szorzással felépül.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 4.2 PRÍMEK ================= -->
+<header class="hero page" id="l-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.2</div>
+    <h1>Prímek</h1>
+    <p class="lead">A prímek a természetes számok építőkockái: minden szám egyértelműen szorzódik össze belőlük. Végtelen sok van, de sűrűségük lassan fogy.</p>
+    <div class="formula">\(n=p_1^{e_1}p_2^{e_2}\cdots p_r^{e_r}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="l-hero" role="img" aria-label="Az 1–100 számok táblája, szitálás prímekkel"></svg>
+    <div class="counter"><span id="l-hero-a">szitálás: –</span><span>prímek: <b id="l-hero-b">100</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen az 1-től 100-ig terjedő számok táblája látszik. Sorra kihúzzuk a 2, a 3, az 5 és a 7 többszöröseit, és ami megmarad, az a prím. A trükk az, hogy a 10-nél nagyobb prímekkel nem kell szitálni: minden összetett szám, amely 100-nál kisebb, osztható valamelyik 10-nél kisebb prímmel. A fejezet három kérdést tárgyal: miért van végtelen sok prím, miért bomlik minden szám egyértelműen prímekre, és mit lehet mondani a prímek eloszlásáról.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="l-vegtelen">
+  <div class="body">
+    <div class="eyebrow">§1 · Végtelen sok prím</div>
+    <h2>Euklidész érve</h2>
+    <p>Tegyük fel, hogy véges sok prím van, \(p_1,\dots,p_k\). Tekintsük az \(N=p_1p_2\cdots p_k+1\) számot. Egyik \(p_i\) sem osztja \(N\)-et, mert mindegyik osztja a szorzatot, így \(N\)-nél 1 maradékot adnának. Viszont \(N>1\), tehát van prímosztója, és ez nem szerepel a listában. Ez ellentmondás.</p>
+    <p>Gyakori tévedés, hogy az \(N\) maga is prím. Ez nem igaz: \(2\cdot3\cdot7\cdot43+1=1807=13\cdot139\). Az érv csak azt állítja, hogy \(N\)-nek van egy új prímosztója. Ha mindig a legkisebb prímosztót választjuk, az Euklidész–Mullin-sorozat adódik. Az alábbi kísérlet az első \(k\) tagból indul, és kiszámolja a következőt.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="l-v-k">k (a lista hossza) <input type="range" id="l-v-k" min="1" max="8" value="4"> <span class="mono" id="l-v-kv">4</span></label>
+      </div>
+      <div class="info" id="l-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A sorozat első tagjai: 2, 3, 7, 43, 13, 53, 5, 6221671, 38709183810571. Nem tudjuk, hogy minden prím előfordul-e benne.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-szita">
+  <div class="body">
+    <div class="eyebrow">§2 · Eratoszthenész szitája</div>
+    <h2>Kihúzni a többszörösöket</h2>
+    <p>A szita az \(n\) alatti prímeket adja meg: sorra kihúzzuk minden prím többszöröseit \(p^2\)-től kezdve (a kisebb többszörösöket egy korábbi prím már kihúzta). Elég az \(\sqrt n\)-nél nem nagyobb prímekkel szitálni, mert minden összetett \(m\le n\) számnak van \(\sqrt n\)-nél nem nagyobb prímosztója: ha \(m=ab\) és mindkét tényező \(\gt\sqrt n\), akkor \(m\gt n\).</p>
+    <p>A tábla alatt a kiválasztott \(P\) prímig szitálunk. Amint \(P\ge\sqrt N\), a megmaradt számok pontosan a prímek.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="l-s-n">N <input type="range" id="l-s-n" min="30" max="200" value="100"> <span class="mono" id="l-s-nv">100</span></label>
+        <label class="rng" for="l-s-p">szitálás eddig: P = <input type="range" id="l-s-p" min="1" max="13" value="1"> <span class="mono" id="l-s-pv">1</span></label>
+      </div>
+      <div class="jt" id="l-s-t" aria-label="A szita táblája"></div>
+      <div class="info" id="l-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(P\) csúszkán az 1-től 13-ig terjedő értékek közül csak a prímek számítanak: a \(P=6\) ugyanaz, mint a \(P=5\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-felbontas">
+  <div class="body">
+    <div class="eyebrow">§3 · Egyértelmű felbontás</div>
+    <h2>Minden szám egyféleképpen szorzat</h2>
+    <p>Az aritmetika alaptétele: minden \(n\ge2\) egész sorrendtől eltekintve egyféleképpen írható prímek szorzataként. A létezés egyszerű (egy összetett számot addig bontunk, amíg lehet). Az egyértelműség a Bézout-azonosságból jön: ha \(p\mid ab\), akkor \(p\mid a\) vagy \(p\mid b\) (lásd 4.1), így két felbontásban ugyanazok a prímek szerepelnek.</p>
+    <p>A felbontásból minden osztóra vonatkozó mennyiség leolvasható. Ha \(n=\prod p^{e_p}\), akkor</p>
+    <div class="eq">\[\tau(n)=\prod(e_p+1),\qquad \gcd(a,b)=\prod p^{\min(e_p,f_p)},\qquad \operatorname{lcm}(a,b)=\prod p^{\max(e_p,f_p)}.\]</div>
+    <p>Az utolsó két képletből adódik a \(\gcd\cdot\operatorname{lcm}=ab\), mert \(\min+\max=e+f\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="l-f-a">a <input type="range" id="l-f-a" min="2" max="2000" value="360"> <span class="mono" id="l-f-av">360</span></label>
+        <label class="rng" for="l-f-b">b <input type="range" id="l-f-b" min="2" max="2000" value="84"> <span class="mono" id="l-f-bv">84</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="l-f-t"></table></div>
+      <div class="info" id="l-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az egyértelműség nem magától értetődő. A \(\mathbb Z[\sqrt{-5}]\) számai között \(6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})\) két lényegesen különböző felbontás, mert a négy tényező egyike sem bontható tovább.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-eloszlas">
+  <div class="body">
+    <div class="eyebrow">§4 · Eloszlás</div>
+    <h2>Hány prím van \(x\)-ig?</h2>
+    <p>Jelölje \(\pi(x)\) az \(x\)-et meg nem haladó prímek számát. A prímszámtétel szerint \(\pi(x)\sim x/\ln x\), vagyis a hányados 1-hez tart (Hadamard és de la Vallée Poussin, 1896). A konvergencia lassú: \(10^7\)-nél a hányados még 1,07. Az \(x/(\ln x-1)\) közelítés ezeken a méreteken sokkal jobb.</p>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>\(x\)</th><th>\(\pi(x)\)</th><th>\(x/\ln x\)</th><th>\(\pi(x)\big/(x/\ln x)\)</th></tr>
+      <tr><td>\(10\)</td><td>4</td><td>4</td><td>0,921</td></tr>
+      <tr><td>\(10^2\)</td><td>25</td><td>22</td><td>1,151</td></tr>
+      <tr><td>\(10^3\)</td><td>168</td><td>145</td><td>1,161</td></tr>
+      <tr><td>\(10^4\)</td><td>1229</td><td>1086</td><td>1,132</td></tr>
+      <tr><td>\(10^5\)</td><td>9592</td><td>8686</td><td>1,104</td></tr>
+      <tr><td>\(10^6\)</td><td>78498</td><td>72382</td><td>1,084</td></tr>
+      <tr><td>\(10^7\)</td><td>664579</td><td>620421</td><td>1,071</td></tr>
+    </table></div>
+    <p>A következő ábra az \(x\le10\,000\) tartományban rajzolja a három görbét.</p>
+    <div class="fig">
+      <svg id="l-e-svg" role="img" aria-label="A prímszámláló függvény és két közelítése"></svg>
+      <div class="info" id="l-e-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="l-e-x">x <input type="range" id="l-e-x" min="100" max="10000" step="100" value="2000"> <span class="mono" id="l-e-xv">2000</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Bertrand posztulátuma (Csebisev bizonyította, 1852): minden \(n\ge1\)-re van prím \(n\) és \(2n\) között. A fenti táblázat azt mutatja, hogy a prímek száma \(x\) növekedtével jóval gyorsabban nő, mint amennyit ez a tétel garantál.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Felbontás és prímtesztek</h2>
+    <details>
+      <summary><span class="sq">1. Bontsd prímtényezőkre a \(2^{10}-1=1023\) számot.</span></summary>
+      <div class="ans">
+        <p>\(1023=3\cdot341=3\cdot11\cdot31\). Ellenőrzés: \(3\cdot11\cdot31=1023\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Igazold: ha \(n\) összetett, akkor van \(\sqrt n\)-nél nem nagyobb prímosztója.</span></summary>
+      <div class="ans">
+        <p>Legyen \(n=ab\) és \(1\lt a\le b\). Ekkor \(a^2\le ab=n\), tehát \(a\le\sqrt n\). Az \(a\) bármelyik prímosztója is osztja \(n\)-et, és nem nagyobb \(a\)-nál.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány pozitív osztója van a \(720\)-nak?</span></summary>
+      <div class="ans">
+        <p>\(720=2^4\cdot3^2\cdot5\), tehát \(\tau(720)=(4+1)(2+1)(1+1)=30\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mutasd meg: ha \(2^n-1\) prím, akkor \(n\) is prím. Igaz-e a megfordítás?</span></summary>
+      <div class="ans">
+        <p>Ha \(n=ab\) (\(a,b\gt1\)), akkor \(2^a-1\) osztja \(2^{ab}-1\)-et, mert \(x-1\mid x^b-1\) az \(x=2^a\) helyettesítéssel. Az osztó \(\gt1\) és \(\lt2^n-1\), így \(2^n-1\) összetett. A megfordítás hamis: \(n=11\) prím, de \(2^{11}-1=2047=23\cdot89\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat miatt a Mersenne-prímeket csak prímkitevőknél kell keresni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A prímek szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Lényeg</th></tr>
+      <tr><th>végtelen sok prím</th><td>\(p_1\cdots p_k+1\)-nek van új prímosztója</td></tr>
+      <tr><th>szita</th><td>elég \(\sqrt n\)-ig szitálni</td></tr>
+      <tr><th>alaptétel</th><td>egyértelmű prímfelbontás, kitevőkkel</td></tr>
+      <tr><th>osztók száma</th><td>\(\tau(n)=\prod(e_p+1)\)</td></tr>
+      <tr><th>prímszámtétel</th><td>\(\pi(x)\sim x/\ln x\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Bontsd</b><span>Prímtényezők kitevőkkel.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Olvasd le</b><span>Osztók, gcd, lcm a kitevőkből.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Becsülj</b><span>A prímek sűrűsége \(1/\ln x\).</span></div>
+    </div>
+    <p>A következő téma a faktoriális prímkitevői: hányszor osztja a \(p\) prím az \(n!\)-t.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 4.3 A FAKTORIÁLIS OSZTÓI ================= -->
+<header class="hero page" id="m-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.3</div>
+    <h1>A faktoriális osztói</h1>
+    <p class="lead">Hányszor osztja a \(p\) prím az \(n!\)-t? A válasz egy egészrészes összeg, és a 3. fejezet eszközei adják.</p>
+    <div class="formula">\(\displaystyle\varepsilon_p(n!)=\Bigl\lfloor\frac np\Bigr\rfloor+\Bigl\lfloor\frac n{p^2}\Bigr\rfloor+\Bigl\lfloor\frac n{p^3}\Bigr\rfloor+\cdots\)</div>
+  </div>
+  <div class="stage">
+    <svg id="m-hero" role="img" aria-label="A 2, 3, 5, 7 kitevője az n! felbontásában, n növekedésével"></svg>
+    <div class="counter"><span id="m-hero-a">n = 5</span><span>kitevők: <b id="m-hero-b">–</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az \(n!=1\cdot2\cdots n\) szorzatban minden tényező hozzáad a prímkitevőkhöz. A kettes kitevőjét például úgy kapjuk, hogy megszámoljuk, hány páros szám van \(n\)-ig, aztán hány néggyel osztható, aztán hány nyolccal osztható, és így tovább. Minden szint egy egészrész. A képen a \(2,3,5,7\) kitevője látszik, ahogy \(n\) nő: a kettesé a leggyorsabb, mert a páros számok a leggyakoribbak. A fejezet ebből levezet egy mélyebb összefüggést a számjegyösszeggel, és megmondja, hány nullára végződik az \(n!\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="m-legendre">
+  <div class="body">
+    <div class="eyebrow">§1 · Legendre képlete</div>
+    <h2>Szintenkénti számolás</h2>
+    <p>Jelölje \(\varepsilon_p(m)\) a \(p\) kitevőjét az \(m\) felbontásában. Az \(n!=\prod_{k\le n}k\) szorzatban a kitevők összeadódnak. Egy \(k\) szám pontosan \(\varepsilon_p(k)\)-szor ad egy \(p\) tényezőt, ami úgy számolható, hogy minden \(j\ge1\)-re megszámoljuk, hány \(k\le n\) osztható \(p^j\)-vel: ez \(\lfloor n/p^j\rfloor\) darab. Ezt az átrendezést „szintenkénti számolásnak” hívtuk a 3.5-ben.</p>
+    <div class="eq gold">\[\varepsilon_p(n!)=\sum_{j\ge1}\Bigl\lfloor\frac n{p^j}\Bigr\rfloor.\]</div>
+    <p>Az összeg véges, mert \(p^j\gt n\) után minden tag nulla. Van egy meglepően szép alak is. Ha az \(n\) számjegyeinek összege \(p\)-es számrendszerben \(s_p(n)\), akkor</p>
+    <div class="eq">\[\varepsilon_p(n!)=\frac{n-s_p(n)}{p-1}.\]</div>
+    <p>Az ok: \(n=\sum d_jp^j\) esetén \(\lfloor n/p^i\rfloor=\sum_{j\ge i}d_jp^{j-i}\), és az összegzés mértani sorokat ad. Az alábbi kísérlet mindhárom módon kiszámolja a kitevőt: a faktoriális tényezőkre bontásával, Legendre képletével és a számjegyösszeges alakkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="m-l-n">n <input type="range" id="m-l-n" min="2" max="300" value="100"> <span class="mono" id="m-l-nv">100</span></label>
+        <label class="rng" for="m-l-p">p <select id="m-l-p"><option>2</option><option>3</option><option>5</option><option>7</option><option>11</option><option>13</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="m-l-t"></table></div>
+      <div class="info" id="m-l-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(p=2\) esetben \(\varepsilon_2(n!)=n-s_2(n)\), ahol \(s_2(n)\) az \(n\) bináris alakjában az egyesek száma. A \(100=1100100_2\) három egyest tartalmaz, így \(\varepsilon_2(100!)=97\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="m-nullak">
+  <div class="body">
+    <div class="eyebrow">§2 · Záró nullák</div>
+    <h2>Hány nullára végződik az \(n!\)?</h2>
+    <p>Egy szám annyi nullára végződik, ahányszor 10-zel osztható, vagyis \(\min(\varepsilon_2,\varepsilon_5)\) a kitevők minimuma. A faktoriálisban a 2 kitevője mindig legalább akkora, mint az 5-é, hiszen az 5 többszöröseinél gyakoribbak a párosak. Ezért a záró nullák száma</p>
+    <div class="eq gold">\[z(n)=\varepsilon_5(n!)=\Bigl\lfloor\frac n5\Bigr\rfloor+\Bigl\lfloor\frac n{25}\Bigr\rfloor+\Bigl\lfloor\frac n{125}\Bigr\rfloor+\cdots\]</div>
+    <p>Például \(z(100)=20+4=24\) és \(z(1000)=200+40+8+1=249\). Érdekesség, hogy nem minden nullaszám fordul elő: a \(z(n)\) csak az 5 többszöröseinél ugrik, a 25 többszöröseinél egyszerre kettőt. Így \(z(24)=4\), de \(z(25)=6\), tehát az 5 nullát semelyik faktoriális sem éri el. A kísérlet második fele megmondja egy célértékről, melyik \(n\)-nél lép be, vagy hogy kimarad.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="m-n-n">n <input type="range" id="m-n-n" min="1" max="2000" value="100"> <span class="mono" id="m-n-nv">100</span></label>
+        <label class="rng" for="m-n-z">célérték z <input type="range" id="m-n-z" min="0" max="60" value="5"> <span class="mono" id="m-n-zv">5</span></label>
+      </div>
+      <div class="info" id="m-n-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 300 alatti nullaszámok közül 58 hiányzik: 5, 11, 17, 23, 29, 30, 36, … A kimaradó értékek ott vannak, ahol \(n\) egy 25-nek vagy 125-nek a többszörösén lépi át a küszöböt, és a \(z(n)\) egyszerre kettőt vagy hármat ugrik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="m-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Kitevők és nullák</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(\varepsilon_3(50!)\)-t kétféleképpen.</span></summary>
+      <div class="ans">
+        <p>Legendre: \(\lfloor50/3\rfloor+\lfloor50/9\rfloor+\lfloor50/27\rfloor=16+5+1=22\). Számjegyösszeggel: \(50=1212_3\) (\(27+18+3+2\)), \(s_3(50)=1+2+1+2=6\), így \((50-6)/2=22\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány nullára végződik a \(125!\)?</span></summary>
+      <div class="ans">
+        <p>\(z(125)=25+5+1=31\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igazold, hogy a \(\binom{2n}{n}\) páros, ha \(n\ge1\).</span></summary>
+      <div class="ans">
+        <p>A \(\binom{2n}n=\tfrac{(2n)!}{n!\,n!}\) kettes kitevője:</p>
+        <div class="eq">\[\varepsilon_2((2n)!)-2\varepsilon_2(n!)=(2n-s_2(2n))-2(n-s_2(n))=2s_2(n)-s_2(2n).\]</div>
+        <p>A \(2n\) bináris alakja \(n\)-é egy nullával kiegészítve, így \(s_2(2n)=s_2(n)\), és a kitevő \(s_2(n)\ge1\).</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mi a legkisebb \(n\), amelyre \(n!\) legalább 10 nullára végződik?</span></summary>
+      <div class="ans">
+        <p>A \(z(n)\) az 5 többszöröseinél ugrik. \(z(40)=8+1=9\) és \(z(45)=9+1=10\), tehát \(n=45\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat kitevője \(s_2(n)\) pontosan a \(\binom{2n}{n}\) kettes kitevője. Ez Kummer tételének egy esete: egy binomiális együttható \(p\)-kitevője a \(p\)-es számrendszerbeli összeadás átvitelei számával egyenlő.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="m-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A faktoriális prímkitevői</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Kérdés</th><th>Képlet</th></tr>
+      <tr><th>\(p\) kitevője \(n!\)-ban</th><td>\(\sum_{j\ge1}\lfloor n/p^j\rfloor\)</td></tr>
+      <tr><th>számjegyösszeges alak</th><td>\((n-s_p(n))/(p-1)\)</td></tr>
+      <tr><th>záró nullák</th><td>\(\varepsilon_5(n!)\)</td></tr>
+      <tr><th>\(\binom{2n}{n}\) kettes kitevője</th><td>\(s_2(n)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Számolj szintenként</b><span>Hány tag osztható \(p^j\)-vel?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Add össze</b><span>Egészrészek összege.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Számjegyek</b><span>Átírás \(p\)-es számrendszerbe.</span></div>
+    </div>
+    <p>A következő téma a törtek számelmélete: melyek a legegyszerűbb alakú törtek, és hogyan sorakoznak fel.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 4.4 RELATÍV PRÍMEK ================= -->
+<header class="hero page" id="n-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.4</div>
+    <h1>Relatív prímek</h1>
+    <p class="lead">Két szám relatív prím, ha nincs közös osztójuk 1-en kívül. A pozitív törtek mind pontosan egyszer szerepelnek egy fában, amelyet az „összeadott számlálók és nevezők” szabálya épít.</p>
+    <div class="formula">\(\dfrac ab\ \oplus\ \dfrac cd=\dfrac{a+c}{b+d}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="n-hero" role="img" aria-label="A Stern–Brocot-fa első szintjei"></svg>
+    <div class="counter"><span id="n-hero-a">szint: 0</span><span>törtek: <b id="n-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A fa gyökerében az \(1/1\) áll. Minden újabb törtet két már meglévő szomszédjából kapunk úgy, hogy a számlálókat és a nevezőket külön összeadjuk. Ez a „mediáns”, és mindig a két szomszéd között van. A képen az első négy szint látható. A meglepő az, hogy ez az egyszerű szabály minden pozitív racionális számot pontosan egyszer ad, és mindegyiket eleve legegyszerűbb alakban. A fejezet megmutatja, miért, hogyan olvasható le egy tört helye a fában, hogyan kapcsolódik ez az euklideszi algoritmushoz, és mekkora eséllyel relatív prím két véletlen szám.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="n-fa">
+  <div class="body">
+    <div class="eyebrow">§1 · A Stern–Brocot-fa</div>
+    <h2>Balra vagy jobbra</h2>
+    <p>Kezdjünk a \(0/1\) és az \(1/0\) „törtekkel” (a második a végtelent jelöli). Bármely két szomszédjuk közé beszúrjuk a mediánsukat. Az \(\tfrac ab\) és \(\tfrac cd\) szomszédokra \(bc-ad=1\) teljesül: a kezdő párnál \(1\cdot1-0\cdot0=1\), és a beszúrás megőrzi ezt, mert \((a+c)b-a(b+d)=bc-ad=1\), és hasonlóan a másik oldalon is. Ebből két dolog következik. A mediáns legegyszerűbb alakú, mert közös osztója mindkét egyenletet, így az 1-et is osztaná. A tört pedig a két szomszédja között van.</p>
+    <p>Egy tört helyét a gyökértől vezető út adja: \(L\) (balra, ha a tört kisebb a mediánsnál) és \(R\) (jobbra, ha nagyobb). Az út és a lánctört között szoros kapcsolat van: ha \(\tfrac pq=[a_0;a_1,\dots,a_n]\), akkor az út \(R^{a_0}L^{a_1}R^{a_2}\cdots\) alakú, az utolsó csoportban \(a_n-1\) betűvel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="n-f-p">p <input type="range" id="n-f-p" min="1" max="60" value="5"> <span class="mono" id="n-f-pv">5</span></label>
+        <label class="rng" for="n-f-q">q <input type="range" id="n-f-q" min="1" max="60" value="7"> <span class="mono" id="n-f-qv">7</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="n-f-t"></table></div>
+      <div class="info" id="n-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kezdő \(1/0\) nem valódi szám, csak „felső szomszéd”. Nélküle az \(1/1\)-nek nem lenne jobb szomszédja a fa elején.</p>
+    <p>Az út hossza arányos az euklideszi algoritmus lépéseivel: ugyanazok a hányadosok, csak egyesével olvasva.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-farey">
+  <div class="body">
+    <div class="eyebrow">§2 · A Farey-sorozat</div>
+    <h2>Törtek nagyság szerint</h2>
+    <p>A \(\mathcal F_n\) Farey-sorozat a 0 és 1 közötti, legfeljebb \(n\) nevezőjű, egyszerűsített törtek növekvő sora. Az \(\mathcal F_n\) és az \(\mathcal F_{n+1}\) között annyi a különbség, hogy az \(n+1\) nevezőjű törtek bekerülnek. Mindegyik két szomszédja mediánsa, ami pontosan akkor lehet, ha a két szomszéd nevezőjének összege \(n+1\). Szomszédos \(\tfrac ab\) és \(\tfrac cd\) törtekre mindig \(bc-ad=1\).</p>
+    <p>Az elemek száma \(|\mathcal F_n|=1+\sum_{k=1}^{n}\varphi(k)\), ahol \(\varphi(k)\) az \(1\ldots k\) közül a \(k\)-hoz relatív prímek száma (Euler-függvény, lásd 4.5).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="n-r-n">n <input type="range" id="n-r-n" min="1" max="12" value="5"> <span class="mono" id="n-r-nv">5</span></label>
+      </div>
+      <div class="jt" id="n-r-t" aria-label="A Farey-sorozat elemei"></div>
+      <div class="info" id="n-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kiemelt cellák az újonnan beszúrt, \(n\) nevezőjű törtek. Tipp: állítsd \(n\)-et 1-ről 12-re, és figyeld, hová kerülnek az új törtek.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-valoszinuseg">
+  <div class="body">
+    <div class="eyebrow">§3 · Mennyi a valószínűsége?</div>
+    <h2>Két szám relatív prím</h2>
+    <p>Hány \((a,b)\) pár van az \(1\ldots N\) között úgy, hogy \(\gcd(a,b)=1\)? A Möbius-függvényes szitaformula pontos választ ad. A \(\mu(d)\) értéke 0, ha \(d\)-nek van négyzetes osztója, különben \((-1)^{k}\), ahol \(k\) a prímtényezők száma. Azon párok száma, amelyekben \(d\) mindkét számot osztja, \(\lfloor N/d\rfloor^2\). A szitálás így összegez:</p>
+    <div class="eq gold">\[\#\{(a,b):\gcd(a,b)=1\}=\sum_{d=1}^{N}\mu(d)\Bigl\lfloor\frac Nd\Bigr\rfloor^2.\]</div>
+    <p>\(N^2\)-tel osztva és \(N\to\infty\) esetén az arány \(\sum_{d\ge1}\mu(d)/d^2\)-hez tart. Mivel \(\sum1/d^2=\pi^2/6\) (Euler) és \(\bigl(\sum\mu(d)/d^2\bigr)\bigl(\sum1/d^2\bigr)=1\), a határérték \(6/\pi^2\approx0{,}6079\). A kísérlet az egzakt számolást három módon veti össze.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="n-v-n">N <input type="range" id="n-v-n" min="5" max="400" value="100"> <span class="mono" id="n-v-nv">100</span></label>
+      </div>
+      <div class="info" id="n-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Heurisztika a háttérben: egy \(p\) prím \(1/p\) „eséllyel” osztja az \(a\)-t és \(1/p\) eséllyel a \(b\)-t, így \(1/p^2\) eséllyel mindkettőt. A „függetlenségből” a \(\prod_p(1-p^{-2})=6/\pi^2\) szorzat adódik. A Möbius-szitaformula ezt precízzé teszi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Fa, sorozat, szomszédok</h2>
+    <details>
+      <summary><span class="sq">1. Add meg a \(3/8\) útját a Stern–Brocot-fában.</span></summary>
+      <div class="ans">
+        <p>Gyökér: \(1/1\), és \(3/8\lt1\), tehát \(L\) (\(1/2\)). Még mindig kisebb, \(L\) (\(1/3\)). Most \(3/8\gt1/3\), tehát \(R\), a mediáns \(\tfrac{1+1}{2+3}\)-nél, vagyis \(2/5\)-nél. Végül \(3/8\lt2/5\): \(L\), mediáns \(\tfrac{1+2}{3+5}=3/8\). Az út \(LLRL\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Melyik tört útja \(RLLR\)?</span></summary>
+      <div class="ans">
+        <p>\(R\): \(2/1\). \(L\): \(1/1\) és \(2/1\) mediánsa, \(3/2\). \(L\): \(1/1\) és \(3/2\) mediánsa, \(4/3\). \(R\): \(4/3\) és \(3/2\) mediánsa, \(7/5\). A tört \(7/5\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igazold, hogy ha \(\tfrac ab\lt\tfrac cd\) és \(bc-ad=1\), akkor a mediáns mindkettővel szomszédos.</span></summary>
+      <div class="ans">
+        <p>Az \(\tfrac{a+c}{b+d}\) és \(\tfrac ab\) esetén \((a+c)b-a(b+d)=bc-ad=1\). A \(\tfrac{a+c}{b+d}\) és \(\tfrac cd\) esetén \(c(b+d)-(a+c)d=bc-ad=1\). Így mindkét szomszédsági feltétel teljesül.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány eleme van az \(\mathcal F_8\) sorozatnak?</span></summary>
+      <div class="ans">
+        <p>\(\varphi(1),\dots,\varphi(8)=1,1,2,2,4,2,6,4\), összegük 22. Így \(|\mathcal F_8|=1+22=23\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat az alapja annak, hogy a Stern–Brocot-fa minden törtet pontosan egyszer és eleve egyszerűsítve tartalmaz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="n-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Törtek és relatív prímek</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Fogalom</th><th>Lényeg</th></tr>
+      <tr><th>mediáns</th><td>\(\tfrac{a+c}{b+d}\), a két szomszéd között van</td></tr>
+      <tr><th>szomszédság</th><td>\(bc-ad=1\), a mediáns megtartja</td></tr>
+      <tr><th>út a fában</th><td>\(L,R\) szó, a lánctört hányadosaiból</td></tr>
+      <tr><th>Farey-sorozat mérete</th><td>\(1+\sum_{k\le n}\varphi(k)\)</td></tr>
+      <tr><th>relatív prím párok</th><td>\(\sum\mu(d)\lfloor N/d\rfloor^2\to6N^2/\pi^2\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Mediáns</b><span>Számlálót és nevezőt külön adunk.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Determináns</b><span>\(bc-ad=1\) megmarad.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Számolj</b><span>Szitával vagy a φ összegével.</span></div>
+    </div>
+    <p>A következő téma a kongruenciák: maradékokkal számolni, ahol az „egyszerű alak” fogalma a legnagyobb közös osztón múlik.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 4.5 KONGRUENCIÁK ================= -->
+<header class="hero page" id="o-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.5</div>
+    <h1>Kongruenciák</h1>
+    <p class="lead">Két szám kongruens \(m\) szerint, ha ugyanazt a maradékot adják. Maradékokkal ugyanúgy lehet számolni, mint számokkal, de az osztás csak akkor működik, ha az osztó relatív prím a modulushoz.</p>
+    <div class="formula">\(a\equiv b\pmod m\iff m\mid a-b\)</div>
+  </div>
+  <div class="stage">
+    <svg id="o-hero" role="img" aria-label="Szorzótábla-kör: minden k pontot az a·k mod 60 ponttal kötünk össze"></svg>
+    <div class="counter"><span id="o-hero-a">a = 2</span><span>modulus: <b>60</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen 60 pont áll egy körön, és minden \(k\)-t összekötünk az \(a\cdot k\bmod60\) ponttal. A \(2\)-es szorzónál szív alakú burkológörbe jön elő, a 3-asnál egy kétszirmú alakzat, és minden \(a\) újabb mintát ad. A számelmélet nyelvén ez a „maradékok szorzása”. A fejezet három dolgot tisztáz: mikor lehet maradékokkal osztani (az inverz), hogyan lehet több modulust egyszerre kezelni (a kínai maradéktétel), és mi történik a hatványokkal (az Euler–Fermat-tétel).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="o-szamolas">
+  <div class="body">
+    <div class="eyebrow">§1 · Számolás maradékokkal</div>
+    <h2>Összeadás, szorzás, osztás</h2>
+    <p>Ha \(a\equiv a'\) és \(b\equiv b'\pmod m\), akkor \(a+b\equiv a'+b'\) és \(ab\equiv a'b'\). Ezért egy hosszú kifejezést bármikor „redukálhatunk” \(m\)-mel, akár minden lépés után. Így működnek az oszthatósági szabályok is: mivel \(10\equiv1\pmod9\), egy szám \(9\)-es maradéka a számjegyei összegének maradéka. Hasonlóan \(10\equiv-1\pmod{11}\), ezért a \(11\)-es maradékot a számjegyek váltakozó összege adja.</p>
+    <p>Az osztás kényesebb. A \(2\cdot3\equiv2\cdot0\pmod6\), de \(3\not\equiv0\): a 2-vel nem lehet egyszerűsíteni. Általában \(ak\equiv bk\pmod m\) csak azt adja, hogy \(a\equiv b\pmod{m/\gcd(m,k)}\). A \(k\)-nak akkor van inverze, azaz van olyan \(k'\), hogy \(kk'\equiv1\), ha \(\gcd(k,m)=1\): ekkor a Bézout-azonosság (4.1) \(1=kx+my\)-t ad, és \(k'=x\bmod m\). Az inverzzel rendelkező maradékok száma \(\varphi(m)\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="o-s-m">modulus m <input type="range" id="o-s-m" min="2" max="40" value="12"> <span class="mono" id="o-s-mv">12</span></label>
+      </div>
+      <div class="jt" id="o-s-t" aria-label="A maradékok és inverzeik"></div>
+      <div class="info" id="o-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A cellákban a maradék alatt az inverze áll, vagy – ha nincs inverze. A kiemelt cellák az „egységek”, vagyis az invertálható maradékok.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-kinai">
+  <div class="body">
+    <div class="eyebrow">§2 · A kínai maradéktétel</div>
+    <h2>Több modulus egyszerre</h2>
+    <p>Ha az \(m_1,\dots,m_k\) modulusok páronként relatív prímek, akkor minden \((r_1,\dots,r_k)\) maradékrendszerhez pontosan egy \(x\bmod M\) van, ahol \(M=m_1\cdots m_k\), és \(x\equiv r_i\pmod{m_i}\). A klasszikus példa a Sun Zi-féle feladat: \(x\equiv2\pmod3\), \(x\equiv3\pmod5\), \(x\equiv2\pmod7\) megoldása \(x=23\) modulo \(105\).</p>
+    <p>A megoldás konstruktív. Legyen \(M_i=M/m_i\). Az \(M_i\) relatív prím \(m_i\)-hez, így van inverze: \(y_i\) úgy, hogy \(M_iy_i\equiv1\pmod{m_i}\). Ekkor</p>
+    <div class="eq gold">\[x=\sum_{i}r_iM_iy_i\bmod M.\]</div>
+    <p>Valóban, a \(j\)-edik modulusnál minden \(i\ne j\) tag osztható \(m_j\)-vel, a \(j\)-edik pedig \(r_j\cdot1\)-et ad. Az egyértelműség abból jön, hogy két megoldás különbsége minden \(m_i\)-vel osztható, így az \(M\)-mel is. Ebből a bijekcióból az \(\varphi(mn)=\varphi(m)\varphi(n)\) is következik relatív prím \(m,n\)-re.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="o-k-p">modulusok <select id="o-k-p"><option value="3,5,7">3, 5, 7</option><option value="4,9,5">4, 9, 5</option><option value="5,7,11">5, 7, 11</option><option value="8,9,5">8, 9, 5</option></select></label>
+        <label class="rng" for="o-k-1">r₁ <input type="range" id="o-k-1" min="0" max="2" value="2"> <span class="mono" id="o-k-1v">2</span></label>
+        <label class="rng" for="o-k-2">r₂ <input type="range" id="o-k-2" min="0" max="4" value="3"> <span class="mono" id="o-k-2v">3</span></label>
+        <label class="rng" for="o-k-3">r₃ <input type="range" id="o-k-3" min="0" max="6" value="2"> <span class="mono" id="o-k-3v">2</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="o-k-t"></table></div>
+      <div class="info" id="o-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tétel hamis, ha a modulusok nem relatív prímek: \(x\equiv1\pmod4\) és \(x\equiv2\pmod6\) között ellentmondás van, mert az első páratlan, a második páros számot ír elő.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-euler">
+  <div class="body">
+    <div class="eyebrow">§3 · Euler–Fermat</div>
+    <h2>Hatványok maradékai</h2>
+    <p>Ha \(\gcd(a,m)=1\), akkor az \(a\)-val való szorzás az invertálható maradékok halmazát önmagára képezi (nem veszít el és nem ismétel értéket). Ezért a halmaz minden elemének szorzata ugyanaz marad, ha mindet \(a\)-val szorozzuk, vagyis \(a^{\varphi(m)}P\equiv P\), ahol \(P\) invertálható, és lehet vele egyszerűsíteni:</p>
+    <div class="eq gold">\[a^{\varphi(m)}\equiv1\pmod m\qquad(\gcd(a,m)=1).\]</div>
+    <p>Prím \(m=p\)-re ez a kis Fermat-tétel: \(a^{p-1}\equiv1\pmod p\). A \(\varphi\) a prímfelbontásból számolható: \(\varphi(m)=m\prod_{p\mid m}(1-\tfrac1p)\), és érvényes a Gauss-azonosság is, \(\sum_{d\mid m}\varphi(d)=m\). Az \(a\) rendje (a legkisebb \(k\ge1\), amelyre \(a^k\equiv1\)) osztja \(\varphi(m)\)-et, de lehet kisebb is.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="o-e-a">a <input type="range" id="o-e-a" min="1" max="200" value="3"> <span class="mono" id="o-e-av">3</span></label>
+        <label class="rng" for="o-e-m">m <input type="range" id="o-e-m" min="2" max="200" value="40"> <span class="mono" id="o-e-mv">40</span></label>
+      </div>
+      <div class="info" id="o-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A tétel akkor is hasznos, ha nem teljes: a modulus prímfelbontásán egyenként számolhatunk, és a kínai maradéktétellel rakhatjuk össze az eredményt.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Inverz, hatvány, négyzetek</h2>
+    <details>
+      <summary><span class="sq">1. Keresd meg a \(7\) inverzét \(40\) szerint.</span></summary>
+      <div class="ans">
+        <p>Euklidész: \(40=5\cdot7+5\), \(7=1\cdot5+2\), \(5=2\cdot2+1\). Visszafelé:</p>
+        <div class="eq">\[\begin{aligned}1&=5-2\cdot2=5-2(7-5)=3\cdot5-2\cdot7\\&=3(40-5\cdot7)-2\cdot7=3\cdot40-17\cdot7.\end{aligned}\]</div>
+        <p>Tehát \(-17\equiv23\) az inverz. Ellenőrzés: \(7\cdot23=161=4\cdot40+1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mi a \(7^{2026}\) utolsó két számjegye?</span></summary>
+      <div class="ans">
+        <p>\(7^2=49\), \(7^4=2401\equiv1\pmod{100}\). Mivel \(2026=4\cdot506+2\), \(7^{2026}\equiv7^2=49\). Az utolsó két számjegy 49. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mutasd meg, hogy az \(x^2+y^2=4k+3\) egyenletnek nincs egész megoldása.</span></summary>
+      <div class="ans">
+        <p>Egy négyzet 4-es maradéka 0 vagy 1 (\(0^2,1^2,2^2\equiv0,1,0\) és \(3^2\equiv1\)). Két négyzet összegének 4-es maradéka így 0, 1 vagy 2, soha nem 3.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki \(\varphi(36)\)-ot, és ellenőrizd a Gauss-azonosságot \(36\)-ra.</span></summary>
+      <div class="ans">
+        <p>\(36=2^2\cdot3^2\), \(\varphi(36)=36\cdot\tfrac12\cdot\tfrac23=12\). A \(36\) osztói: 1, 2, 3, 4, 6, 9, 12, 18, 36, a \(\varphi\) értékeik 1, 1, 2, 2, 2, 6, 4, 6, 12, összegük 36. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat gyorsítható az Euler-tétellel is: \(\varphi(100)=40\), de a rend itt 4, ami sokkal kisebb.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="o-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A kongruenciák szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Feltétel, képlet</th></tr>
+      <tr><th>összeadás, szorzás</th><td>mindig kompatibilis a kongruenciával</td></tr>
+      <tr><th>inverz</th><td>létezik \(\iff\gcd(a,m)=1\); a Bézout-együttható</td></tr>
+      <tr><th>kínai maradéktétel</th><td>páronként relatív prím \(m_i\): egyetlen \(x\bmod M\)</td></tr>
+      <tr><th>Euler</th><td>\(a^{\varphi(m)}\equiv1\pmod m\), ha \(\gcd(a,m)=1\)</td></tr>
+      <tr><th>\(\varphi\)</th><td>\(m\prod(1-1/p)\); \(\sum_{d\mid m}\varphi(d)=m\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Redukálj</b><span>Minden lépés után mod \(m\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Invertálj</b><span>Csak relatív prímmel lehet.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Bontsd szét</b><span>Prímhatványokra, majd rakd össze.</span></div>
+    </div>
+    <p>A 4. fejezet témái itt véget érnek. A fejezetvégi feladatok a 4.6-ban következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
+
+<!-- ================= 4.6 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="v-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.6</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat az oszthatóságról, a prímekről, a faktoriálisról, a törtekről és a kongruenciákról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(a\equiv b\pmod m\)</div>
+  </div>
+  <div class="stage">
+    <svg id="v-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="v-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A számelméletben a számolás ritkán nehéz, a nehéz az, hogy melyik szerszámot kell elővenni. Ezért a feladatok szintenként váltanak: a bemelegítőben egy-egy szerszámot használsz (euklideszi algoritmus, Legendre-képlet), az alapszinten a kongruenciákkal és a kínai maradéktétellel dolgozol, a haladó szinten bizonyítani kell, a kutatási szinten pedig a számítógép segít sejteni, és te indokolsz. A feladatok sajátok, a könyv szellemében íródtak, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="v-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>Euklidész, Bézout és a faktoriális nullái: egy-egy szerszám, mindegyik a fejezet elejéről.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki \(\gcd(1001,770)\)-et és \(\operatorname{lcm}(1001,770)\)-et.</span></summary>
+      <div class="ans">
+        <p>\(1001=1\cdot770+231\), \(770=3\cdot231+77\), \(231=3\cdot77\). A legnagyobb közös osztó 77. A legkisebb közös többszörös \(1001\cdot770/77=10010\).</p>
+        <p><b>Ellenőrzés:</b> \(1001=7\cdot11\cdot13\) és \(770=2\cdot5\cdot7\cdot11\), a közös tényezők \(7\cdot11=77\), és \(2\cdot5\cdot7\cdot11\cdot13=10010\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Keress egész \(x,y\)-t, amelyre \(91x+35y=\gcd(91,35)\).</span></summary>
+      <div class="ans">
+        <p>\(91=2\cdot35+21\), \(35=1\cdot21+14\), \(21=1\cdot14+7\), \(14=2\cdot7\), tehát a legnagyobb közös osztó 7. Visszafelé:</p>
+        <div class="eq">\[7=21-14=21-(35-21)=2\cdot21-35=2(91-2\cdot35)-35=2\cdot91-5\cdot35.\]</div>
+        <p><b>Ellenőrzés:</b> \(x=2\), \(y=-5\): \(182-175=7\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Hány nullára végződik a \(200!\)?</span></summary>
+      <div class="ans">
+        <p>A záró nullák száma \(\varepsilon_5(200!)\), vagyis</p>
+        <div class="eq">\[\Bigl\lfloor\frac{200}5\Bigr\rfloor+\Bigl\lfloor\frac{200}{25}\Bigr\rfloor+\Bigl\lfloor\frac{200}{125}\Bigr\rfloor=40+8+1=49.\]</div>
+        <p><b>Ellenőrzés:</b> a \(200!\) tényleges számjegyeit kiszámolva 49 záró nullát kapunk. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladatban a két felbontás is megadja az eredményt, de az euklideszi algoritmus akkor is működik, ha a felbontás nem ismert.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="v-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Kongruenciák, felbontás, bizonyítás</h2>
+    <p>Három alapfeladat a maradékokról és a prímfelbontásról, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Mi a \(3^{2026}\) utolsó három számjegye?</span></summary>
+      <div class="ans">
+        <p>Az utolsó három számjegy a \(3^{2026}\bmod1000\) maradék. Mivel \(\gcd(3,1000)=1\) és \(\varphi(1000)=1000\cdot\tfrac12\cdot\tfrac45=400\), az Euler-tétel szerint \(3^{400}\equiv1\). A \(2026=5\cdot400+26\), így \(3^{2026}\equiv3^{26}\pmod{1000}\). A hatványozás négyzetre emeléssel:</p>
+        <div class="eq">\[3^8\equiv561,\quad3^{16}\equiv561^2\equiv721,\quad3^{26}=3^{16}\cdot3^8\cdot3^2\equiv721\cdot561\cdot9\equiv481\cdot9\equiv329.\]</div>
+        <p><b>Ellenőrzés:</b> a közvetlen modulo hatványozás 329-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Oldd meg: \(x\equiv3\pmod8\), \(x\equiv4\pmod9\), \(x\equiv2\pmod5\).</span></summary>
+      <div class="ans">
+        <p>A modulusok páronként relatív prímek, \(M=360\). Legyen \(M_1=45\equiv5\pmod8\), inverze 5 (\(25\equiv1\)). Legyen \(M_2=40\equiv4\pmod9\), inverze 7 (\(28\equiv1\)). Legyen \(M_3=72\equiv2\pmod5\), inverze 3 (\(6\equiv1\)). Ekkor</p>
+        <div class="eq">\[x\equiv3\cdot45\cdot5+4\cdot40\cdot7+2\cdot72\cdot3=675+1120+432=2227\equiv67\pmod{360}.\]</div>
+        <p><b>Ellenőrzés:</b> \(67=8\cdot8+3=7\cdot9+4=13\cdot5+2\), és 0 és 359 között más megoldás nincs. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Hány pozitív osztója van a \(360\)-nak, és mennyi az osztók összege?</span></summary>
+      <div class="ans">
+        <p>\(360=2^3\cdot3^2\cdot5\). Az osztók száma \(\tau=(3+1)(2+1)(1+1)=24\). Az osztók összege multiplikatív:</p>
+        <div class="eq">\[\sigma(360)=(1+2+4+8)(1+3+9)(1+5)=15\cdot13\cdot6=1170.\]</div>
+        <p><b>Ellenőrzés:</b> a 360 osztóinak közvetlen összeadása 1170. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: \(\varepsilon_2(n!)\le n-1\), egyenlőség pontosan a kettőhatványoknál. Mennyi \(\varepsilon_2(100!)\)?</span></summary>
+      <div class="ans">
+        <p>A Legendre-képlet számjegyösszeges alakja szerint \(\varepsilon_2(n!)=n-s_2(n)\), ahol \(s_2(n)\) az \(n\) bináris alakjában az egyesek száma. Minden \(n\ge1\)-nek legalább egy egyese van, tehát \(s_2(n)\ge1\), és \(s_2(n)=1\) pontosan akkor, ha \(n\) kettőhatvány. Ebből az állítás következik.</p>
+        <p>A \(100=1100100_2\) három egyest tartalmaz, így \(\varepsilon_2(100!)=100-3=97\).</p>
+        <p><b>Ellenőrzés:</b> Legendre szerint \(50+25+12+6+3+1=97\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Add meg az \(5/12\) két szomszédját az \(\mathcal F_{12}\) Farey-sorozatban.</span></summary>
+      <div class="ans">
+        <p>A bal szomszéd \(c/d\), amelyre \(5d-12c=1\) és \(d\le12\), a lehető legnagyobb \(d\)-vel. A \(5d\equiv1\pmod{12}\) megoldása \(d\equiv5\), vagyis \(d=5\) (a következő, 17, túl nagy), és \(c=(25-1)/12=2\). A jobb szomszéd \(c'/d'\), amelyre \(12c'-5d'=1\): \(5d'\equiv-1\equiv11\pmod{12}\), így \(d'=7\) és \(c'=(1+35)/12=3\).</p>
+        <p>A szomszédok \(2/5\) és \(3/7\), és a nevezők összege \(5+7=12\): az \(5/12\) pont ezek mediánsa.</p>
+        <p><b>Ellenőrzés:</b> az \(\mathcal F_{12}\) kiszámolt sorozatában \(2/5,\ 5/12,\ 3/7\) szerepel egymás mellett. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladatban az Euler-tétel csak a kitevőt rövidíti le. A hatványozást ezután is négyzetre emeléssel kell elvégezni.</p>
+    <p>A 8. feladatban a szomszédok nevezői mindig összeadódnak, amikor a tört az \(\mathcal F_n\)-ben éppen az \(n\) nevezőjű új elem.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="v-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Kísérlet, majd indoklás</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Mekkora a valószínűsége, hogy három véletlen egész szám legnagyobb közös osztója 1? Általánosítsd a \(6/\pi^2\) eredményt.</span></summary>
+      <div class="ans">
+        <p>A 4.4 Möbius-szitája három számra is működik: az \(1\ldots N\) közötti hármasok közül azok, amelyekben \(d\) mindhárom számot osztja, \(\lfloor N/d\rfloor^3\) darab, tehát</p>
+        <div class="eq">\[\#\{\gcd(a,b,c)=1\}=\sum_{d=1}^{N}\mu(d)\Bigl\lfloor\frac Nd\Bigr\rfloor^3\ \Longrightarrow\ \frac1{N^3}\#\to\sum_{d\ge1}\frac{\mu(d)}{d^3}=\frac1{\zeta(3)}\approx0{,}8319.\]</div>
+        <p>Itt \(\zeta(3)=\sum1/k^3\approx1{,}2021\). Hasonlóan \(k\) számra \(1/\zeta(k)\) adódik. Háromnál nagyobb az esély, mint kettőnél, mert közös osztót három számnak nehezebb találnia.</p>
+        <p><b>Ellenőrzés:</b> \(N=100\)-ra a megszámolt hármasok aránya \(832693/10^6=0{,}8327\), míg \(1/\zeta(3)=0{,}8319\). A kísérlet más \(N\)-re is összeveti a számolást. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="v-t-n">N <input type="range" id="v-t-n" min="10" max="100" value="60"> <span class="mono" id="v-t-nv">60</span></label>
+      </div>
+      <div class="info" id="v-t-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Keress olyan összetett \(n\)-et, amelyre \(2^{n-1}\equiv1\pmod n\). Léteznek-e olyan összetett \(n\)-ek, amelyekre ez minden hozzá relatív prím \(a\)-ra igaz?</span></summary>
+      <div class="ans">
+        <p>Az első példa \(n=341=11\cdot31\): \(2^{10}=1024=3\cdot341+1\equiv1\), és \(340=34\cdot10\), így \(2^{340}\equiv1\pmod{341}\). A kis Fermat-tétel megfordítása tehát hamis.</p>
+        <p>Az olyan összetett számokat, amelyekre \(a^{n-1}\equiv1\) minden \(\gcd(a,n)=1\) esetén igaz, Carmichael-számoknak hívják. A legkisebb a \(561=3\cdot11\cdot17\). Korselt kritériuma: egy összetett \(n\) pontosan akkor ilyen, ha négyzetmentes, és minden \(p\mid n\) prímre \(p-1\mid n-1\). A \(561\)-nél \(560\) osztható 2-vel, 10-zel és 16-tal. Az ok: ha \(p-1\mid n-1\), akkor \(a^{n-1}=(a^{p-1})^{(n-1)/(p-1)}\equiv1\pmod p\) minden prímre, és a kínai maradéktétel összerakja ezeket \(n\)-re.</p>
+        <p><b>Ellenőrzés:</b> \(10\,000\)-ig hét Carmichael-szám van: 561, 1105, 1729, 2465, 2821, 6601, 8911, és mindegyikre a Fermat-feltétel minden hozzá relatív prím alapra teljesül. A kísérlet kilistázza őket. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="v-c-n">határ N <input type="range" id="v-c-n" min="100" max="10000" step="100" value="3000"> <span class="mono" id="v-c-nv">3000</span></label>
+      </div>
+      <div class="info" id="v-c-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(a^{n-1}\equiv1\) teszt az \(a=2\) alappal is sokszor jól különbözteti meg a prímeket az összetettektől: \(10\,000\)-ig csak 22 összetett szám téveszt meg. A Carmichael-számok viszont minden alapnál átcsúsznak.</p>
+  </aside>
+</section>
+
 <!-- ================= 1.4 FELADATOK (a fejezet végén) ================= -->
 <header class="hero page" id="w-bevezeto">
   <div>
@@ -4251,6 +5091,12 @@ const TOPICS={
   mod:{"n": "3.4", "t": "A „mod” művelet", "ch": 3, "prefix": "u-", "pages": [["bevezeto", "Bevezető"], ["definicio", "Definíció"], ["tulajdonsag", "Azonosságok"], ["felosztas", "Igazságos felosztás"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.4 A „mod” művelet. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   padloosszeg:{"n": "3.5", "t": "Összegek", "ch": 3, "prefix": "t-", "pages": [["bevezeto", "Bevezető"], ["racspont", "Rácspontok"], ["gyokok", "Négyzetgyökök összege"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.5 Összegek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokpadlo:{"n": "3.6", "t": "Feladatok", "ch": 3, "prefix": "y-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 3. fejezet, 3.6 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  oszthatosag:{"n": "4.1", "t": "Oszthatóság", "ch": 4, "prefix": "k-", "pages": [["bevezeto", "Bevezető"], ["euklidesz", "Az euklideszi algoritmus"], ["bezout", "Bézout és a kiterjesztett algoritmus"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.1 Oszthatóság. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  primek:{"n": "4.2", "t": "Prímek", "ch": 4, "prefix": "l-", "pages": [["bevezeto", "Bevezető"], ["vegtelen", "Végtelen sok prím"], ["szita", "Eratoszthenész szitája"], ["felbontas", "Egyértelmű felbontás"], ["eloszlas", "A prímek eloszlása"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.2 Prímek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  faktorialis:{"n": "4.3", "t": "A faktoriális osztói", "ch": 4, "prefix": "m-", "pages": [["bevezeto", "Bevezető"], ["legendre", "Legendre képlete"], ["nullak", "Záró nullák"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.3 A faktoriális osztói. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  sternbrocot:{"n": "4.4", "t": "Relatív prímek", "ch": 4, "prefix": "n-", "pages": [["bevezeto", "Bevezető"], ["fa", "A Stern–Brocot-fa"], ["farey", "A Farey-sorozat"], ["valoszinuseg", "Mennyi a valószínűsége?"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.4 Relatív prímek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  kongruencia:{"n": "4.5", "t": "Kongruenciák", "ch": 4, "prefix": "o-", "pages": [["bevezeto", "Bevezető"], ["szamolas", "Számolás maradékokkal"], ["kinai", "A kínai maradéktétel"], ["euler", "Euler–Fermat és a φ"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.5 Kongruenciák. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  feladatokszam:{"n": "4.6", "t": "Feladatok", "ch": 4, "prefix": "v-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 4. fejezet, 4.6 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatok:{"n": "1.4", "t": "Feladatok", "ch": 1, "prefix": "w-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.4 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."}
 };
 const CH=[
@@ -4261,7 +5107,7 @@ const CH=[
           {id:"josephus",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."},{id:"feladatok",d:"Kilenc saját feladat négy szinten, a fejezet végén: számolás, bizonyítás, kísérlet. Teljes megoldásokkal."}]},
  {"n": 2, "t": "Összegek", "d": "Szigma-jelölés, összegek és rekurziók, többszörös összegek, véges analízis, végtelen összegek.", "lead": "Az összegek a diszkrét matematika alapműveletei. A fejezet azt tanítja meg, hogyan lehet őket felírni, átalakítani és kiszámolni: a jelöléstől a zárt alakig, véges és végtelen esetben.", "topics": [{"id": "jelolesek", "d": "Szigma-jel, feltétel az összegzés alatt, Iverson-zárójel. Szigma-gép és összeg-téglalapok."}, {"id": "rekurziok", "d": "Minden összeg rekurzió, és sok rekurzió összeggé alakítható. Összegzőtényező, a gyorsrendezés átlagos költsége."}, {"id": "kezeles", "d": "Elosztás, csoportosítás, átrendezés, tükrözés és a perturbáció módszere."}, {"id": "tobbszoros", "d": "Kétszeres összegek, tartományok, a szummák felcserélése."}, {"id": "modszerek", "d": "A négyzetek összege öt módszerrel."}, {"id": "veges", "d": "Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."}, {"id": "vegtelen", "d": "Konvergencia, teleszkópos összegek, az átrendezés tétele."}, {"id": "feladatokosszeg", "d": "Tíz saját feladat négy szinten az összegekről, megoldással, programmal ellenőrizve."}]},
   {"n": 3, "t": "Egészrész-függvények", "d": "Alsó és felső egészrész, mod, spektrumok.", "lead": "A padló és a plafon az egész és a valós számok közti híd. A fejezet a szabályaikat, a rekurziókban és összegekben való használatukat, valamint a mod műveletet tárgyalja.", "topics": [{"id": "padlo", "d": "⌊x⌋ és ⌈x⌉, a szabályok és az integralitási tétel."}, {"id": "alkalmazasok", "d": "Egészek intervallumban, Beatty-sorozatok."}, {"id": "padlorek", "d": "Padlós rekurziók: keresés, rendezés, általánosított Josephus."}, {"id": "mod", "d": "A mod mint kétváltozós művelet, igazságos felosztás."}, {"id": "padloosszeg", "d": "Padlós összegek: rácspontok, reciprocitás, ⌊√k⌋ összege."}, {"id": "feladatokpadlo", "d": "Tíz saját feladat négy szinten a padlóról, a plafonról, a modról és az egészrészes összegekről."}]},
- {n:4,t:"Számelmélet",d:"Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa."},
+  {"n": 4, "t": "Számelmélet", "d": "Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa.", "lead": "A számelmélet az egész számok szerkezetét vizsgálja: ki osztja kit, hogyan bomlik a szám prímekre, és mit tudunk a maradékokról. A fejezet az euklideszi algoritmustól a kínai maradéktételig és az Euler-függvényig vezet.", "topics": [{"id": "oszthatosag", "d": "Legnagyobb közös osztó, Euklidész algoritmusa, Bézout-azonosság."}, {"id": "primek", "d": "Prímek végtelensége, szita, törzstényezős felbontás, π(x)."}, {"id": "faktorialis", "d": "Hányszor osztja a p prím az n!-t: Legendre képlete, egészrészekkel."}, {"id": "sternbrocot", "d": "Törtek a Stern–Brocot-fában, Farey-sorozat, relatív prímek aránya."}, {"id": "kongruencia", "d": "Kongruenciák, inverz, kínai maradéktétel, Euler φ-függvénye."}, {"id": "feladatokszam", "d": "Tíz saját feladat négy szinten a számelméletről, megoldással, programmal ellenőrizve."}]},
  {n:5,t:"Binomiális együtthatók",d:"Azonosságok, hipergeometrikus függvények."},
  {n:6,t:"Speciális számok",d:"Stirling-, Euler-, harmonikus, Bernoulli- és Fibonacci-számok."},
  {n:7,t:"Generátorfüggvények",d:"Rekurziók megoldása hatványsorokkal."},
@@ -5523,6 +6369,266 @@ function yRoot(){
   $("#y-rinfo").innerHTML=`m = ⌊n<sup>1/${r}</sup>⌋ = ${m} &nbsp;·&nbsp; tagonkénti összeg = ${S}<br>m(n+1) − Σ j<sup>${r}</sup> = ${m}·${n+1} − ${yPow[r](m)} = ${f} ${ok(S===f)}`;
 }
 ["#y-r","#y-m"].forEach(i=>$(i).addEventListener("input",yRoot));yRoot();
+
+/* ================= 4.1 OSZTHATÓSÁG ================= */
+const kSteps=(a,b)=>{const s=[];while(b){const q=Math.floor(a/b),r=a%b;s.push([a,q,b,r]);a=b;b=r;}return {s,g:a};};
+const kGcd=(a,b)=>{while(b){[a,b]=[b,a%b];}return a;};
+function kXgcd(a,b){let r0=a,r1=b,x0=1,x1=0,y0=0,y1=1;const rows=[[r0,"–",x0,y0]];rows.push([r1,"–",x1,y1]);
+  while(r1){const q=Math.floor(r0/r1);[r0,r1]=[r1,r0-q*r1];[x0,x1]=[x1,x0-q*x1];[y0,y1]=[y1,y0-q*y1];rows.push([r1,q,x1,y1]);}
+  return {g:r0,x:x0,y:y0,rows};}
+c2hero("oszthatosag-bevezeto",1000,5,fr=>{
+  const s=$("#k-hero"),W=420,H=250,A=252,B=105,k=1.4,ox=33,oy=48;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const cols=["var(--accent)","var(--accent-2)","var(--good)"];
+  const sq=[];for(let i=0;i<2;i++)sq.push({x:i*105,y:0,s:105,c:0});
+  for(let i=0;i<2;i++)sq.push({x:210,y:i*42,s:42,c:1});
+  for(let i=0;i<2;i++)sq.push({x:210+i*21,y:84,s:21,c:2});
+  const upto=[0,2,4,6,6][Math.min(fr,4)];
+  el("rect",{x:ox,y:oy,width:A*k,height:B*k,rx:3,style:"fill:none;stroke:var(--line);stroke-width:2"},s);
+  sq.slice(0,upto).forEach(q=>{el("rect",{x:ox+q.x*k,y:oy+q.y*k,width:q.s*k,height:q.s*k,rx:2,style:`fill:${cols[q.c]};opacity:.85;stroke:var(--paper);stroke-width:1.5`},s);
+    txt(s,ox+(q.x+q.s/2)*k,oy+(q.y+q.s/2)*k+4,q.s,"ink");});
+  const lab=["252 × 105","252 = 2·105 + 42","105 = 2·42 + 21","42 = 2·21 + 0","42 = 2·21 + 0"][Math.min(fr,4)];
+  $("#k-hero-a").textContent=lab;$("#k-hero-b").textContent=fr>=3?"21":"?";
+});
+/* --- §1 --- */
+function kEuk(){
+  const a=+$("#k-e-a").value,b=+$("#k-e-b").value;$("#k-e-av").textContent=a;$("#k-e-bv").textContent=b;
+  const {s,g}=kSteps(a,b),l=a/g*b;
+  let h="<tr><th>a</th><th>q</th><th>b</th><th>maradék</th></tr>";
+  s.forEach(r=>{h+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td></tr>`;});
+  $("#k-e-t").innerHTML=h;
+  $("#k-e-info").innerHTML=`gcd(${a}, ${b}) = <b>${g}</b> &nbsp;·&nbsp; lcm = ${l} &nbsp;·&nbsp; gcd·lcm = ${g*l} = a·b = ${a*b} ${ok(g*l===a*b)}<br>lépések száma: ${s.length}`;
+}
+$("#k-e-p").addEventListener("change",()=>{const v=$("#k-e-p").value.split(",").map(Number);if(v[0]){$("#k-e-a").value=v[0];$("#k-e-b").value=v[1];kEuk();}});
+["#k-e-a","#k-e-b"].forEach(i=>$(i).addEventListener("input",()=>{$("#k-e-p").value="0,0";kEuk();}));kEuk();
+/* --- §2 --- */
+function kBez(){
+  const a=+$("#k-b-a").value,b=+$("#k-b-b").value,c=+$("#k-b-c").value;
+  $("#k-b-av").textContent=a;$("#k-b-bv").textContent=b;$("#k-b-cv").textContent=c;
+  const r=kXgcd(a,b);let h="<tr><th>r<sub>i</sub></th><th>q</th><th>x<sub>i</sub></th><th>y<sub>i</sub></th><th>a·x + b·y</th></tr>";
+  r.rows.forEach(w=>{h+=`<tr><td>${w[0]}</td><td>${w[1]}</td><td>${c2sg(w[2])}</td><td>${c2sg(w[3])}</td><td>${a*w[2]+b*w[3]}</td></tr>`;});
+  $("#k-b-t").innerHTML=h;
+  const g=r.g;let t=`${a}·(${c2sg(r.x)}) + ${b}·(${c2sg(r.y)}) = ${a*r.x+b*r.y} = gcd = ${g} ${ok(a*r.x+b*r.y===g)}<br>`;
+  if(c%g===0){const m=c/g,x0=r.x*m,y0=r.y*m,db=b/g,da=a/g;
+    t+=`${a}x + ${b}y = ${c}: megoldható (${g} | ${c}). Egy megoldás: x = ${c2sg(x0)}, y = ${c2sg(y0)} ${ok(a*x0+b*y0===c)}<br>összes: x = ${c2sg(x0)} + ${db}t, y = ${c2sg(y0)} − ${da}t; például t = 1: (${c2sg(x0+db)}, ${c2sg(y0-da)}) ${ok(a*(x0+db)+b*(y0-da)===c)}`;
+  }else t+=`${a}x + ${b}y = ${c}: nincs egész megoldás, mert ${g} ∤ ${c}.`;
+  $("#k-b-info").innerHTML=t;
+}
+["#k-b-a","#k-b-b","#k-b-c"].forEach(i=>$(i).addEventListener("input",kBez));kBez();
+
+/* ================= 4.2 PRÍMEK ================= */
+function lFactor(n){const f=[];for(let d=2;d*d<=n;d++){let e=0;while(n%d===0){n/=d;e++;}if(e)f.push([d,e]);}if(n>1)f.push([n,1]);return f;}
+function lSieve(n){const s=new Uint8Array(n+1).fill(1);s[0]=s[1]=0;for(let i=2;i*i<=n;i++)if(s[i])for(let j=i*i;j<=n;j+=i)s[j]=0;return s;}
+const lPow=(f)=>f.map(([p,e])=>e>1?`${p}<sup>${e}</sup>`:`${p}`).join(" · ")||"1";
+c2hero("primek-bevezeto",1100,5,fr=>{
+  const s=$("#l-hero"),W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const ps=[2,3,5,7],use=ps.slice(0,Math.min(fr,4)),cw=36,ch=21,ox=30,oy=10;let left=0;
+  for(let n=1;n<=100;n++){
+    const x=ox+((n-1)%10)*cw,y=oy+Math.floor((n-1)/10)*ch;
+    const cr=n>1&&use.some(p=>n!==p&&n%p===0);
+    const isP=n>1&&lFactor(n).length===1&&lFactor(n)[0][1]===1;
+    if(!cr&&n>1)left++;
+    el("rect",{x:x+1,y:y+1,width:cw-3,height:ch-3,rx:3,style:`fill:${cr?"var(--line)":(isP&&fr>=4?"var(--accent)":"var(--paper)")};opacity:${cr?.35:1};stroke:var(--line)`},s);
+    txt(s,x+cw/2-1,y+ch/2+3,n,cr?"":"ink");
+  }
+  $("#l-hero-a").textContent=fr===0?"szitálás: –":"szitálás: "+use.join(", ");$("#l-hero-b").textContent=fr>=4?25:left;
+});
+/* --- §1 Euklidész–Mullin --- */
+function lEM(k){const t=[2];while(t.length<k){let N=1;t.forEach(x=>N*=x);N+=1;const f=lFactor(N);t.push(f[0][0]);}return t;}
+function lVeg(){
+  const k=+$("#l-v-k").value;$("#l-v-kv").textContent=k;
+  const t=lEM(k);let N=1;t.forEach(x=>N*=x);N+=1;const f=lFactor(N);
+  $("#l-v-info").innerHTML=`lista: ${t.join(", ")}<br>szorzat + 1 = ${t.join(" · ")} + 1 = <b>${N}</b> = ${lPow(f)}<br>${f.length===1&&f[0][1]===1?"ez a szám maga is prím":"ez a szám összetett"}; a legkisebb prímosztó: <b>${f[0][0]}</b>, és ez nincs a listában ${ok(!t.includes(f[0][0]))}`;
+}
+$("#l-v-k").addEventListener("input",lVeg);lVeg();
+/* --- §2 szita --- */
+function lSzita(){
+  const N=+$("#l-s-n").value,P=+$("#l-s-p").value;$("#l-s-nv").textContent=N;$("#l-s-pv").textContent=P;
+  const mark=new Uint8Array(N+1);const used=[];
+  for(let p=2;p<=P;p++){if(lFactor(p).length===1&&lFactor(p)[0][1]===1){used.push(p);for(let j=p*p;j<=N;j+=p)mark[j]=1;}}
+  const pr=lSieve(N);let h="",left=0;
+  for(let n=2;n<=N;n++){if(!mark[n])left++;const isUsed=used.includes(n);
+    h+=`<span class="jc${isUsed?" dr":""}" style="${mark[n]?"opacity:.3;text-decoration:line-through":""}">${n}</span>`;}
+  $("#l-s-t").innerHTML=h;
+  const pi=pr.reduce((a,b)=>a+b,0),full=P*P>=N;
+  $("#l-s-info").innerHTML=`szitált prímek: ${used.join(", ")||"–"} &nbsp;·&nbsp; megmaradt (2-től): ${left}<br>${full?`P² = ${P*P} ≥ N, ezért a megmaradtak pontosan a prímek: π(${N}) = ${pi} ${ok(left===pi)}`:`P² = ${P*P} &lt; N: a megmaradtak között még összetett számok is vannak (${left-pi} db)`}`;
+}
+["#l-s-n","#l-s-p"].forEach(i=>$(i).addEventListener("input",lSzita));lSzita();
+/* --- §3 felbontás --- */
+function lFel(){
+  const a=+$("#l-f-a").value,b=+$("#l-f-b").value;$("#l-f-av").textContent=a;$("#l-f-bv").textContent=b;
+  const fa=lFactor(a),fb=lFactor(b),ps=[...new Set([...fa.map(x=>x[0]),...fb.map(x=>x[0])])].sort((x,y)=>x-y);
+  const ea=p=>(fa.find(x=>x[0]===p)||[0,0])[1],eb=p=>(fb.find(x=>x[0]===p)||[0,0])[1];
+  let h="<tr><th>p</th><th>a kitevője</th><th>b kitevője</th><th>min</th><th>max</th></tr>",g=1,l=1;
+  ps.forEach(p=>{const m=Math.min(ea(p),eb(p)),M=Math.max(ea(p),eb(p));g*=p**m;l*=p**M;h+=`<tr><td>${p}</td><td>${ea(p)}</td><td>${eb(p)}</td><td>${m}</td><td>${M}</td></tr>`;});
+  $("#l-f-t").innerHTML=h;
+  const tau=f=>f.reduce((x,[,e])=>x*(e+1),1),ge=kGcd(a,b);
+  $("#l-f-info").innerHTML=`a = ${a} = ${lPow(fa)}, &nbsp; b = ${b} = ${lPow(fb)}<br>gcd = ${g}, lcm = ${l} &nbsp;·&nbsp; Euklidész szerint gcd = ${ge} ${ok(g===ge)} &nbsp;·&nbsp; gcd·lcm = ${g*l} = ab = ${a*b} ${ok(g*l===a*b)}<br>osztók száma: τ(a) = ${tau(fa)}, τ(b) = ${tau(fb)}`;
+}
+["#l-f-a","#l-f-b"].forEach(i=>$(i).addEventListener("input",lFel));lFel();
+/* --- §4 eloszlás --- */
+function lElo(){
+  const X=+$("#l-e-x").value;$("#l-e-xv").textContent=X;
+  const W=640,H=300,s=c2svg("#l-e-svg",W,H),L=46,R=12,T=14,B=26,pr=lSieve(X);
+  const pi=new Array(X+1).fill(0);for(let i=2;i<=X;i++)pi[i]=pi[i-1]+pr[i];
+  const maxV=pi[X]*1.25,xs=x=>L+(W-L-R)*x/X,ys=v=>H-B-(H-B-T)*v/maxV;
+  for(let g=0;g<=4;g++){const v=maxV*g/4;el("line",{x1:L,x2:W-R,y1:ys(v),y2:ys(v),class:"grid-l"},s);txt(s,L-6,ys(v)+4,Math.round(v),"","end");}
+  el("line",{x1:L,x2:W-R,y1:H-B,y2:H-B,class:"axis"},s);
+  const curve=(f,col,w)=>{let d="";for(let x=2;x<=X;x+=Math.max(1,Math.floor(X/300))){const v=f(x);d+=(d?"L":"M")+xs(x).toFixed(1)+" "+ys(v).toFixed(1);}el("path",{d,style:`fill:none;stroke:${col};stroke-width:${w}`},s);};
+  curve(x=>x/Math.log(x),"var(--accent-2)",2);curve(x=>x/(Math.log(x)-1),"var(--good)",2);
+  let d="";for(let x=2;x<=X;x++){d+=(d?"L":"M")+xs(x).toFixed(1)+" "+ys(pi[x]).toFixed(1);}el("path",{d,style:"fill:none;stroke:var(--accent);stroke-width:2.5"},s);
+  [["π(x)","var(--accent)"],["x/ln x","var(--accent-2)"],["x/(ln x − 1)","var(--good)"]].forEach((q,i)=>{const x=L+14+i*118;el("line",{x1:x,x2:x+22,y1:T+8,y2:T+8,style:`stroke:${q[1]};stroke-width:3`},s);txt(s,x+28,T+12,q[0],"","start");});
+  const a=X/Math.log(X),b=X/(Math.log(X)-1);
+  $("#l-e-info").innerHTML=`π(${X}) = <b>${pi[X]}</b> &nbsp;·&nbsp; x/ln x = ${fm(+a.toFixed(1))} (hiba ${fm(+((a/pi[X]-1)*100).toFixed(1))} %) &nbsp;·&nbsp; x/(ln x − 1) = ${fm(+b.toFixed(1))} (hiba ${fm(+((b/pi[X]-1)*100).toFixed(1))} %)`;
+}
+$("#l-e-x").addEventListener("input",lElo);lElo();
+
+/* ================= 4.3 A FAKTORIÁLIS OSZTÓI ================= */
+function mEps(n,p){let s=0,q=p;while(q<=n){s+=Math.floor(n/q);q*=p;}return s;}
+function mSd(n,p){let s=0;while(n){s+=n%p;n=Math.floor(n/p);}return s;}
+function mDirect(n,p){let s=0;for(let k=2;k<=n;k++){let m=k;while(m%p===0){m/=p;s++;}}return s;}
+const mNs=[4,10,20,40,70,100];
+c2hero("faktorialis-bevezeto",900,6,fr=>{
+  const n=mNs[Math.min(fr,5)],v=[2,3,5,7].map(p=>mEps(n,p));
+  c2bars(c2svg("#m-hero",420,250),v,{W:420,H:250,xl:i=>[2,3,5,7][i],color:i=>["var(--accent)","var(--accent-2)","var(--good)","var(--bad)"][i],fmt:x=>x});
+  $("#m-hero-a").textContent="n = "+n;$("#m-hero-b").textContent=v.join(", ");
+});
+function mLeg(){
+  const n=+$("#m-l-n").value,p=+$("#m-l-p").value;$("#m-l-nv").textContent=n;
+  let h="<tr><th>j</th><th>p<sup>j</sup></th><th>⌊n/p<sup>j</sup>⌋</th></tr>",s=0,q=p,j=1;
+  while(q<=n){const t=Math.floor(n/q);s+=t;h+=`<tr><td>${j}</td><td>${q}</td><td>${t}</td></tr>`;q*=p;j++;}
+  h+=`<tr><th colspan="2">összeg</th><td><b>${s}</b></td></tr>`;$("#m-l-t").innerHTML=h;
+  const d=mDirect(n,p),sd=mSd(n,p),g=(n-sd)/(p-1);
+  $("#m-l-info").innerHTML=`${n}! tényezőinek bontásából: ${d} &nbsp;·&nbsp; Legendre: ${s} ${ok(d===s)}<br>számjegyösszeg ${p}-es alapban: s = ${sd}, (n − s)/(p − 1) = (${n} − ${sd})/${p-1} = ${g} ${ok(g===s)}`;
+}
+$("#m-l-n").addEventListener("input",mLeg);$("#m-l-p").addEventListener("change",mLeg);mLeg();
+function mNull(){
+  const n=+$("#m-n-n").value,t=+$("#m-n-z").value;$("#m-n-nv").textContent=n;$("#m-n-zv").textContent=t;
+  const z=mEps(n,5);let f=-1;for(let k=0;k<=5*(t+2)+5;k++)if(mEps(k,5)===t){f=k;break;}
+  const terms=[];for(let q=5;q<=n;q*=5)terms.push(Math.floor(n/q));
+  let big=1n;for(let k=2n;k<=BigInt(Math.min(n,400));k++)big*=k;let zs=0;const st=big.toString();for(let i=st.length-1;i>=0&&st[i]==="0";i--)zs++;
+  $("#m-n-info").innerHTML=`z(${n}) = ${terms.join(" + ")||"0"} = <b>${z}</b>${n<=400?` &nbsp;·&nbsp; a ${n}! tényleg ${zs} nullára végződik ${ok(zs===z)}`:""}<br>${f>=0?`z = ${t}-et először n = <b>${f}</b>-nél éri el az n!`:`z = <b>${t}</b>-et egyetlen n! sem éri el`}`;
+}
+["#m-n-n","#m-n-z"].forEach(i=>$(i).addEventListener("input",mNull));mNull();
+
+/* ================= 4.4 RELATÍV PRÍMEK ================= */
+function nNodes(maxD){const arr=[];(function rec(l,r,d,par){if(d>maxD)return null;const m=[l[0]+r[0],l[1]+r[1]];const node={n:m[0],d:m[1],lvl:d,par:par};
+  const left=rec(l,m,d+1,node);arr.push(node);const right=rec(m,r,d+1,node);return node;})([0,1],[1,0],0,null);arr.forEach((x,i)=>x.i=i);return arr;}
+c2hero("sternbrocot-bevezeto",1100,5,fr=>{
+  const s=$("#n-hero"),W=420,H=250,nodes=nNodes(3),L=Math.min(fr,3),ox=18,dx=(W-2*ox)/nodes.length,oy=30,dy=62;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const X=n=>ox+(n.i+.5)*dx,Y=n=>oy+n.lvl*dy;let cnt=0;
+  nodes.filter(n=>n.lvl<=L).forEach(n=>{if(n.par)el("line",{x1:X(n.par),y1:Y(n.par)+10,x2:X(n),y2:Y(n)-10,style:"stroke:var(--line);stroke-width:1.5"},s);});
+  nodes.filter(n=>n.lvl<=L).forEach(n=>{cnt++;const c=["var(--accent)","var(--accent-2)","var(--good)","var(--bad)"][n.lvl];
+    el("rect",{x:X(n)-12.5,y:Y(n)-10,width:25,height:20,rx:5,style:`fill:${c};opacity:.85`},s);txt(s,X(n),Y(n)+4,n.n+"/"+n.d,"ink");});
+  $("#n-hero-a").textContent="szint: "+L;$("#n-hero-b").textContent=cnt;
+});
+/* --- §1 fa --- */
+function nPath(p,q){let l=[0,1],r=[1,0];const rows=[];let path="",det=true;
+  for(let i=0;i<200;i++){const m=[l[0]+r[0],l[1]+r[1]];if(r[0]*l[1]-l[0]*r[1]!==1)det=false;
+    if(m[0]===p&&m[1]===q){rows.push([i,l,r,m,"megtaláltuk"]);return {path,rows,det};}
+    const left=p*m[1]<q*m[0];rows.push([i,l,r,m,left?"L":"R"]);path+=left?"L":"R";if(left)r=m;else l=m;}
+  return {path,rows,det};}
+function nCf(p,q){const a=[];while(q){a.push(Math.floor(p/q));[p,q]=[q,p%q];}return a;}
+function nPathCf(a){let s="";a.forEach((x,i)=>{const c=x-(i===a.length-1?1:0);s+=(i%2?"L":"R").repeat(Math.max(0,c));});return s;}
+const nFr=(a)=>`${a[0]}/${a[1]}`;
+function nFa(){
+  let p=+$("#n-f-p").value,q=+$("#n-f-q").value;$("#n-f-pv").textContent=p;$("#n-f-qv").textContent=q;
+  const g=kGcd(p,q),pp=p/g,qq=q/g,r=nPath(pp,qq);
+  let h="<tr><th>lépés</th><th>bal</th><th>jobb</th><th>mediáns</th><th>irány</th></tr>";
+  r.rows.forEach(w=>{h+=`<tr><td>${w[0]+1}</td><td>${nFr(w[1])}</td><td>${nFr(w[2])}</td><td>${nFr(w[3])}</td><td>${w[4]}</td></tr>`;});
+  $("#n-f-t").innerHTML=h;
+  const cf=nCf(pp,qq),pc=nPathCf(cf),runs=r.path.replace(/(.)\1*/g,m=>m[0]+"<sup>"+m.length+"</sup>");
+  $("#n-f-info").innerHTML=`${g>1?`${p}/${q} = ${pp}/${qq} (egyszerűsítve)<br>`:""}út: <b>${r.path||"(gyökér)"}</b> ${r.path?"= "+runs:""} &nbsp;·&nbsp; lánctört: [${cf[0]}; ${cf.slice(1).join(", ")||"–"}]<br>az útból a lánctörttel: ${pc||"(gyökér)"} ${ok(pc===r.path)} &nbsp;·&nbsp; minden lépésben bc − ad = 1 ${ok(r.det)}`;
+}
+["#n-f-p","#n-f-q"].forEach(i=>$(i).addEventListener("input",nFa));nFa();
+/* --- §2 Farey --- */
+function nPhi(m){let c=0;for(let k=1;k<=m;k++)if(kGcd(k,m)===1)c++;return c;}
+function nFarey(n){const f=[];for(let b=1;b<=n;b++)for(let a=0;a<=b;a++)if(kGcd(a,b)===1)f.push([a,b]);f.sort((x,y)=>x[0]*y[1]-y[0]*x[1]);return f;}
+function nFar(){
+  const n=+$("#n-r-n").value;$("#n-r-nv").textContent=n;const f=nFarey(n);
+  const t=$("#n-r-t");t.style.gridTemplateColumns="repeat(auto-fill,minmax(54px,1fr))";
+  t.innerHTML=f.map(x=>`<span class="jc${x[1]===n?" dr":""}"><i style="visibility:hidden">·</i>${x[0]}/${x[1]}</span>`).join("");
+  let det=true;for(let i=0;i+1<f.length;i++){const [a,b]=f[i],[c,d]=f[i+1];if(b*c-a*d!==1)det=false;}
+  let s=1;for(let k=1;k<=n;k++)s+=nPhi(k);
+  $("#n-r-info").innerHTML=`|F<sub>${n}</sub>| = ${f.length} &nbsp;·&nbsp; 1 + Σφ(k) (k ≤ ${n}) = ${s} ${ok(f.length===s)}<br>szomszédos törtekre bc − ad = 1 ${ok(det)} &nbsp;·&nbsp; új törtek (nevező = ${n}): ${f.filter(x=>x[1]===n).length}`;
+}
+$("#n-r-n").addEventListener("input",nFar);nFar();
+/* --- §3 valószínűség --- */
+function nMu(N){const mu=new Int8Array(N+1);mu[1]=1;const sp=new Int32Array(N+1);for(let i=2;i<=N;i++)if(!sp[i])for(let j=i;j<=N;j+=i)if(!sp[j])sp[j]=i;
+  for(let n=2;n<=N;n++){const p=sp[n],m=n/p;mu[n]=m%p===0?0:-mu[m];}return mu;}
+function nVal(){
+  const N=+$("#n-v-n").value;$("#n-v-nv").textContent=N;
+  let b=0;for(let x=1;x<=N;x++)for(let y=1;y<=N;y++)if(kGcd(x,y)===1)b++;
+  const mu=nMu(N);let m=0;for(let d=1;d<=N;d++)m+=mu[d]*Math.floor(N/d)**2;
+  const sv=lSieve(N);let e=1;for(let p=2;p<=N;p++)if(sv[p])e*=1-1/(p*p);
+  $("#n-v-info").innerHTML=`közvetlen számolás: ${b} pár &nbsp;·&nbsp; Σ μ(d)⌊N/d⌋² = ${m} ${ok(b===m)}<br>arány: ${b}/${N*N} = ${fm(+(b/(N*N)).toFixed(5))} &nbsp;·&nbsp; 6/π² = ${fm(+(6/Math.PI**2).toFixed(5))} &nbsp;·&nbsp; ∏(1 − 1/p²), p ≤ ${N}: ${fm(+e.toFixed(5))}`;
+}
+$("#n-v-n").addEventListener("input",nVal);nVal();
+
+/* ================= 4.5 KONGRUENCIÁK ================= */
+const oInv=(a,m)=>{const r=kXgcd(a%m,m);return r.g===1?((r.x%m)+m)%m:null;};
+const oPow=(a,e,m)=>{let r=1%m,b=a%m;while(e>0){if(e&1)r=r*b%m;b=b*b%m;e=Math.floor(e/2);}return r;};
+function oPhi(m){let c=0;for(let k=1;k<=m;k++)if(kGcd(k,m)===1)c++;return c;}
+c2hero("kongruencia-bevezeto",1000,6,fr=>{
+  const s=$("#o-hero"),W=420,H=250,m=60,a=2+Math.min(fr,5),cx=210,cy=125,R=108;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const P=k=>[cx+R*Math.cos(2*Math.PI*k/m-Math.PI/2),cy+R*Math.sin(2*Math.PI*k/m-Math.PI/2)];
+  el("circle",{cx,cy,r:R,style:"fill:none;stroke:var(--line)"},s);
+  for(let k=0;k<m;k++){const p=P(k),q=P(a*k%m);el("line",{x1:p[0].toFixed(1),y1:p[1].toFixed(1),x2:q[0].toFixed(1),y2:q[1].toFixed(1),style:"stroke:var(--accent);stroke-width:1;opacity:.55"},s);}
+  for(let k=0;k<m;k++){const p=P(k);el("circle",{cx:p[0].toFixed(1),cy:p[1].toFixed(1),r:2.2,style:"fill:var(--accent-2)"},s);}
+  $("#o-hero-a").textContent="a = "+a;
+});
+/* --- §1 --- */
+function oSz(){
+  const m=+$("#o-s-m").value;$("#o-s-mv").textContent=m;let h="",u=0,okAll=true;
+  for(let a=1;a<m;a++){const v=oInv(a,m);if(v!==null){u++;if(a*v%m!==1%m)okAll=false;}
+    h+=`<span class="jc${v!==null?" dr":""}"><i>${a}</i>${v!==null?v:"–"}</span>`;}
+  $("#o-s-t").innerHTML=h;
+  $("#o-s-info").innerHTML=`invertálható maradékok (1…${m-1}): ${u+(m===1?1:0)} &nbsp;·&nbsp; φ(${m}) = ${oPhi(m)} ${ok(u===oPhi(m))} &nbsp;·&nbsp; minden inverzre a·a′ ≡ 1 (mod ${m}) ${ok(okAll)}`;
+}
+$("#o-s-m").addEventListener("input",oSz);oSz();
+/* --- §2 CRT --- */
+function oCrtSet(){const ms=$("#o-k-p").value.split(",").map(Number);[1,2,3].forEach((i,j)=>{const e=$("#o-k-"+i);e.max=ms[j]-1;if(+e.value>ms[j]-1)e.value=ms[j]-1;});}
+function oKi(){
+  const ms=$("#o-k-p").value.split(",").map(Number),rs=[1,2,3].map(i=>+$("#o-k-"+i).value);
+  [1,2,3].forEach(i=>$("#o-k-"+i+"v").textContent=$("#o-k-"+i).value);
+  const M=ms.reduce((a,b)=>a*b,1);let x=0,h="<tr><th>i</th><th>mᵢ</th><th>rᵢ</th><th>Mᵢ = M/mᵢ</th><th>yᵢ</th><th>rᵢ·Mᵢ·yᵢ</th></tr>";
+  ms.forEach((m,i)=>{const Mi=M/m,y=oInv(Mi%m,m),t=rs[i]*Mi*y;x+=t;h+=`<tr><td>${i+1}</td><td>${m}</td><td>${rs[i]}</td><td>${Mi}</td><td>${y}</td><td>${t}</td></tr>`;});
+  x%=M;$("#o-k-t").innerHTML=h;
+  let cnt=0;for(let k=0;k<M;k++)if(ms.every((m,i)=>k%m===rs[i]))cnt++;
+  $("#o-k-info").innerHTML=`M = ${ms.join("·")} = ${M} &nbsp;·&nbsp; x = ${x} (mod ${M})<br>ellenőrzés: ${ms.map((m,i)=>`${x} mod ${m} = ${x%m}`).join(", ")} ${ok(ms.every((m,i)=>x%m===rs[i]))} &nbsp;·&nbsp; megoldások 0…${M-1} között: ${cnt} ${ok(cnt===1)}`;
+}
+$("#o-k-p").addEventListener("change",()=>{oCrtSet();oKi();});[1,2,3].forEach(i=>$("#o-k-"+i).addEventListener("input",oKi));oCrtSet();oKi();
+/* --- §3 Euler --- */
+function oEu(){
+  const a=+$("#o-e-a").value,m=+$("#o-e-m").value;$("#o-e-av").textContent=a;$("#o-e-mv").textContent=m;
+  const g=kGcd(a,m),ph=oPhi(m);const f=lFactor(m);let phf=m;f.forEach(([p])=>{phf=phf/p*(p-1);});
+  let ds=0;for(let d=1;d<=m;d++)if(m%d===0)ds+=oPhi(d);
+  let t=`φ(${m}) = ${ph} = ${m}·∏(1 − 1/p) = ${phf} ${ok(ph===phf)} &nbsp;·&nbsp; Σ<sub>d|${m}</sub> φ(d) = ${ds} ${ok(ds===m)}<br>`;
+  if(g===1){let k=1,x=a%m;const seq=[x];while(x!==1%m&&k<500){x=x*a%m;k++;seq.push(x);}
+    t+=`gcd(${a}, ${m}) = 1, ezért a<sup>φ</sup> = ${a}<sup>${ph}</sup> ≡ <b>${oPow(a,ph,m)}</b> (mod ${m}) ${ok(oPow(a,ph,m)===1%m)}<br>az ${a} rendje: <b>${k}</b>, és ${k} | ${ph} ${ok(ph%k===0)}<br>hatványok: ${seq.slice(0,20).join(", ")}${seq.length>20?", …":""}`;}
+  else{const seq=[];let x=a%m;for(let i=0;i<14;i++){seq.push(x);x=x*a%m;}
+    t+=`gcd(${a}, ${m}) = ${g} &gt; 1: az ${a} nem invertálható, a hatványai sosem lesznek 1 (mod ${m})<br>hatványok: ${seq.join(", ")}, …`;}
+  $("#o-e-info").innerHTML=t;
+}
+["#o-e-a","#o-e-m"].forEach(i=>$(i).addEventListener("input",oEu));oEu();
+
+/* ================= 4.6 FELADATOK ================= */
+exHero("feladatokszam-bevezeto","#v-hero","#v-hero-k",[3,3,2,2]);
+function vTri(){
+  const N=+$("#v-t-n").value;$("#v-t-nv").textContent=N;
+  let b=0;for(let x=1;x<=N;x++)for(let y=1;y<=N;y++){const g=kGcd(x,y);for(let z=1;z<=N;z++)if(kGcd(g,z)===1)b++;}
+  const mu=nMu(N);let m=0;for(let d=1;d<=N;d++)m+=mu[d]*Math.floor(N/d)**3;
+  let z3=0;for(let k=1;k<=200000;k++)z3+=1/(k*k*k);
+  $("#v-t-info").innerHTML=`gcd(a,b,c) = 1 hármasok: ${b} / ${N**3} = ${fm(+(b/N**3).toFixed(5))}<br>Σ μ(d)⌊N/d⌋³ = ${m} ${ok(b===m)} &nbsp;·&nbsp; 1/ζ(3) = ${fm(+(1/z3).toFixed(5))}`;
+}
+$("#v-t-n").addEventListener("input",vTri);vTri();
+function vCar(){
+  const N=+$("#v-c-n").value;$("#v-c-nv").textContent=N;const sv=lSieve(N),ps=[],car=[];
+  for(let n=3;n<=N;n+=2){if(sv[n])continue;if(oPow(2,n-1,n)===1)ps.push(n);
+    const f=lFactor(n);if(f.length>=2&&f.every(([p,e])=>e===1&&(n-1)%(p-1)===0))car.push(n);}
+  let allOk=true;car.forEach(n=>{for(let a=2;a<n;a++)if(kGcd(a,n)===1&&oPow(a,n-1,n)!==1){allOk=false;break;}});
+  $("#v-c-info").innerHTML=`összetett n ≤ ${N}, amelyre 2<sup>n−1</sup> ≡ 1: ${ps.length} db${ps.length?` (${ps.slice(0,10).join(", ")}${ps.length>10?", …":""})`:""}<br>Carmichael-számok (Korselt): ${car.join(", ")||"nincs"} &nbsp;·&nbsp; mindegyikre minden hozzá relatív prím alapra a<sup>n−1</sup> ≡ 1 ${car.length?ok(allOk):""}`;
+}
+$("#v-c-n").addEventListener("input",vCar);vCar();
 
 /* ================= 1.4 FELADATOK ================= */
 c2hero("feladatok-bevezeto",420,10,fr=>{

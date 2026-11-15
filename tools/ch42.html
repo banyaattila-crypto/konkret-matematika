@@ -1,0 +1,167 @@
+
+<!-- ================= 4.2 PRÍMEK ================= -->
+<header class="hero page" id="l-bevezeto">
+  <div>
+    <div class="eyebrow">4. fejezet · Számelmélet · 4.2</div>
+    <h1>Prímek</h1>
+    <p class="lead">A prímek a természetes számok építőkockái: minden szám egyértelműen szorzódik össze belőlük. Végtelen sok van, de sűrűségük lassan fogy.</p>
+    <div class="formula">\(n=p_1^{e_1}p_2^{e_2}\cdots p_r^{e_r}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="l-hero" role="img" aria-label="Az 1–100 számok táblája, szitálás prímekkel"></svg>
+    <div class="counter"><span id="l-hero-a">szitálás: –</span><span>prímek: <b id="l-hero-b">100</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A képen az 1-től 100-ig terjedő számok táblája látszik. Sorra kihúzzuk a 2, a 3, az 5 és a 7 többszöröseit, és ami megmarad, az a prím. A trükk az, hogy a 10-nél nagyobb prímekkel nem kell szitálni: minden összetett szám, amely 100-nál kisebb, osztható valamelyik 10-nél kisebb prímmel. A fejezet három kérdést tárgyal: miért van végtelen sok prím, miért bomlik minden szám egyértelműen prímekre, és mit lehet mondani a prímek eloszlásáról.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="l-vegtelen">
+  <div class="body">
+    <div class="eyebrow">§1 · Végtelen sok prím</div>
+    <h2>Euklidész érve</h2>
+    <p>Tegyük fel, hogy véges sok prím van, \(p_1,\dots,p_k\). Tekintsük az \(N=p_1p_2\cdots p_k+1\) számot. Egyik \(p_i\) sem osztja \(N\)-et, mert mindegyik osztja a szorzatot, így \(N\)-nél 1 maradékot adnának. Viszont \(N>1\), tehát van prímosztója, és ez nem szerepel a listában. Ez ellentmondás.</p>
+    <p>Gyakori tévedés, hogy az \(N\) maga is prím. Ez nem igaz: \(2\cdot3\cdot7\cdot43+1=1807=13\cdot139\). Az érv csak azt állítja, hogy \(N\)-nek van egy új prímosztója. Ha mindig a legkisebb prímosztót választjuk, az Euklidész–Mullin-sorozat adódik. Az alábbi kísérlet az első \(k\) tagból indul, és kiszámolja a következőt.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="l-v-k">k (a lista hossza) <input type="range" id="l-v-k" min="1" max="8" value="4"> <span class="mono" id="l-v-kv">4</span></label>
+      </div>
+      <div class="info" id="l-v-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A sorozat első tagjai: 2, 3, 7, 43, 13, 53, 5, 6221671, 38709183810571. Nem tudjuk, hogy minden prím előfordul-e benne.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-szita">
+  <div class="body">
+    <div class="eyebrow">§2 · Eratoszthenész szitája</div>
+    <h2>Kihúzni a többszörösöket</h2>
+    <p>A szita az \(n\) alatti prímeket adja meg: sorra kihúzzuk minden prím többszöröseit \(p^2\)-től kezdve (a kisebb többszörösöket egy korábbi prím már kihúzta). Elég az \(\sqrt n\)-nél nem nagyobb prímekkel szitálni, mert minden összetett \(m\le n\) számnak van \(\sqrt n\)-nél nem nagyobb prímosztója: ha \(m=ab\) és mindkét tényező \(\gt\sqrt n\), akkor \(m\gt n\).</p>
+    <p>A tábla alatt a kiválasztott \(P\) prímig szitálunk. Amint \(P\ge\sqrt N\), a megmaradt számok pontosan a prímek.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="l-s-n">N <input type="range" id="l-s-n" min="30" max="200" value="100"> <span class="mono" id="l-s-nv">100</span></label>
+        <label class="rng" for="l-s-p">szitálás eddig: P = <input type="range" id="l-s-p" min="1" max="13" value="1"> <span class="mono" id="l-s-pv">1</span></label>
+      </div>
+      <div class="jt" id="l-s-t" aria-label="A szita táblája"></div>
+      <div class="info" id="l-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(P\) csúszkán az 1-től 13-ig terjedő értékek közül csak a prímek számítanak: a \(P=6\) ugyanaz, mint a \(P=5\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-felbontas">
+  <div class="body">
+    <div class="eyebrow">§3 · Egyértelmű felbontás</div>
+    <h2>Minden szám egyféleképpen szorzat</h2>
+    <p>Az aritmetika alaptétele: minden \(n\ge2\) egész sorrendtől eltekintve egyféleképpen írható prímek szorzataként. A létezés egyszerű (egy összetett számot addig bontunk, amíg lehet). Az egyértelműség a Bézout-azonosságból jön: ha \(p\mid ab\), akkor \(p\mid a\) vagy \(p\mid b\) (lásd 4.1), így két felbontásban ugyanazok a prímek szerepelnek.</p>
+    <p>A felbontásból minden osztóra vonatkozó mennyiség leolvasható. Ha \(n=\prod p^{e_p}\), akkor</p>
+    <div class="eq">\[\tau(n)=\prod(e_p+1),\qquad \gcd(a,b)=\prod p^{\min(e_p,f_p)},\qquad \operatorname{lcm}(a,b)=\prod p^{\max(e_p,f_p)}.\]</div>
+    <p>Az utolsó két képletből adódik a \(\gcd\cdot\operatorname{lcm}=ab\), mert \(\min+\max=e+f\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="l-f-a">a <input type="range" id="l-f-a" min="2" max="2000" value="360"> <span class="mono" id="l-f-av">360</span></label>
+        <label class="rng" for="l-f-b">b <input type="range" id="l-f-b" min="2" max="2000" value="84"> <span class="mono" id="l-f-bv">84</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="l-f-t"></table></div>
+      <div class="info" id="l-f-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az egyértelműség nem magától értetődő. A \(\mathbb Z[\sqrt{-5}]\) számai között \(6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})\) két lényegesen különböző felbontás, mert a négy tényező egyike sem bontható tovább.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-eloszlas">
+  <div class="body">
+    <div class="eyebrow">§4 · Eloszlás</div>
+    <h2>Hány prím van \(x\)-ig?</h2>
+    <p>Jelölje \(\pi(x)\) az \(x\)-et meg nem haladó prímek számát. A prímszámtétel szerint \(\pi(x)\sim x/\ln x\), vagyis a hányados 1-hez tart (Hadamard és de la Vallée Poussin, 1896). A konvergencia lassú: \(10^7\)-nél a hányados még 1,07. Az \(x/(\ln x-1)\) közelítés ezeken a méreteken sokkal jobb.</p>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>\(x\)</th><th>\(\pi(x)\)</th><th>\(x/\ln x\)</th><th>\(\pi(x)\big/(x/\ln x)\)</th></tr>
+      <tr><td>\(10\)</td><td>4</td><td>4</td><td>0,921</td></tr>
+      <tr><td>\(10^2\)</td><td>25</td><td>22</td><td>1,151</td></tr>
+      <tr><td>\(10^3\)</td><td>168</td><td>145</td><td>1,161</td></tr>
+      <tr><td>\(10^4\)</td><td>1229</td><td>1086</td><td>1,132</td></tr>
+      <tr><td>\(10^5\)</td><td>9592</td><td>8686</td><td>1,104</td></tr>
+      <tr><td>\(10^6\)</td><td>78498</td><td>72382</td><td>1,084</td></tr>
+      <tr><td>\(10^7\)</td><td>664579</td><td>620421</td><td>1,071</td></tr>
+    </table></div>
+    <p>A következő ábra az \(x\le10\,000\) tartományban rajzolja a három görbét.</p>
+    <div class="fig">
+      <svg id="l-e-svg" role="img" aria-label="A prímszámláló függvény és két közelítése"></svg>
+      <div class="info" id="l-e-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="l-e-x">x <input type="range" id="l-e-x" min="100" max="10000" step="100" value="2000"> <span class="mono" id="l-e-xv">2000</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Bertrand posztulátuma (Csebisev bizonyította, 1852): minden \(n\ge1\)-re van prím \(n\) és \(2n\) között. A fenti táblázat azt mutatja, hogy a prímek száma \(x\) növekedtével jóval gyorsabban nő, mint amennyit ez a tétel garantál.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Felbontás és prímtesztek</h2>
+    <details>
+      <summary><span class="sq">1. Bontsd prímtényezőkre a \(2^{10}-1=1023\) számot.</span></summary>
+      <div class="ans">
+        <p>\(1023=3\cdot341=3\cdot11\cdot31\). Ellenőrzés: \(3\cdot11\cdot31=1023\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Igazold: ha \(n\) összetett, akkor van \(\sqrt n\)-nél nem nagyobb prímosztója.</span></summary>
+      <div class="ans">
+        <p>Legyen \(n=ab\) és \(1\lt a\le b\). Ekkor \(a^2\le ab=n\), tehát \(a\le\sqrt n\). Az \(a\) bármelyik prímosztója is osztja \(n\)-et, és nem nagyobb \(a\)-nál.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány pozitív osztója van a \(720\)-nak?</span></summary>
+      <div class="ans">
+        <p>\(720=2^4\cdot3^2\cdot5\), tehát \(\tau(720)=(4+1)(2+1)(1+1)=30\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mutasd meg: ha \(2^n-1\) prím, akkor \(n\) is prím. Igaz-e a megfordítás?</span></summary>
+      <div class="ans">
+        <p>Ha \(n=ab\) (\(a,b\gt1\)), akkor \(2^a-1\) osztja \(2^{ab}-1\)-et, mert \(x-1\mid x^b-1\) az \(x=2^a\) helyettesítéssel. Az osztó \(\gt1\) és \(\lt2^n-1\), így \(2^n-1\) összetett. A megfordítás hamis: \(n=11\) prím, de \(2^{11}-1=2047=23\cdot89\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat miatt a Mersenne-prímeket csak prímkitevőknél kell keresni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="l-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A prímek szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Lényeg</th></tr>
+      <tr><th>végtelen sok prím</th><td>\(p_1\cdots p_k+1\)-nek van új prímosztója</td></tr>
+      <tr><th>szita</th><td>elég \(\sqrt n\)-ig szitálni</td></tr>
+      <tr><th>alaptétel</th><td>egyértelmű prímfelbontás, kitevőkkel</td></tr>
+      <tr><th>osztók száma</th><td>\(\tau(n)=\prod(e_p+1)\)</td></tr>
+      <tr><th>prímszámtétel</th><td>\(\pi(x)\sim x/\ln x\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Bontsd</b><span>Prímtényezők kitevőkkel.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Olvasd le</b><span>Osztók, gcd, lcm a kitevőkből.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Becsülj</b><span>A prímek sűrűsége \(1/\ln x\).</span></div>
+    </div>
+    <p>A következő téma a faktoriális prímkitevői: hányszor osztja a \(p\) prím az \(n!\)-t.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei emlékezetből készültek. Ha a könyv tartalomjegyzéke eltér, jelezd, és igazítom.</p>
+  </aside>
+</section>
