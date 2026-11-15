@@ -64,3 +64,24 @@ const pascal=(()=>{
     redraw(){if(running){size();draw();}}
   };
 })();
+
+/* 3D logó: lassan forgó gömb-tetraéder (a Pascal-háromszög térbeli változata) */
+(function(){
+  const svg=document.getElementById("logo3d");if(!svg)return;
+  const NS="http://www.w3.org/2000/svg",pts=[],S=7.4,K=Math.sqrt(2/3);
+  for(let j=0;j<3;j++){const cx=j/2,cz=j*Math.sqrt(3)/6;
+    for(let b=0;b<=j;b++)for(let a=0;a+b<=j;a++)pts.push([a+b/2-cx,(j-1)*K,b*Math.sqrt(3)/2-cz]);}
+  const gs=pts.map(()=>{const g=document.createElementNS(NS,"g"),c=document.createElementNS(NS,"circle"),h=document.createElementNS(NS,"circle");
+    c.setAttribute("fill","currentColor");h.setAttribute("fill","#fff");h.setAttribute("opacity",".3");g.append(c,h);svg.appendChild(g);return [g,c,h];});
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches,tilt=0.42,ct=Math.cos(tilt),st=Math.sin(tilt);
+  function draw(th){
+    const ca=Math.cos(th),sa=Math.sin(th);
+    const q=pts.map((p,i)=>{const x=p[0]*ca+p[2]*sa,z=-p[0]*sa+p[2]*ca,y=p[1]*ct-z*st,z2=p[1]*st+z*ct;return {i,x,y,z:z2};}).sort((u,v)=>u.z-v.z);
+    q.forEach(o=>{const [g,c,h]=gs[o.i],r=2.1*(1+0.14*o.z),px=14+o.x*S,py=14+o.y*S;
+      svg.appendChild(g);c.setAttribute("cx",px);c.setAttribute("cy",py);c.setAttribute("r",r);
+      c.setAttribute("opacity",(0.62+0.22*o.z).toFixed(2));
+      h.setAttribute("cx",px-r*0.3);h.setAttribute("cy",py-r*0.35);h.setAttribute("r",r*0.32);});
+  }
+  if(reduce){draw(0.6);return;}
+  const T0=performance.now();(function f(t){draw(((t-T0)/1000)*(2*Math.PI/20));requestAnimationFrame(f);})(T0);
+})();

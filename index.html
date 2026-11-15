@@ -463,7 +463,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 <body>
 <div class="app">
 <nav class="side" id="side" aria-label="Tartalom">
-  <a href="#kezdolap" class="brand" style="text-decoration:none;color:var(--ink)"><svg class="logo" viewBox="0 0 28 24" aria-hidden="true"><g fill="currentColor"><circle cx="14" cy="3" r="2.3"/><circle cx="10.5" cy="9" r="2.3"/><circle cx="17.5" cy="9" r="2.3"/><circle cx="7" cy="15" r="2.3"/><circle cx="21" cy="15" r="2.3"/><circle cx="3.5" cy="21" r="2.3"/><circle cx="10.5" cy="21" r="2.3"/><circle cx="17.5" cy="21" r="2.3"/><circle cx="24.5" cy="21" r="2.3"/></g></svg>Konkrét Matematika<small>Érdekességek és stílusos feladatok, levezetve</small></a>
+  <a href="#kezdolap" class="brand" style="text-decoration:none;color:var(--ink)"><svg class="logo" id="logo3d" viewBox="0 0 28 28" aria-hidden="true" style="width:46px;height:46px;vertical-align:-16px;margin-right:6px;overflow:visible"></svg>Konkrét Matematika<small>Érdekességek és stílusos feladatok, levezetve</small></a>
   <div class="tree" id="tree"></div>
 </nav>
 
@@ -6775,6 +6775,27 @@ const pascal=(()=>{
     stop(){running=false;cancelAnimationFrame(raf);raf=0;clearTimeout(holdT);holdT=0;},
     redraw(){if(running){size();draw();}}
   };
+})();
+
+/* 3D logó: lassan forgó gömb-tetraéder (a Pascal-háromszög térbeli változata) */
+(function(){
+  const svg=document.getElementById("logo3d");if(!svg)return;
+  const NS="http://www.w3.org/2000/svg",pts=[],S=7.4,K=Math.sqrt(2/3);
+  for(let j=0;j<3;j++){const cx=j/2,cz=j*Math.sqrt(3)/6;
+    for(let b=0;b<=j;b++)for(let a=0;a+b<=j;a++)pts.push([a+b/2-cx,(j-1)*K,b*Math.sqrt(3)/2-cz]);}
+  const gs=pts.map(()=>{const g=document.createElementNS(NS,"g"),c=document.createElementNS(NS,"circle"),h=document.createElementNS(NS,"circle");
+    c.setAttribute("fill","currentColor");h.setAttribute("fill","#fff");h.setAttribute("opacity",".3");g.append(c,h);svg.appendChild(g);return [g,c,h];});
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches,tilt=0.42,ct=Math.cos(tilt),st=Math.sin(tilt);
+  function draw(th){
+    const ca=Math.cos(th),sa=Math.sin(th);
+    const q=pts.map((p,i)=>{const x=p[0]*ca+p[2]*sa,z=-p[0]*sa+p[2]*ca,y=p[1]*ct-z*st,z2=p[1]*st+z*ct;return {i,x,y,z:z2};}).sort((u,v)=>u.z-v.z);
+    q.forEach(o=>{const [g,c,h]=gs[o.i],r=2.1*(1+0.14*o.z),px=14+o.x*S,py=14+o.y*S;
+      svg.appendChild(g);c.setAttribute("cx",px);c.setAttribute("cy",py);c.setAttribute("r",r);
+      c.setAttribute("opacity",(0.62+0.22*o.z).toFixed(2));
+      h.setAttribute("cx",px-r*0.3);h.setAttribute("cy",py-r*0.35);h.setAttribute("r",r*0.32);});
+  }
+  if(reduce){draw(0.6);return;}
+  const T0=performance.now();(function f(t){draw(((t-T0)/1000)*(2*Math.PI/20));requestAnimationFrame(f);})(T0);
 })();
 
 /* ================= 2. FEJEZET: KÖZÖS ESZKÖZÖK ================= */
