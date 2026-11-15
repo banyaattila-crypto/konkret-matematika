@@ -1,0 +1,42 @@
+import json,os,sys
+os.chdir('/home/claude/km')
+base=open('index.base.html',encoding='utf-8').read()
+T='tools/'
+SRC="R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, {n} {t}. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."
+MODS=[
+ ("jelolesek","2.1","Jelölések","a-","ch21",[["bevezeto","Bevezető"],["szigma","A szigma-gép"],["iverson","Az Iverson-zárójel"],["teglalap","Összeg-téglalapok"],["kotott","Kötött változó"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Szigma-jel, feltétel az összegzés alatt, Iverson-zárójel. Szigma-gép és összeg-téglalapok."),
+ ("rekurziok","2.2","Összegek és rekurziók","b-","ch22",[["bevezeto","Bevezető"],["atiras","Összeg és rekurzió"],["tenyezo","Az összegzőtényező"],["gyorsrendezes","Gyorsrendezés"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Minden összeg rekurzió, és sok rekurzió összeggé alakítható. Összegzőtényező, a gyorsrendezés átlagos költsége."),
+ ("kezeles","2.3","Összegek kezelése","c-","ch23",[["bevezeto","Bevezető"],["szabalyok","A három szabály"],["gauss","Tükrözés"],["perturbacio","A perturbáció módszere"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Elosztás, csoportosítás, átrendezés, tükrözés és a perturbáció módszere."),
+ ("tobbszoros","2.4","Többszörös összegek","d-","ch24",[["bevezeto","Bevezető"],["racs","A rács"],["csere","Sorrendcsere"],["szimmetria","A szimmetria-trükk"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Kétszeres összegek, tartományok, a szummák felcserélése."),
+ ("modszerek","2.5","Általános módszerek","f-","ch25",[["bevezeto","Bevezető"],["sejtes","Sejtés és indukció"],["perturbacio","Perturbáció"],["repertoar","Repertoár"],["integral","Integrálás"],["kibontas","Kibontás és összevonás"],["osszevetes","Összevetés"]],"A négyzetek összege öt módszerrel."),
+ ("veges","2.6","Véges analízis","g-","ch26",[["bevezeto","Bevezető"],["kulonbseg","A differenciaoperátor"],["esespoli","Eséspolinomok"],["osszegzes","Összegzés"],["reszleges","Összegzés részenként"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."),
+ ("vegtelen","2.7","Végtelen összegek","h-","ch27",[["bevezeto","Bevezető"],["geometria","A geometriai sor"],["teleszkop","Teleszkopikus összegek"],["atrendezes","Átrendezés"],["abszolut","Abszolút konvergencia"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Konvergencia, teleszkópos összegek, az átrendezés tétele."),
+]
+built=[m for m in MODS if os.path.exists(T+m[4]+'.html') and os.path.exists(T+m[4]+'.js')]
+css=open(T+'ch2.css',encoding='utf-8').read()
+s=base
+def rep(a,b):
+    global s
+    assert s.count(a)==1,a[:60]
+    s=s.replace(a,b)
+rep('/* ---- animált háttér',css+'\n/* ---- animált háttér')
+# router: fejezetszám témánként
+rep('return {ch:1,topic:m[1],page:m[2]};','return {ch:TOPICS[m[1]].ch||1,topic:m[1],page:m[2]};')
+rep(':"fejezet-1";}',':"fejezet-"+(TOPICS[curTopic].ch||1);}')
+ent=""
+for (tid,n,t,pre,fn,pages,d) in built:
+    o={"n":n,"t":t,"ch":2,"prefix":pre,"pages":pages,"foot":SRC.format(n=n,t=t)}
+    ent+=',\n  '+tid+':'+json.dumps(o,ensure_ascii=False)
+rep('\n};\nconst CH=[',ent+'\n};\nconst CH=[')
+tops=[]
+for (tid,n,t,pre,fn,pages,d) in MODS:
+    if (tid,n,t,pre,fn,pages,d) in built: tops.append({"id":tid,"d":d})
+    else: tops.append({"n":n,"t":t,"d":d})
+ch2={"n":2,"t":"Összegek","d":"Szigma-jelölés, összegek és rekurziók, többszörös összegek, véges analízis, végtelen összegek.","lead":"Az összegek a diszkrét matematika alapműveletei. A fejezet azt tanítja meg, hogyan lehet őket felírni, átalakítani és kiszámolni: a jelöléstől a zárt alakig, véges és végtelen esetben.","topics":tops}
+rep(' {n:2,t:"Összegek",d:"Összegzési jelölés, perturbáció, többszörös összegek."},',' '+json.dumps(ch2,ensure_ascii=False)+',')
+html="".join(open(T+m[4]+'.html',encoding='utf-8').read() for m in built)
+js=open(T+'ch2common.js',encoding='utf-8').read()+"\n"+"\n".join(open(T+m[4]+'.js',encoding='utf-8').read() for m in built)
+rep('<footer id="foot"></footer>',html+'\n<footer id="foot"></footer>')
+rep('const side=$("#side"),mb=$("#menuBtn");',js+'\n/* ---- router ---- */\nconst side=$("#side"),mb=$("#menuBtn");')
+open('index.html','w',encoding='utf-8').write(s)
+print("built:",[m[0] for m in built],len(s))

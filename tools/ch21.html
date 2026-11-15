@@ -1,0 +1,194 @@
+
+<!-- ================= 2.1 JELÖLÉSEK ================= -->
+<header class="hero page" id="a-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.1</div>
+    <h1>Jelölések</h1>
+    <p class="lead">Az összeg nyelve két jelből áll: a szigma megmondja, mit adunk össze, az Iverson-zárójel azt, hogy melyik tagot. Ezzel minden összegzési feladat ugyanabba az alakba írható.</p>
+    <div class="formula">\(\displaystyle\sum_{k} a_k\,[P(k)]\)</div>
+  </div>
+  <div class="stage">
+    <svg id="a-hero" role="img" aria-label="A tagok oszlopai egyenként kerülnek az összegbe, a futó összeg nő"></svg>
+    <div class="counter"><span id="a-hero-a">Σ k, k = 1…8</span><span>összeg: <b id="a-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az „1 + 2 + 4 + …” kifejezés folytatása lehet 8, de a Hanoi és a síkvágás után tudjuk, hogy 7 is. A három pont sosem határozza meg a sorozatot, ezért kell a szigma-jel: pontosan megmondja, mit adunk össze. A jelet a szakirodalom szerint Euler vezette be a 18. században, a határokat a jel alá és fölé Fourier kezdte írni a 19. század elején. Ebben a fejezetben a jelölés általánosabb alakját is megtanuljuk: a határok helyett a jel alatt tetszőleges feltétel állhat. <i>Saját bevezető, a Konkrét matematika 2.1 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="a-szigma">
+  <div class="body">
+    <div class="eyebrow">§1 · A szigma-gép</div>
+    <h2>Add meg a tagot és a határokat</h2>
+    <p>A \(\sum_{k=a}^{b} f(k)\) azt jelenti: helyettesítsd \(k\) helyére sorra \(a, a+1, \dots, b\) értékét, és add össze az \(f(k)\) értékeket. Írj be egy kifejezést \(k\)-val (szorzás: <span class="mono">*</span>, hatvány: <span class="mono">^</span>), vagy válassz egy példát.</p>
+    <div class="fig">
+      <svg id="a-sz-bars" role="img" aria-label="A tagok értékei oszlopokként"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Tagok száma</div><div class="v" id="a-sz-cnt">0</div></div>
+        <div class="stat"><div class="k">Összeg</div><div class="v" id="a-sz-sum">0</div></div>
+        <div class="stat"><div class="k">Zárt alak</div><div class="v" id="a-sz-cl">–</div></div>
+      </div>
+      <div class="info" id="a-sz-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-sz-expr">f(k) = <input type="text" id="a-sz-expr" value="k^2" style="width:9em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="a-sz-lo">alsó <input type="number" id="a-sz-lo" value="1" min="-20" max="40"></label>
+        <label class="rng" for="a-sz-hi">felső <input type="number" id="a-sz-hi" value="8" min="-20" max="40"></label>
+      </div>
+      <div class="ctrl" id="a-sz-pre">
+        <button data-e="k">k</button><button data-e="k^2" class="primary">k²</button><button data-e="2*k-1">2k − 1</button><button data-e="2^k">2ᵏ</button><button data-e="1/(k*(k+1))">1/(k(k+1))</button><button data-e="(-1)^k">(−1)ᵏ</button>
+      </div>
+    </div>
+    <p class="cap">Üres összeg: ha a felső határ kisebb, mint az alsó, a tagok listája üres, és az összeg 0. Ez a megállapodás később fontos lesz.</p>
+  </div>
+  <aside class="margo">
+    <p>A „zárt alak” mező csak akkor tölt ki, ha az alsó határ 1, és a kifejezés a példák egyike.</p>
+    <p>A tagok száma \(b - a + 1\), ha \(b \ge a - 1\), különben 0.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-iverson">
+  <div class="body">
+    <div class="eyebrow">§2 · Az Iverson-zárójel</div>
+    <h2>A feltétel is szám lehet</h2>
+    <p>Az <b>Iverson-zárójel</b> egy állítást számmá alakít: \([P] = 1\), ha \(P\) igaz, és \([P] = 0\), ha hamis. Így az „add össze azokat a tagokat, amelyekre \(P(k)\) teljesül” egyszerű összeggé válik, amelyben minden \(k\) szerepel, de a ki nem választottak nullával szorzódnak:</p>
+    <div class="eq gold">\[\sum_{P(k)} a_k \;=\; \sum_{k} a_k\,[P(k)].\]</div>
+    <p>Jelöljük ki, mely feltételek legyenek érvényben (mindegyik egyszerre). Az összeadandó tag \(a_k = k^2\).</p>
+    <div class="fig">
+      <div class="cellrow" id="a-iv-cells"></div>
+      <div class="info" id="a-iv-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-iv-n">n <input type="range" id="a-iv-n" min="1" max="16" value="12"> <span class="mono" id="a-iv-nv">12</span></label>
+      </div>
+      <div class="ctrl">
+        <label class="rng"><input type="checkbox" id="a-iv-odd"> k páratlan</label>
+        <label class="rng"><input type="checkbox" id="a-iv-prime"> k prím</label>
+        <label class="rng"><input type="checkbox" id="a-iv-sq"> k négyzetszám</label>
+        <label class="rng"><input type="checkbox" id="a-iv-gt"> k &gt; 5</label>
+      </div>
+    </div>
+    <p>A „\(1 \le k \le n\)” feltétel mindig ott van: ez a szokásos határpár. Ha további feltételt is bejelölsz, a zárójelek szorzata lesz az alsó sor, ahogy a képlet írja. Ha egyik doboz sincs bejelölve, a klasszikus \(\sum_{k=1}^{n} k^2\) marad.</p>
+    <div class="eq">\[\sum_{k=1}^{n} a_k = \sum_{k} a_k\,[1 \le k \le n], \qquad \sum_{k} a_k\,[k = m] = a_m.\]</div>
+  </div>
+  <aside class="margo">
+    <p>Az Iverson-zárójel kettős haszna: a határokat is feltételként kezelhetjük, és az összegekkel végzett átalakításoknál (§4) nem kell külön a határokra figyelni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-teglalap">
+  <div class="body">
+    <div class="eyebrow">§3 · Összeg-téglalapok</div>
+    <h2>Az összeg mint terület</h2>
+    <p>Minden tag egy egység széles oszlop, magassága a tag értéke. Az összeg az oszlopok összterülete. Húzd a két csúszkát: a kijelölt szakasz összege a színes terület.</p>
+    <div class="fig">
+      <svg id="a-tg-svg" role="img" aria-label="Oszlopok, a kijelölt szakasz színezve"></svg>
+      <div class="info" id="a-tg-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-tg-f">a<sub>k</sub> = <select id="a-tg-f"><option value="k">k</option><option value="k2" selected>k²</option><option value="odd">2k − 1</option><option value="inv">1/k</option></select></label>
+        <label class="rng" for="a-tg-lo">alsó <input type="range" id="a-tg-lo" min="1" max="12" value="3"> <span class="mono" id="a-tg-lov">3</span></label>
+        <label class="rng" for="a-tg-hi">felső <input type="range" id="a-tg-hi" min="1" max="12" value="8"> <span class="mono" id="a-tg-hiv">8</span></label>
+      </div>
+    </div>
+    <h3>A páratlan számok összege: L-alakok</h3>
+    <p>Az \(1 + 3 + 5 + \dots + (2n-1)\) összeget négyzetrácson is látni: a \(k\)-adik L-alak \(2k - 1\) négyzetet tartalmaz, és az \(n\) darab L együtt egy \(n \times n\)-es négyzetet tölt ki.</p>
+    <div class="fig">
+      <svg id="a-gn-svg" role="img" aria-label="L-alakú rétegek egy n×n négyzetben" style="max-width:360px;margin:0 auto;display:block"></svg>
+      <div class="info" id="a-gn-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-gn-n">n <input type="range" id="a-gn-n" min="1" max="10" value="6"> <span class="mono" id="a-gn-nv">6</span></label>
+      </div>
+    </div>
+    <div class="eq gold">\[\sum_{k=1}^{n} (2k-1) = n^2.\]</div>
+  </div>
+  <aside class="margo">
+    <p>A kép bizonyítás is: a négyzet területét kétféleképpen számoltuk, rétegenként és oldalak szorzataként.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-kotott">
+  <div class="body">
+    <div class="eyebrow">§4 · Kötött változó</div>
+    <h2>A \(k\) csak helyfoglaló</h2>
+    <p>A szigma alatti \(k\) az összegen belül van „kötve”: az eredmény nem függ a nevétől. \(\sum_{k=1}^{n} k^2\) és \(\sum_{j=1}^{n} j^2\) ugyanaz a szám. Ezt kihasználva az indexet átírhatjuk, ha közben a határokat is hozzáigazítjuk. Két szabványos átírás:</p>
+    <ul style="margin:0;padding-left:1.2em;display:grid;gap:6px">
+      <li><b>Eltolás:</b> \(\displaystyle\sum_{k=1}^{n} a_k = \sum_{k=0}^{n-1} a_{k+1}\).</li>
+      <li><b>Megfordítás:</b> \(\displaystyle\sum_{k=1}^{n} a_k = \sum_{k=1}^{n} a_{n+1-k}\).</li>
+    </ul>
+    <div class="fig">
+      <div class="info" id="a-ko-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-ko-n">n <input type="range" id="a-ko-n" min="2" max="8" value="5"> <span class="mono" id="a-ko-nv">5</span></label>
+      </div>
+    </div>
+    <p>Az átnevezésnél egy dologra kell vigyázni: az új név nem ütközhet egy már használt névvel. A \(\sum_{k=1}^{3} (k+n)\) összegben \(n = 10\) esetén az érték \(11 + 12 + 13 = 36\). Ha a \(k\)-t gondatlanul \(n\)-re cserélnénk, \(\sum_{n=1}^{3} (n+n) = 2 + 4 + 6 = 12\) jönne ki, és ez már más összeg.</p>
+  </div>
+  <aside class="margo">
+    <p>Ugyanez a jelenség az integrálnál és a programozásban is: a ciklusváltozó neve lényegtelen, de a külső változóval nem ütközhet.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Átírások</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi az \(1\)-től \(n\)-ig terjedő páros számok összege? (\(m = \lfloor n/2 \rfloor\))</span></summary>
+      <div class="ans">
+        <p>A páros számok \(2j\) alakúak, \(j = 1, \dots, m\):</p>
+        <div class="eq">\[\sum_{\substack{1 \le k \le n\\ k\ \text{páros}}} k = \sum_{j=1}^{m} 2j = m(m+1).\]</div>
+        <p>Próba: \(n = 7\), \(m = 3\), \(2 + 4 + 6 = 12 = 3 \cdot 4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Add meg a páratlan négyzetek összegét: \(1^2 + 3^2 + \dots + (2m-1)^2\).</span></summary>
+      <div class="ans">
+        <p>Az eltolás-átírás szerint az összeg \(\sum_{j=1}^{m} (2j-1)^2\). Kifejtve \(4j^2 - 4j + 1\), így a §1-ből ismert \(\sum j^2\) és \(\sum j\) képletekkel:</p>
+        <div class="eq">\[\sum_{j=1}^{m} (2j-1)^2 = \frac{m(2m-1)(2m+1)}{3}.\]</div>
+        <p>Próba: \(m = 2\): \(1 + 9 = 10 = \frac{2 \cdot 3 \cdot 5}{3}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mikor igaz, hogy \(\sum_{k=m}^{n} 1 = n - m + 1\)?</span></summary>
+      <div class="ans">
+        <p>Iverson-zárójellel az összeg \(\sum_k [m \le k \le n]\), azaz a \(m\) és \(n\) közé eső egész számok száma. Ha \(n \ge m - 1\), ez valóban \(n - m + 1\) (üres összeg esetén 0, amikor \(n = m-1\)). Ha \(n < m - 1\), a képlet negatív számot adna, az összeg pedig 0. Tehát \(n \ge m - 1\) a feltétel.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. A megfordítással számold ki: \(\sum_{k=1}^{n} k\,(n+1-k)\).</span></summary>
+      <div class="ans">
+        <p>Jelölje \(S\) az összeget. A megfordítás szerint \(S = \sum_k (n+1-k)\,k\) önmaga, ez nem ad új információt. Bontsuk ki: \(S = (n+1)\sum k - \sum k^2\).</p>
+        <div class="eq">\[S = (n+1)\frac{n(n+1)}{2} - \frac{n(n+1)(2n+1)}{6} = \frac{n(n+1)(n+2)}{6}.\]</div>
+        <p>Próba: \(n = 2\): \(1 \cdot 2 + 2 \cdot 1 = 4 = \frac{2 \cdot 3 \cdot 4}{6}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat eredménye \(\binom{n+2}{3}\): az összeg a tetraéder-számok sora (1, 4, 10, 20, …).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A jelölések tára</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Jelölés</th><th>Jelentés</th></tr>
+      <tr><th>\(\sum_{k=a}^{b} f(k)\)</th><td>határokkal: \(a, a+1, \dots, b\)</td></tr>
+      <tr><th>\(\sum_{P(k)} f(k)\)</th><td>feltétellel: azok a \(k\), amelyekre \(P(k)\) igaz</td></tr>
+      <tr><th>\([P]\)</th><td>1, ha \(P\) igaz; 0, ha hamis</td></tr>
+      <tr><th>\(\sum_k f(k)\,[P(k)]\)</th><td>az előző kettő egységes alakja</td></tr>
+      <tr><th>átnevezés, eltolás, megfordítás</th><td>az index átírása, a határok igazításával</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Felírás</b><span>Szigma vagy Iverson-zárójel: egyértelmű, nem három pont.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Átírás</b><span>Eltolás, megfordítás, a feltétel a határba.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Kiszámolás</b><span>Zárt alak: ezt a következő téma (2.2) a rekurziókból veszi.</span></div>
+    </div>
+    <p>A következő téma (2.2) azt mutatja meg, hogy az összeg és a rekurzió ugyanannak az éremnek két oldala: minden összeg felírható rekurzióként, és sok rekurzió összeggé alakítható.</p>
+  </div>
+  <aside class="margo">
+    <p>Összegek és rekurziók kölcsönhatása: \(S_n = S_{n-1} + a_n\).</p>
+  </aside>
+</section>

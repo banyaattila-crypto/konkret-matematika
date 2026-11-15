@@ -1,0 +1,152 @@
+
+<!-- ================= 2.2 ÖSSZEGEK ÉS REKURZIÓK ================= -->
+<header class="hero page" id="b-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.2</div>
+    <h1>Összegek és rekurziók</h1>
+    <p class="lead">Az összeg és a rekurzió ugyanannak a dolognak két felírása. Aki a rekurziót összeggé tudja alakítani, az zárt alakot kap.</p>
+    <div class="formula">\(\displaystyle T_n = 2T_{n-1} + 1 \;\Longleftrightarrow\; \frac{T_n}{2^n} = \sum_{k=1}^{n} 2^{-k}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="b-hero" role="img" aria-label="A Hanoi-tornyok rekurziója lépésenként növekvő oszlopokkal"></svg>
+    <div class="counter"><span id="b-hero-a">T₀ = 0</span><span>T<sub>n</sub> = 2T<sub>n−1</sub> + 1</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az 1.1-ben a Hanoi-tornyok lépésszámára \(T_n = 2T_{n-1} + 1\) adódott, a megoldást pedig kitaláltuk, és indukcióval igazoltuk. Ez működik, de csak akkor, ha az ember jól tippel. A fejezet ezen része módszert ad a tippelés helyett: a rekurzió mindkét oldalát úgy szorozzuk meg egy alkalmas számmal, hogy a bal oldalon egy új sorozat \(S_n\) jelenjen meg, amelyre \(S_n = S_{n-1} + \text{valami}\) áll. Az ilyen sorozat pedig nem más, mint egy összeg. A fordított irány is igaz: minden \(S_n = \sum a_k\) összeg rekurzió, mégpedig a legegyszerűbb. A végén a módszert a gyorsrendezés átlagos költségére is ráengedjük. <i>Saját bevezető, a Konkrét matematika 2.2 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="b-atiras">
+  <div class="body">
+    <div class="eyebrow">§1 · Összeg és rekurzió</div>
+    <h2>Az összeg a legegyszerűbb rekurzió</h2>
+    <p>Ha \(S_n = \sum_{k=0}^{n} a_k\), akkor \(S_0 = a_0\) és \(S_n = S_{n-1} + a_n\). Fordítva is: egy \(S_n = S_{n-1} + a_n\) alakú rekurzió megoldása \(S_n = S_0 + \sum_{k=1}^{n} a_k\). Az egyetlen kérdés, hogy a nehezebb rekurziót hogyan lehet erre az alakra hozni.</p>
+    <p>A Hanoi-rekurzió esetén osszuk végig mindkét oldalt \(2^n\)-nel:</p>
+    <div class="eq gold">\[\underbrace{\frac{T_n}{2^n}}_{S_n} = \underbrace{\frac{T_{n-1}}{2^{n-1}}}_{S_{n-1}} + \frac{1}{2^n}
+      \;\Longrightarrow\; S_n = S_0 + \sum_{k=1}^{n} 2^{-k} = 1 - 2^{-n} \;\Longrightarrow\; T_n = 2^n - 1.\]</div>
+    <p>A csúszkával lépkedhetsz: az \(S_n = T_n/2^n\) oszlopai egyre közelebb kerülnek az 1-hez, mert minden lépésben a hiányzó rész felét pótoljuk.</p>
+    <div class="fig">
+      <svg id="b-at-svg" role="img" aria-label="T_n osztva 2^n-nel, az 1-hez közelítő oszlopok"></svg>
+      <div class="info" id="b-at-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="b-at-n">n <input type="range" id="b-at-n" min="1" max="12" value="6"> <span class="mono" id="b-at-nv">6</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az osztás \(2^n\)-nel nem trükk. Ez egy <i>összegzőtényező</i> a következő oldal módszeréből: az a szám, amellyel a rekurziót át kell szorozni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-tenyezo">
+  <div class="body">
+    <div class="eyebrow">§2 · Az összegzőtényező</div>
+    <h2>Mivel kell szorozni?</h2>
+    <p>Legyen a rekurzió általános alakja</p>
+    <div class="eq">\[a_n T_n = b_n T_{n-1} + c_n \qquad (n \ge 1).\]</div>
+    <p>Keresünk egy \(s_n\) számot, amellyel szorozva a jobb oldali \(T_{n-1}\) együtthatója éppen az a szám, amit a bal oldal \(T_{n-1}\)-nél kapna, ha az \(n-1\)-re írnánk fel: \(s_n b_n = s_{n-1} a_{n-1}\). Ekkor \(S_n = s_n a_n T_n\) jelöléssel \(S_n = S_{n-1} + s_n c_n\), vagyis egy összeg. Az \(s_n\) kifejezhető az \(a\) és \(b\) sorozatokkal:</p>
+    <div class="eq gold">\[s_n = \frac{a_{n-1}\cdots a_1}{b_n \cdots b_2}, \qquad
+      T_n = \frac{1}{s_n a_n}\Bigl(s_1 b_1 T_0 + \sum_{k=1}^{n} s_k c_k\Bigr).\]</div>
+    <p>Válassz egy rekurziót. A tábla az <i>egzakt törtekkel</i> számolt értékeket mutatja kétféleképpen: közvetlenül a rekurzióból, és az összegzőtényezős képletből. A két oszlopnak egyeznie kell.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="b-tn-p">Rekurzió <select id="b-tn-p"></select></label>
+        <label class="rng" for="b-tn-n">n <input type="range" id="b-tn-n" min="1" max="10" value="6"> <span class="mono" id="b-tn-nv">6</span></label>
+      </div>
+      <div class="info" id="b-tn-info"></div>
+      <div class="tbl-wrap"><table class="vals" id="b-tn-tbl"></table></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(s_n\) nem egyértelmű: bármilyen nem nulla állandóval szorozva is jó. A fenti képlet a legegyszerűbb választást adja.</p>
+    <p>Ha \(a_k = 0\) vagy \(b_k = 0\) valamelyik \(k\)-ra, az osztás értelmetlen, és a módszer nem alkalmazható.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-gyorsrendezes">
+  <div class="body">
+    <div class="eyebrow">§3 · A gyorsrendezés átlagos költsége</div>
+    <h2>Összegzőtényező egy valódi algoritmuson</h2>
+    <p>A gyorsrendezés [quicksort] kiválaszt egy elemet (itt az elsőt), a többit a nála kisebbekre és nagyobbakra osztja, és mindkét részt rekurzívan rendezi. Egy \(n\) elemű lista felosztása \(n+1\) összehasonlítást igényel (ez a könyv számlálási megállapodása). Ha minden sorrend egyformán valószínű, az átlagos költség \(C_n\) kielégíti:</p>
+    <div class="eq">\[C_n = n + 1 + \frac{2}{n}\sum_{k=0}^{n-1} C_k \quad (n \ge 1), \qquad C_0 = 0.\]</div>
+    <p>Az összeg a rekurzióban zavaró. Szorozzuk meg \(n\)-nel, írjuk fel \(n-1\)-re is, és vonjuk ki egymásból: az összeg kiesik, és marad</p>
+    <div class="eq">\[n\,C_n = (n+1)\,C_{n-1} + 2n.\]</div>
+    <p>Ez már az \(a_n = n,\ b_n = n+1,\ c_n = 2n\) esete. Az összegzőtényező \(s_n = \dfrac{2}{n(n+1)}\), és a megoldás</p>
+    <div class="eq gold">\[C_n = 2(n+1)H_n - 2n, \qquad H_n = \sum_{k=1}^{n} \tfrac{1}{k}.\]</div>
+    <p>Itt \(H_n\) a <i>harmonikus szám</i> [az 1/k összegek részletösszege]. Aszimptotikusan \(C_n \approx 2n\ln n - 0{,}846\,n\): a gyorsrendezés átlagosan kb. \(1{,}39\,n\log_2 n\) összehasonlítást végez. Az alábbi próba az \(n\) elemű listák <b>mindegyik</b> sorrendjét végigpróbálja, és a költségek átlagát a képlethez hasonlítja.</p>
+    <div class="fig">
+      <svg id="b-qs-svg" role="img" aria-label="C_n értékei oszlopokként"></svg>
+      <div class="info" id="b-qs-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="b-qs-n">n <input type="range" id="b-qs-n" min="1" max="8" value="5"> <span class="mono" id="b-qs-nv">5</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérleti átlagot \(n \le 8\)-ig számoljuk (8! = 40 320 sorrend). Az egyezés pontos, nem közelítő, mert mindkét oldal ugyanannak a számnak a törtje.</p>
+    <p>Legrosszabb eset: rendezett lista. Ott a költség \(\sum_{k=1}^{n}(k+1)\), négyzetes. Az átlag viszont majdnem lineáris.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Próbáld ki</h2>
+    <details>
+      <summary><span class="sq">1. Oldd meg: \(T_n = T_{n-1} + n\), \(T_0 = 0\).</span></summary>
+      <div class="ans">
+        <p>Itt \(a_n = b_n = 1\), tehát \(s_n = 1\) és \(T_n = \sum_{k=1}^{n} k = \dfrac{n(n+1)}{2}\). Ez az 1.2 pontjának, a síkvágásnak az „új tartományok” sora.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Oldd meg: \(T_n = 3T_{n-1} + 2\), \(T_0 = 0\).</span></summary>
+      <div class="ans">
+        <p>Osszuk \(3^n\)-nel: \(\dfrac{T_n}{3^n} = \dfrac{T_{n-1}}{3^{n-1}} + \dfrac{2}{3^n}\). Így \(\dfrac{T_n}{3^n} = 2\sum_{k=1}^{n} 3^{-k} = 1 - 3^{-n}\), azaz</p>
+        <div class="eq">\[T_n = 3^n - 1.\]</div>
+        <p>Próba: \(T_1 = 2\), \(T_2 = 8\), \(T_3 = 26\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mi az \(s_n\) összegzőtényező, ha \(T_n = n\,T_{n-1} + 1\), \(T_0 = 0\)?</span></summary>
+      <div class="ans">
+        <p>\(a_n = 1\), \(b_n = n\). Ekkor \(s_n = \dfrac{1}{n \cdots 2} = \dfrac{1}{n!}\), és \(T_n = n!\sum_{k=1}^{n} \dfrac{1}{k!}\). A \(T_n\) értékei 1, 3, 10, 41, 206, …, és \(T_n/n! \to e - 1\).</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Miért nem működik az összegzőtényező, ha valamelyik \(b_k = 0\)?</span></summary>
+      <div class="ans">
+        <p>Az \(s_n\) nevezőjében \(b_n \cdots b_2\) áll. Ha egy tényező nulla, az \(s_n\) nincs értelmezve. A rekurzió ilyenkor „elfelejti” a megelőző értéket: \(a_k T_k = c_k\), és az új számolás nulláról indul. Ott külön kell kezelni a sorozatot.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat sora az \(e\) közelítése: \(n!\) szorzóval „egészre hozza” a \(\sum 1/k!\) tagokat.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Az összegzőtényező egy oldalon</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Lépés</th><th>Tartalom</th></tr>
+      <tr><th>1. Alak</th><td>\(a_n T_n = b_n T_{n-1} + c_n\)</td></tr>
+      <tr><th>2. Tényező</th><td>\(s_n = a_{n-1}\cdots a_1\,/\,(b_n\cdots b_2)\)</td></tr>
+      <tr><th>3. Új sorozat</th><td>\(S_n = s_n a_n T_n\), erre \(S_n = S_{n-1} + s_n c_n\)</td></tr>
+      <tr><th>4. Összeg</th><td>\(S_n = s_1 b_1 T_0 + \sum_{k=1}^{n} s_k c_k\)</td></tr>
+      <tr><th>5. Vissza</th><td>\(T_n = S_n / (s_n a_n)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Rekurzió</b><span>Hozd az \(a_nT_n=\dots\) alakra.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorzás \(s_n\)-nel</b><span>A bal oldal \(S_n\), a jobb \(S_{n-1}\)+tag.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Összeg</b><span>A tagok összegét zárt alakra hozni: ez a 2.3 dolga.</span></div>
+    </div>
+    <p>A módszer akkor ér véget, ha \(\sum s_k c_k\) zárt alakra hozható. A következő téma (2.3) az összegek átalakításának szabályait adja.</p>
+  </div>
+  <aside class="margo">
+    <p>A gyorsrendezés rekurziója összegből rekurzióba, majd vissza összegbe alakult. Ez a fejezet egész gondolatmenete kicsiben.</p>
+  </aside>
+</section>

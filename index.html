@@ -71,6 +71,20 @@ p{margin:0}
 .bit.zero{opacity:.35}
 .bitarrow{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);padding-left:54px}
 
+/* ---- 2. fejezet ---- */
+.cellkey{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:.7rem;color:var(--muted);margin-bottom:4px}
+.cells{display:grid;grid-template-columns:repeat(var(--nc),minmax(0,1fr));gap:3px}
+.cell{display:grid;gap:2px;text-align:center;font-family:var(--f-mono);font-size:.74rem}
+.cell .ck{color:var(--muted)}
+.cell .cb,.cell .cv{border:1px solid var(--line);border-radius:6px;padding:3px 0;background:var(--paper)}
+.cell .cb.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent);font-weight:600}
+.cell .cv.on{background:var(--accent-2);border-color:var(--accent-2);color:#111;font-weight:600}
+.cellrow{display:grid}
+
+.ctrl label.rng{max-width:100%;min-width:0}
+.ctrl select{max-width:100%;min-width:0;text-overflow:ellipsis}
+#b-tn-p{width:100%}
+
 /* ---- animált háttér: nagy, elmosott színfoltok lassú lebegése (csak transform: GPU-n fut) ---- */
 body::before{content:"";position:fixed;inset:-35%;z-index:-1;pointer-events:none;
   background:
@@ -1178,6 +1192,1206 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+
+<!-- ================= 2.1 JELÖLÉSEK ================= -->
+<header class="hero page" id="a-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.1</div>
+    <h1>Jelölések</h1>
+    <p class="lead">Az összeg nyelve két jelből áll: a szigma megmondja, mit adunk össze, az Iverson-zárójel azt, hogy melyik tagot. Ezzel minden összegzési feladat ugyanabba az alakba írható.</p>
+    <div class="formula">\(\displaystyle\sum_{k} a_k\,[P(k)]\)</div>
+  </div>
+  <div class="stage">
+    <svg id="a-hero" role="img" aria-label="A tagok oszlopai egyenként kerülnek az összegbe, a futó összeg nő"></svg>
+    <div class="counter"><span id="a-hero-a">Σ k, k = 1…8</span><span>összeg: <b id="a-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az „1 + 2 + 4 + …” kifejezés folytatása lehet 8, de a Hanoi és a síkvágás után tudjuk, hogy 7 is. A három pont sosem határozza meg a sorozatot, ezért kell a szigma-jel: pontosan megmondja, mit adunk össze. A jelet a szakirodalom szerint Euler vezette be a 18. században, a határokat a jel alá és fölé Fourier kezdte írni a 19. század elején. Ebben a fejezetben a jelölés általánosabb alakját is megtanuljuk: a határok helyett a jel alatt tetszőleges feltétel állhat. <i>Saját bevezető, a Konkrét matematika 2.1 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="a-szigma">
+  <div class="body">
+    <div class="eyebrow">§1 · A szigma-gép</div>
+    <h2>Add meg a tagot és a határokat</h2>
+    <p>A \(\sum_{k=a}^{b} f(k)\) azt jelenti: helyettesítsd \(k\) helyére sorra \(a, a+1, \dots, b\) értékét, és add össze az \(f(k)\) értékeket. Írj be egy kifejezést \(k\)-val (szorzás: <span class="mono">*</span>, hatvány: <span class="mono">^</span>), vagy válassz egy példát.</p>
+    <div class="fig">
+      <svg id="a-sz-bars" role="img" aria-label="A tagok értékei oszlopokként"></svg>
+      <div class="stats">
+        <div class="stat"><div class="k">Tagok száma</div><div class="v" id="a-sz-cnt">0</div></div>
+        <div class="stat"><div class="k">Összeg</div><div class="v" id="a-sz-sum">0</div></div>
+        <div class="stat"><div class="k">Zárt alak</div><div class="v" id="a-sz-cl">–</div></div>
+      </div>
+      <div class="info" id="a-sz-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-sz-expr">f(k) = <input type="text" id="a-sz-expr" value="k^2" style="width:9em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="a-sz-lo">alsó <input type="number" id="a-sz-lo" value="1" min="-20" max="40"></label>
+        <label class="rng" for="a-sz-hi">felső <input type="number" id="a-sz-hi" value="8" min="-20" max="40"></label>
+      </div>
+      <div class="ctrl" id="a-sz-pre">
+        <button data-e="k">k</button><button data-e="k^2" class="primary">k²</button><button data-e="2*k-1">2k − 1</button><button data-e="2^k">2ᵏ</button><button data-e="1/(k*(k+1))">1/(k(k+1))</button><button data-e="(-1)^k">(−1)ᵏ</button>
+      </div>
+    </div>
+    <p class="cap">Üres összeg: ha a felső határ kisebb, mint az alsó, a tagok listája üres, és az összeg 0. Ez a megállapodás később fontos lesz.</p>
+  </div>
+  <aside class="margo">
+    <p>A „zárt alak” mező csak akkor tölt ki, ha az alsó határ 1, és a kifejezés a példák egyike.</p>
+    <p>A tagok száma \(b - a + 1\), ha \(b \ge a - 1\), különben 0.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-iverson">
+  <div class="body">
+    <div class="eyebrow">§2 · Az Iverson-zárójel</div>
+    <h2>A feltétel is szám lehet</h2>
+    <p>Az <b>Iverson-zárójel</b> egy állítást számmá alakít: \([P] = 1\), ha \(P\) igaz, és \([P] = 0\), ha hamis. Így az „add össze azokat a tagokat, amelyekre \(P(k)\) teljesül” egyszerű összeggé válik, amelyben minden \(k\) szerepel, de a ki nem választottak nullával szorzódnak:</p>
+    <div class="eq gold">\[\sum_{P(k)} a_k \;=\; \sum_{k} a_k\,[P(k)].\]</div>
+    <p>Jelöljük ki, mely feltételek legyenek érvényben (mindegyik egyszerre). Az összeadandó tag \(a_k = k^2\).</p>
+    <div class="fig">
+      <div class="cellrow" id="a-iv-cells"></div>
+      <div class="info" id="a-iv-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-iv-n">n <input type="range" id="a-iv-n" min="1" max="16" value="12"> <span class="mono" id="a-iv-nv">12</span></label>
+      </div>
+      <div class="ctrl">
+        <label class="rng"><input type="checkbox" id="a-iv-odd"> k páratlan</label>
+        <label class="rng"><input type="checkbox" id="a-iv-prime"> k prím</label>
+        <label class="rng"><input type="checkbox" id="a-iv-sq"> k négyzetszám</label>
+        <label class="rng"><input type="checkbox" id="a-iv-gt"> k &gt; 5</label>
+      </div>
+    </div>
+    <p>A „\(1 \le k \le n\)” feltétel mindig ott van: ez a szokásos határpár. Ha további feltételt is bejelölsz, a zárójelek szorzata lesz az alsó sor, ahogy a képlet írja. Ha egyik doboz sincs bejelölve, a klasszikus \(\sum_{k=1}^{n} k^2\) marad.</p>
+    <div class="eq">\[\sum_{k=1}^{n} a_k = \sum_{k} a_k\,[1 \le k \le n], \qquad \sum_{k} a_k\,[k = m] = a_m.\]</div>
+  </div>
+  <aside class="margo">
+    <p>Az Iverson-zárójel kettős haszna: a határokat is feltételként kezelhetjük, és az összegekkel végzett átalakításoknál (§4) nem kell külön a határokra figyelni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-teglalap">
+  <div class="body">
+    <div class="eyebrow">§3 · Összeg-téglalapok</div>
+    <h2>Az összeg mint terület</h2>
+    <p>Minden tag egy egység széles oszlop, magassága a tag értéke. Az összeg az oszlopok összterülete. Húzd a két csúszkát: a kijelölt szakasz összege a színes terület.</p>
+    <div class="fig">
+      <svg id="a-tg-svg" role="img" aria-label="Oszlopok, a kijelölt szakasz színezve"></svg>
+      <div class="info" id="a-tg-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-tg-f">a<sub>k</sub> = <select id="a-tg-f"><option value="k">k</option><option value="k2" selected>k²</option><option value="odd">2k − 1</option><option value="inv">1/k</option></select></label>
+        <label class="rng" for="a-tg-lo">alsó <input type="range" id="a-tg-lo" min="1" max="12" value="3"> <span class="mono" id="a-tg-lov">3</span></label>
+        <label class="rng" for="a-tg-hi">felső <input type="range" id="a-tg-hi" min="1" max="12" value="8"> <span class="mono" id="a-tg-hiv">8</span></label>
+      </div>
+    </div>
+    <h3>A páratlan számok összege: L-alakok</h3>
+    <p>Az \(1 + 3 + 5 + \dots + (2n-1)\) összeget négyzetrácson is látni: a \(k\)-adik L-alak \(2k - 1\) négyzetet tartalmaz, és az \(n\) darab L együtt egy \(n \times n\)-es négyzetet tölt ki.</p>
+    <div class="fig">
+      <svg id="a-gn-svg" role="img" aria-label="L-alakú rétegek egy n×n négyzetben" style="max-width:360px;margin:0 auto;display:block"></svg>
+      <div class="info" id="a-gn-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-gn-n">n <input type="range" id="a-gn-n" min="1" max="10" value="6"> <span class="mono" id="a-gn-nv">6</span></label>
+      </div>
+    </div>
+    <div class="eq gold">\[\sum_{k=1}^{n} (2k-1) = n^2.\]</div>
+  </div>
+  <aside class="margo">
+    <p>A kép bizonyítás is: a négyzet területét kétféleképpen számoltuk, rétegenként és oldalak szorzataként.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-kotott">
+  <div class="body">
+    <div class="eyebrow">§4 · Kötött változó</div>
+    <h2>A \(k\) csak helyfoglaló</h2>
+    <p>A szigma alatti \(k\) az összegen belül van „kötve”: az eredmény nem függ a nevétől. \(\sum_{k=1}^{n} k^2\) és \(\sum_{j=1}^{n} j^2\) ugyanaz a szám. Ezt kihasználva az indexet átírhatjuk, ha közben a határokat is hozzáigazítjuk. Két szabványos átírás:</p>
+    <ul style="margin:0;padding-left:1.2em;display:grid;gap:6px">
+      <li><b>Eltolás:</b> \(\displaystyle\sum_{k=1}^{n} a_k = \sum_{k=0}^{n-1} a_{k+1}\).</li>
+      <li><b>Megfordítás:</b> \(\displaystyle\sum_{k=1}^{n} a_k = \sum_{k=1}^{n} a_{n+1-k}\).</li>
+    </ul>
+    <div class="fig">
+      <div class="info" id="a-ko-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="a-ko-n">n <input type="range" id="a-ko-n" min="2" max="8" value="5"> <span class="mono" id="a-ko-nv">5</span></label>
+      </div>
+    </div>
+    <p>Az átnevezésnél egy dologra kell vigyázni: az új név nem ütközhet egy már használt névvel. A \(\sum_{k=1}^{3} (k+n)\) összegben \(n = 10\) esetén az érték \(11 + 12 + 13 = 36\). Ha a \(k\)-t gondatlanul \(n\)-re cserélnénk, \(\sum_{n=1}^{3} (n+n) = 2 + 4 + 6 = 12\) jönne ki, és ez már más összeg.</p>
+  </div>
+  <aside class="margo">
+    <p>Ugyanez a jelenség az integrálnál és a programozásban is: a ciklusváltozó neve lényegtelen, de a külső változóval nem ütközhet.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Átírások</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi az \(1\)-től \(n\)-ig terjedő páros számok összege? (\(m = \lfloor n/2 \rfloor\))</span></summary>
+      <div class="ans">
+        <p>A páros számok \(2j\) alakúak, \(j = 1, \dots, m\):</p>
+        <div class="eq">\[\sum_{\substack{1 \le k \le n\\ k\ \text{páros}}} k = \sum_{j=1}^{m} 2j = m(m+1).\]</div>
+        <p>Próba: \(n = 7\), \(m = 3\), \(2 + 4 + 6 = 12 = 3 \cdot 4\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Add meg a páratlan négyzetek összegét: \(1^2 + 3^2 + \dots + (2m-1)^2\).</span></summary>
+      <div class="ans">
+        <p>Az eltolás-átírás szerint az összeg \(\sum_{j=1}^{m} (2j-1)^2\). Kifejtve \(4j^2 - 4j + 1\), így a §1-ből ismert \(\sum j^2\) és \(\sum j\) képletekkel:</p>
+        <div class="eq">\[\sum_{j=1}^{m} (2j-1)^2 = \frac{m(2m-1)(2m+1)}{3}.\]</div>
+        <p>Próba: \(m = 2\): \(1 + 9 = 10 = \frac{2 \cdot 3 \cdot 5}{3}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mikor igaz, hogy \(\sum_{k=m}^{n} 1 = n - m + 1\)?</span></summary>
+      <div class="ans">
+        <p>Iverson-zárójellel az összeg \(\sum_k [m \le k \le n]\), azaz a \(m\) és \(n\) közé eső egész számok száma. Ha \(n \ge m - 1\), ez valóban \(n - m + 1\) (üres összeg esetén 0, amikor \(n = m-1\)). Ha \(n < m - 1\), a képlet negatív számot adna, az összeg pedig 0. Tehát \(n \ge m - 1\) a feltétel.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. A megfordítással számold ki: \(\sum_{k=1}^{n} k\,(n+1-k)\).</span></summary>
+      <div class="ans">
+        <p>Jelölje \(S\) az összeget. A megfordítás szerint \(S = \sum_k (n+1-k)\,k\) önmaga, ez nem ad új információt. Bontsuk ki: \(S = (n+1)\sum k - \sum k^2\).</p>
+        <div class="eq">\[S = (n+1)\frac{n(n+1)}{2} - \frac{n(n+1)(2n+1)}{6} = \frac{n(n+1)(n+2)}{6}.\]</div>
+        <p>Próba: \(n = 2\): \(1 \cdot 2 + 2 \cdot 1 = 4 = \frac{2 \cdot 3 \cdot 4}{6}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat eredménye \(\binom{n+2}{3}\): az összeg a tetraéder-számok sora (1, 4, 10, 20, …).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="a-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A jelölések tára</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Jelölés</th><th>Jelentés</th></tr>
+      <tr><th>\(\sum_{k=a}^{b} f(k)\)</th><td>határokkal: \(a, a+1, \dots, b\)</td></tr>
+      <tr><th>\(\sum_{P(k)} f(k)\)</th><td>feltétellel: azok a \(k\), amelyekre \(P(k)\) igaz</td></tr>
+      <tr><th>\([P]\)</th><td>1, ha \(P\) igaz; 0, ha hamis</td></tr>
+      <tr><th>\(\sum_k f(k)\,[P(k)]\)</th><td>az előző kettő egységes alakja</td></tr>
+      <tr><th>átnevezés, eltolás, megfordítás</th><td>az index átírása, a határok igazításával</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Felírás</b><span>Szigma vagy Iverson-zárójel: egyértelmű, nem három pont.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Átírás</b><span>Eltolás, megfordítás, a feltétel a határba.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Kiszámolás</b><span>Zárt alak: ezt a következő téma (2.2) a rekurziókból veszi.</span></div>
+    </div>
+    <p>A következő téma (2.2) azt mutatja meg, hogy az összeg és a rekurzió ugyanannak az éremnek két oldala: minden összeg felírható rekurzióként, és sok rekurzió összeggé alakítható.</p>
+  </div>
+  <aside class="margo">
+    <p>Összegek és rekurziók kölcsönhatása: \(S_n = S_{n-1} + a_n\).</p>
+  </aside>
+</section>
+
+<!-- ================= 2.2 ÖSSZEGEK ÉS REKURZIÓK ================= -->
+<header class="hero page" id="b-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.2</div>
+    <h1>Összegek és rekurziók</h1>
+    <p class="lead">Az összeg és a rekurzió ugyanannak a dolognak két felírása. Aki a rekurziót összeggé tudja alakítani, az zárt alakot kap.</p>
+    <div class="formula">\(\displaystyle T_n = 2T_{n-1} + 1 \;\Longleftrightarrow\; \frac{T_n}{2^n} = \sum_{k=1}^{n} 2^{-k}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="b-hero" role="img" aria-label="A Hanoi-tornyok rekurziója lépésenként növekvő oszlopokkal"></svg>
+    <div class="counter"><span id="b-hero-a">T₀ = 0</span><span>T<sub>n</sub> = 2T<sub>n−1</sub> + 1</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az 1.1-ben a Hanoi-tornyok lépésszámára \(T_n = 2T_{n-1} + 1\) adódott, a megoldást pedig kitaláltuk, és indukcióval igazoltuk. Ez működik, de csak akkor, ha az ember jól tippel. A fejezet ezen része módszert ad a tippelés helyett: a rekurzió mindkét oldalát úgy szorozzuk meg egy alkalmas számmal, hogy a bal oldalon egy új sorozat \(S_n\) jelenjen meg, amelyre \(S_n = S_{n-1} + \text{valami}\) áll. Az ilyen sorozat pedig nem más, mint egy összeg. A fordított irány is igaz: minden \(S_n = \sum a_k\) összeg rekurzió, mégpedig a legegyszerűbb. A végén a módszert a gyorsrendezés átlagos költségére is ráengedjük. <i>Saját bevezető, a Konkrét matematika 2.2 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="b-atiras">
+  <div class="body">
+    <div class="eyebrow">§1 · Összeg és rekurzió</div>
+    <h2>Az összeg a legegyszerűbb rekurzió</h2>
+    <p>Ha \(S_n = \sum_{k=0}^{n} a_k\), akkor \(S_0 = a_0\) és \(S_n = S_{n-1} + a_n\). Fordítva is: egy \(S_n = S_{n-1} + a_n\) alakú rekurzió megoldása \(S_n = S_0 + \sum_{k=1}^{n} a_k\). Az egyetlen kérdés, hogy a nehezebb rekurziót hogyan lehet erre az alakra hozni.</p>
+    <p>A Hanoi-rekurzió esetén osszuk végig mindkét oldalt \(2^n\)-nel:</p>
+    <div class="eq gold">\[\underbrace{\frac{T_n}{2^n}}_{S_n} = \underbrace{\frac{T_{n-1}}{2^{n-1}}}_{S_{n-1}} + \frac{1}{2^n}
+      \;\Longrightarrow\; S_n = S_0 + \sum_{k=1}^{n} 2^{-k} = 1 - 2^{-n} \;\Longrightarrow\; T_n = 2^n - 1.\]</div>
+    <p>A csúszkával lépkedhetsz: az \(S_n = T_n/2^n\) oszlopai egyre közelebb kerülnek az 1-hez, mert minden lépésben a hiányzó rész felét pótoljuk.</p>
+    <div class="fig">
+      <svg id="b-at-svg" role="img" aria-label="T_n osztva 2^n-nel, az 1-hez közelítő oszlopok"></svg>
+      <div class="info" id="b-at-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="b-at-n">n <input type="range" id="b-at-n" min="1" max="12" value="6"> <span class="mono" id="b-at-nv">6</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az osztás \(2^n\)-nel nem trükk. Ez egy <i>összegzőtényező</i> a következő oldal módszeréből: az a szám, amellyel a rekurziót át kell szorozni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-tenyezo">
+  <div class="body">
+    <div class="eyebrow">§2 · Az összegzőtényező</div>
+    <h2>Mivel kell szorozni?</h2>
+    <p>Legyen a rekurzió általános alakja</p>
+    <div class="eq">\[a_n T_n = b_n T_{n-1} + c_n \qquad (n \ge 1).\]</div>
+    <p>Keresünk egy \(s_n\) számot, amellyel szorozva a jobb oldali \(T_{n-1}\) együtthatója éppen az a szám, amit a bal oldal \(T_{n-1}\)-nél kapna, ha az \(n-1\)-re írnánk fel: \(s_n b_n = s_{n-1} a_{n-1}\). Ekkor \(S_n = s_n a_n T_n\) jelöléssel \(S_n = S_{n-1} + s_n c_n\), vagyis egy összeg. Az \(s_n\) kifejezhető az \(a\) és \(b\) sorozatokkal:</p>
+    <div class="eq gold">\[s_n = \frac{a_{n-1}\cdots a_1}{b_n \cdots b_2}, \qquad
+      T_n = \frac{1}{s_n a_n}\Bigl(s_1 b_1 T_0 + \sum_{k=1}^{n} s_k c_k\Bigr).\]</div>
+    <p>Válassz egy rekurziót. A tábla az <i>egzakt törtekkel</i> számolt értékeket mutatja kétféleképpen: közvetlenül a rekurzióból, és az összegzőtényezős képletből. A két oszlopnak egyeznie kell.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="b-tn-p">Rekurzió <select id="b-tn-p"></select></label>
+        <label class="rng" for="b-tn-n">n <input type="range" id="b-tn-n" min="1" max="10" value="6"> <span class="mono" id="b-tn-nv">6</span></label>
+      </div>
+      <div class="info" id="b-tn-info"></div>
+      <div class="tbl-wrap"><table class="vals" id="b-tn-tbl"></table></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(s_n\) nem egyértelmű: bármilyen nem nulla állandóval szorozva is jó. A fenti képlet a legegyszerűbb választást adja.</p>
+    <p>Ha \(a_k = 0\) vagy \(b_k = 0\) valamelyik \(k\)-ra, az osztás értelmetlen, és a módszer nem alkalmazható.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-gyorsrendezes">
+  <div class="body">
+    <div class="eyebrow">§3 · A gyorsrendezés átlagos költsége</div>
+    <h2>Összegzőtényező egy valódi algoritmuson</h2>
+    <p>A gyorsrendezés [quicksort] kiválaszt egy elemet (itt az elsőt), a többit a nála kisebbekre és nagyobbakra osztja, és mindkét részt rekurzívan rendezi. Egy \(n\) elemű lista felosztása \(n+1\) összehasonlítást igényel (ez a könyv számlálási megállapodása). Ha minden sorrend egyformán valószínű, az átlagos költség \(C_n\) kielégíti:</p>
+    <div class="eq">\[C_n = n + 1 + \frac{2}{n}\sum_{k=0}^{n-1} C_k \quad (n \ge 1), \qquad C_0 = 0.\]</div>
+    <p>Az összeg a rekurzióban zavaró. Szorozzuk meg \(n\)-nel, írjuk fel \(n-1\)-re is, és vonjuk ki egymásból: az összeg kiesik, és marad</p>
+    <div class="eq">\[n\,C_n = (n+1)\,C_{n-1} + 2n.\]</div>
+    <p>Ez már az \(a_n = n,\ b_n = n+1,\ c_n = 2n\) esete. Az összegzőtényező \(s_n = \dfrac{2}{n(n+1)}\), és a megoldás</p>
+    <div class="eq gold">\[C_n = 2(n+1)H_n - 2n, \qquad H_n = \sum_{k=1}^{n} \tfrac{1}{k}.\]</div>
+    <p>Itt \(H_n\) a <i>harmonikus szám</i> [az 1/k összegek részletösszege]. Aszimptotikusan \(C_n \approx 2n\ln n - 0{,}846\,n\): a gyorsrendezés átlagosan kb. \(1{,}39\,n\log_2 n\) összehasonlítást végez. Az alábbi próba az \(n\) elemű listák <b>mindegyik</b> sorrendjét végigpróbálja, és a költségek átlagát a képlethez hasonlítja.</p>
+    <div class="fig">
+      <svg id="b-qs-svg" role="img" aria-label="C_n értékei oszlopokként"></svg>
+      <div class="info" id="b-qs-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="b-qs-n">n <input type="range" id="b-qs-n" min="1" max="8" value="5"> <span class="mono" id="b-qs-nv">5</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérleti átlagot \(n \le 8\)-ig számoljuk (8! = 40 320 sorrend). Az egyezés pontos, nem közelítő, mert mindkét oldal ugyanannak a számnak a törtje.</p>
+    <p>Legrosszabb eset: rendezett lista. Ott a költség \(\sum_{k=1}^{n}(k+1)\), négyzetes. Az átlag viszont majdnem lineáris.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Próbáld ki</h2>
+    <details>
+      <summary><span class="sq">1. Oldd meg: \(T_n = T_{n-1} + n\), \(T_0 = 0\).</span></summary>
+      <div class="ans">
+        <p>Itt \(a_n = b_n = 1\), tehát \(s_n = 1\) és \(T_n = \sum_{k=1}^{n} k = \dfrac{n(n+1)}{2}\). Ez az 1.2 pontjának, a síkvágásnak az „új tartományok” sora.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Oldd meg: \(T_n = 3T_{n-1} + 2\), \(T_0 = 0\).</span></summary>
+      <div class="ans">
+        <p>Osszuk \(3^n\)-nel: \(\dfrac{T_n}{3^n} = \dfrac{T_{n-1}}{3^{n-1}} + \dfrac{2}{3^n}\). Így \(\dfrac{T_n}{3^n} = 2\sum_{k=1}^{n} 3^{-k} = 1 - 3^{-n}\), azaz</p>
+        <div class="eq">\[T_n = 3^n - 1.\]</div>
+        <p>Próba: \(T_1 = 2\), \(T_2 = 8\), \(T_3 = 26\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mi az \(s_n\) összegzőtényező, ha \(T_n = n\,T_{n-1} + 1\), \(T_0 = 0\)?</span></summary>
+      <div class="ans">
+        <p>\(a_n = 1\), \(b_n = n\). Ekkor \(s_n = \dfrac{1}{n \cdots 2} = \dfrac{1}{n!}\), és \(T_n = n!\sum_{k=1}^{n} \dfrac{1}{k!}\). A \(T_n\) értékei 1, 3, 10, 41, 206, …, és \(T_n/n! \to e - 1\).</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Miért nem működik az összegzőtényező, ha valamelyik \(b_k = 0\)?</span></summary>
+      <div class="ans">
+        <p>Az \(s_n\) nevezőjében \(b_n \cdots b_2\) áll. Ha egy tényező nulla, az \(s_n\) nincs értelmezve. A rekurzió ilyenkor „elfelejti” a megelőző értéket: \(a_k T_k = c_k\), és az új számolás nulláról indul. Ott külön kell kezelni a sorozatot.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat sora az \(e\) közelítése: \(n!\) szorzóval „egészre hozza” a \(\sum 1/k!\) tagokat.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="b-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Az összegzőtényező egy oldalon</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Lépés</th><th>Tartalom</th></tr>
+      <tr><th>1. Alak</th><td>\(a_n T_n = b_n T_{n-1} + c_n\)</td></tr>
+      <tr><th>2. Tényező</th><td>\(s_n = a_{n-1}\cdots a_1\,/\,(b_n\cdots b_2)\)</td></tr>
+      <tr><th>3. Új sorozat</th><td>\(S_n = s_n a_n T_n\), erre \(S_n = S_{n-1} + s_n c_n\)</td></tr>
+      <tr><th>4. Összeg</th><td>\(S_n = s_1 b_1 T_0 + \sum_{k=1}^{n} s_k c_k\)</td></tr>
+      <tr><th>5. Vissza</th><td>\(T_n = S_n / (s_n a_n)\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Rekurzió</b><span>Hozd az \(a_nT_n=\dots\) alakra.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorzás \(s_n\)-nel</b><span>A bal oldal \(S_n\), a jobb \(S_{n-1}\)+tag.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Összeg</b><span>A tagok összegét zárt alakra hozni: ez a 2.3 dolga.</span></div>
+    </div>
+    <p>A módszer akkor ér véget, ha \(\sum s_k c_k\) zárt alakra hozható. A következő téma (2.3) az összegek átalakításának szabályait adja.</p>
+  </div>
+  <aside class="margo">
+    <p>A gyorsrendezés rekurziója összegből rekurzióba, majd vissza összegbe alakult. Ez a fejezet egész gondolatmenete kicsiben.</p>
+  </aside>
+</section>
+
+<!-- ================= 2.3 ÖSSZEGEK KEZELÉSE ================= -->
+<header class="hero page" id="c-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.3</div>
+    <h1>Összegek kezelése</h1>
+    <p class="lead">Három szabály engedi meg, hogy az összegeket átalakítsuk, és két trükk, a tükrözés és a perturbáció adja a zárt alakot. A szabályok ismerete megelőzi a hibákat.</p>
+    <div class="formula">\(\displaystyle\sum_{k\in K} a_k=\sum_{p(k)\in K} a_{p(k)}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="c-hero" role="img" aria-label="Az 1…8 oszlopai egymás fölé tükrözve ugyanolyan magas oszlopot adnak"></svg>
+    <div class="counter"><span id="c-hero-a">tükrözött párok: 0</span><span>magasság: <b id="c-hero-b">9</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A legismertebb összegzési történet Gaussról szól: az iskolai tanító azt a feladatot adta, hogy adják össze az 1-től 100-ig terjedő számokat. A kisfiú nem sorban adott össze, hanem párokba állította az elejét és a végét (1 és 100, 2 és 99, …), mindegyik pár összege 101. Ez a történet lehet későbbi legenda, a gondolat viszont valós és általános: az összegzési sorrend szabadon változtatható, és a jól megválasztott sorrend pár lépésre rövidíti a feladatot. Ez a téma a megengedett átalakítások szabályait gyűjti össze, és két módszert mutat: a tükrözést, valamint a perturbációt, amelyben az összeget „megbolygatjuk”, és a bolygatás utáni alakot hasonlítjuk az eredetihez. <i>Saját bevezető, a Konkrét matematika 2.3 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="c-szabalyok">
+  <div class="body">
+    <div class="eyebrow">§1 · A három szabály</div>
+    <h2>Mit szabad egy összeggel?</h2>
+    <p>Három átalakítás mindig érvényes (véges összegre):</p>
+    <div class="eq">\[\textbf{elosztás:}\ \sum_{k\in K} c\,a_k = c\sum_{k\in K} a_k,\qquad
+       \textbf{összevonás:}\ \sum_{k\in K}(a_k+b_k)=\sum_{k\in K}a_k+\sum_{k\in K}b_k.\]</div>
+    <div class="eq gold">\[\textbf{átrendezés:}\ \sum_{k\in K} a_k=\sum_{p(k)\in K} a_{p(k)}\quad\text{ha } p \text{ a } K\text{ permutációja.}\]</div>
+    <p>Az első kettő a szokásos számtani azonosság. Az utolsó azt mondja, hogy az indexet bármilyen kölcsönösen egyértelmű átírással cserélhetjük, ha az index halmaza ugyanaz marad.</p>
+    <h3>Elosztás és összevonás</h3>
+    <p>Adj meg két tagot és egy állandót. A két oldal értékét közvetlenül kiszámoljuk.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="c-ea">a(k) = <input type="text" id="c-ea" value="k^2" style="width:7em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="c-eb">b(k) = <input type="text" id="c-eb" value="2*k+1" style="width:7em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="c-ec">c <input type="number" id="c-ec" value="3" min="-9" max="9"></label>
+        <label class="rng" for="c-en">n <input type="number" id="c-en" value="6" min="1" max="30"></label>
+      </div>
+      <div class="info" id="c-e-info"></div>
+    </div>
+    <h3>Átrendezés: mikor szabad?</h3>
+    <p>Az \(a_k = k^2 + 1\) sort összegezzük \(k = 0, \dots, n\)-ig, és \(k\) helyére \(p(k)\)-t írjuk. Az összeg csak akkor marad ugyanaz, ha \(p\) a \(\{0, \dots, n\}\) halmaz permutációja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="c-pp">p(k) = <select id="c-pp">
+          <option value="rev">n − k (megfordítás)</option>
+          <option value="rot">(k + 1) mod (n + 1) (körbeforgatás)</option>
+          <option value="swap">k ⊕ 1 (szomszédos párok cseréje)</option>
+          <option value="plus">k + 1 (sima eltolás)</option>
+          <option value="half">⌊k/2⌋</option>
+        </select></label>
+        <label class="rng" for="c-pn">n <input type="range" id="c-pn" min="1" max="10" value="5"> <span class="mono" id="c-pnv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals" id="c-p-tbl"></table></div>
+      <div class="info" id="c-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A „sima eltolás” azért nem jó, mert \(p(n) = n + 1\) kilóg a halmazból. Ha a határokat is eltoljuk, ugyanaz az összeg jön ki: ez a 2.1 eltolás-szabálya.</p>
+    <p>A \(\lfloor k/2\rfloor\) nem kölcsönösen egyértelmű: két indexből ugyanaz az érték lesz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-gauss">
+  <div class="body">
+    <div class="eyebrow">§2 · Tükrözés</div>
+    <h2>Az összeg kétszeresét könnyebb kiszámolni</h2>
+    <p>Legyen \(S = \sum_{k=0}^{n} (a + bk)\), a számtani sor összege. Az átrendezési szabállyal megfordítjuk a sorrendet (\(k \to n - k\)), majd a két alakot összeadjuk:</p>
+    <div class="eq">\[2S=\sum_{k=0}^{n}\bigl[(a+bk)+(a+b(n-k))\bigr]=\sum_{k=0}^{n}(2a+bn)=(n+1)(2a+bn).\]</div>
+    <div class="eq gold">\[S=\frac{(n+1)(2a+bn)}{2}.\]</div>
+    <p>Az ábrán az alsó (kék) oszlop \(a + bk\), a rá tükrözött (sárga) \(a + b(n-k)\). Minden oszlop pár összmagassága ugyanaz, \(2a + bn\), tehát a téglalap területe \((n+1)(2a+bn)\), az összeg ennek fele.</p>
+    <div class="fig">
+      <svg id="c-g-svg" role="img" aria-label="Egymásra tükrözött oszlopok téglalapot alkotnak"></svg>
+      <div class="info" id="c-g-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="c-ga">a <input type="range" id="c-ga" min="0" max="10" value="2"> <span class="mono" id="c-gav">2</span></label>
+        <label class="rng" for="c-gb">b <input type="range" id="c-gb" min="0" max="6" value="3"> <span class="mono" id="c-gbv">3</span></label>
+        <label class="rng" for="c-gn">n <input type="range" id="c-gn" min="1" max="14" value="8"> <span class="mono" id="c-gnv">8</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>\(a = 0\), \(b = 1\): \(\sum_{k=0}^{n} k = n(n+1)/2\). \(n = 99\), \(a = 1\), \(b = 1\) (k = 0…99): ez a Gauss-féle 1+…+100 = 5050 története.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-perturbacio">
+  <div class="body">
+    <div class="eyebrow">§3 · A perturbáció módszere</div>
+    <h2>Bolygassuk meg az összeget</h2>
+    <p>Legyen \(S_n = \sum_{k=0}^{n} a_k\). Az \(S_{n+1}\)-et kétféleképpen írjuk fel: leválasztva az utolsó tagot, vagy leválasztva az elsőt és az indexet eltolva:</p>
+    <div class="eq gold">\[S_n + a_{n+1} \;=\; a_0 + \sum_{k=0}^{n} a_{k+1}.\]</div>
+    <p>Ha a jobb oldali összeg kifejezhető \(S_n\)-nel, az egyenletet \(S_n\)-re megoldjuk. Három példa; az egyenlet két oldalát pontos törtekkel számoljuk ki.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="c-pm">Összeg <select id="c-pm">
+          <option value="geo">Σ xᵏ (mértani sor)</option>
+          <option value="k2k">Σ k·2ᵏ</option>
+          <option value="sq">Σ k² (a négyzetek kiesnek)</option>
+        </select></label>
+        <label class="rng" for="c-pn2">n <input type="range" id="c-pn2" min="1" max="12" value="6"> <span class="mono" id="c-pn2v">6</span></label>
+      </div>
+      <div class="ctrl" id="c-pxbox">
+        <label class="rng" for="c-px">x = <input type="number" id="c-px" value="1" min="-9" max="9" style="width:4.2em"> /<input type="number" id="c-pq" value="3" min="1" max="9" style="width:4.2em"></label>
+      </div>
+      <div class="info" id="c-pi"></div>
+    </div>
+    <div class="eq">\[\sum_{k=0}^{n} x^k=\frac{1-x^{n+1}}{1-x}\ (x\neq1),\qquad \sum_{k=0}^{n} k\,2^k=(n-1)2^{n+1}+2.\]</div>
+    <p>A \(\sum k^2\)-nél a perturbáció nem a négyzetösszeget adja. \(\sum (k+1)^2 = \sum k^2 + 2\sum k + \sum 1\), az \(S_n\) mindkét oldalon kiesik, és a módszer a <i>lineáris</i> összeget adja meg. A négyzetek összegéhez tehát más módszer kell (2.5). A kiesés is hasznos: a perturbáció egy fokkal alacsonyabb összeget ad.</p>
+  </div>
+  <aside class="margo">
+    <p>A mértani sornál a \(x = 1\) eset külön: ott \(S_n = n + 1\), mert az egyenlet \(S_n + 1 = 1 + S_n\) triviális.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolj</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi \(\sum_{k=m}^{n} k\)?</span></summary>
+      <div class="ans">
+        <p>Az \(n - m + 1\) tag számtani sorozat, az első \(m\), az utolsó \(n\), a tükrözés szerint az összeg a tagok számának és az első-utolsó átlagának a szorzata:</p>
+        <div class="eq">\[\sum_{k=m}^{n} k=\frac{(n+m)(n-m+1)}{2}.\]</div>
+        <p>Próba: \(m = 3\), \(n = 7\): \(3+4+5+6+7 = 25 = \frac{10 \cdot 5}{2}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Perturbációval: \(\sum_{k=0}^{n} 3^k\).</span></summary>
+      <div class="ans">
+        <p>\(S_n + 3^{n+1} = 1 + 3S_n\), ezért \(2S_n = 3^{n+1} - 1\), azaz \(S_n = \dfrac{3^{n+1}-1}{2}\).</p>
+        <p>Próba: \(n = 3\): \(1+3+9+27 = 40 = \frac{81-1}{2}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Add meg a \(\sum_{k=0}^{n} (k+1)\,2^k\) értékét az összevonás és a fenti zárt alakok segítségével.</span></summary>
+      <div class="ans">
+        <p>Az összevonással:</p>
+        <div class="eq">\[\sum k\,2^k + \sum 2^k = \bigl[(n-1)2^{n+1}+2\bigr] + \bigl[2^{n+1}-1\bigr] = n\,2^{n+1} + 1.\]</div>
+        <p>Próba: \(n = 2\): \(1 + 4 + 12 = 17 = 2 \cdot 8 + 1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Bontsd részlettörtekre, és számold ki: \(\sum_{k=1}^{n} \dfrac{1}{k(k+1)}\).</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{1}{k(k+1)} = \dfrac{1}{k} - \dfrac{1}{k+1}\). Az összevonás és az eltolás szerint a tagok páronként kiesnek (teleszkópos összeg): marad \(1 - \dfrac{1}{n+1} = \dfrac{n}{n+1}\).</p>
+        <p>Próba: \(n = 3\): \(\frac12+\frac16+\frac1{12} = \frac{9}{12} = \frac34\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat teleszkópos összege a 2.7-ben visszatér, végtelen változatban.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Az eszköztár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Eszköz</th><th>Képlet</th><th>Mikor</th></tr>
+      <tr><th>Elosztás</th><td>\(\sum c\,a_k = c\sum a_k\)</td><td>állandó kiemelése</td></tr>
+      <tr><th>Összevonás</th><td>\(\sum (a_k+b_k)=\sum a_k+\sum b_k\)</td><td>összeg szétbontása</td></tr>
+      <tr><th>Átrendezés</th><td>\(\sum_{K} a_k=\sum_{p(k)\in K} a_{p(k)}\)</td><td>permutációnál</td></tr>
+      <tr><th>Tükrözés</th><td>\(2S=\sum (a_k+a_{n-k})\)</td><td>számtani sor</td></tr>
+      <tr><th>Perturbáció</th><td>\(S_n+a_{n+1}=a_0+\sum a_{k+1}\)</td><td>mértani jellegű sor</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Szabály</b><span>Elosztás, összevonás, átrendezés: mindig érvényes.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Trükk</b><span>Tükrözés vagy perturbáció, az összeg alakja szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Kis \(n\)-re behelyettesíteni.</span></div>
+    </div>
+    <p>A következő téma (2.4) a kétszeres összegeket tárgyalja, ahol az átrendezési szabály új szerepet kap: a két index sorrendje felcserélhető.</p>
+  </div>
+  <aside class="margo">
+    <p>A perturbáció jól működik, ha az összeg „önhasonló”. A négyzetek összegéhez a következő fejezet a módszereit gyűjti össze.</p>
+  </aside>
+</section>
+
+<!-- ================= 2.4 TÖBBSZÖRÖS ÖSSZEGEK ================= -->
+<header class="hero page" id="d-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.4</div>
+    <h1>Többszörös összegek</h1>
+    <p class="lead">Egy kétszeres összeg egy rács celláinak összege. A rácsot sorokban vagy oszlopokban is bejárhatjuk, és a kettő sosem tér el.</p>
+    <div class="formula">\(\displaystyle\sum_{j}\sum_{k} a_{jk}=\sum_{k}\sum_{j} a_{jk}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="d-hero" role="img" aria-label="A szorzótábla sorai egyenként kerülnek az összegbe"></svg>
+    <div class="counter"><span id="d-hero-a">sorok: 0</span><span>összeg: <b id="d-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az iskolai szorzótábla az első kétszeres összeg, amellyel mindenki találkozik: 10 × 10 szám, és a „mennyi az összes szám összege?” kérdésre két út vezet. Összeadhatjuk soronként, majd a sorok összegeit, vagy oszloponként. A két út ugyanoda vezet, és ez nem véletlen, hanem az összeadás felcserélhetőségének következménye. A téma két kérdést tisztáz: hogyan néz ki az összeg, ha a rácsnak nem minden cellája számít (például csak az átló feletti háromszög), és hogyan lehet a felcserélést kihasználni egy nehéz összeg átalakítására. <i>Saját bevezető, a Konkrét matematika 2.4 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="d-racs">
+  <div class="body">
+    <div class="eyebrow">§1 · A rács</div>
+    <h2>Cellák és feltételek</h2>
+    <p>A kétszeres összeg \(\sum_{j,k} a_{jk}\) egy kétindexes táblázat celláinak összege. Szorzatalaknál (\(a_{jk} = x_j y_k\)) az összeg szorzattá esik szét:</p>
+    <div class="eq">\[\sum_{j=1}^{m}\sum_{k=1}^{n} x_j y_k=\Bigl(\sum_{j=1}^{m} x_j\Bigr)\Bigl(\sum_{k=1}^{n} y_k\Bigr).\]</div>
+    <p>A szorzótáblán (\(x_j = j\), \(y_k = k\)) próbáld ki. Az Iverson-zárójelek (2.1) itt is működnek: a „feltétel” kiválasztja, mely cellák számítanak.</p>
+    <div class="fig">
+      <div class="cellrow" id="d-r-grid"></div>
+      <div class="info" id="d-r-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="d-r-n">n <input type="range" id="d-r-n" min="2" max="9" value="6"> <span class="mono" id="d-r-nv">6</span></label>
+        <label class="rng" for="d-r-c">tartomány <select id="d-r-c">
+          <option value="all">1 ≤ j, k ≤ n (teljes)</option>
+          <option value="lt">j &lt; k (átló felett)</option>
+          <option value="le">j ≤ k (átlóval)</option>
+          <option value="anti">j + k ≤ n + 1 (sarok)</option>
+          <option value="div">j osztja k-t</option>
+        </select></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A teljes rácson \(\bigl(n(n+1)/2\bigr)^2\) az összeg, a \(j<k\) feltételnél a fele mínusz az átló fele: \(\tfrac12\bigl[(\sum k)^2-\sum k^2\bigr]\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-csere">
+  <div class="body">
+    <div class="eyebrow">§2 · Sorrendcsere</div>
+    <h2>Háromszög-tartomány, két bejárás</h2>
+    <p>Ha a tartomány háromszög, a belső összeg határai a külsőtől függnek. A sorrend felcserélésekor a határokat újra kell írni:</p>
+    <div class="eq gold">\[\sum_{j=1}^{n}\sum_{k=1}^{j} a_{jk}=\sum_{1\le k\le j\le n} a_{jk}=\sum_{k=1}^{n}\sum_{j=k}^{n} a_{jk}.\]</div>
+    <p>A középső alak a „tartományalak”, amelyből mindkét sorrend leolvasható. Válassz egy \(a_{jk}\)-t, és számold ki mindkét módon, pontos törtekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="d-c-f">a(j,k) <select id="d-c-f">
+          <option value="inv">1/j</option>
+          <option value="jk">j·k</option>
+          <option value="k">k</option>
+          <option value="diff">j − k</option>
+          <option value="inv2">1/(j·k)</option>
+        </select></label>
+        <label class="rng" for="d-c-n">n <input type="range" id="d-c-n" min="1" max="12" value="6"> <span class="mono" id="d-c-nv">6</span></label>
+      </div>
+      <div class="info" id="d-c-info"></div>
+    </div>
+    <p>Az \(a_{jk} = 1/j\) esetben az első sorrendben a belső összeg \(j \cdot \frac1j = 1\), így az egész \(n\). A másik sorrend ugyanazt \(\sum_{k=1}^{n} (H_n - H_{k-1})\) alakban adja, ahonnan a harmonikus számok ismert összege adódik:</p>
+    <div class="eq">\[\sum_{k=0}^{n-1} H_k = nH_n - n.\]</div>
+  </div>
+  <aside class="margo">
+    <p>A csere előtt mindig rajzold le a tartományt (j a vízszintes, k a függőleges tengelyen). A határokat a rajzról olvasd le, ne a képletből találgasd.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-szimmetria">
+  <div class="body">
+    <div class="eyebrow">§3 · A szimmetria-trükk</div>
+    <h2>A különbségek négyzetes összege</h2>
+    <p>Legyen \(a_1, \dots, a_n\) és \(b_1, \dots, b_n\) két sorozat. Tekintsük az összes párra vett kifejezést, és bontsuk ki:</p>
+    <div class="eq gold">\[\sum_{j=1}^{n}\sum_{k=1}^{n}(a_j-a_k)(b_j-b_k)=2n\sum_{k=1}^{n}a_kb_k-2\Bigl(\sum_{k=1}^{n}a_k\Bigr)\Bigl(\sum_{k=1}^{n}b_k\Bigr).\]</div>
+    <p>A kifejtésben a négy szorzat közül \(a_jb_j\) és \(a_kb_k\) külön-külön \(n\sum a_kb_k\)-t ad, a két vegyes tag pedig \(-(\sum a)(\sum b)\)-t. Ha \(a\) és \(b\) mindketten növekvők (vagy mindketten csökkenők), minden tag \(\ge 0\), ezért \(n\sum a_kb_k \ge (\sum a_k)(\sum b_k)\): ez Csebisev összeg-egyenlőtlensége. Ellentétes monotonitásnál az egyenlőtlenség megfordul.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="d-s-a">a(k) = <input type="text" id="d-s-a" value="k" style="width:6em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="d-s-b">b(k) = <input type="text" id="d-s-b" value="k^2" style="width:6em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="d-s-n">n <input type="range" id="d-s-n" min="2" max="12" value="6"> <span class="mono" id="d-s-nv">6</span></label>
+      </div>
+      <div class="ctrl" id="d-s-pre">
+        <button data-a="k" data-b="k^2" class="primary">k, k²</button>
+        <button data-a="k" data-b="12-k">k, 12 − k</button>
+        <button data-a="k" data-b="(-1)^k">k, (−1)ᵏ</button>
+      </div>
+      <div class="info" id="d-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A trükk lényege: ugyanazt az összeget kétféleképpen indexeljük (\(j\) és \(k\) szerepe felcserélhető), és a szimmetria egy szép négyzetes alakot ad.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Rácson számolni</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi \(\sum_{j=1}^{n}\sum_{k=1}^{n}\min(j,k)\)?</span></summary>
+      <div class="ans">
+        <p>\(\min(j,k)=\sum_{i\ge 1}[i\le j][i\le k]\), tehát az összeg:</p>
+        <div class="eq">\[\sum_{i=1}^{n}(n-i+1)^2=\sum_{m=1}^{n}m^2=\frac{n(n+1)(2n+1)}{6}.\]</div>
+        <p>Próba: \(n = 2\): \(1 + 1 + 1 + 2 = 5 = \frac{2 \cdot 3 \cdot 5}{6}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány cella tartozik a \(1 \le j < k \le n\) tartományba?</span></summary>
+      <div class="ans">
+        <p>\(\sum_{k=1}^{n}(k-1)=\dfrac{n(n-1)}{2}\), vagyis a négyzetrács fele az átló nélkül.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Fejezd ki \((\sum a_k)^2\)-et \(\sum a_k^2\) és \(\sum_{j<k}a_ja_k\) segítségével.</span></summary>
+      <div class="ans">
+        <p>A teljes rács az átlóra és a két háromszögre bomlik, a két háromszög szimmetrikus:</p>
+        <div class="eq">\[\Bigl(\sum_k a_k\Bigr)^2=\sum_k a_k^2+2\sum_{j<k}a_ja_k.\]</div>
+        <p>Próba: \(a = (1,2,3)\): \(36 = 14 + 2(2+3+6) = 14 + 22\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi \(\sum_{j=1}^{n}\sum_{k=1}^{n}|j-k|\)?</span></summary>
+      <div class="ans">
+        <p>A \(d = k - j > 0\) eltérésű párok száma \(n - d\), és a szimmetria miatt a másik irányt még egyszer számoljuk:</p>
+        <div class="eq">\[2\sum_{d=1}^{n-1}d\,(n-d)=\frac{(n-1)\,n\,(n+1)}{3}.\]</div>
+        <p>Próba: \(n = 3\): \(2(1\cdot2+2\cdot1)=8=\frac{2\cdot3\cdot4}{3}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat megoldása szép példa arra, hogyan lesz a „min” Iverson-zárójelek összegévé.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Rács-eszköztár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Helyzet</th><th>Eszköz</th></tr>
+      <tr><th>\(a_{jk}=x_jy_k\), téglalap</th><td>\(\bigl(\sum x\bigr)\bigl(\sum y\bigr)\)</td></tr>
+      <tr><th>feltételes tartomány</th><td>Iverson-zárójel a tagban</td></tr>
+      <tr><th>háromszög</th><td>sorrendcsere, a határok újraírása</td></tr>
+      <tr><th>szimmetrikus kifejezés</th><td>\(j\leftrightarrow k\), a négyzetes alak</td></tr>
+      <tr><th>\(\min\), \(\max\), \(|j-k|\)</th><td>Iverson-zárójelek összege, vagy eltérés szerinti csoportosítás</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Rajz</b><span>A tartomány a \(j\)–\(k\) síkon.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Sorrend</b><span>Válaszd azt a bejárást, ahol a belső összeg ismert.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Kis \(n\)-re kézzel.</span></div>
+    </div>
+    <p>A következő téma (2.5) a négyzetek összegét öt különböző módszerrel számolja ki, és megmutatja, melyik mikor használható.</p>
+  </div>
+  <aside class="margo">
+    <p>Végtelen kétszeres összegnél a sorrendcsere nem mindig szabad: a 2.7-ben látjuk, mikor az.</p>
+  </aside>
+</section>
+
+<!-- ================= 2.5 ÁLTALÁNOS MÓDSZEREK ================= -->
+<header class="hero page" id="f-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.5</div>
+    <h1>Általános módszerek</h1>
+    <p class="lead">Ugyanazt az összeget öt módszerrel számoljuk ki: \(\sum k^2\). A cél nem az eredmény (azt ismerjük), hanem az, hogy mikor melyik módszer használható.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{n}k^2=\frac{n(n+1)(2n+1)}{6}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="f-hero" role="img" aria-label="A négyzetszámok részletösszegei oszlopokként"></svg>
+    <div class="counter"><span id="f-hero-a">n = 0</span><span>Σk² = <b id="f-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az \(1+2+\dots+n\) összeg képletét mindenki ismeri, a négyzetek összegéhez viszont már nincs ilyen egyszerű trükk. A négyzetek összegének képlete régóta ismert, de a bizonyítási módszerek számítanak: az egyik csak igazolja a képletet, ha már megvan, a másik meg is találja. Ez a téma öt útját mutatja ugyanannak a feladatnak: sejtés és indukció, perturbáció, a repertoár módszere, integrálás, és az összeg kibontása majd összevonása. Mindegyik más helyzetben a legjobb, és az egyik módszer kudarca (a perturbáció a négyzetekre, ahogy a 2.3-ban láttuk) a következőhöz vezet. <i>Saját bevezető, a Konkrét matematika 2.5 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="f-sejtes">
+  <div class="body">
+    <div class="eyebrow">§1 · Sejtés és indukció</div>
+    <h2>Kitalálni, majd bizonyítani</h2>
+    <p>A legrégebbi módszer: kiszámoljuk az első értékeket, sejtünk egy alakot, és teljes indukcióval igazoljuk. A sejtést a <i>véges differenciák</i> [az egymást követő tagok különbsége, a különbségek különbsége, és így tovább] segítik: egy \(d\)-ed fokú polinomnál a \(d\)-edik különbségek állandók. A \(\sum k^2\) értékeinél a harmadik különbség állandó, tehát harmadfokú a polinom, és főegyütthatója \(\Delta^3/3! = 2/6 = 1/3\).</p>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="f-s-tbl"></table></div>
+      <div class="info" id="f-s-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="f-s-n">n legfeljebb <input type="range" id="f-s-n" min="4" max="12" value="8"> <span class="mono" id="f-s-nv">8</span></label>
+      </div>
+    </div>
+    <p>A Newton-féle előre-differenciás alak (a differenciák az \(n = 0\) helyen: \(0, 1, 3, 2\)) megadja a sejtést: \(S_n = 0 + 1\binom n1 + 3\binom n2 + 2\binom n3\), ami átrendezve \(\frac{n(n+1)(2n+1)}{6}\). Az indukciós lépés:</p>
+    <div class="eq">\[\frac{(n-1)n(2n-1)}{6}+n^2=\frac{n(n+1)(2n+1)}{6}.\]</div>
+  </div>
+  <aside class="margo">
+    <p>A módszer gyenge pontja: a sejtés alakját előre kell tudni, és az indukció csak igazol, nem magyaráz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-perturbacio">
+  <div class="body">
+    <div class="eyebrow">§2 · Perturbáció</div>
+    <h2>Magasabb hatvány, alacsonyabb összeg</h2>
+    <p>A 2.3 perturbációját a \(k^{p+1}\) összegre alkalmazzuk: \(\sum_{k=0}^{n}\bigl[(k+1)^{p+1}-k^{p+1}\bigr]\) teleszkópos, értéke \((n+1)^{p+1}\), a binomiális tétellel kifejtve pedig \(\sum_{i=0}^{p}\binom{p+1}{i}S_i\). Így</p>
+    <div class="eq gold">\[(n+1)^{p+1}=\sum_{i=0}^{p}\binom{p+1}{i}S_i,\qquad S_i=\sum_{k=0}^{n}k^i\ \ (S_0=n+1).\]</div>
+    <p>A jobb oldalon \(S_p\) egyszer szerepel (együtthatója \(p+1\)), az összes többi alacsonyabb hatvány. Így \(S_p\)-t az előzőekből kapjuk meg:</p>
+    <div class="eq">\[S_p=\frac{1}{p+1}\Bigl[(n+1)^{p+1}-\sum_{i=0}^{p-1}\binom{p+1}{i}S_i\Bigr].\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="f-p-p">p <input type="range" id="f-p-p" min="1" max="6" value="2"> <span class="mono" id="f-p-pv">2</span></label>
+        <label class="rng" for="f-p-n">n <input type="range" id="f-p-n" min="1" max="15" value="8"> <span class="mono" id="f-p-nv">8</span></label>
+      </div>
+      <div class="info" id="f-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A rekurzió minden \(p\)-re működik, de egyre több tagot igényel. A képletek (Faulhaber-képletek, a Bernoulli-számokkal) ugyanezt zárt alakban adják meg, ezt itt nem használjuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-repertoar">
+  <div class="body">
+    <div class="eyebrow">§3 · A repertoár módszere</div>
+    <h2>Ismert megoldásokból építkezünk</h2>
+    <p>Tekintsük az egész rekurziócsaládot:</p>
+    <div class="eq">\[R_0=\alpha,\qquad R_n=R_{n-1}+\beta+\gamma n+\delta n^2.\]</div>
+    <p>A megoldás lineáris az \((\alpha,\beta,\gamma,\delta)\) paraméterekben, ezért elég néhány <i>alapesetet</i> megoldani. A repertoár: \(R_n = 1\) megoldja az \((1,0,0,0)\) esetet; \(R_n = n\) az \((0,1,0,0)\)-t; \(R_n = n^2\) a \((0,-1,2,0)\)-t; \(R_n = n^3\) a \((0,1,-3,3)\)-t (mert \(n^3-(n-1)^3=3n^2-3n+1\)). Bármilyen paraméterhármas ezek kombinációja:</p>
+    <div class="eq gold">\[A=\frac{\delta}{3},\quad B=\frac{\gamma+3A}{2},\quad C=\beta-A+B,\quad D=\alpha\ \Longrightarrow\ R_n=An^3+Bn^2+Cn+D.\]</div>
+    <p>A \(\sum k^2\) esete \((0,0,0,1)\): \(A = 1/3\), \(B = 1/2\), \(C = 1/6\). Adj meg tetszőleges paramétereket, a program megoldja és ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="f-r-a">α <input type="number" id="f-r-a" value="0" min="-9" max="9"></label>
+        <label class="rng" for="f-r-b">β <input type="number" id="f-r-b" value="0" min="-9" max="9"></label>
+        <label class="rng" for="f-r-c">γ <input type="number" id="f-r-c" value="0" min="-9" max="9"></label>
+        <label class="rng" for="f-r-d">δ <input type="number" id="f-r-d" value="1" min="-9" max="9"></label>
+      </div>
+      <div class="ctrl" id="f-r-pre">
+        <button data-p="0,0,0,1" class="primary">Σk²</button><button data-p="0,0,1,0">Σk</button><button data-p="0,-1,2,0">n²</button><button data-p="0,1,-3,3">n³</button><button data-p="5,2,-1,1">5, 2, −1, 1</button>
+      </div>
+      <div class="info" id="f-r-info"></div>
+      <div class="tbl-wrap"><table class="vals" id="f-r-tbl"></table></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A módszer ereje: a megoldás struktúráját használja, nem a sejtésre támaszkodik. Gyenge pontja: csak a családon belül működik, és az alapesetek megtalálása ötlet kérdése.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-integral">
+  <div class="body">
+    <div class="eyebrow">§4 · Integrálás</div>
+    <h2>A terület és a hiba</h2>
+    <p>A \(\sum_{k=1}^{n}k^2\) az \(x^2\) görbe alatti terület lépcsős közelítése. A terület \(\int_0^n x^2\,dx = n^3/3\), ez az összeg főtagja. A maradékot (a hibát) sorra becsüljük: ha a \(S_n - n^3/3\) kb. \(c\,n^2\), a \(c\) a következő együttható, és így tovább.</p>
+    <div class="fig">
+      <svg id="f-i-svg" role="img" aria-label="A maradék értékei oszlopokként"></svg>
+      <div class="info" id="f-i-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="f-i-s">levont tagok <select id="f-i-s">
+          <option value="0">0: S<sub>n</sub> maga</option>
+          <option value="1">1: − n³/3</option>
+          <option value="2">2: − n³/3 − n²/2</option>
+          <option value="3">3: − n³/3 − n²/2 − n/6</option>
+        </select></label>
+        <label class="rng" for="f-i-n">n <input type="range" id="f-i-n" min="3" max="30" value="12"> <span class="mono" id="f-i-nv">12</span></label>
+      </div>
+    </div>
+    <p>Az utolsó maradék minden \(n\)-re pontosan nulla, ez azonban <b>nem bizonyítás</b>: véges sok \(n\)-re ellenőrizzük. A módszer a sejtést adja meg (a tagok alakját), az igazolást az indukció (§1) vagy a repertoár (§3) végzi.</p>
+  </div>
+  <aside class="margo">
+    <p>Az \(n^2/2\) tag a „fél oszlop” korrekciója: a lépcső átlagosan fél oszloppal a görbe fölött van.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-kibontas">
+  <div class="body">
+    <div class="eyebrow">§5 · Kibontás és összevonás</div>
+    <h2>A \(k \cdot k\) felbontása</h2>
+    <p>A trükk: \(k^2 = k\cdot k = \sum_{j=1}^{k}k\), így a négyzetek összege kétszeres összeg, amelynek sorrendjét a 2.4 szerint cserélhetjük. Utána az összevonásnál a keresett összeg újra megjelenik, de más előjellel, és egyenletként megoldható.</p>
+    <div class="eq gold">\[S=\sum_{k=1}^{n}\sum_{j=1}^{k}k=\sum_{j=1}^{n}\sum_{k=j}^{n}k=\sum_{j=1}^{n}\frac{(n+j)(n+1-j)}{2}=\frac12\Bigl[n^2(n+1)+\frac{n(n+1)}{2}-S\Bigr].\]</div>
+    <p>A harmadik egyenlőségnél a \((n+j)(n+1-j) = n(n+1) + j - j^2\) átalakítást használjuk. Az \(S\)-re rendezés: \(3S = n(n+1)(n+\tfrac12)\).</p>
+    <div class="fig">
+      <div class="info" id="f-k-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="f-k-n">n <input type="range" id="f-k-n" min="1" max="15" value="6"> <span class="mono" id="f-k-nv">6</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az „önmagára visszaható” egyenlet (az összeg mindkét oldalon szerepel) gyakori technika: elég egyenletként megoldani.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-osszevetes">
+  <div class="body">
+    <div class="eyebrow">§6 · Összevetés</div>
+    <h2>Öt út, egy eredmény</h2>
+    <p>Az öt módszer eredménye minden \(n\)-re ugyanaz. Állítsd be \(n\)-t: a táblázat mindegyik módszerrel kiszámolja a \(\sum_{k=0}^{n} k^2\) értékét, és az egyenesen kiszámolt összeggel veti össze.</p>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="f-o-tbl"></table></div>
+      <div class="ctrl">
+        <label class="rng" for="f-o-n">n <input type="range" id="f-o-n" min="1" max="40" value="10"> <span class="mono" id="f-o-nv">10</span></label>
+      </div>
+    </div>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Módszer</th><th>Előre kell tudni</th><th>Általánosítható?</th></tr>
+      <tr><th>Sejtés + indukció</th><td>a képlet alakja</td><td>nem: minden \(p\)-re új sejtés</td></tr>
+      <tr><th>Perturbáció</th><td>az alacsonyabb hatványok összege</td><td>igen, rekurzívan</td></tr>
+      <tr><th>Repertoár</th><td>a megoldható alapesetek</td><td>a lineáris családon belül</td></tr>
+      <tr><th>Integrálás</th><td>a polinom foka</td><td>igen, a maradék becslése nem bizonyítás</td></tr>
+      <tr><th>Kibontás</th><td>az összeg szerkezete</td><td>részben, ötlet kell</td></tr>
+    </table></div>
+    <p>A következő téma (2.6) az összegzést a deriválás és integrálás párhuzamos „véges” változatával oldja meg: a differenciaoperátorral és az eséspolinomokkal.</p>
+  </div>
+  <aside class="margo">
+    <p>Ha sejtés, perturbáció és repertoár is ugyanazt adja, az ellenőrzés elég: egyik módszer sem függ a többitől.</p>
+  </aside>
+</section>
+
+<!-- ================= 2.6 VÉGES ÉS VÉGTELEN ANALÍZIS ================= -->
+<header class="hero page" id="g-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.6</div>
+    <h1>Véges analízis</h1>
+    <p class="lead">A deriválás és az integrálás diszkrét párja a különbségképzés és az összegzés. Az eséspolinomok a hatványok szerepét veszik át, és minden szabály ugyanolyan egyszerű marad.</p>
+    <div class="formula">\(\displaystyle\sum_{x=a}^{b-1}\Delta f(x)=f(b)-f(a)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="g-hero" role="img" aria-label="Az x négyzet értékei, a különbségek egymás után kiemelve"></svg>
+    <div class="counter"><span id="g-hero-a">Δf(0) = 1</span><span>f(1) = <b id="g-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A folytonos analízisben a deriválás és az integrálás egymás inverze, és az \(x^n\) deriváltja \(n x^{n-1}\), ami a legegyszerűbb szabály. Ha az \(x\) csak egész értékeket vesz fel, a deriválás helyett a <b>különbség</b> \(\Delta f(x) = f(x+1) - f(x)\) a természetes művelet. Az \(x^n\) különbsége viszont nem szép (\(\Delta x^2 = 2x + 1\)), és a szépség elvész. A megoldás: a hatványok helyett más „építőkockákat” kell használni, az <b>eséspolinomokat</b>, amelyekre a szabály ugyanolyan egyszerű, mint a deriválásnál. Ezzel a \(\sum k^p\) összegek kiszámolása pontosan az integrálás párja lesz, és az összegzés alaptétele ugyanúgy hangzik, mint az integrálszámítás alaptétele. <i>Saját bevezető, a Konkrét matematika 2.6 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="g-kulonbseg">
+  <div class="body">
+    <div class="eyebrow">§1 · A differenciaoperátor</div>
+    <h2>A deriválás diszkrét párja</h2>
+    <p>Legyen \(\Delta f(x)=f(x+1)-f(x)\) és \(Ef(x)=f(x+1)\) (az eltolás). A szabályok hasonlítanak a deriválásra, de az eltolás is megjelenik:</p>
+    <div class="eq gold">\[\Delta(uv)=u\,\Delta v+Ev\,\Delta u,\qquad \Delta c^x=(c-1)\,c^x,\qquad \Delta H_x=\frac{1}{x+1}.\]</div>
+    <p>Itt \(H_x\) a harmonikus szám. Az exponenciális a deriválásnál önmaga (\(e^x\)); itt a \(c=2\) alap az, amelyre \(\Delta 2^x = 2^x\). Válassz egy függvényt: a táblázat az értékeit és a különbségeit mutatja, pontos törtekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="g-k-f">f(x) <select id="g-k-f">
+          <option value="sq">x²</option>
+          <option value="cube">x³</option>
+          <option value="p2">2ˣ</option>
+          <option value="p3">3ˣ</option>
+          <option value="harm">H(x)</option>
+          <option value="xp2">x·2ˣ</option>
+        </select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals" id="g-k-tbl"></table></div>
+      <div class="info" id="g-k-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="g-k-a">a <input type="range" id="g-k-a" min="0" max="8" value="1"> <span class="mono" id="g-k-av">1</span></label>
+        <label class="rng" for="g-k-b">b <input type="range" id="g-k-b" min="1" max="10" value="7"> <span class="mono" id="g-k-bv">7</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az alsó két csúszka az összegzés alaptételét próbálja ki: a különbségek összege \(f(b)-f(a)\), minden közbülső érték kiesik (teleszkópos összeg).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-esespoli">
+  <div class="body">
+    <div class="eyebrow">§2 · Eséspolinomok</div>
+    <h2>A hatványok diszkrét megfelelője</h2>
+    <p>Az \(m\)-edik <b>eséspolinom</b> [falling power]:</p>
+    <div class="eq">\[x^{\underline m}=x(x-1)(x-2)\cdots(x-m+1)\quad(m\text{ tényező}),\qquad x^{\underline 0}=1.\]</div>
+    <p>Rájuk a deriválás szabálya szinte betűre pontosan érvényes:</p>
+    <div class="eq gold">\[\Delta\,x^{\underline m}=m\,x^{\underline{m-1}}.\]</div>
+    <p>Bizonyítás: a két tag közös tényezője \(x^{\underline{m-1}}\), és ezt kiemelve</p>
+    <div class="eq">\[(x+1)^{\underline m}-x^{\underline m}=x^{\underline{m-1}}\bigl[(x+1)-(x-m+1)\bigr]=m\,x^{\underline{m-1}}.\]</div>
+    <p>Minden hatvány felírható eséspolinomok összegeként. Az együtthatók a <i>másodfajú Stirling-számok</i> \(S(p,m)\) [azt számolják, hányféleképp lehet \(p\) elemet \(m\) nemüres csoportba osztani]; rekurziójuk \(S(p,m)=m\,S(p-1,m)+S(p-1,m-1)\).</p>
+    <div class="eq">\[x^p=\sum_{m=0}^{p}S(p,m)\,x^{\underline m}.\]</div>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="g-e-tbl"></table></div>
+      <div class="info" id="g-e-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="g-e-p">p <input type="range" id="g-e-p" min="1" max="8" value="3"> <span class="mono" id="g-e-pv">3</span></label>
+        <label class="rng" for="g-e-x">x <input type="range" id="g-e-x" min="0" max="12" value="5"> <span class="mono" id="g-e-xv">5</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Például \(x^2=x^{\underline2}+x^{\underline1}\) és \(x^3=x^{\underline3}+3x^{\underline2}+x^{\underline1}\). Az \(x=5\), \(p=3\) esetben \(125=60+3\cdot20+5\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-osszegzes">
+  <div class="body">
+    <div class="eyebrow">§3 · Összegzés</div>
+    <h2>Az integrálás párja</h2>
+    <p>Az eséspolinomok \(m\)-edik hatványának antidifferenciája [az a \(G\), amelyre \(\Delta G = g\)] \(x^{\underline{m+1}}/(m+1)\). Az alaptétel miatt</p>
+    <div class="eq gold">\[\sum_{k=0}^{n-1}k^{\underline m}=\frac{n^{\underline{m+1}}}{m+1},\qquad
+      \sum_{k=0}^{n-1}k^p=\sum_{m=1}^{p}S(p,m)\,\frac{n^{\underline{m+1}}}{m+1}\quad(p\ge1).\]</div>
+    <p>Így a \(\sum k^2\) kiszámolása két lépés: \(k^2=k^{\underline2}+k^{\underline1}\), és az összeg \(\frac{n^{\underline3}}3+\frac{n^{\underline2}}2\). Minden \(p\)-re ugyanez megy, perturbáció és sejtés nélkül.</p>
+    <div class="fig">
+      <div class="info" id="g-o-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="g-o-p">p <input type="range" id="g-o-p" min="1" max="6" value="2"> <span class="mono" id="g-o-pv">2</span></label>
+        <label class="rng" for="g-o-n">n <input type="range" id="g-o-n" min="1" max="20" value="10"> <span class="mono" id="g-o-nv">10</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\sum_{k=0}^{n-1}\) (nem \(\sum_{k=0}^{n}\)): az alaptétel felső határa kizárt, ez a diszkrét analízis megszokott jelölése.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-reszleges">
+  <div class="body">
+    <div class="eyebrow">§4 · Összegzés részenként</div>
+    <h2>A parciális integrálás párja</h2>
+    <p>A szorzatszabályból (§1) azonnal következik:</p>
+    <div class="eq gold">\[\sum_{k=a}^{b-1}u(k)\,\Delta v(k)=\Bigl[u(k)\,v(k)\Bigr]_a^b-\sum_{k=a}^{b-1}Ev(k)\,\Delta u(k).\]</div>
+    <p>A szabály akkor használható, ha a szorzat egyik tényezőjénél könnyebb a \(\Delta\), a másiknál az antidifferencia. Két példa: \(\sum k\,c^k\) (az \(u=k\) egyszerűsödik, a \(c^k\) antidifferenciája \(c^k/(c-1)\)) és \(\sum H_k\) (az \(u=H_k\) különbsége \(1/(k+1)\)). Minden lépést pontos törtekkel számolunk.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="g-r-m">összeg <select id="g-r-m">
+          <option value="kc">Σ k·cᵏ</option>
+          <option value="h">Σ H(k)</option>
+        </select></label>
+        <label class="rng" for="g-r-c" id="g-r-cl">c <input type="number" id="g-r-c" value="2" min="2" max="6"></label>
+        <label class="rng" for="g-r-n">n <input type="range" id="g-r-n" min="1" max="12" value="6"> <span class="mono" id="g-r-nv">6</span></label>
+      </div>
+      <div class="info" id="g-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(c = 2\) esetben \(\sum_{k=0}^{n-1}k2^k=(n-2)2^n+2\); a 2.3-ban \(n\)-ig vett összegre \((n-1)2^{n+1}+2\) volt: ugyanaz, \(n\)-et eggyel eltolva.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Eséspolinomokkal</h2>
+    <details>
+      <summary><span class="sq">1. Ellenőrizd az \(x=5\) helyen: \(\Delta x^{\underline3}=3x^{\underline2}\).</span></summary>
+      <div class="ans">
+        <p>\(5^{\underline3}=5\cdot4\cdot3=60\), \(6^{\underline3}=6\cdot5\cdot4=120\), tehát \(\Delta=60\). A jobb oldal: \(3\cdot5^{\underline2}=3\cdot5\cdot4=60\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki: \(\sum_{k=0}^{n-1}k(k-1)\).</span></summary>
+      <div class="ans">
+        <p>\(k(k-1)=k^{\underline2}\), tehát az összeg \(\dfrac{n^{\underline3}}{3}=\dfrac{n(n-1)(n-2)}{3}\).</p>
+        <p>Próba: \(n=4\): \(0+0+2+6=8=\frac{4\cdot3\cdot2}{3}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki: \(\sum_{k=1}^{n}k(k+1)(k+2)\).</span></summary>
+      <div class="ans">
+        <p>Itt \(k(k+1)(k+2)=(k+2)^{\underline3}\). Eltolással az összeg \(\sum_{j=3}^{n+2}j^{\underline3}=\Bigl[\dfrac{j^{\underline4}}{4}\Bigr]_3^{n+3}\), és mivel \(3^{\underline4}=0\):</p>
+        <div class="eq">\[\sum_{k=1}^{n}k(k+1)(k+2)=\frac{(n+3)^{\underline4}}{4}=\frac{n(n+1)(n+2)(n+3)}{4}.\]</div>
+        <p>Próba: \(n=2\): \(6+24=30=\frac{2\cdot3\cdot4\cdot5}{4}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Összegzés részenként: \(\sum_{k=0}^{n}k\,2^k\).</span></summary>
+      <div class="ans">
+        <p>A §4 képletébe \(c = 2\) és felső határként \(n+1\) kerül:</p>
+        <div class="eq">\[\sum_{k=0}^{n}k2^k=\bigl[(n+1)-2\bigr]2^{n+1}+2=(n-1)2^{n+1}+2.\]</div>
+        <p>Ez megegyezik a perturbációval kapott (2.3) eredménnyel.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat eredménye \(6\binom{n+3}{4}\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A folytonos és a diszkrét szótár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Folytonos</th><th>Diszkrét</th></tr>
+      <tr><th>\(Df=f'\)</th><td>\(\Delta f(x)=f(x+1)-f(x)\)</td></tr>
+      <tr><th>\(x^m\)</th><td>\(x^{\underline m}\)</td></tr>
+      <tr><th>\(D\,x^m=m\,x^{m-1}\)</th><td>\(\Delta\,x^{\underline m}=m\,x^{\underline{m-1}}\)</td></tr>
+      <tr><th>\(e^x\)</th><td>\(2^x\)</td></tr>
+      <tr><th>\(\ln x\)</th><td>\(H_x\)</td></tr>
+      <tr><th>\(\int_a^b f'\,dx=f(b)-f(a)\)</th><td>\(\sum_{x=a}^{b-1}\Delta f=f(b)-f(a)\)</td></tr>
+      <tr><th>parciális integrálás</th><td>összegzés részenként (az \(E\) eltolással)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Átírás</b><span>Hatvány → eséspolinom (Stirling-számok).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Antidifferencia</b><span>\(x^{\underline m}\to x^{\underline{m+1}}/(m+1)\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Határok</b><span>\(G(b)-G(a)\), a felső határ kizárt.</span></div>
+    </div>
+    <p>A következő (utolsó) téma (2.7) a végtelen összegekhez ér: ott a kérdés az, hogy a részletösszegek egyáltalán közelednek-e valamihez.</p>
+  </div>
+  <aside class="margo">
+    <p>A \(\ln x \leftrightarrow H_x\) megfelelés pontos értelme: \(H_x\) az \(1/(x+1)\) antidifferenciája, ahogy az \(\ln x\) az \(1/x\) antiderivált.</p>
+  </aside>
+</section>
+
+<!-- ================= 2.7 VÉGTELEN ÖSSZEGEK ================= -->
+<header class="hero page" id="h-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.7</div>
+    <h1>Végtelen összegek</h1>
+    <p class="lead">Egy végtelen összegnek akkor van értéke, ha a részletösszegek egy számhoz közelednek. Ilyenkor az átrendezés szabálya is csak feltételesen igaz.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{\infty}x^k=\frac{1}{1-x}\quad(|x|<1)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="h-hero" role="img" aria-label="Az egyre rövidülő hiányzó rész: a részletösszegek az 1-hez közelítenek"></svg>
+    <div class="counter"><span id="h-hero-a">n = 1</span><span>S<sub>n</sub> = <b id="h-hero-b">0,5</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A végtelen összegek az ókori görögöknél paradoxonként jelentek meg: Zénón szerint, ha valaki a távolság felét teszi meg, aztán a maradék felét, és így tovább, soha nem érkezik meg. Valójában a megtett utak összege \(\tfrac12+\tfrac14+\tfrac18+\cdots\) éppen 1. A kérdés ma is ugyanez: mikor adhatunk értelmet annak, hogy végtelen sok számot összeadunk? A válasz a részletösszegek viselkedése. A szám akkor az összeg, ha a részletösszegek hozzá közelednek, bármilyen kicsi az eltérés, amit megengedünk. Ez a téma három jelenséget mutat meg: az összeg létezhet (mértani és teleszkópos sor), nem létezhet (harmonikus sor), és létezhet úgy, hogy az értéke a tagok sorrendjétől függ (feltételes konvergencia). <i>Saját bevezető, a Konkrét matematika 2.7 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="h-geometria">
+  <div class="body">
+    <div class="eyebrow">§1 · A mértani sor</div>
+    <h2>Mikor közelít egy számhoz?</h2>
+    <p>A véges összeg zárt alakja (2.3, perturbáció): \(\sum_{k=0}^{N}x^k=\dfrac{1-x^{N+1}}{1-x}\). A hiba a végtelen összeghez képest \(\dfrac{x^{N+1}}{1-x}\) abszolút értéke. Ez nullához tart, ha \(|x|<1\), és nem, ha \(|x|\ge1\). Állítsd \(x\)-et, és nézd, mi lesz az oszlopokból.</p>
+    <div class="fig">
+      <svg id="h-g-svg" role="img" aria-label="A mértani sor részletösszegei"></svg>
+      <div class="info" id="h-g-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-g-x">x <input type="range" id="h-g-x" min="-1.2" max="1.2" step="0.05" value="0.5"> <span class="mono" id="h-g-xv">0,5</span></label>
+        <label class="rng" for="h-g-n">N <input type="range" id="h-g-n" min="1" max="40" value="12"> <span class="mono" id="h-g-nv">12</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>\(x=\tfrac12\): \(1+\tfrac12+\tfrac14+\dots=2\). \(x=\tfrac1{10}\): \(1{,}111\ldots=\tfrac{10}{9}\). Ugyanez adja a \(0{,}999\ldots=1\) azonosságot (gyakorlat).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-teleszkop">
+  <div class="body">
+    <div class="eyebrow">§2 · Teleszkópos és más sorok</div>
+    <h2>Közelít, vagy elszalad?</h2>
+    <p>A teleszkópos sor tagjai páronként kiesnek: \(\sum_{k=1}^{N}\dfrac{1}{k(k+1)}=1-\dfrac{1}{N+1}\to1\). A \(\sum 1/k^2\) nem teleszkópos, de felülről becsülhető: \(\frac1{k^2}<\frac1{k(k-1)}=\frac1{k-1}-\frac1k\), ezért \(S_N\le2-\frac1N\), tehát korlátos és növekvő, így konvergens (értéke \(\pi^2/6\)). A harmonikus sor \(\sum1/k\) viszont végtelenhez tart: a \(2^m\)-ig terjedő összegre \(H_{2^m}\ge1+\frac m2\) (az \(\tfrac13+\tfrac14\), majd az \(\tfrac15+\dots+\tfrac18\), … csoportok mind legalább \(\tfrac12\)).</p>
+    <div class="fig">
+      <svg id="h-t-svg" role="img" aria-label="Részletösszegek oszlopai"></svg>
+      <div class="info" id="h-t-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-t-s">sor <select id="h-t-s">
+          <option value="tel">1/(k(k+1))</option>
+          <option value="sq">1/k²</option>
+          <option value="harm">1/k (harmonikus)</option>
+          <option value="geo">1/2ᵏ</option>
+          <option value="alt">(−1)ᵏ⁺¹/k</option>
+        </select></label>
+        <label class="rng" for="h-t-n">N <input type="range" id="h-t-n" min="1" max="60" value="30"> <span class="mono" id="h-t-nv">30</span></label>
+      </div>
+    </div>
+    <p>A harmonikus sor lassan, de megállíthatatlanul nő: \(H_N\) először az \(N=12367\)-nél haladja meg a 10-et (számítással ellenőrizve), a 20-at pedig kb. \(2{,}7\cdot10^8\) tagnál. Ezért „nem tart nullához a tagok” nem elég a konvergenciához: itt a tagok nullához tartanak, a sor mégis divergens.</p>
+  </div>
+  <aside class="margo">
+    <p>Az \(\sum1/k\) divergenciája bármilyen \(\sum1/k^s\)-re általánosítható: \(s>1\)-re konvergens, \(s\le1\)-re divergens.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-atrendezes">
+  <div class="body">
+    <div class="eyebrow">§3 · Átrendezés</div>
+    <h2>Ugyanazok a tagok, más összeg</h2>
+    <p>A \(1-\frac12+\frac13-\frac14+\cdots\) sor értéke \(\ln2\approx0{,}6931\). Rendezzük át úgy, hogy blokkonként \(p\) pozitív és \(q\) negatív tagot veszünk (a pozitívak \(\frac11,\frac13,\frac15,\dots\), a negatívak \(-\frac12,-\frac14,\dots\) sorrendben). \(m\) blokk után a részletösszeg \(H_{2pm}-\tfrac12H_{pm}-\tfrac12H_{qm}\), és \(H_n\approx\ln n+\gamma\) miatt a \(\gamma\) kiesik:</p>
+    <div class="eq gold">\[H_{2pm}-\tfrac12H_{pm}-\tfrac12H_{qm}\ \xrightarrow{m\to\infty}\ \ln2+\tfrac12\ln\frac pq.\]</div>
+    <p>A \(p=q=1\) az eredeti sor, a \(p=2\), \(q=1\) átrendezés összege \(\tfrac32\ln2\approx1{,}0397\). Ugyanazokat a számokat adtuk össze, más sorrendben.</p>
+    <div class="fig">
+      <svg id="h-a-svg" role="img" aria-label="Az átrendezett sor részletösszegei blokkonként"></svg>
+      <div class="info" id="h-a-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-a-p">p (pozitív) <input type="range" id="h-a-p" min="1" max="4" value="2"> <span class="mono" id="h-a-pv">2</span></label>
+        <label class="rng" for="h-a-q">q (negatív) <input type="range" id="h-a-q" min="1" max="4" value="1"> <span class="mono" id="h-a-qv">1</span></label>
+        <label class="rng" for="h-a-m">blokkok <input type="range" id="h-a-m" min="1" max="2000" value="500"> <span class="mono" id="h-a-mv">500</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A határérték levezetésében a \(\ln\) tagok maradnak: \(\ln(2pm)-\tfrac12\ln(pm)-\tfrac12\ln(qm)=\ln2+\tfrac12\ln(p/q)\). Az eltérés a határértéktől \(m\)-mel fordítottan arányosan csökken.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-abszolut">
+  <div class="body">
+    <div class="eyebrow">§4 · Abszolút konvergencia</div>
+    <h2>Mikor szabad átrendezni?</h2>
+    <p>Egy sor <b>abszolút konvergens</b>, ha a tagok abszolút értékeinek összege is véges. Ilyenkor az átrendezés nem változtat az összegen, és a kétszeres összegekben a sorrendcsere is szabad. Ha a sor csak <b>feltételesen konvergens</b> (mint a váltakozó előjelű harmonikus sor), az összeg függ a sorrendtől: Riemann tétele szerint ilyenkor alkalmas átrendezéssel bármely valós szám előállítható, sőt divergens sor is kapható. Az alábbi összehasonlításban ugyanaz a \(p{:}q\) átrendezés kétféle sorra hat.</p>
+    <div class="fig">
+      <div class="info" id="h-b-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-b-p">p <input type="range" id="h-b-p" min="1" max="4" value="2"> <span class="mono" id="h-b-pv">2</span></label>
+        <label class="rng" for="h-b-q">q <input type="range" id="h-b-q" min="1" max="4" value="1"> <span class="mono" id="h-b-qv">1</span></label>
+        <label class="rng" for="h-b-m">blokkok <input type="range" id="h-b-m" min="10" max="3000" value="1000"> <span class="mono" id="h-b-mv">1000</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\sum(-1)^{k+1}/k^2=\pi^2/12\) abszolút konvergens, ezért minden átrendezése \(\pi^2/12\)-t ad. A \(\sum(-1)^{k+1}/k\) nem az: a tagok abszolút értékeinek összege a harmonikus sor.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Végtelen összegek</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(\sum_{k=1}^{\infty}\dfrac{1}{k(k+2)}\).</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{1}{k(k+2)}=\dfrac12\Bigl(\dfrac1k-\dfrac1{k+2}\Bigr)\). A részletösszeg \(\dfrac12\Bigl(1+\dfrac12-\dfrac1{N+1}-\dfrac1{N+2}\Bigr)\), ami \(N\to\infty\)-re \(\dfrac34\)-hez tart.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_{k=0}^{\infty}k\,x^k\)-t, ha \(|x|<1\).</span></summary>
+      <div class="ans">
+        <p>A véges összeg (perturbációval, 2.3): \(\sum_{k=0}^{N}kx^k=\dfrac{x-(N+1)x^{N+1}+Nx^{N+2}}{(1-x)^2}\). Ha \(|x|<1\), a \(Nx^N\) típusú tagok nullához tartanak, tehát az összeg \(\dfrac{x}{(1-x)^2}\).</p>
+        <p>Próba: \(x=\tfrac12\): \(\dfrac{1/2}{1/4}=2\), és \(\sum k/2^k=\tfrac12+\tfrac24+\tfrac38+\dots=2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igazold, hogy \(0{,}999\ldots=1\).</span></summary>
+      <div class="ans">
+        <p>\(0{,}999\ldots=9\sum_{k=1}^{\infty}10^{-k}=9\cdot\dfrac{1/10}{1-1/10}=1\). A két írásmód ugyanannak a számnak a kétféle alakja, nem „majdnem” egyenlő.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mi a baj azzal, hogy \(1-1+1-1+\cdots=(1-1)+(1-1)+\cdots=0\), de \(1+(-1+1)+(-1+1)+\cdots=1\)?</span></summary>
+      <div class="ans">
+        <p>A sor nem konvergens: a részletösszegek 1, 0, 1, 0, … felváltva, így nincs határérték, és „az összeg” értelmetlen. A zárójelezés (összevonás) csak konvergens sorra szabad, ezért a két „eredmény” nem mond ellent egymásnak.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat tanulsága: a véges összeg szabályai (2.3) végtelen összegnél csak konvergencia esetén érvényesek, abszolút konvergenciánál minden szabály megmarad.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A fejezet záró térképe</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Sor</th><th>Viselkedés</th><th>Eszköz</th></tr>
+      <tr><th>\(\sum x^k\)</th><td>konvergens, ha \(|x|<1\)</td><td>perturbáció, zárt alak</td></tr>
+      <tr><th>\(\sum\frac1{k(k+1)}\)</th><td>konvergens, 1</td><td>teleszkópos összeg</td></tr>
+      <tr><th>\(\sum\frac1{k^2}\)</th><td>konvergens, \(\pi^2/6\)</td><td>teleszkópos felső becslés</td></tr>
+      <tr><th>\(\sum\frac1k\)</th><td>divergens</td><td>csoportosítás: \(H_{2^m}\ge1+\frac m2\)</td></tr>
+      <tr><th>\(\sum\frac{(-1)^{k+1}}k\)</th><td>feltételesen konvergens</td><td>az átrendezés más összeget ad</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Véges</b><span>Zárt alak a 2.1–2.6 módszereivel.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Határérték</b><span>\(N\to\infty\): létezik-e?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Szabályok</b><span>Átrendezés csak abszolút konvergenciánál.</span></div>
+    </div>
+    <p>Ezzel a fejezet végére értünk: az összegek jelölésétől a zárt alakokon és a véges analízisen át a végtelen összegekig. A 3. fejezet az egészrészekről (\(\lfloor x\rfloor\), \(\lceil x\rceil\)) szól, amelyek már ebben a fejezetben is felbukkantak.</p>
+  </div>
+  <aside class="margo">
+    <p>A feltételes konvergencia a könyv egyik legfontosabb figyelmeztetése: a véges összegek szabályai nem terjednek ki automatikusan a végtelenre.</p>
+  </aside>
+</section>
+
 <footer id="foot"></footer>
 </div>
 </main>
@@ -1719,7 +2933,14 @@ const TOPICS={
 ,
   josephus:{n:"1.3",t:"A Josephus-probléma",prefix:"j-",
     pages:[["bevezeto","Bevezető"],["feladat","A feladat – játék"],["kis","Kis esetek"],["rekurzio","A rekurzió"],["zart","Zárt alak"],["binaris","Bináris szerkezet"],["altalanos","Általánosítás"],["gyak","Gyakorlatok"],["modszer","Összevetés"]],
-    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.3 A Josephus-probléma. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §5 iterációs állítása, a §6 számjegycseréje és a §7 kiegészítések."}
+    foot:"Forrás: R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 1. fejezet, 1.3 A Josephus-probléma. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül; a §5 iterációs állítása, a §6 számjegycseréje és a §7 kiegészítések."},
+  jelolesek:{"n": "2.1", "t": "Jelölések", "ch": 2, "prefix": "a-", "pages": [["bevezeto", "Bevezető"], ["szigma", "A szigma-gép"], ["iverson", "Az Iverson-zárójel"], ["teglalap", "Összeg-téglalapok"], ["kotott", "Kötött változó"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.1 Jelölések. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  rekurziok:{"n": "2.2", "t": "Összegek és rekurziók", "ch": 2, "prefix": "b-", "pages": [["bevezeto", "Bevezető"], ["atiras", "Összeg és rekurzió"], ["tenyezo", "Az összegzőtényező"], ["gyorsrendezes", "Gyorsrendezés"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.2 Összegek és rekurziók. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  kezeles:{"n": "2.3", "t": "Összegek kezelése", "ch": 2, "prefix": "c-", "pages": [["bevezeto", "Bevezető"], ["szabalyok", "A három szabály"], ["gauss", "Tükrözés"], ["perturbacio", "A perturbáció módszere"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.3 Összegek kezelése. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  tobbszoros:{"n": "2.4", "t": "Többszörös összegek", "ch": 2, "prefix": "d-", "pages": [["bevezeto", "Bevezető"], ["racs", "A rács"], ["csere", "Sorrendcsere"], ["szimmetria", "A szimmetria-trükk"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.4 Többszörös összegek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  modszerek:{"n": "2.5", "t": "Általános módszerek", "ch": 2, "prefix": "f-", "pages": [["bevezeto", "Bevezető"], ["sejtes", "Sejtés és indukció"], ["perturbacio", "Perturbáció"], ["repertoar", "Repertoár"], ["integral", "Integrálás"], ["kibontas", "Kibontás és összevonás"], ["osszevetes", "Összevetés"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.5 Általános módszerek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  veges:{"n": "2.6", "t": "Véges analízis", "ch": 2, "prefix": "g-", "pages": [["bevezeto", "Bevezető"], ["kulonbseg", "A differenciaoperátor"], ["esespoli", "Eséspolinomok"], ["osszegzes", "Összegzés"], ["reszleges", "Összegzés részenként"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.6 Véges analízis. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  vegtelen:{"n": "2.7", "t": "Végtelen összegek", "ch": 2, "prefix": "h-", "pages": [["bevezeto", "Bevezető"], ["geometria", "A geometriai sor"], ["teleszkop", "Teleszkopikus összegek"], ["atrendezes", "Átrendezés"], ["abszolut", "Abszolút konvergencia"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 2. fejezet, 2.7 Végtelen összegek. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."}
 };
 const CH=[
  {n:1,t:"Rekurziós problémák",d:"Három klasszikus feladat, amelyek megoldása egy kisebb, hasonló feladat megoldására épül.",
@@ -1727,7 +2948,7 @@ const CH=[
   topics:[{id:"hanoi",d:"Hány lépésben költöztethető át egy n korongos torony? Rekurzió, alsó és felső korlát, zárt alak."},
           {id:"egyenesek",d:"Legfeljebb hány részre vágja a síkot n egyenes? És n darab cikkcakk?"},
           {id:"josephus",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."}]},
- {n:2,t:"Összegek",d:"Összegzési jelölés, perturbáció, többszörös összegek."},
+ {"n": 2, "t": "Összegek", "d": "Szigma-jelölés, összegek és rekurziók, többszörös összegek, véges analízis, végtelen összegek.", "lead": "Az összegek a diszkrét matematika alapműveletei. A fejezet azt tanítja meg, hogyan lehet őket felírni, átalakítani és kiszámolni: a jelöléstől a zárt alakig, véges és végtelen esetben.", "topics": [{"id": "jelolesek", "d": "Szigma-jel, feltétel az összegzés alatt, Iverson-zárójel. Szigma-gép és összeg-téglalapok."}, {"id": "rekurziok", "d": "Minden összeg rekurzió, és sok rekurzió összeggé alakítható. Összegzőtényező, a gyorsrendezés átlagos költsége."}, {"id": "kezeles", "d": "Elosztás, csoportosítás, átrendezés, tükrözés és a perturbáció módszere."}, {"id": "tobbszoros", "d": "Kétszeres összegek, tartományok, a szummák felcserélése."}, {"id": "modszerek", "d": "A négyzetek összege öt módszerrel."}, {"id": "veges", "d": "Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."}, {"id": "vegtelen", "d": "Konvergencia, teleszkópos összegek, az átrendezés tétele."}]},
  {n:3,t:"Egészrész-függvények",d:"Alsó és felső egészrész, mod, spektrumok."},
  {n:4,t:"Számelmélet",d:"Oszthatóság, prímek, kongruenciák, Stern–Brocot-fa."},
  {n:5,t:"Binomiális együtthatók",d:"Azonosságok, hipergeometrikus függvények."},
@@ -1948,6 +3169,627 @@ document.querySelectorAll("[data-pre]").forEach(bt=>bt.onclick=()=>{const v=bt.d
 jGenDraw();
 
 /* ---- router ---- */
+/* ================= 2. FEJEZET: KÖZÖS ESZKÖZÖK ================= */
+const rgcd=(a,b)=>{if(a<0n)a=-a;if(b<0n)b=-b;while(b){[a,b]=[b,a%b];}return a;};
+class Rat{
+  constructor(n,d=1n){n=BigInt(n);d=BigInt(d);if(d<0n){n=-n;d=-d;}const g=rgcd(n,d)||1n;this.n=n/g;this.d=d/g;}
+  add(o){return new Rat(this.n*o.d+o.n*this.d,this.d*o.d);}
+  sub(o){return new Rat(this.n*o.d-o.n*this.d,this.d*o.d);}
+  mul(o){return new Rat(this.n*o.n,this.d*o.d);}
+  div(o){return new Rat(this.n*o.d,this.d*o.n);}
+  neg(){return new Rat(-this.n,this.d);}
+  eq(o){return this.n===o.n&&this.d===o.d;}
+  num(){return Number(this.n)/Number(this.d);}
+  toString(){const a=this.n<0n?-this.n:this.n,s=this.n<0n?"−":"";return this.d===1n?s+a:`${s}${a}/${this.d}`;}
+}
+const rat=(n,d=1)=>new Rat(n,d);
+const fm=x=>{if(Math.abs(x)<1e-9)return"0";const t=Math.abs(x)>=1e6?x.toExponential(4):(+x.toFixed(6)).toString();return t.replace(".",",").replace("-","−");};
+const c2sub=n=>String(n).split("").map(c=>"₀₁₂₃₄₅₆₇₈₉"[c]).join("");
+const c2sg=v=>v<0?"−"+Math.abs(v):""+v;
+const c2svg=(id,W,H)=>{const s=$(id);clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);return s;};
+const ok=b=>b?"✓":"✗";
+/* hero-hurok: csak akkor lép, ha az oldal látszik */
+function c2hero(page,ms,nFrames,draw){
+  draw(reduce?nFrames-1:0);
+  if(reduce)return;
+  let i=0;
+  (async function(){for(;;){await sleep(ms);while(document.hidden||curPage!==page)await sleep(400);i=(i+1)%(nFrames+3);draw(Math.min(i,nFrames-1));}})();
+}
+/* oszlopdiagram (negatív értékekkel is) */
+function c2bars(s,vals,o){
+  o=Object.assign({W:640,H:220,l:38,r:10,t:18,b:26,color:()=>"var(--accent)",label:true,fmt:v=>fm(v),xl:i=>i+1,alpha:()=>1},o||{});
+  const {W,H,l,r,t,b}=o,n=vals.length;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const ymin=Math.min(0,...vals),ymax=Math.max(0,...vals),span=(ymax-ymin)||1;
+  const Y=v=>H-b-(H-b-t)*(v-ymin)/span,bw=(W-l-r)/n;
+  for(let g=0;g<=3;g++){const v=ymin+span*g/3;el("line",{x1:l,x2:W-r,y1:Y(v),y2:Y(v),class:"grid-l"},s);txt(s,l-6,Y(v)+4,fm(v),"","end");}
+  el("line",{x1:l,x2:W-r,y1:Y(0),y2:Y(0),class:"axis"},s);
+  vals.forEach((v,i)=>{
+    const x=l+i*bw,y0=Y(0),y1=Y(v);
+    el("rect",{x:x+bw*.12,y:Math.min(y0,y1),width:bw*.76,height:Math.max(1,Math.abs(y1-y0)),rx:2,style:`fill:${o.color(i,v)};opacity:${o.alpha(i,v)}`},s);
+    if(o.label&&n<=16)txt(s,x+bw/2,(v>=0?y1-4:y1+12),o.fmt(v),"");
+    if(n<=20||i%Math.ceil(n/12)===0)txt(s,x+bw/2,H-8,o.xl(i),"");
+  });
+}
+/* biztonságos kifejezés-kiértékelő: csak k, számok, + - * / ^ ( ) */
+function c2expr(src){
+  const s=String(src).replace(/\s+/g,"").replace(/−/g,"-").replace(/·/g,"*").replace(/\^/g,"**").replace(/,/g,".");
+  if(!s||!/^[0-9k+\-*/().]*$/.test(s))return null;
+  try{const f=new Function("k",`return (${s});`);const t=f(1);if(typeof t!=="number")return null;return f;}catch(e){return null;}
+}
+const c2ptsum=(v)=>Math.abs(v-Math.round(v))<1e-9?String(Math.round(v)).replace("-","−"):fm(v);
+const c2join=(a)=>a.map((x,i)=>i===0?x:(x.startsWith("−")?" − "+x.slice(1):" + "+x)).join("");
+
+/* ================= 2.1 JELÖLÉSEK ================= */
+c2hero("jelolesek-bevezeto",650,10,fr=>{
+  const s=$("#a-hero"),N=8,W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const bw=(W-40)/N;let tot=0;
+  for(let k=1;k<=N;k++){
+    const on=k<=fr;const h=on?k*(H-60)/N:0,x=20+(k-1)*bw;
+    el("rect",{x:x+4,y:H-26-(on?h:0),width:bw-8,height:on?h:0,rx:3,style:`fill:${k===fr?"var(--accent-2)":"var(--accent)"};opacity:${on?1:0}`},s);
+    el("rect",{x:x+4,y:H-26-(N*(H-60)/N),width:bw-8,height:H-60,rx:3,style:"fill:none;stroke:var(--line);stroke-dasharray:3 4"},s);
+    txt(s,x+bw/2,H-8,k);
+    if(on)tot+=k;
+  }
+  $("#a-hero-b").textContent=Math.min(fr,N)<1?0:tot;
+});
+
+/* --- §1 szigma-gép --- */
+const aClosed={
+  "k":(n)=>n*(n+1)/2,"k^2":(n)=>n*(n+1)*(2*n+1)/6,"2*k-1":(n)=>n*n,"2^k":(n)=>2**(n+1)-2,
+  "1/(k*(k+1))":(n)=>n/(n+1),"(-1)^k":(n)=>n%2===0?0:-1
+};
+const aClosedTxt={"k":"n(n+1)/2","k^2":"n(n+1)(2n+1)/6","2*k-1":"n²","2^k":"2ⁿ⁺¹ − 2","1/(k*(k+1))":"n/(n+1)","(-1)^k":"0 vagy −1"};
+function aSigma(){
+  const src=$("#a-sz-expr").value,lo=Math.round(+$("#a-sz-lo").value),hi=Math.round(+$("#a-sz-hi").value);
+  const info=$("#a-sz-info"),f=c2expr(src);
+  if(!f||!isFinite(lo)||!isFinite(hi)){info.innerHTML="Ezt a kifejezést nem tudom kiértékelni. Használd a k változót, számokat és a + − * / ^ jeleket, például <span class=\"mono\">2*k+1</span>.";return;}
+  if(hi-lo>39){info.textContent="A két határ különbsége legfeljebb 39 lehet.";return;}
+  const ks=[];for(let k=lo;k<=hi;k++)ks.push(k);
+  const vals=ks.map(k=>f(k));
+  if(vals.some(v=>!isFinite(v))){info.textContent="A kifejezés valamelyik k-ra nem értelmezett (nullával osztás?).";return;}
+  const tot=vals.reduce((a,b)=>a+b,0);
+  $("#a-sz-cnt").textContent=ks.length;$("#a-sz-sum").textContent=c2ptsum(tot);
+  const str=vals.map(c2ptsum);
+  const ts=str.length<=10?c2join(str):c2join(str.slice(0,4))+" + … + "+c2join(str.slice(-2));
+  const nm=src.replace(/\s+/g,"").replace(/−/g,"-").replace(/,/g,".");
+  let cl="–",chk="";
+  if(lo===1&&aClosed[nm]&&hi>=0){const c=aClosed[nm](hi);cl=aClosedTxt[nm];chk=` &nbsp;·&nbsp; zárt alak: ${aClosedTxt[nm]} = ${c2ptsum(c)} ${ok(Math.abs(c-tot)<1e-9)}`;}
+  $("#a-sz-cl").textContent=cl.length>10?"lásd lent":cl;
+  info.innerHTML=ks.length===0?`Üres összeg (${hi} &lt; ${lo}): az érték 0.`:`Σ<sub>k=${lo}</sub><sup>${hi}</sup> (${src}) = ${ts} = <b>${c2ptsum(tot)}</b>${chk}`;
+  c2bars(c2svg("#a-sz-bars",640,200),vals,{H:200,xl:i=>ks[i],color:(i,v)=>v<0?"var(--bad)":"var(--accent)"});
+}
+["#a-sz-expr","#a-sz-lo","#a-sz-hi"].forEach(id=>$(id).addEventListener("input",aSigma));
+document.querySelectorAll("#a-sz-pre button").forEach(b=>b.onclick=()=>{$("#a-sz-expr").value=b.dataset.e;document.querySelectorAll("#a-sz-pre button").forEach(x=>x.classList.toggle("primary",x===b));aSigma();});
+aSigma();
+
+/* --- §2 Iverson-zárójel --- */
+const aPrime=k=>{if(k<2)return false;for(let d=2;d*d<=k;d++)if(k%d===0)return false;return true;};
+function aIver(){
+  const n=+$("#a-iv-n").value;$("#a-iv-nv").textContent=n;
+  const conds=[["páratlan",$("#a-iv-odd").checked,k=>k%2===1],["prím",$("#a-iv-prime").checked,aPrime],["négyzetszám",$("#a-iv-sq").checked,k=>Number.isInteger(Math.sqrt(k))],[">5",$("#a-iv-gt").checked,k=>k>5]].filter(c=>c[1]);
+  const box=$("#a-iv-cells");box.style.setProperty("--nc",n);
+  let h="";const inc=[];
+  for(let k=1;k<=n;k++){const b=conds.every(c=>c[2](k))?1:0;if(b)inc.push(k);
+    h+=`<div class="cell"><span class="ck">${k}</span><span class="cb${b?" on":""}">${b}</span><span class="cv${b?" on":""}">${b?k*k:0}</span></div>`;}
+  box.innerHTML=`<div class="cellkey"><span>k</span><span>[…]</span><span>k²·[…]</span></div><div class="cells" style="--nc:${n}">${h}</div>`;
+  const tot=inc.reduce((a,k)=>a+k*k,0),names=["1 ≤ k ≤ "+n,...conds.map(c=>"k "+(c[0]===">5"?"> 5":"("+c[0]+")"))];
+  $("#a-iv-info").innerHTML=`Σ<sub>k</sub> k²·${names.map(x=>"["+x+"]").join("")} = ${inc.length?c2join(inc.map(k=>String(k*k))):"0"} = <b>${tot}</b>`+(conds.length===0?` &nbsp;·&nbsp; n(n+1)(2n+1)/6 = ${n*(n+1)*(2*n+1)/6} ${ok(n*(n+1)*(2*n+1)/6===tot)}`:"");
+}
+["#a-iv-n","#a-iv-odd","#a-iv-prime","#a-iv-sq","#a-iv-gt"].forEach(id=>$(id).addEventListener("input",aIver));aIver();
+
+/* --- §3 összeg-téglalapok --- */
+const aTgF={k:k=>k,k2:k=>k*k,odd:k=>2*k-1,inv:k=>1/k};
+function aTeg(){
+  const kind=$("#a-tg-f").value,f=aTgF[kind];let lo=+$("#a-tg-lo").value,hi=+$("#a-tg-hi").value;
+  $("#a-tg-lov").textContent=lo;$("#a-tg-hiv").textContent=hi;
+  const N=12,vals=Array.from({length:N},(_,i)=>f(i+1));
+  c2bars(c2svg("#a-tg-svg",640,230),vals,{H:230,color:(i)=>(i+1>=lo&&i+1<=hi)?"var(--accent-2)":"var(--accent)",alpha:(i)=>(i+1>=lo&&i+1<=hi)?1:.35,fmt:v=>kind==="inv"?fm(v).slice(0,5):fm(v)});
+  let s=0;for(let k=lo;k<=hi;k++)s+=f(k);
+  const names={k:"k",k2:"k²",odd:"2k − 1",inv:"1/k"};
+  $("#a-tg-info").innerHTML=lo>hi?`Üres összeg (${hi} &lt; ${lo}) = 0`:`Σ<sub>k=${lo}</sub><sup>${hi}</sup> ${names[kind]} = <b>${c2ptsum(s)}</b>`;
+}
+["#a-tg-f","#a-tg-lo","#a-tg-hi"].forEach(id=>$(id).addEventListener("input",aTeg));aTeg();
+function aGnom(){
+  const n=+$("#a-gn-n").value;$("#a-gn-nv").textContent=n;const W=320,u=Math.min(40,(W-20)/n),s=c2svg("#a-gn-svg",W,W*(n*u+20)/W);
+  const x0=(W-n*u)/2;
+  for(let i=0;i<n;i++)for(let j=0;j<n;j++){const L=Math.max(i,j)+1,p=n>1?100-100*(L-1)/(n-1):100;
+    el("rect",{x:x0+j*u+1,y:10+i*u+1,width:u-2,height:u-2,rx:3,style:`fill:color-mix(in srgb,var(--accent) ${p}%,var(--accent-2))`},s);
+    if(u>=22&&i===j)txt(s,x0+j*u+u/2,10+i*u+u/2+4,2*L-1,"ink");}
+  $("#a-gn-info").innerHTML=`${Array.from({length:n},(_,k)=>2*k+1).join(" + ")} = <b>${n*n}</b> = ${n}² ${ok(Array.from({length:n},(_,k)=>2*k+1).reduce((a,b)=>a+b,0)===n*n)}`;
+}
+$("#a-gn-n").addEventListener("input",aGnom);aGnom();
+
+/* --- §4 kötött változó --- */
+function aKot(){
+  const n=+$("#a-ko-n").value;$("#a-ko-nv").textContent=n;const a=k=>k*k;
+  const A=Array.from({length:n},(_,i)=>a(i+1)),B=Array.from({length:n},(_,i)=>a(i+1)),C=Array.from({length:n},(_,i)=>a(n-i));
+  const S=v=>v.reduce((x,y)=>x+y,0);
+  $("#a-ko-info").innerHTML=`eredeti: Σ<sub>k=1</sub><sup>${n}</sup> k² = ${A.join(" + ")} = <b>${S(A)}</b><br>`+
+   `eltolt: Σ<sub>k=0</sub><sup>${n-1}</sup> (k+1)² = ${Array.from({length:n},(_,k)=>`${k+1}²`.replace(/²/,"²")).join(" + ")} → ${S(B)} ${ok(S(B)===S(A))}<br>`+
+   `megfordított: Σ<sub>k=1</sub><sup>${n}</sup> (${n}+1−k)² = ${C.join(" + ")} = ${S(C)} ${ok(S(C)===S(A))}`;
+}
+$("#a-ko-n").addEventListener("input",aKot);aKot();
+
+/* ================= 2.2 ÖSSZEGEK ÉS REKURZIÓK ================= */
+c2hero("rekurziok-bevezeto",700,8,fr=>{
+  const s=$("#b-hero"),N=8,W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const T=[0];for(let i=1;i<=N;i++)T.push(2*T[i-1]+1);
+  const mx=T[N],bw=(W-40)/(N+1);
+  for(let i=0;i<=N;i++){
+    const on=i<=fr,h=on?Math.max(2,T[i]/mx*(H-70)):0,x=20+i*bw;
+    el("rect",{x:x+3,y:H-26-h,width:bw-6,height:h,rx:3,style:`fill:${i===fr?"var(--accent-2)":"var(--accent)"};opacity:${on?1:0}`},s);
+    if(on)txt(s,x+bw/2,H-30-h,T[i],"");
+    txt(s,x+bw/2,H-8,i);
+  }
+  $("#b-hero-a").textContent=`T${c2sub(Math.min(fr,N))} = ${T[Math.min(fr,N)]}`;
+});
+
+/* --- §1 --- */
+function bAt(){
+  const n=+$("#b-at-n").value;$("#b-at-nv").textContent=n;
+  const vals=[];for(let i=0;i<=n;i++)vals.push(1-2**-i);
+  c2bars(c2svg("#b-at-svg",640,200),vals,{H:200,xl:i=>i,fmt:v=>fm(v).slice(0,6),color:(i)=>i===n?"var(--accent-2)":"var(--accent)"});
+  const T=2**n-1;
+  $("#b-at-info").innerHTML=`T<sub>${n}</sub>/2<sup>${n}</sup> = 1 − 2<sup>−${n}</sup> = ${fm(vals[n])} &nbsp;·&nbsp; T<sub>${n}</sub> = 2<sup>${n}</sup> − 1 = <b>${T}</b> ${ok(Math.abs(T/2**n-vals[n])<1e-12)}`;
+}
+$("#b-at-n").addEventListener("input",bAt);bAt();
+
+/* --- §2 összegzőtényező, egzakt törtekkel --- */
+const bPre=[
+ {id:"hanoi",t:"T(n) = 2T(n−1) + 1, T₀ = 0 (Hanoi)",a:n=>rat(1),b:n=>rat(2),c:n=>rat(1),T0:rat(0),closed:n=>rat((2n**BigInt(n))-1n)},
+ {id:"lin",t:"T(n) = T(n−1) + n, T₀ = 0 (háromszögszámok)",a:n=>rat(1),b:n=>rat(1),c:n=>rat(n),T0:rat(0),closed:n=>rat(n*(n+1),2)},
+ {id:"fact",t:"T(n) = n·T(n−1) + 1, T₀ = 0 (n!·Σ1/k!)",a:n=>rat(1),b:n=>rat(n),c:n=>rat(1),T0:rat(0),closed:null},
+ {id:"qs",t:"n·T(n) = (n+1)·T(n−1) + 2n, T₀ = 0 (gyorsrendezés)",a:n=>rat(n),b:n=>rat(n+1),c:n=>rat(2*n),T0:rat(0),closed:n=>{let H=rat(0);for(let k=1;k<=n;k++)H=H.add(rat(1,k));return rat(2*(n+1)).mul(H).sub(rat(2*n));}}
+];
+$("#b-tn-p").innerHTML=bPre.map((p,i)=>`<option value="${i}">${p.t}</option>`).join("");
+function bSumFactor(p,n){
+  /* visszaadja {rec:[T0..Tn], sf:[null,T1..Tn], s:[null,s1..sn]} */
+  const rec=[p.T0];for(let k=1;k<=n;k++)rec.push(p.b(k).mul(rec[k-1]).add(p.c(k)).div(p.a(k)));
+  const s=[null,rat(1)];for(let k=2;k<=n;k++)s.push(s[k-1].mul(p.a(k-1)).div(p.b(k)));
+  const sf=[p.T0];let acc=s[1].mul(p.b(1)).mul(p.T0);
+  for(let k=1;k<=n;k++){acc=acc.add(s[k].mul(p.c(k)));sf.push(acc.div(s[k].mul(p.a(k))));}
+  return {rec,sf,s};
+}
+function bTn(){
+  const p=bPre[+$("#b-tn-p").value],n=+$("#b-tn-n").value;$("#b-tn-nv").textContent=n;
+  const r=bSumFactor(p,n);let allok=true,rows="";
+  for(let k=0;k<=n;k++){
+    const same=r.rec[k].eq(r.sf[k]);allok=allok&&same;
+    const cl=p.closed?p.closed(k):null,clok=cl?cl.eq(r.rec[k]):null;if(cl&&!clok)allok=false;
+    rows+=`<tr><td>${k}</td><td>${k===0?"–":r.s[k]}</td><td>${r.rec[k]}</td><td>${r.sf[k]} ${ok(same)}</td><td>${cl?cl+" "+ok(clok):"–"}</td></tr>`;
+  }
+  $("#b-tn-tbl").innerHTML=`<tr><th>n</th><th>sₙ</th><th>rekurzióból</th><th>képletből</th><th>zárt alak</th></tr>${rows}`;
+  $("#b-tn-info").innerHTML=`Az összegzőtényezős képlet és a közvetlen rekurzió minden n ≤ ${n}-re ${allok?"egyezik":"<b>nem egyezik</b>"} ${ok(allok)}`;
+}
+$("#b-tn-p").addEventListener("input",bTn);$("#b-tn-n").addEventListener("input",bTn);bTn();
+
+/* --- §3 gyorsrendezés --- */
+const bCn=n=>{const c=[rat(0)];let pre=rat(0);for(let k=1;k<=n;k++){pre=pre.add(c[k-1]);c.push(rat(k+1).add(rat(2,k).mul(pre)));}return c;};
+function bQsCost(a){ /* az első elem a pivot; költség: n+1 felosztásonként (n>=1) */
+  if(a.length===0)return 0;
+  const p=a[0],L=[],R=[];for(let i=1;i<a.length;i++)(a[i]<p?L:R).push(a[i]);
+  return a.length+1+bQsCost(L)+bQsCost(R);
+}
+function bPerms(n){const out=[],a=Array.from({length:n},(_,i)=>i);(function g(k){if(k===n){out.push(a.slice());return;}for(let i=k;i<n;i++){[a[k],a[i]]=[a[i],a[k]];g(k+1);[a[k],a[i]]=[a[i],a[k]];}})(0);return out;}
+function bQs(){
+  const n=+$("#b-qs-n").value;$("#b-qs-nv").textContent=n;
+  const C=bCn(20),vals=C.map(x=>x.num()).slice(1);
+  c2bars(c2svg("#b-qs-svg",640,210),vals,{H:210,xl:i=>i+1,label:false,color:(i)=>i+1===n?"var(--accent-2)":"var(--accent)"});
+  const P=bPerms(n);let tot=0;for(const q of P)tot+=bQsCost(q);
+  let H=rat(0);for(let k=1;k<=n;k++)H=H.add(rat(1,k));
+  const avg=rat(tot,P.length);
+  const cf=rat(2*(n+1)).mul(H).sub(rat(2*n));
+  $("#b-qs-info").innerHTML=`n = ${n}: ${P.length} sorrend, átlagos költség = ${tot}/${P.length} = <b>${avg}</b><br>`+
+   `rekurzióból C<sub>${n}</sub> = ${C[n]} ${ok(C[n].eq(avg))} &nbsp;·&nbsp; 2(n+1)H<sub>n</sub> − 2n = ${cf} ${ok(cf.eq(avg))}`+
+   `<br>közelítés: 2n·ln n − 0,846·n = ${fm(2*n*Math.log(n)-0.8456*n)} (n kicsi, a közelítés még durva)`;
+}
+$("#b-qs-n").addEventListener("input",bQs);bQs();
+
+/* ================= 2.3 ÖSSZEGEK KEZELÉSE ================= */
+c2hero("kezeles-bevezeto",600,9,fr=>{
+  const s=$("#c-hero"),N=8,W=420,H=250,u=(H-70)/9,bw=(W-40)/N;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  for(let i=0;i<N;i++){
+    const x=20+i*bw,h1=(i+1)*u,h2=(N-i)*u,on=i<fr;
+    el("rect",{x:x+3,y:H-26-h1,width:bw-6,height:h1,rx:3,style:"fill:var(--accent)"},s);
+    if(on)el("rect",{x:x+3,y:H-26-h1-h2,width:bw-6,height:h2,rx:3,style:"fill:var(--accent-2)"},s);
+    else el("rect",{x:x+3,y:H-26-9*u,width:bw-6,height:9*u,rx:3,style:"fill:none;stroke:var(--line);stroke-dasharray:3 4"},s);
+    txt(s,x+bw/2,H-8,i+1);
+  }
+  $("#c-hero-a").textContent="tükrözött párok: "+Math.min(fr,N);
+});
+
+/* --- §1 elosztás, összevonás --- */
+function cE(){
+  const fa=c2expr($("#c-ea").value),fb=c2expr($("#c-eb").value),c=+$("#c-ec").value,n=Math.round(+$("#c-en").value),i=$("#c-e-info");
+  if(!fa||!fb||!isFinite(c)||!(n>=1&&n<=30)){i.textContent="Hibás kifejezés vagy határ (1 ≤ n ≤ 30; használd a k változót).";return;}
+  let A=0,B=0,L=0;for(let k=1;k<=n;k++){A+=fa(k);B+=fb(k);L+=c*fa(k)+fb(k);}
+  if(![A,B,L].every(isFinite)){i.textContent="A kifejezés valamelyik k-ra nem értelmezett.";return;}
+  const R=c*A+B,eq=Math.abs(L-R)<1e-9*Math.max(1,Math.abs(L));
+  i.innerHTML=`Σ<sub>k=1</sub><sup>${n}</sup>(${c}·a<sub>k</sub> + b<sub>k</sub>) = ${c2ptsum(L)}<br>${c}·Σa<sub>k</sub> + Σb<sub>k</sub> = ${c}·${c2ptsum(A)} + ${c2ptsum(B)} = ${c2ptsum(R)} ${ok(eq)}`;
+}
+["#c-ea","#c-eb","#c-ec","#c-en"].forEach(id=>$(id).addEventListener("input",cE));cE();
+
+/* --- §1 átrendezés --- */
+function cP(){
+  const n=+$("#c-pn").value;$("#c-pnv").textContent=n;const kind=$("#c-pp").value;
+  const P={rev:k=>n-k,rot:k=>(k+1)%(n+1),swap:k=>k^1,plus:k=>k+1,half:k=>Math.floor(k/2)}[kind];
+  const a=k=>k*k+1;let S0=0,S1=0,r1="<tr><th>k</th>",r2="<tr><th>p(k)</th>",r3="<tr><th>a<sub>p(k)</sub></th>";
+  const img=new Set(),inK=v=>v>=0&&v<=n;let inside=true;
+  for(let k=0;k<=n;k++){const q=P(k);img.add(q);if(!inK(q))inside=false;S0+=a(k);S1+=a(q);
+    r1+=`<td>${k}</td>`;r2+=`<td>${q}</td>`;r3+=`<td>${a(q)}</td>`;}
+  $("#c-p-tbl").innerHTML=r1+"</tr>"+r2+"</tr>"+r3+"</tr>";
+  const bij=inside&&img.size===n+1;
+  $("#c-p-info").innerHTML=`Σ a<sub>k</sub> = <b>${S0}</b> &nbsp;·&nbsp; Σ a<sub>p(k)</sub> = <b>${S1}</b> ${ok(S0===S1)} &nbsp;·&nbsp; p ${bij?"permutáció":"<b>nem permutáció</b>"}`+
+   (bij?"":` (${inside?"két indexből ugyanaz lett":"kilóg a {0…"+n+"} halmazból"})`);
+}
+$("#c-pp").addEventListener("input",cP);$("#c-pn").addEventListener("input",cP);cP();
+
+/* --- §2 tükrözés --- */
+function cG(){
+  const a=+$("#c-ga").value,b=+$("#c-gb").value,n=+$("#c-gn").value;$("#c-gav").textContent=a;$("#c-gbv").textContent=b;$("#c-gnv").textContent=n;
+  const W=640,H=240,l=20,r=20,t=14,bt=26,tot=2*a+b*n||1,bw=(W-l-r)/(n+1),u=(H-t-bt)/tot,s=c2svg("#c-g-svg",W,H);
+  let S=0;
+  for(let k=0;k<=n;k++){
+    const h1=(a+b*k)*u,h2=(a+b*(n-k))*u,x=l+k*bw;S+=a+b*k;
+    el("rect",{x:x+bw*.1,y:H-bt-h1,width:bw*.8,height:Math.max(0,h1),rx:2,style:"fill:var(--accent)"},s);
+    el("rect",{x:x+bw*.1,y:H-bt-h1-h2,width:bw*.8,height:Math.max(0,h2),rx:2,style:"fill:var(--accent-2)"},s);
+    if(n<=14)txt(s,x+bw/2,H-8,k);
+  }
+  const F=(n+1)*(2*a+b*n)/2;
+  $("#c-g-info").innerHTML=`2S = (n+1)(2a+bn) = ${n+1}·${2*a+b*n} = ${(n+1)*(2*a+b*n)} &nbsp;·&nbsp; S = <b>${F}</b>, közvetlen összeg: ${S} ${ok(F===S)}`;
+}
+["#c-ga","#c-gb","#c-gn"].forEach(id=>$(id).addEventListener("input",cG));cG();
+
+/* --- §3 perturbáció, egzakt törtekkel --- */
+function cPert(){
+  const m=$("#c-pm").value,n=+$("#c-pn2").value;$("#c-pn2v").textContent=n;
+  $("#c-pxbox").style.display=m==="geo"?"":"none";
+  const i=$("#c-pi");
+  const pw=(x,e)=>{let r=rat(1);for(let j=0;j<e;j++)r=r.mul(x);return r;};
+  if(m==="geo"){
+    const x=rat(Math.round(+$("#c-px").value),Math.max(1,Math.round(+$("#c-pq").value)));
+    let S=rat(0);for(let k=0;k<=n;k++)S=S.add(pw(x,k));
+    const lhs=S.add(pw(x,n+1)),rhs=rat(1).add(x.mul(S));
+    if(x.eq(rat(1))){i.innerHTML=`x = 1: S<sub>${n}</sub> = ${S} = n + 1 ${ok(S.eq(rat(n+1)))}<br>S + a<sub>n+1</sub> = ${lhs}, a<sub>0</sub> + x·S = ${rhs} ${ok(lhs.eq(rhs))} (az egyenlet S-re triviális, nem ad megoldást)`;return;}
+    const cl=rat(1).sub(pw(x,n+1)).div(rat(1).sub(x));
+    i.innerHTML=`x = ${x}: S<sub>${n}</sub> = <b>${S}</b><br>S + a<sub>n+1</sub> = ${lhs} &nbsp;·&nbsp; a<sub>0</sub> + x·S = ${rhs} ${ok(lhs.eq(rhs))}<br>(1 − x<sup>n+1</sup>)/(1 − x) = ${cl} ${ok(cl.eq(S))}`;
+  }else if(m==="k2k"){
+    let S=rat(0),T=rat(0);for(let k=0;k<=n;k++){S=S.add(rat(k).mul(pw(rat(2),k)));T=T.add(pw(rat(2),k));}
+    const lhs=S.add(rat(n+1).mul(pw(rat(2),n+1))),rhs=rat(2).mul(S).add(rat(2).mul(T)),cl=rat(n-1).mul(pw(rat(2),n+1)).add(rat(2));
+    i.innerHTML=`S<sub>${n}</sub> = Σ k·2<sup>k</sup> = <b>${S}</b><br>S + (n+1)2<sup>n+1</sup> = ${lhs} &nbsp;·&nbsp; 2S + 2Σ2<sup>k</sup> = ${rhs} ${ok(lhs.eq(rhs))}<br>(n−1)2<sup>n+1</sup> + 2 = ${cl} ${ok(cl.eq(S))}`;
+  }else{
+    let S=rat(0),L=rat(0);for(let k=0;k<=n;k++){S=S.add(rat(k*k));L=L.add(rat(k));}
+    const lhs=S.add(rat((n+1)*(n+1))),rhs=S.add(rat(2).mul(L)).add(rat(n+1));
+    const lin=rat((n+1)*(n+1)-(n+1),2);
+    i.innerHTML=`S<sub>${n}</sub> = Σ k² = ${S}<br>S + (n+1)² = ${lhs} &nbsp;·&nbsp; S + 2Σk + (n+1) = ${rhs} ${ok(lhs.eq(rhs))}<br>az S kiesik; marad: 2Σk = (n+1)² − (n+1), azaz Σk = ${lin} ${ok(lin.eq(L))}`;
+  }
+}
+["#c-pm","#c-pn2","#c-px","#c-pq"].forEach(id=>$(id).addEventListener("input",cPert));cPert();
+
+/* ================= 2.4 TÖBBSZÖRÖS ÖSSZEGEK ================= */
+c2hero("tobbszoros-bevezeto",650,7,fr=>{
+  const s=$("#d-hero"),N=6,W=420,H=250,u=Math.min((W-60)/N,(H-50)/N);clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const x0=(W-N*u)/2,y0=14;let tot=0;
+  for(let j=1;j<=N;j++)for(let k=1;k<=N;k++){
+    const on=j<=fr;if(on)tot+=j*k;
+    el("rect",{x:x0+(k-1)*u+1,y:y0+(j-1)*u+1,width:u-2,height:u-2,rx:4,style:`fill:${on?(j===fr?"var(--accent-2)":"var(--accent)"):"none"};opacity:${on?.25+.75*j*k/(N*N):1};stroke:${on?"none":"var(--line)"}`},s);
+    txt(s,x0+(k-1)*u+u/2,y0+(j-1)*u+u/2+4,on?j*k:"","");
+  }
+  $("#d-hero-a").textContent="sorok: "+Math.min(fr,N);$("#d-hero-b").textContent=tot;
+});
+
+/* --- §1 rács --- */
+const dCond={all:()=>true,lt:(j,k)=>j<k,le:(j,k)=>j<=k,anti:(j,k,n)=>j+k<=n+1,div:(j,k)=>k%j===0};
+function dRacs(){
+  const n=+$("#d-r-n").value;$("#d-r-nv").textContent=n;const c=dCond[$("#d-r-c").value];
+  let tot=0,rows=Array(n+1).fill(0),cols=Array(n+1).fill(0),h="";
+  for(let j=1;j<=n;j++)for(let k=1;k<=n;k++){const on=c(j,k,n);if(on){tot+=j*k;rows[j]+=j*k;cols[k]+=j*k;}}
+  h=`<div class="cells" style="--nc:${n+1}"><div class="cell"><span class="ck"></span></div>`;
+  for(let k=1;k<=n;k++)h+=`<div class="cell"><span class="ck">k=${k}</span></div>`;
+  for(let j=1;j<=n;j++){h+=`<div class="cell"><span class="ck">j=${j}</span></div>`;
+    for(let k=1;k<=n;k++){const on=c(j,k,n);h+=`<div class="cell"><span class="cv${on?" on":""}">${on?j*k:"·"}</span></div>`;}}
+  h+="</div>";$("#d-r-grid").innerHTML=h;
+  const sr=rows.slice(1).reduce((a,b)=>a+b,0),sc=cols.slice(1).reduce((a,b)=>a+b,0);
+  let extra="";const sk=n*(n+1)/2,sq=n*(n+1)*(2*n+1)/6;
+  if($("#d-r-c").value==="all")extra=` &nbsp;·&nbsp; (n(n+1)/2)² = ${sk*sk} ${ok(sk*sk===tot)}`;
+  if($("#d-r-c").value==="lt")extra=` &nbsp;·&nbsp; ½[(Σk)² − Σk²] = ${(sk*sk-sq)/2} ${ok((sk*sk-sq)/2===tot)}`;
+  $("#d-r-info").innerHTML=`soronként: ${sr} &nbsp;·&nbsp; oszloponként: ${sc} ${ok(sr===sc&&sr===tot)} &nbsp;·&nbsp; összeg = <b>${tot}</b>${extra}`;
+}
+["#d-r-n","#d-r-c"].forEach(id=>$(id).addEventListener("input",dRacs));dRacs();
+
+/* --- §2 sorrendcsere --- */
+const dF={inv:(j,k)=>rat(1,j),jk:(j,k)=>rat(j*k),k:(j,k)=>rat(k),diff:(j,k)=>rat(j-k),inv2:(j,k)=>rat(1,j*k)};
+function dCsere(){
+  const n=+$("#d-c-n").value;$("#d-c-nv").textContent=n;const f=dF[$("#d-c-f").value];
+  let A=rat(0),B=rat(0);
+  for(let j=1;j<=n;j++)for(let k=1;k<=j;k++)A=A.add(f(j,k));
+  for(let k=1;k<=n;k++)for(let j=k;j<=n;j++)B=B.add(f(j,k));
+  let ex="";
+  if($("#d-c-f").value==="inv"){
+    let H=[rat(0)];for(let i=1;i<=n;i++)H.push(H[i-1].add(rat(1,i)));
+    let s=rat(0);for(let k=0;k<=n-1;k++)s=s.add(H[k]);const cl=rat(n).mul(H[n]).sub(rat(n));
+    ex=`<br>Σ<sub>k=0</sub><sup>n−1</sup> H<sub>k</sub> = ${s} &nbsp;·&nbsp; nH<sub>n</sub> − n = ${cl} ${ok(s.eq(cl))}`;
+  }
+  $("#d-c-info").innerHTML=`Σ<sub>j=1</sub><sup>${n}</sup>Σ<sub>k=1</sub><sup>j</sup> a = <b>${A}</b> &nbsp;·&nbsp; Σ<sub>k=1</sub><sup>${n}</sup>Σ<sub>j=k</sub><sup>${n}</sup> a = <b>${B}</b> ${ok(A.eq(B))}${ex}`;
+}
+["#d-c-f","#d-c-n"].forEach(id=>$(id).addEventListener("input",dCsere));dCsere();
+
+/* --- §3 szimmetria-trükk --- */
+function dSzim(){
+  const n=+$("#d-s-n").value;$("#d-s-nv").textContent=n;const fa=c2expr($("#d-s-a").value),fb=c2expr($("#d-s-b").value),i=$("#d-s-info");
+  if(!fa||!fb){i.textContent="Hibás kifejezés (használd a k változót).";return;}
+  const a=[],b=[];for(let k=1;k<=n;k++){a.push(fa(k));b.push(fb(k));}
+  if(![...a,...b].every(isFinite)){i.textContent="A kifejezés valamelyik k-ra nem értelmezett.";return;}
+  let L=0,sa=0,sb=0,sab=0;
+  for(let j=0;j<n;j++){sa+=a[j];sb+=b[j];sab+=a[j]*b[j];for(let k=0;k<n;k++)L+=(a[j]-a[k])*(b[j]-b[k]);}
+  const R=2*n*sab-2*sa*sb,eq=Math.abs(L-R)<1e-9*Math.max(1,Math.abs(L));
+  const rel=n*sab-sa*sb;
+  i.innerHTML=`Σ<sub>j,k</sub>(a<sub>j</sub>−a<sub>k</sub>)(b<sub>j</sub>−b<sub>k</sub>) = ${c2ptsum(L)} &nbsp;·&nbsp; 2nΣab − 2ΣaΣb = ${c2ptsum(R)} ${ok(eq)}<br>`+
+    `n·Σab = ${c2ptsum(n*sab)} &nbsp;${rel>1e-9?"≥":rel<-1e-9?"≤":"="}&nbsp; (Σa)(Σb) = ${c2ptsum(sa*sb)}`+(rel>1e-9?" (azonos monotonitás)":rel<-1e-9?" (ellentétes monotonitás)":" (egyenlőség)");
+}
+["#d-s-a","#d-s-b","#d-s-n"].forEach(id=>$(id).addEventListener("input",dSzim));
+document.querySelectorAll("#d-s-pre button").forEach(b=>b.onclick=()=>{$("#d-s-a").value=b.dataset.a;$("#d-s-b").value=b.dataset.b;document.querySelectorAll("#d-s-pre button").forEach(x=>x.classList.toggle("primary",x===b));dSzim();});
+dSzim();
+
+/* ================= 2.5 ÁLTALÁNOS MÓDSZEREK ================= */
+const fSum2=n=>{let s=0;for(let k=0;k<=n;k++)s+=k*k;return s;};
+const fPoly=cs=>{ /* cs[i] = együttható n^i-hez (Rat) */
+  const t=[];for(let i=cs.length-1;i>=0;i--){const c=cs[i];if(c.n===0n)continue;
+    const a=new Rat(c.n<0n?-c.n:c.n,c.d),sg=c.n<0n?"−":"+",v=(a.n===1n&&a.d===1n&&i>0)?"":String(a),nn=i===0?"":i===1?"n":"n"+"⁰¹²³⁴⁵⁶⁷⁸⁹"[i];
+    t.push([sg,v+(v&&nn?"·":"")+nn]);}
+  if(!t.length)return"0";return t.map((x,j)=>j===0?(x[0]==="−"?"−":"")+x[1]:" "+x[0]+" "+x[1]).join("");
+};
+c2hero("modszerek-bevezeto",650,9,fr=>{
+  const s=$("#f-hero"),N=8,W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const S=[0];for(let i=1;i<=N;i++)S.push(S[i-1]+i*i);const mx=S[N],bw=(W-40)/(N+1);
+  for(let i=0;i<=N;i++){const on=i<=fr,h=on?Math.max(2,S[i]/mx*(H-70)):0,x=20+i*bw;
+    el("rect",{x:x+3,y:H-26-h,width:bw-6,height:h,rx:3,style:`fill:${i===fr?"var(--accent-2)":"var(--accent)"};opacity:${on?1:0}`},s);
+    if(on)txt(s,x+bw/2,H-30-h,S[i],"");txt(s,x+bw/2,H-8,i);}
+  const f=Math.min(fr,N);$("#f-hero-a").textContent="n = "+f;$("#f-hero-b").textContent=S[f];
+});
+
+/* --- §1 sejtés --- */
+function fSej(){
+  const N=+$("#f-s-n").value;$("#f-s-nv").textContent=N;
+  const S=[];for(let n=0;n<=N;n++)S.push(fSum2(n));
+  const D=[S];for(let d=1;d<=3;d++){const p=D[d-1];D.push(p.slice(1).map((v,i)=>v-p[i]));}
+  let h="<tr><th>n</th>"+S.map((_,i)=>`<td>${i}</td>`).join("")+"</tr>";
+  ["S","Δ","Δ²","Δ³"].forEach((nm,d)=>{h+=`<tr><th>${nm}</th>`+Array.from({length:N+1},(_,i)=>`<td>${D[d][i]===undefined?"":D[d][i]}</td>`).join("")+"</tr>";});
+  $("#f-s-tbl").innerHTML=h;
+  const F=n=>rat(n*(n+1)*(2*n+1),6);let okAll=true,ind=true;
+  for(let n=0;n<=N;n++){if(!F(n).eq(rat(S[n])))okAll=false;if(n>0&&!F(n-1).add(rat(n*n)).eq(F(n)))ind=false;}
+  const cst=D[3].every(v=>v===2);
+  $("#f-s-info").innerHTML=`Δ³ állandó (=2): ${ok(cst)} → főegyüttható 2/3! = 1/3 &nbsp;·&nbsp; képlet = közvetlen összeg n ≤ ${N}-re ${ok(okAll)} &nbsp;·&nbsp; F(n−1) + n² = F(n) ${ok(ind)}`;
+}
+$("#f-s-n").addEventListener("input",fSej);fSej();
+
+/* --- §2 perturbáció --- */
+const fBin=(n,k)=>{let r=1n;for(let i=1n;i<=BigInt(k);i++)r=r*(BigInt(n)-i+1n)/i;return r;};
+function fPert(){
+  const p=+$("#f-p-p").value,n=+$("#f-p-n").value;$("#f-p-pv").textContent=p;$("#f-p-nv").textContent=n;
+  const pw=(b,e)=>{let r=1n;for(let i=0;i<e;i++)r*=BigInt(b);return r;};
+  const S=[];for(let i=0;i<=p;i++){let s=0n;for(let k=0;k<=n;k++)s+=(i===0?1n:pw(k,i));S.push(s);}
+  /* S_0..S_{p-1} 'ismert', S_p-t a perturbációból számoljuk */
+  let rest=pw(n+1,p+1);for(let i=0;i<p;i++)rest-=fBin(p+1,i)*S[i];
+  const Sp=new Rat(rest,BigInt(p+1));
+  const all=Array.from({length:p+1},(_,i)=>`${fBin(p+1,i)}·${S[i]}`).join(" + ");
+  $("#f-p-info").innerHTML=`(n+1)<sup>${p+1}</sup> = ${pw(n+1,p+1)} = ${all} ${ok(Array.from({length:p+1},(_,i)=>fBin(p+1,i)*S[i]).reduce((a,b)=>a+b,0n)===pw(n+1,p+1))}<br>`+
+    `S<sub>${p}</sub> = [ (n+1)<sup>${p+1}</sup> − Σ<sub>i&lt;${p}</sub> C(${p+1},i)·S<sub>i</sub> ] / ${p+1} = ${Sp} &nbsp;·&nbsp; közvetlenül: ${S[p]} ${ok(Sp.eq(rat(S[p])))}`;
+}
+["#f-p-p","#f-p-n"].forEach(id=>$(id).addEventListener("input",fPert));fPert();
+
+/* --- §3 repertoár --- */
+function fRep(){
+  const al=Math.round(+$("#f-r-a").value),be=Math.round(+$("#f-r-b").value),ga=Math.round(+$("#f-r-c").value),de=Math.round(+$("#f-r-d").value);
+  if(![al,be,ga,de].every(Number.isFinite)){$("#f-r-info").textContent="Adj meg egész paramétereket.";return;}
+  const A=rat(de,3),B=A.mul(rat(3)).add(rat(ga)).div(rat(2)),C=rat(be).sub(A).add(B),D=rat(al);
+  const cf=n=>A.mul(rat(n**3)).add(B.mul(rat(n*n))).add(C.mul(rat(n))).add(D);
+  const R=[rat(al)];for(let n=1;n<=10;n++)R.push(R[n-1].add(rat(be+ga*n+de*n*n)));
+  let okAll=true,r1="<tr><th>n</th>",r2="<tr><th>rekurzió</th>",r3="<tr><th>An³+Bn²+Cn+D</th>";
+  for(let n=0;n<=10;n++){const e=cf(n).eq(R[n]);okAll=okAll&&e;r1+=`<td>${n}</td>`;r2+=`<td>${R[n]}</td>`;r3+=`<td>${cf(n)}</td>`;}
+  $("#f-r-tbl").innerHTML=r1+"</tr>"+r2+"</tr>"+r3+"</tr>";
+  $("#f-r-info").innerHTML=`A = ${A}, B = ${B}, C = ${C}, D = ${D}<br>R<sub>n</sub> = <b>${fPoly([D,C,B,A])}</b> &nbsp;·&nbsp; egyezés n ≤ 10-re ${ok(okAll)}`;
+}
+["#f-r-a","#f-r-b","#f-r-c","#f-r-d"].forEach(id=>$(id).addEventListener("input",fRep));
+document.querySelectorAll("#f-r-pre button").forEach(b=>b.onclick=()=>{const v=b.dataset.p.split(",");["a","b","c","d"].forEach((x,i)=>$("#f-r-"+x).value=v[i]);document.querySelectorAll("#f-r-pre button").forEach(x=>x.classList.toggle("primary",x===b));fRep();});
+fRep();
+
+/* --- §4 integrálás --- */
+function fInt(){
+  const st=+$("#f-i-s").value,N=+$("#f-i-n").value;$("#f-i-nv").textContent=N;
+  const res=n=>{let r=rat(fSum2(n));if(st>=1)r=r.sub(rat(n**3,3));if(st>=2)r=r.sub(rat(n*n,2));if(st>=3)r=r.sub(rat(n,6));return r;};
+  const vals=[];for(let n=1;n<=N;n++)vals.push(res(n).num());
+  c2bars(c2svg("#f-i-svg",640,200),vals,{H:200,label:false,color:(i)=>i+1===N?"var(--accent-2)":"var(--accent)"});
+  const deg=3-st,q=res(N).num()/N**deg;
+  $("#f-i-info").innerHTML=st<3?`n = ${N}: maradék = ${res(N)} ≈ ${fm(res(N).num())}; maradék / n<sup>${deg}</sup> = ${fm(q)} → ${["1/3 ≈ 0,3333","1/2 = 0,5","1/6 ≈ 0,1667"][st]} (a következő együttható)`:
+    `maradék minden n ≤ ${N}-re: ${Array.from({length:N},(_,i)=>res(i+1)).every(r=>r.n===0n)?"pontosan 0":"nem 0"} ${ok(Array.from({length:N},(_,i)=>res(i+1)).every(r=>r.n===0n))}`;
+}
+["#f-i-s","#f-i-n"].forEach(id=>$(id).addEventListener("input",fInt));fInt();
+
+/* --- §5 kibontás --- */
+function fKib(){
+  const n=+$("#f-k-n").value;$("#f-k-nv").textContent=n;
+  let S=rat(0);for(let k=1;k<=n;k++)S=S.add(rat(k*k));
+  let S2=rat(0);for(let j=1;j<=n;j++)for(let k=j;k<=n;k++)S2=S2.add(rat(k));
+  let S3=rat(0);for(let j=1;j<=n;j++)S3=S3.add(rat((n+j)*(n+1-j),2));
+  const lin=rat(n*(n+1),2),rhs=rat(1,2).mul(rat(n*n*(n+1)).add(lin).sub(S));
+  const fin=rat(n*(n+1),1).mul(rat(2*n+1,2)).div(rat(3));
+  $("#f-k-info").innerHTML=`Σk² = ${S}<br>Σ<sub>j</sub>Σ<sub>k=j</sub><sup>n</sup> k = ${S2} ${ok(S2.eq(S))}<br>Σ<sub>j</sub> (n+j)(n+1−j)/2 = ${S3} ${ok(S3.eq(S))}<br>½[n²(n+1) + n(n+1)/2 − S] = ${rhs} ${ok(rhs.eq(S))}<br>3S = n(n+1)(n+½) → S = ${fin} ${ok(fin.eq(S))}`;
+}
+$("#f-k-n").addEventListener("input",fKib);fKib();
+
+/* --- §6 összevetés --- */
+function fOsszev(){
+  const n=+$("#f-o-n").value;$("#f-o-nv").textContent=n;
+  const dir=rat(fSum2(n));
+  const guess=rat(n*(n+1)*(2*n+1),6);
+  const S0=n+1,S1=n*(n+1)/2,pert=rat((n+1)**3-S0-3*S1,3);
+  const rep=rat(n**3,3).add(rat(n*n,2)).add(rat(n,6));
+  const integ=rat(n**3,3).add(rat(n*n,2)).add(rat(n,6));
+  const kib=rat(n*(n+1)*(2*n+1),2).div(rat(3));
+  const rows=[["közvetlen összeg",dir],["sejtés + indukció",guess],["perturbáció (k³-ből)",pert],["repertoár (A,B,C = 1/3, 1/2, 1/6)",rep],["integrálás (főtag + maradékok)",integ],["kibontás (3S = n(n+1)(2n+1)/2)",kib]];
+  $("#f-o-tbl").innerHTML="<tr><th>Módszer</th><th>Σ<sub>k=0</sub><sup>"+n+"</sup> k²</th><th></th></tr>"+rows.map(r=>`<tr><th>${r[0]}</th><td>${r[1]}</td><td>${ok(r[1].eq(dir))}</td></tr>`).join("");
+}
+$("#f-o-n").addEventListener("input",fOsszev);fOsszev();
+
+/* ================= 2.6 VÉGES ANALÍZIS ================= */
+const gFall=(x,m)=>{let r=1n;for(let i=0;i<m;i++)r*=(BigInt(x)-BigInt(i));return r;};
+const gSt=(()=>{const memo={};const f=(n,k)=>{if(n===k)return 1n;if(k===0||n===0||k>n)return 0n;const key=n+","+k;if(memo[key]!==undefined)return memo[key];return memo[key]=BigInt(k)*f(n-1,k)+f(n-1,k-1);};return f;})();
+c2hero("veges-bevezeto",650,8,fr=>{
+  const s=$("#g-hero"),N=8,W=420,H=250;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  const mx=N*N,bw=(W-40)/(N+1);
+  for(let x=0;x<=N;x++){const h=Math.max(2,x*x/mx*(H-70)),X=20+x*bw;
+    el("rect",{x:X+3,y:H-26-h,width:bw-6,height:h,rx:3,style:"fill:var(--accent);opacity:.45"},s);
+    if(x>=1&&x<=fr){const dh=((x*x)-((x-1)**2))/mx*(H-70);
+      el("rect",{x:X+3,y:H-26-h,width:bw-6,height:Math.max(2,dh),rx:3,style:`fill:${x===fr?"var(--accent-2)":"var(--accent)"}`},s);}
+    txt(s,X+bw/2,H-8,x);
+  }
+  const f=Math.min(fr,N);$("#g-hero-a").textContent=f===0?"Δf(0) = 1":`Δf(${f-1}) = ${2*f-1}`;$("#g-hero-b").textContent=Math.max(1,f)**2;
+});
+
+/* --- §1 differenciaoperátor --- */
+const gF={
+  sq:{f:x=>rat(x*x),d:x=>rat(2*x+1),dn:"2x+1"},
+  cube:{f:x=>rat(x**3),d:x=>rat(3*x*x+3*x+1),dn:"3x²+3x+1"},
+  p2:{f:x=>rat(2n**BigInt(x)),d:x=>rat(2n**BigInt(x)),dn:"2ˣ"},
+  p3:{f:x=>rat(3n**BigInt(x)),d:x=>rat(2n*3n**BigInt(x)),dn:"2·3ˣ"},
+  harm:{f:x=>{let h=rat(0);for(let k=1;k<=x;k++)h=h.add(rat(1,k));return h;},d:x=>rat(1,x+1),dn:"1/(x+1)"},
+  xp2:{f:x=>rat(BigInt(x)*2n**BigInt(x)),d:x=>rat(BigInt(x+2)*2n**BigInt(x)),dn:"(x+2)·2ˣ"}
+};
+function gKul(){
+  const g=gF[$("#g-k-f").value];let a=+$("#g-k-a").value,b=+$("#g-k-b").value;
+  $("#g-k-av").textContent=a;$("#g-k-bv").textContent=b;
+  const N=9;let r1="<tr><th>x</th>",r2="<tr><th>f(x)</th>",r3="<tr><th>Δf(x)</th>",r4="<tr><th>Δ²f(x)</th>",allOk=true;
+  const D=x=>g.f(x+1).sub(g.f(x));
+  for(let x=0;x<=N;x++){const d=D(x),d2=D(x+1).sub(D(x));if(!d.eq(g.d(x)))allOk=false;
+    r1+=`<td>${x}</td>`;r2+=`<td>${g.f(x)}</td>`;r3+=`<td>${d}</td>`;r4+=`<td>${d2}</td>`;}
+  $("#g-k-tbl").innerHTML=r1+"</tr>"+r2+"</tr>"+r3+"</tr>"+r4+"</tr>";
+  let S=rat(0);if(b>a)for(let x=a;x<b;x++)S=S.add(D(x));
+  const ft=g.f(b).sub(g.f(a));
+  $("#g-k-info").innerHTML=`Δf = ${g.dn} minden x ≤ ${N}-re ${ok(allOk)}<br>`+(b>a?`Σ<sub>x=${a}</sub><sup>${b-1}</sup> Δf(x) = ${S} &nbsp;·&nbsp; f(${b}) − f(${a}) = ${ft} ${ok(S.eq(ft))}`:`b ≤ a: üres összeg (0), f(b) − f(a) = ${ft}; az alaptétel itt b &gt; a-ra szól`)+
+    ($("#g-k-f").value==="xp2"?`<br>szorzatszabály: Δ(x·2ˣ) = x·Δ2ˣ + 2<sup>x+1</sup>·Δx, x = 3-nál: ${rat(3).mul(rat(8)).add(rat(16)).mul(rat(1))} = ${D(3)} ${ok(rat(3).mul(rat(8)).add(rat(16)).eq(D(3)))}`:"");
+}
+["#g-k-f","#g-k-a","#g-k-b"].forEach(id=>$(id).addEventListener("input",gKul));gKul();
+
+/* --- §2 eséspolinomok és Stirling-számok --- */
+function gEs(){
+  const p=+$("#g-e-p").value,x=+$("#g-e-x").value;$("#g-e-pv").textContent=p;$("#g-e-xv").textContent=x;
+  let r1="<tr><th>m</th>",r2="<tr><th>S(p,m)</th>",r3=`<tr><th>${x}<sup><u>m</u></sup></th>`,r4="<tr><th>S·x<sup><u>m</u></sup></th>",tot=0n;
+  for(let m=0;m<=p;m++){const s=gSt(p,m),f=gFall(x,m);tot+=s*f;r1+=`<td>${m}</td>`;r2+=`<td>${s}</td>`;r3+=`<td>${f}</td>`;r4+=`<td>${s*f}</td>`;}
+  $("#g-e-tbl").innerHTML=r1+"</tr>"+r2+"</tr>"+r3+"</tr>"+r4+"</tr>";
+  let dok=true;for(let m=1;m<=p;m++)for(let y=0;y<=12;y++)if(gFall(y+1,m)-gFall(y,m)!==BigInt(m)*gFall(y,m-1))dok=false;
+  const pw=BigInt(x)**BigInt(p);
+  $("#g-e-info").innerHTML=`Σ S(p,m)·x<sup><u>m</u></sup> = ${tot} &nbsp;·&nbsp; x<sup>p</sup> = ${x}<sup>${p}</sup> = ${pw} ${ok(tot===pw)}<br>Δ x<sup><u>m</u></sup> = m·x<sup><u>m−1</u></sup> minden m ≤ ${p}, x ≤ 12 esetén ${ok(dok)}`;
+}
+["#g-e-p","#g-e-x"].forEach(id=>$(id).addEventListener("input",gEs));gEs();
+
+/* --- §3 összegzés --- */
+function gOssz(){
+  const p=+$("#g-o-p").value,n=+$("#g-o-n").value;$("#g-o-pv").textContent=p;$("#g-o-nv").textContent=n;
+  let direct=0n;for(let k=0;k<n;k++)direct+=BigInt(k)**BigInt(p);
+  let tot=rat(0);const terms=[],syms=[];
+  for(let m=1;m<=p;m++){const s=gSt(p,m),t=new Rat(s*gFall(n,m+1),BigInt(m+1));tot=tot.add(t);terms.push(String(t));syms.push(`${s===1n?"":s+"·"}n<sup><u>${m+1}</u></sup>/${m+1}`);}
+  $("#g-o-info").innerHTML=`Σ<sub>k=0</sub><sup>n−1</sup> k<sup>${p}</sup> = ${syms.join(" + ")}<br>n = ${n}: ${terms.join(" + ")} = <b>${tot}</b> &nbsp;·&nbsp; közvetlenül: ${direct} ${ok(tot.eq(rat(direct)))}`;
+}
+["#g-o-p","#g-o-n"].forEach(id=>$(id).addEventListener("input",gOssz));gOssz();
+
+/* --- §4 összegzés részenként --- */
+function gRes(){
+  const m=$("#g-r-m").value,n=+$("#g-r-n").value,c=Math.max(2,Math.round(+$("#g-r-c").value)||2);
+  $("#g-r-nv").textContent=n;$("#g-r-cl").style.display=m==="kc"?"":"none";
+  const i=$("#g-r-info"),pw=(b,e)=>{let r=1n;for(let j=0;j<e;j++)r*=BigInt(b);return r;};
+  if(m==="kc"){
+    let S=rat(0);for(let k=0;k<n;k++)S=S.add(rat(BigInt(k)*pw(c,k)));
+    const uv=rat(BigInt(n)*pw(c,n),c-1);
+    let Es=rat(0);for(let k=0;k<n;k++)Es=Es.add(rat(pw(c,k+1),c-1));
+    const rhs=uv.sub(Es),cl=new Rat(BigInt(n)*pw(c,n)*BigInt(c-1)-BigInt(c)*(pw(c,n)-1n),BigInt((c-1)**2));
+    i.innerHTML=`u = k, Δv = c<sup>k</sup> ⇒ v = c<sup>k</sup>/(c−1), Ev = c<sup>k+1</sup>/(c−1), Δu = 1<br>`+
+      `[u·v]<sub>0</sub><sup>${n}</sup> = ${uv} &nbsp;·&nbsp; Σ Ev·Δu = ${Es}<br>különbség = ${rhs} &nbsp;·&nbsp; közvetlen Σ k·${c}<sup>k</sup> = ${S} ${ok(rhs.eq(S))}<br>zárt alak [n·c<sup>n</sup>(c−1) − c(c<sup>n</sup>−1)]/(c−1)² = ${cl} ${ok(cl.eq(S))}`;
+  }else{
+    const H=[rat(0)];for(let k=1;k<=n;k++)H.push(H[k-1].add(rat(1,k)));
+    let S=rat(0);for(let k=0;k<n;k++)S=S.add(H[k]);
+    let Es=rat(0);for(let k=0;k<n;k++)Es=Es.add(rat(k+1).mul(rat(1,k+1)));
+    const uv=rat(n).mul(H[n]),rhs=uv.sub(Es);
+    i.innerHTML=`u = H(k), Δv = 1 ⇒ v = k, Ev = k+1, Δu = 1/(k+1)<br>[u·v]<sub>0</sub><sup>${n}</sup> = n·H(n) = ${uv} &nbsp;·&nbsp; Σ Ev·Δu = Σ 1 = ${Es}<br>különbség = ${rhs} &nbsp;·&nbsp; közvetlen Σ H(k) = ${S} ${ok(rhs.eq(S))} (nH<sub>n</sub> − n)`;
+  }
+}
+["#g-r-m","#g-r-c","#g-r-n"].forEach(id=>$(id).addEventListener("input",gRes));gRes();
+
+/* ================= 2.7 VÉGTELEN ÖSSZEGEK ================= */
+const hH=n=>{let s=0;for(let k=1;k<=n;k++)s+=1/k;return s;};
+const hPs=(p,q,m)=>hH(2*p*m)-hH(p*m)/2-hH(q*m)/2; /* m blokk: p pozitív (1/(2i-1)), q negatív (−1/(2i)) */
+c2hero("vegtelen-bevezeto",650,9,fr=>{
+  const s=$("#h-hero"),N=8,W=420,H=250,bw=(W-40)/N,u=H-60;clear(s);s.setAttribute("viewBox",`0 0 ${W} ${H}`);
+  el("line",{x1:16,x2:W-16,y1:H-26-u,y2:H-26-u,style:"stroke:var(--accent-2);stroke-dasharray:4 4;stroke-width:1.2"},s);
+  txt(s,W-18,H-30-u,"1","","end");
+  const f=Math.min(Math.max(fr,1),N);
+  for(let n=1;n<=N;n++){const v=1-2**-n,on=n<=f,x=20+(n-1)*bw;
+    el("rect",{x:x+3,y:H-26-(on?v*u:0),width:bw-6,height:on?v*u:0,rx:3,style:`fill:${n===f?"var(--accent-2)":"var(--accent)"};opacity:${on?1:0}`},s);txt(s,x+bw/2,H-8,n);}
+  $("#h-hero-a").textContent="n = "+f;$("#h-hero-b").textContent=fm(1-2**-f);
+});
+
+/* --- §1 mértani sor --- */
+function hGeo(){
+  const x=+(+$("#h-g-x").value).toFixed(2),N=+$("#h-g-n").value;$("#h-g-xv").textContent=fm(x);$("#h-g-nv").textContent=N;
+  const S=[];let t=1,s=0;for(let k=0;k<=N;k++){s+=t;S.push(s);t*=x;}
+  c2bars(c2svg("#h-g-svg",640,210),S,{H:210,label:false,xl:i=>i,color:(i)=>i===N?"var(--accent-2)":"var(--accent)"});
+  const i=$("#h-g-info");
+  if(Math.abs(x)<1){const L=1/(1-x),err=Math.abs(x)**(N+1)/Math.abs(1-x);
+    i.innerHTML=`S<sub>${N}</sub> = ${fm(S[N])} &nbsp;·&nbsp; határérték 1/(1−x) = ${fm(L)} &nbsp;·&nbsp; hiba = ${fm(Math.abs(L-S[N]))} = |x|<sup>N+1</sup>/|1−x| = ${fm(err)} ${ok(Math.abs(Math.abs(L-S[N])-err)<1e-9*Math.max(1,err))}`;
+  }else i.innerHTML=`|x| ≥ 1: S<sub>${N}</sub> = ${fm(S[N])}; a részletösszegek ${x>=1?"korlátlanul nőnek":"nem közelednek egy számhoz (előjelesen ugrálnak)"}, tehát az összeg nem létezik.`;
+}
+["#h-g-x","#h-g-n"].forEach(id=>$(id).addEventListener("input",hGeo));hGeo();
+
+/* --- §2 sorok --- */
+const hSer={
+  tel:{t:k=>1/(k*(k+1)),lim:"1",lv:1},
+  sq:{t:k=>1/(k*k),lim:"π²/6 ≈ 1,644934",lv:Math.PI**2/6},
+  harm:{t:k=>1/k,lim:null},
+  geo:{t:k=>2**-k,lim:"1",lv:1},
+  alt:{t:k=>(k%2?1:-1)/k,lim:"ln 2 ≈ 0,693147",lv:Math.log(2)}
+};
+function hTel(){
+  const key=$("#h-t-s").value,N=+$("#h-t-n").value;$("#h-t-nv").textContent=N;const sr=hSer[key];
+  const S=[];let s=0;for(let k=1;k<=N;k++){s+=sr.t(k);S.push(s);}
+  c2bars(c2svg("#h-t-svg",640,210),S,{H:210,label:false,color:(i)=>i+1===N?"var(--accent-2)":"var(--accent)"});
+  let extra="";
+  if(key==="tel")extra=` &nbsp;·&nbsp; 1 − 1/(N+1) = ${fm(1-1/(N+1))} ${ok(Math.abs(S[N-1]-(1-1/(N+1)))<1e-12)}`;
+  if(key==="sq")extra=` &nbsp;·&nbsp; felső korlát 2 − 1/N = ${fm(2-1/N)} ${ok(S[N-1]<=2-1/N+1e-12)}`;
+  if(key==="harm")extra=` &nbsp;·&nbsp; alsó korlát 1 + (log₂N)/2 ≈ ${fm(1+Math.log2(N)/2)} ${ok(S[N-1]>=1+Math.floor(Math.log2(N))/2-1e-12)}`;
+  $("#h-t-info").innerHTML=`S<sub>${N}</sub> = ${fm(S[N-1])}`+(sr.lim?` &nbsp;·&nbsp; határérték: ${sr.lim}; eltérés ${fm(Math.abs(sr.lv-S[N-1]))}`:" &nbsp;·&nbsp; nincs határérték (a sor divergens)")+extra;
+}
+["#h-t-s","#h-t-n"].forEach(id=>$(id).addEventListener("input",hTel));hTel();
+
+/* --- §3 átrendezés --- */
+function hAtr(){
+  const p=+$("#h-a-p").value,q=+$("#h-a-q").value,M=+$("#h-a-m").value;
+  $("#h-a-pv").textContent=p;$("#h-a-qv").textContent=q;$("#h-a-mv").textContent=M;
+  /* mintavétel: 40 blokkszám M-ig, a részletösszegeket növekményesen számoljuk */
+  const pts=[],K=40;let sPos=0,sNeg=0,iPos=0,iNeg=0;
+  for(let j=1;j<=K;j++){const m=Math.max(1,Math.round(j*M/K));
+    while(iPos<p*m){iPos++;sPos+=1/(2*iPos-1);}while(iNeg<q*m){iNeg++;sNeg+=1/(2*iNeg);}
+    pts.push(sPos-sNeg);}
+  c2bars(c2svg("#h-a-svg",640,210),pts,{H:210,label:false,xl:i=>Math.round((i+1)*M/K),color:(i)=>i===K-1?"var(--accent-2)":"var(--accent)"});
+  const T=Math.log(2)+0.5*Math.log(p/q),S=pts[K-1];
+  $("#h-a-info").innerHTML=`${M} blokk (${p*M} pozitív + ${q*M} negatív tag): S = ${fm(S)} &nbsp;·&nbsp; ln2 + ½·ln(p/q) = ${fm(T)} &nbsp;·&nbsp; eltérés ${fm(Math.abs(S-T))}<br>képlettel: H<sub>2pm</sub> − ½H<sub>pm</sub> − ½H<sub>qm</sub> = ${fm(hPs(p,q,M))} ${ok(Math.abs(hPs(p,q,M)-S)<1e-9)} &nbsp;·&nbsp; az eredeti sor összege: ${fm(Math.log(2))}`;
+}
+["#h-a-p","#h-a-q","#h-a-m"].forEach(id=>$(id).addEventListener("input",hAtr));hAtr();
+
+/* --- §4 abszolút vs. feltételes --- */
+function hAbs(){
+  const p=+$("#h-b-p").value,q=+$("#h-b-q").value,M=+$("#h-b-m").value;
+  $("#h-b-pv").textContent=p;$("#h-b-qv").textContent=q;$("#h-b-mv").textContent=M;
+  const r=(pw)=>{let sPos=0,sNeg=0;for(let i=1;i<=p*M;i++)sPos+=1/(2*i-1)**pw;for(let i=1;i<=q*M;i++)sNeg+=1/(2*i)**pw;return sPos-sNeg;};
+  const orig=pw=>{let s=0;for(let k=1;k<=2*M;k++)s+=(k%2?1:-1)/k**pw;return s;};
+  const absS=pw=>{let s=0;for(let k=1;k<=2*M;k++)s+=1/k**pw;return s;};
+  const c=[orig(1),r(1),absS(1)],d=[orig(2),r(2),absS(2)];
+  $("#h-b-info").innerHTML=
+   `<b>Σ(−1)<sup>k+1</sup>/k</b> (feltételes): eredeti sorrend (${2*M} tag) = ${fm(c[0])}, átrendezve ${p}:${q} = ${fm(c[1])}, a tagok abszolút értékeinek összege ${fm(c[2])} (nő) → <b>más összeg</b><br>`+
+   `<b>Σ(−1)<sup>k+1</sup>/k²</b> (abszolút): eredeti = ${fm(d[0])}, átrendezve ${p}:${q} = ${fm(d[1])}, abszolút összeg ${fm(d[2])} (korlátos) → <b>ugyanaz</b>, π²/12 = ${fm(Math.PI**2/12)} ${ok(Math.abs(d[0]-d[1])<1/M)}`;
+}
+["#h-b-p","#h-b-q","#h-b-m"].forEach(id=>$(id).addEventListener("input",hAbs));hAbs();
+
+/* ---- router ---- */
 const side=$("#side"),mb=$("#menuBtn");
 function closeMenu(){side.classList.remove("open");mb.setAttribute("aria-expanded","false");}
 mb.onclick=()=>{const o=side.classList.toggle("open");mb.setAttribute("aria-expanded",o);};
@@ -1989,7 +3831,7 @@ function crumb(r){
 function parse(){
   const h=decodeURIComponent(location.hash.slice(1));
   const m=h.match(/^([a-z]+)-([a-z]+)$/);
-  if(m&&TOPICS[m[1]]&&TOPICS[m[1]].pages.some(p=>p[0]===m[2]))return {ch:1,topic:m[1],page:m[2]};
+  if(m&&TOPICS[m[1]]&&TOPICS[m[1]].pages.some(p=>p[0]===m[2]))return {ch:TOPICS[m[1]].ch||1,topic:m[1],page:m[2]};
   const f=h.match(/^fejezet-(\d+)$/);if(f&&CH.find(c=>c.n===+f[1]&&c.topics))return {ch:+f[1]};
   const old=h.match(/^s-([a-z]+)$/);if(old&&TOPICS.hanoi.pages.some(p=>p[0]===old[1]))return {ch:1,topic:"hanoi",page:old[1]};
   return {};
@@ -2005,7 +3847,7 @@ function route(){
     $("#pmid").innerHTML=`${i+1} / ${P.length}<span class="pt"> · ${P[i][1]}</span>`;
     $("#pv").disabled=i===0;$("#nx").textContent=i===P.length-1?"Fejezet ↑":"Következő →";
     $("#pv").onclick=()=>{if(i>0)location.hash=r.topic+"-"+P[i-1][0];};
-    $("#nx").onclick=()=>{location.hash=i<P.length-1?r.topic+"-"+P[i+1][0]:"fejezet-1";};
+    $("#nx").onclick=()=>{location.hash=i<P.length-1?r.topic+"-"+P[i+1][0]:"fejezet-"+(TOPICS[curTopic].ch||1);};
     $("#foot").innerHTML=`<div>${T.foot}</div><div>Interaktív tananyag · Konkrét Matematika sorozat · ${T.n} modul</div>`;
   }else{curPage="";curTopic="";}
   if(r.ch&&!r.topic)chapterView(CH.find(c=>c.n===r.ch));

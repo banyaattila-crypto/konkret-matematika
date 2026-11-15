@@ -1,0 +1,165 @@
+
+<!-- ================= 2.7 VÉGTELEN ÖSSZEGEK ================= -->
+<header class="hero page" id="h-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.7</div>
+    <h1>Végtelen összegek</h1>
+    <p class="lead">Egy végtelen összegnek akkor van értéke, ha a részletösszegek egy számhoz közelednek. Ilyenkor az átrendezés szabálya is csak feltételesen igaz.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{\infty}x^k=\frac{1}{1-x}\quad(|x|<1)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="h-hero" role="img" aria-label="Az egyre rövidülő hiányzó rész: a részletösszegek az 1-hez közelítenek"></svg>
+    <div class="counter"><span id="h-hero-a">n = 1</span><span>S<sub>n</sub> = <b id="h-hero-b">0,5</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A végtelen összegek az ókori görögöknél paradoxonként jelentek meg: Zénón szerint, ha valaki a távolság felét teszi meg, aztán a maradék felét, és így tovább, soha nem érkezik meg. Valójában a megtett utak összege \(\tfrac12+\tfrac14+\tfrac18+\cdots\) éppen 1. A kérdés ma is ugyanez: mikor adhatunk értelmet annak, hogy végtelen sok számot összeadunk? A válasz a részletösszegek viselkedése. A szám akkor az összeg, ha a részletösszegek hozzá közelednek, bármilyen kicsi az eltérés, amit megengedünk. Ez a téma három jelenséget mutat meg: az összeg létezhet (mértani és teleszkópos sor), nem létezhet (harmonikus sor), és létezhet úgy, hogy az értéke a tagok sorrendjétől függ (feltételes konvergencia). <i>Saját bevezető, a Konkrét matematika 2.7 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="h-geometria">
+  <div class="body">
+    <div class="eyebrow">§1 · A mértani sor</div>
+    <h2>Mikor közelít egy számhoz?</h2>
+    <p>A véges összeg zárt alakja (2.3, perturbáció): \(\sum_{k=0}^{N}x^k=\dfrac{1-x^{N+1}}{1-x}\). A hiba a végtelen összeghez képest \(\dfrac{x^{N+1}}{1-x}\) abszolút értéke. Ez nullához tart, ha \(|x|<1\), és nem, ha \(|x|\ge1\). Állítsd \(x\)-et, és nézd, mi lesz az oszlopokból.</p>
+    <div class="fig">
+      <svg id="h-g-svg" role="img" aria-label="A mértani sor részletösszegei"></svg>
+      <div class="info" id="h-g-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-g-x">x <input type="range" id="h-g-x" min="-1.2" max="1.2" step="0.05" value="0.5"> <span class="mono" id="h-g-xv">0,5</span></label>
+        <label class="rng" for="h-g-n">N <input type="range" id="h-g-n" min="1" max="40" value="12"> <span class="mono" id="h-g-nv">12</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>\(x=\tfrac12\): \(1+\tfrac12+\tfrac14+\dots=2\). \(x=\tfrac1{10}\): \(1{,}111\ldots=\tfrac{10}{9}\). Ugyanez adja a \(0{,}999\ldots=1\) azonosságot (gyakorlat).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-teleszkop">
+  <div class="body">
+    <div class="eyebrow">§2 · Teleszkópos és más sorok</div>
+    <h2>Közelít, vagy elszalad?</h2>
+    <p>A teleszkópos sor tagjai páronként kiesnek: \(\sum_{k=1}^{N}\dfrac{1}{k(k+1)}=1-\dfrac{1}{N+1}\to1\). A \(\sum 1/k^2\) nem teleszkópos, de felülről becsülhető: \(\frac1{k^2}<\frac1{k(k-1)}=\frac1{k-1}-\frac1k\), ezért \(S_N\le2-\frac1N\), tehát korlátos és növekvő, így konvergens (értéke \(\pi^2/6\)). A harmonikus sor \(\sum1/k\) viszont végtelenhez tart: a \(2^m\)-ig terjedő összegre \(H_{2^m}\ge1+\frac m2\) (az \(\tfrac13+\tfrac14\), majd az \(\tfrac15+\dots+\tfrac18\), … csoportok mind legalább \(\tfrac12\)).</p>
+    <div class="fig">
+      <svg id="h-t-svg" role="img" aria-label="Részletösszegek oszlopai"></svg>
+      <div class="info" id="h-t-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-t-s">sor <select id="h-t-s">
+          <option value="tel">1/(k(k+1))</option>
+          <option value="sq">1/k²</option>
+          <option value="harm">1/k (harmonikus)</option>
+          <option value="geo">1/2ᵏ</option>
+          <option value="alt">(−1)ᵏ⁺¹/k</option>
+        </select></label>
+        <label class="rng" for="h-t-n">N <input type="range" id="h-t-n" min="1" max="60" value="30"> <span class="mono" id="h-t-nv">30</span></label>
+      </div>
+    </div>
+    <p>A harmonikus sor lassan, de megállíthatatlanul nő: \(H_N\) először az \(N=12367\)-nél haladja meg a 10-et (számítással ellenőrizve), a 20-at pedig kb. \(2{,}7\cdot10^8\) tagnál. Ezért „nem tart nullához a tagok” nem elég a konvergenciához: itt a tagok nullához tartanak, a sor mégis divergens.</p>
+  </div>
+  <aside class="margo">
+    <p>Az \(\sum1/k\) divergenciája bármilyen \(\sum1/k^s\)-re általánosítható: \(s>1\)-re konvergens, \(s\le1\)-re divergens.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-atrendezes">
+  <div class="body">
+    <div class="eyebrow">§3 · Átrendezés</div>
+    <h2>Ugyanazok a tagok, más összeg</h2>
+    <p>A \(1-\frac12+\frac13-\frac14+\cdots\) sor értéke \(\ln2\approx0{,}6931\). Rendezzük át úgy, hogy blokkonként \(p\) pozitív és \(q\) negatív tagot veszünk (a pozitívak \(\frac11,\frac13,\frac15,\dots\), a negatívak \(-\frac12,-\frac14,\dots\) sorrendben). \(m\) blokk után a részletösszeg \(H_{2pm}-\tfrac12H_{pm}-\tfrac12H_{qm}\), és \(H_n\approx\ln n+\gamma\) miatt a \(\gamma\) kiesik:</p>
+    <div class="eq gold">\[H_{2pm}-\tfrac12H_{pm}-\tfrac12H_{qm}\ \xrightarrow{m\to\infty}\ \ln2+\tfrac12\ln\frac pq.\]</div>
+    <p>A \(p=q=1\) az eredeti sor, a \(p=2\), \(q=1\) átrendezés összege \(\tfrac32\ln2\approx1{,}0397\). Ugyanazokat a számokat adtuk össze, más sorrendben.</p>
+    <div class="fig">
+      <svg id="h-a-svg" role="img" aria-label="Az átrendezett sor részletösszegei blokkonként"></svg>
+      <div class="info" id="h-a-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-a-p">p (pozitív) <input type="range" id="h-a-p" min="1" max="4" value="2"> <span class="mono" id="h-a-pv">2</span></label>
+        <label class="rng" for="h-a-q">q (negatív) <input type="range" id="h-a-q" min="1" max="4" value="1"> <span class="mono" id="h-a-qv">1</span></label>
+        <label class="rng" for="h-a-m">blokkok <input type="range" id="h-a-m" min="1" max="2000" value="500"> <span class="mono" id="h-a-mv">500</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A határérték levezetésében a \(\ln\) tagok maradnak: \(\ln(2pm)-\tfrac12\ln(pm)-\tfrac12\ln(qm)=\ln2+\tfrac12\ln(p/q)\). Az eltérés a határértéktől \(m\)-mel fordítottan arányosan csökken.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-abszolut">
+  <div class="body">
+    <div class="eyebrow">§4 · Abszolút konvergencia</div>
+    <h2>Mikor szabad átrendezni?</h2>
+    <p>Egy sor <b>abszolút konvergens</b>, ha a tagok abszolút értékeinek összege is véges. Ilyenkor az átrendezés nem változtat az összegen, és a kétszeres összegekben a sorrendcsere is szabad. Ha a sor csak <b>feltételesen konvergens</b> (mint a váltakozó előjelű harmonikus sor), az összeg függ a sorrendtől: Riemann tétele szerint ilyenkor alkalmas átrendezéssel bármely valós szám előállítható, sőt divergens sor is kapható. Az alábbi összehasonlításban ugyanaz a \(p{:}q\) átrendezés kétféle sorra hat.</p>
+    <div class="fig">
+      <div class="info" id="h-b-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="h-b-p">p <input type="range" id="h-b-p" min="1" max="4" value="2"> <span class="mono" id="h-b-pv">2</span></label>
+        <label class="rng" for="h-b-q">q <input type="range" id="h-b-q" min="1" max="4" value="1"> <span class="mono" id="h-b-qv">1</span></label>
+        <label class="rng" for="h-b-m">blokkok <input type="range" id="h-b-m" min="10" max="3000" value="1000"> <span class="mono" id="h-b-mv">1000</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\sum(-1)^{k+1}/k^2=\pi^2/12\) abszolút konvergens, ezért minden átrendezése \(\pi^2/12\)-t ad. A \(\sum(-1)^{k+1}/k\) nem az: a tagok abszolút értékeinek összege a harmonikus sor.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Végtelen összegek</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki: \(\sum_{k=1}^{\infty}\dfrac{1}{k(k+2)}\).</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{1}{k(k+2)}=\dfrac12\Bigl(\dfrac1k-\dfrac1{k+2}\Bigr)\). A részletösszeg \(\dfrac12\Bigl(1+\dfrac12-\dfrac1{N+1}-\dfrac1{N+2}\Bigr)\), ami \(N\to\infty\)-re \(\dfrac34\)-hez tart.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_{k=0}^{\infty}k\,x^k\)-t, ha \(|x|<1\).</span></summary>
+      <div class="ans">
+        <p>A véges összeg (perturbációval, 2.3): \(\sum_{k=0}^{N}kx^k=\dfrac{x-(N+1)x^{N+1}+Nx^{N+2}}{(1-x)^2}\). Ha \(|x|<1\), a \(Nx^N\) típusú tagok nullához tartanak, tehát az összeg \(\dfrac{x}{(1-x)^2}\).</p>
+        <p>Próba: \(x=\tfrac12\): \(\dfrac{1/2}{1/4}=2\), és \(\sum k/2^k=\tfrac12+\tfrac24+\tfrac38+\dots=2\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igazold, hogy \(0{,}999\ldots=1\).</span></summary>
+      <div class="ans">
+        <p>\(0{,}999\ldots=9\sum_{k=1}^{\infty}10^{-k}=9\cdot\dfrac{1/10}{1-1/10}=1\). A két írásmód ugyanannak a számnak a kétféle alakja, nem „majdnem” egyenlő.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mi a baj azzal, hogy \(1-1+1-1+\cdots=(1-1)+(1-1)+\cdots=0\), de \(1+(-1+1)+(-1+1)+\cdots=1\)?</span></summary>
+      <div class="ans">
+        <p>A sor nem konvergens: a részletösszegek 1, 0, 1, 0, … felváltva, így nincs határérték, és „az összeg” értelmetlen. A zárójelezés (összevonás) csak konvergens sorra szabad, ezért a két „eredmény” nem mond ellent egymásnak.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat tanulsága: a véges összeg szabályai (2.3) végtelen összegnél csak konvergencia esetén érvényesek, abszolút konvergenciánál minden szabály megmarad.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="h-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A fejezet záró térképe</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Sor</th><th>Viselkedés</th><th>Eszköz</th></tr>
+      <tr><th>\(\sum x^k\)</th><td>konvergens, ha \(|x|<1\)</td><td>perturbáció, zárt alak</td></tr>
+      <tr><th>\(\sum\frac1{k(k+1)}\)</th><td>konvergens, 1</td><td>teleszkópos összeg</td></tr>
+      <tr><th>\(\sum\frac1{k^2}\)</th><td>konvergens, \(\pi^2/6\)</td><td>teleszkópos felső becslés</td></tr>
+      <tr><th>\(\sum\frac1k\)</th><td>divergens</td><td>csoportosítás: \(H_{2^m}\ge1+\frac m2\)</td></tr>
+      <tr><th>\(\sum\frac{(-1)^{k+1}}k\)</th><td>feltételesen konvergens</td><td>az átrendezés más összeget ad</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Véges</b><span>Zárt alak a 2.1–2.6 módszereivel.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Határérték</b><span>\(N\to\infty\): létezik-e?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Szabályok</b><span>Átrendezés csak abszolút konvergenciánál.</span></div>
+    </div>
+    <p>Ezzel a fejezet végére értünk: az összegek jelölésétől a zárt alakokon és a véges analízisen át a végtelen összegekig. A 3. fejezet az egészrészekről (\(\lfloor x\rfloor\), \(\lceil x\rceil\)) szól, amelyek már ebben a fejezetben is felbukkantak.</p>
+  </div>
+  <aside class="margo">
+    <p>A feltételes konvergencia a könyv egyik legfontosabb figyelmeztetése: a véges összegek szabályai nem terjednek ki automatikusan a végtelenre.</p>
+  </aside>
+</section>

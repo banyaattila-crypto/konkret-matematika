@@ -1,0 +1,187 @@
+
+<!-- ================= 2.6 VÉGES ÉS VÉGTELEN ANALÍZIS ================= -->
+<header class="hero page" id="g-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.6</div>
+    <h1>Véges analízis</h1>
+    <p class="lead">A deriválás és az integrálás diszkrét párja a különbségképzés és az összegzés. Az eséspolinomok a hatványok szerepét veszik át, és minden szabály ugyanolyan egyszerű marad.</p>
+    <div class="formula">\(\displaystyle\sum_{x=a}^{b-1}\Delta f(x)=f(b)-f(a)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="g-hero" role="img" aria-label="Az x négyzet értékei, a különbségek egymás után kiemelve"></svg>
+    <div class="counter"><span id="g-hero-a">Δf(0) = 1</span><span>f(1) = <b id="g-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A folytonos analízisben a deriválás és az integrálás egymás inverze, és az \(x^n\) deriváltja \(n x^{n-1}\), ami a legegyszerűbb szabály. Ha az \(x\) csak egész értékeket vesz fel, a deriválás helyett a <b>különbség</b> \(\Delta f(x) = f(x+1) - f(x)\) a természetes művelet. Az \(x^n\) különbsége viszont nem szép (\(\Delta x^2 = 2x + 1\)), és a szépség elvész. A megoldás: a hatványok helyett más „építőkockákat” kell használni, az <b>eséspolinomokat</b>, amelyekre a szabály ugyanolyan egyszerű, mint a deriválásnál. Ezzel a \(\sum k^p\) összegek kiszámolása pontosan az integrálás párja lesz, és az összegzés alaptétele ugyanúgy hangzik, mint az integrálszámítás alaptétele. <i>Saját bevezető, a Konkrét matematika 2.6 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="g-kulonbseg">
+  <div class="body">
+    <div class="eyebrow">§1 · A differenciaoperátor</div>
+    <h2>A deriválás diszkrét párja</h2>
+    <p>Legyen \(\Delta f(x)=f(x+1)-f(x)\) és \(Ef(x)=f(x+1)\) (az eltolás). A szabályok hasonlítanak a deriválásra, de az eltolás is megjelenik:</p>
+    <div class="eq gold">\[\Delta(uv)=u\,\Delta v+Ev\,\Delta u,\qquad \Delta c^x=(c-1)\,c^x,\qquad \Delta H_x=\frac{1}{x+1}.\]</div>
+    <p>Itt \(H_x\) a harmonikus szám. Az exponenciális a deriválásnál önmaga (\(e^x\)); itt a \(c=2\) alap az, amelyre \(\Delta 2^x = 2^x\). Válassz egy függvényt: a táblázat az értékeit és a különbségeit mutatja, pontos törtekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="g-k-f">f(x) <select id="g-k-f">
+          <option value="sq">x²</option>
+          <option value="cube">x³</option>
+          <option value="p2">2ˣ</option>
+          <option value="p3">3ˣ</option>
+          <option value="harm">H(x)</option>
+          <option value="xp2">x·2ˣ</option>
+        </select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals" id="g-k-tbl"></table></div>
+      <div class="info" id="g-k-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="g-k-a">a <input type="range" id="g-k-a" min="0" max="8" value="1"> <span class="mono" id="g-k-av">1</span></label>
+        <label class="rng" for="g-k-b">b <input type="range" id="g-k-b" min="1" max="10" value="7"> <span class="mono" id="g-k-bv">7</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az alsó két csúszka az összegzés alaptételét próbálja ki: a különbségek összege \(f(b)-f(a)\), minden közbülső érték kiesik (teleszkópos összeg).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-esespoli">
+  <div class="body">
+    <div class="eyebrow">§2 · Eséspolinomok</div>
+    <h2>A hatványok diszkrét megfelelője</h2>
+    <p>Az \(m\)-edik <b>eséspolinom</b> [falling power]:</p>
+    <div class="eq">\[x^{\underline m}=x(x-1)(x-2)\cdots(x-m+1)\quad(m\text{ tényező}),\qquad x^{\underline 0}=1.\]</div>
+    <p>Rájuk a deriválás szabálya szinte betűre pontosan érvényes:</p>
+    <div class="eq gold">\[\Delta\,x^{\underline m}=m\,x^{\underline{m-1}}.\]</div>
+    <p>Bizonyítás: a két tag közös tényezője \(x^{\underline{m-1}}\), és ezt kiemelve</p>
+    <div class="eq">\[(x+1)^{\underline m}-x^{\underline m}=x^{\underline{m-1}}\bigl[(x+1)-(x-m+1)\bigr]=m\,x^{\underline{m-1}}.\]</div>
+    <p>Minden hatvány felírható eséspolinomok összegeként. Az együtthatók a <i>másodfajú Stirling-számok</i> \(S(p,m)\) [azt számolják, hányféleképp lehet \(p\) elemet \(m\) nemüres csoportba osztani]; rekurziójuk \(S(p,m)=m\,S(p-1,m)+S(p-1,m-1)\).</p>
+    <div class="eq">\[x^p=\sum_{m=0}^{p}S(p,m)\,x^{\underline m}.\]</div>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="g-e-tbl"></table></div>
+      <div class="info" id="g-e-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="g-e-p">p <input type="range" id="g-e-p" min="1" max="8" value="3"> <span class="mono" id="g-e-pv">3</span></label>
+        <label class="rng" for="g-e-x">x <input type="range" id="g-e-x" min="0" max="12" value="5"> <span class="mono" id="g-e-xv">5</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Például \(x^2=x^{\underline2}+x^{\underline1}\) és \(x^3=x^{\underline3}+3x^{\underline2}+x^{\underline1}\). Az \(x=5\), \(p=3\) esetben \(125=60+3\cdot20+5\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-osszegzes">
+  <div class="body">
+    <div class="eyebrow">§3 · Összegzés</div>
+    <h2>Az integrálás párja</h2>
+    <p>Az eséspolinomok \(m\)-edik hatványának antidifferenciája [az a \(G\), amelyre \(\Delta G = g\)] \(x^{\underline{m+1}}/(m+1)\). Az alaptétel miatt</p>
+    <div class="eq gold">\[\sum_{k=0}^{n-1}k^{\underline m}=\frac{n^{\underline{m+1}}}{m+1},\qquad
+      \sum_{k=0}^{n-1}k^p=\sum_{m=1}^{p}S(p,m)\,\frac{n^{\underline{m+1}}}{m+1}\quad(p\ge1).\]</div>
+    <p>Így a \(\sum k^2\) kiszámolása két lépés: \(k^2=k^{\underline2}+k^{\underline1}\), és az összeg \(\frac{n^{\underline3}}3+\frac{n^{\underline2}}2\). Minden \(p\)-re ugyanez megy, perturbáció és sejtés nélkül.</p>
+    <div class="fig">
+      <div class="info" id="g-o-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="g-o-p">p <input type="range" id="g-o-p" min="1" max="6" value="2"> <span class="mono" id="g-o-pv">2</span></label>
+        <label class="rng" for="g-o-n">n <input type="range" id="g-o-n" min="1" max="20" value="10"> <span class="mono" id="g-o-nv">10</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\sum_{k=0}^{n-1}\) (nem \(\sum_{k=0}^{n}\)): az alaptétel felső határa kizárt, ez a diszkrét analízis megszokott jelölése.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-reszleges">
+  <div class="body">
+    <div class="eyebrow">§4 · Összegzés részenként</div>
+    <h2>A parciális integrálás párja</h2>
+    <p>A szorzatszabályból (§1) azonnal következik:</p>
+    <div class="eq gold">\[\sum_{k=a}^{b-1}u(k)\,\Delta v(k)=\Bigl[u(k)\,v(k)\Bigr]_a^b-\sum_{k=a}^{b-1}Ev(k)\,\Delta u(k).\]</div>
+    <p>A szabály akkor használható, ha a szorzat egyik tényezőjénél könnyebb a \(\Delta\), a másiknál az antidifferencia. Két példa: \(\sum k\,c^k\) (az \(u=k\) egyszerűsödik, a \(c^k\) antidifferenciája \(c^k/(c-1)\)) és \(\sum H_k\) (az \(u=H_k\) különbsége \(1/(k+1)\)). Minden lépést pontos törtekkel számolunk.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="g-r-m">összeg <select id="g-r-m">
+          <option value="kc">Σ k·cᵏ</option>
+          <option value="h">Σ H(k)</option>
+        </select></label>
+        <label class="rng" for="g-r-c" id="g-r-cl">c <input type="number" id="g-r-c" value="2" min="2" max="6"></label>
+        <label class="rng" for="g-r-n">n <input type="range" id="g-r-n" min="1" max="12" value="6"> <span class="mono" id="g-r-nv">6</span></label>
+      </div>
+      <div class="info" id="g-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(c = 2\) esetben \(\sum_{k=0}^{n-1}k2^k=(n-2)2^n+2\); a 2.3-ban \(n\)-ig vett összegre \((n-1)2^{n+1}+2\) volt: ugyanaz, \(n\)-et eggyel eltolva.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-gyak">
+  <div class="body">
+    <div class="eyebrow">§5 · Gyakorlatok</div>
+    <h2>Eséspolinomokkal</h2>
+    <details>
+      <summary><span class="sq">1. Ellenőrizd az \(x=5\) helyen: \(\Delta x^{\underline3}=3x^{\underline2}\).</span></summary>
+      <div class="ans">
+        <p>\(5^{\underline3}=5\cdot4\cdot3=60\), \(6^{\underline3}=6\cdot5\cdot4=120\), tehát \(\Delta=60\). A jobb oldal: \(3\cdot5^{\underline2}=3\cdot5\cdot4=60\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki: \(\sum_{k=0}^{n-1}k(k-1)\).</span></summary>
+      <div class="ans">
+        <p>\(k(k-1)=k^{\underline2}\), tehát az összeg \(\dfrac{n^{\underline3}}{3}=\dfrac{n(n-1)(n-2)}{3}\).</p>
+        <p>Próba: \(n=4\): \(0+0+2+6=8=\frac{4\cdot3\cdot2}{3}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számold ki: \(\sum_{k=1}^{n}k(k+1)(k+2)\).</span></summary>
+      <div class="ans">
+        <p>Itt \(k(k+1)(k+2)=(k+2)^{\underline3}\). Eltolással az összeg \(\sum_{j=3}^{n+2}j^{\underline3}=\Bigl[\dfrac{j^{\underline4}}{4}\Bigr]_3^{n+3}\), és mivel \(3^{\underline4}=0\):</p>
+        <div class="eq">\[\sum_{k=1}^{n}k(k+1)(k+2)=\frac{(n+3)^{\underline4}}{4}=\frac{n(n+1)(n+2)(n+3)}{4}.\]</div>
+        <p>Próba: \(n=2\): \(6+24=30=\frac{2\cdot3\cdot4\cdot5}{4}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Összegzés részenként: \(\sum_{k=0}^{n}k\,2^k\).</span></summary>
+      <div class="ans">
+        <p>A §4 képletébe \(c = 2\) és felső határként \(n+1\) kerül:</p>
+        <div class="eq">\[\sum_{k=0}^{n}k2^k=\bigl[(n+1)-2\bigr]2^{n+1}+2=(n-1)2^{n+1}+2.\]</div>
+        <p>Ez megegyezik a perturbációval kapott (2.3) eredménnyel.</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat eredménye \(6\binom{n+3}{4}\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="g-modszer">
+  <div class="body">
+    <div class="eyebrow">§6 · Összefoglalás</div>
+    <h2>A folytonos és a diszkrét szótár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Folytonos</th><th>Diszkrét</th></tr>
+      <tr><th>\(Df=f'\)</th><td>\(\Delta f(x)=f(x+1)-f(x)\)</td></tr>
+      <tr><th>\(x^m\)</th><td>\(x^{\underline m}\)</td></tr>
+      <tr><th>\(D\,x^m=m\,x^{m-1}\)</th><td>\(\Delta\,x^{\underline m}=m\,x^{\underline{m-1}}\)</td></tr>
+      <tr><th>\(e^x\)</th><td>\(2^x\)</td></tr>
+      <tr><th>\(\ln x\)</th><td>\(H_x\)</td></tr>
+      <tr><th>\(\int_a^b f'\,dx=f(b)-f(a)\)</th><td>\(\sum_{x=a}^{b-1}\Delta f=f(b)-f(a)\)</td></tr>
+      <tr><th>parciális integrálás</th><td>összegzés részenként (az \(E\) eltolással)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Átírás</b><span>Hatvány → eséspolinom (Stirling-számok).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Antidifferencia</b><span>\(x^{\underline m}\to x^{\underline{m+1}}/(m+1)\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Határok</b><span>\(G(b)-G(a)\), a felső határ kizárt.</span></div>
+    </div>
+    <p>A következő (utolsó) téma (2.7) a végtelen összegekhez ér: ott a kérdés az, hogy a részletösszegek egyáltalán közelednek-e valamihez.</p>
+  </div>
+  <aside class="margo">
+    <p>A \(\ln x \leftrightarrow H_x\) megfelelés pontos értelme: \(H_x\) az \(1/(x+1)\) antidifferenciája, ahogy az \(\ln x\) az \(1/x\) antiderivált.</p>
+  </aside>
+</section>

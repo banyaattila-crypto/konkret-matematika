@@ -1,0 +1,179 @@
+
+<!-- ================= 2.3 ÖSSZEGEK KEZELÉSE ================= -->
+<header class="hero page" id="c-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.3</div>
+    <h1>Összegek kezelése</h1>
+    <p class="lead">Három szabály engedi meg, hogy az összegeket átalakítsuk, és két trükk, a tükrözés és a perturbáció adja a zárt alakot. A szabályok ismerete megelőzi a hibákat.</p>
+    <div class="formula">\(\displaystyle\sum_{k\in K} a_k=\sum_{p(k)\in K} a_{p(k)}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="c-hero" role="img" aria-label="Az 1…8 oszlopai egymás fölé tükrözve ugyanolyan magas oszlopot adnak"></svg>
+    <div class="counter"><span id="c-hero-a">tükrözött párok: 0</span><span>magasság: <b id="c-hero-b">9</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A legismertebb összegzési történet Gaussról szól: az iskolai tanító azt a feladatot adta, hogy adják össze az 1-től 100-ig terjedő számokat. A kisfiú nem sorban adott össze, hanem párokba állította az elejét és a végét (1 és 100, 2 és 99, …), mindegyik pár összege 101. Ez a történet lehet későbbi legenda, a gondolat viszont valós és általános: az összegzési sorrend szabadon változtatható, és a jól megválasztott sorrend pár lépésre rövidíti a feladatot. Ez a téma a megengedett átalakítások szabályait gyűjti össze, és két módszert mutat: a tükrözést, valamint a perturbációt, amelyben az összeget „megbolygatjuk”, és a bolygatás utáni alakot hasonlítjuk az eredetihez. <i>Saját bevezető, a Konkrét matematika 2.3 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="c-szabalyok">
+  <div class="body">
+    <div class="eyebrow">§1 · A három szabály</div>
+    <h2>Mit szabad egy összeggel?</h2>
+    <p>Három átalakítás mindig érvényes (véges összegre):</p>
+    <div class="eq">\[\textbf{elosztás:}\ \sum_{k\in K} c\,a_k = c\sum_{k\in K} a_k,\qquad
+       \textbf{összevonás:}\ \sum_{k\in K}(a_k+b_k)=\sum_{k\in K}a_k+\sum_{k\in K}b_k.\]</div>
+    <div class="eq gold">\[\textbf{átrendezés:}\ \sum_{k\in K} a_k=\sum_{p(k)\in K} a_{p(k)}\quad\text{ha } p \text{ a } K\text{ permutációja.}\]</div>
+    <p>Az első kettő a szokásos számtani azonosság. Az utolsó azt mondja, hogy az indexet bármilyen kölcsönösen egyértelmű átírással cserélhetjük, ha az index halmaza ugyanaz marad.</p>
+    <h3>Elosztás és összevonás</h3>
+    <p>Adj meg két tagot és egy állandót. A két oldal értékét közvetlenül kiszámoljuk.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="c-ea">a(k) = <input type="text" id="c-ea" value="k^2" style="width:7em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="c-eb">b(k) = <input type="text" id="c-eb" value="2*k+1" style="width:7em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="c-ec">c <input type="number" id="c-ec" value="3" min="-9" max="9"></label>
+        <label class="rng" for="c-en">n <input type="number" id="c-en" value="6" min="1" max="30"></label>
+      </div>
+      <div class="info" id="c-e-info"></div>
+    </div>
+    <h3>Átrendezés: mikor szabad?</h3>
+    <p>Az \(a_k = k^2 + 1\) sort összegezzük \(k = 0, \dots, n\)-ig, és \(k\) helyére \(p(k)\)-t írjuk. Az összeg csak akkor marad ugyanaz, ha \(p\) a \(\{0, \dots, n\}\) halmaz permutációja.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="c-pp">p(k) = <select id="c-pp">
+          <option value="rev">n − k (megfordítás)</option>
+          <option value="rot">(k + 1) mod (n + 1) (körbeforgatás)</option>
+          <option value="swap">k ⊕ 1 (szomszédos párok cseréje)</option>
+          <option value="plus">k + 1 (sima eltolás)</option>
+          <option value="half">⌊k/2⌋</option>
+        </select></label>
+        <label class="rng" for="c-pn">n <input type="range" id="c-pn" min="1" max="10" value="5"> <span class="mono" id="c-pnv">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals" id="c-p-tbl"></table></div>
+      <div class="info" id="c-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A „sima eltolás” azért nem jó, mert \(p(n) = n + 1\) kilóg a halmazból. Ha a határokat is eltoljuk, ugyanaz az összeg jön ki: ez a 2.1 eltolás-szabálya.</p>
+    <p>A \(\lfloor k/2\rfloor\) nem kölcsönösen egyértelmű: két indexből ugyanaz az érték lesz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-gauss">
+  <div class="body">
+    <div class="eyebrow">§2 · Tükrözés</div>
+    <h2>Az összeg kétszeresét könnyebb kiszámolni</h2>
+    <p>Legyen \(S = \sum_{k=0}^{n} (a + bk)\), a számtani sor összege. Az átrendezési szabállyal megfordítjuk a sorrendet (\(k \to n - k\)), majd a két alakot összeadjuk:</p>
+    <div class="eq">\[2S=\sum_{k=0}^{n}\bigl[(a+bk)+(a+b(n-k))\bigr]=\sum_{k=0}^{n}(2a+bn)=(n+1)(2a+bn).\]</div>
+    <div class="eq gold">\[S=\frac{(n+1)(2a+bn)}{2}.\]</div>
+    <p>Az ábrán az alsó (kék) oszlop \(a + bk\), a rá tükrözött (sárga) \(a + b(n-k)\). Minden oszlop pár összmagassága ugyanaz, \(2a + bn\), tehát a téglalap területe \((n+1)(2a+bn)\), az összeg ennek fele.</p>
+    <div class="fig">
+      <svg id="c-g-svg" role="img" aria-label="Egymásra tükrözött oszlopok téglalapot alkotnak"></svg>
+      <div class="info" id="c-g-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="c-ga">a <input type="range" id="c-ga" min="0" max="10" value="2"> <span class="mono" id="c-gav">2</span></label>
+        <label class="rng" for="c-gb">b <input type="range" id="c-gb" min="0" max="6" value="3"> <span class="mono" id="c-gbv">3</span></label>
+        <label class="rng" for="c-gn">n <input type="range" id="c-gn" min="1" max="14" value="8"> <span class="mono" id="c-gnv">8</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>\(a = 0\), \(b = 1\): \(\sum_{k=0}^{n} k = n(n+1)/2\). \(n = 99\), \(a = 1\), \(b = 1\) (k = 0…99): ez a Gauss-féle 1+…+100 = 5050 története.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-perturbacio">
+  <div class="body">
+    <div class="eyebrow">§3 · A perturbáció módszere</div>
+    <h2>Bolygassuk meg az összeget</h2>
+    <p>Legyen \(S_n = \sum_{k=0}^{n} a_k\). Az \(S_{n+1}\)-et kétféleképpen írjuk fel: leválasztva az utolsó tagot, vagy leválasztva az elsőt és az indexet eltolva:</p>
+    <div class="eq gold">\[S_n + a_{n+1} \;=\; a_0 + \sum_{k=0}^{n} a_{k+1}.\]</div>
+    <p>Ha a jobb oldali összeg kifejezhető \(S_n\)-nel, az egyenletet \(S_n\)-re megoldjuk. Három példa; az egyenlet két oldalát pontos törtekkel számoljuk ki.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="c-pm">Összeg <select id="c-pm">
+          <option value="geo">Σ xᵏ (mértani sor)</option>
+          <option value="k2k">Σ k·2ᵏ</option>
+          <option value="sq">Σ k² (a négyzetek kiesnek)</option>
+        </select></label>
+        <label class="rng" for="c-pn2">n <input type="range" id="c-pn2" min="1" max="12" value="6"> <span class="mono" id="c-pn2v">6</span></label>
+      </div>
+      <div class="ctrl" id="c-pxbox">
+        <label class="rng" for="c-px">x = <input type="number" id="c-px" value="1" min="-9" max="9" style="width:4.2em"> /<input type="number" id="c-pq" value="3" min="1" max="9" style="width:4.2em"></label>
+      </div>
+      <div class="info" id="c-pi"></div>
+    </div>
+    <div class="eq">\[\sum_{k=0}^{n} x^k=\frac{1-x^{n+1}}{1-x}\ (x\neq1),\qquad \sum_{k=0}^{n} k\,2^k=(n-1)2^{n+1}+2.\]</div>
+    <p>A \(\sum k^2\)-nél a perturbáció nem a négyzetösszeget adja. \(\sum (k+1)^2 = \sum k^2 + 2\sum k + \sum 1\), az \(S_n\) mindkét oldalon kiesik, és a módszer a <i>lineáris</i> összeget adja meg. A négyzetek összegéhez tehát más módszer kell (2.5). A kiesés is hasznos: a perturbáció egy fokkal alacsonyabb összeget ad.</p>
+  </div>
+  <aside class="margo">
+    <p>A mértani sornál a \(x = 1\) eset külön: ott \(S_n = n + 1\), mert az egyenlet \(S_n + 1 = 1 + S_n\) triviális.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolj</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi \(\sum_{k=m}^{n} k\)?</span></summary>
+      <div class="ans">
+        <p>Az \(n - m + 1\) tag számtani sorozat, az első \(m\), az utolsó \(n\), a tükrözés szerint az összeg a tagok számának és az első-utolsó átlagának a szorzata:</p>
+        <div class="eq">\[\sum_{k=m}^{n} k=\frac{(n+m)(n-m+1)}{2}.\]</div>
+        <p>Próba: \(m = 3\), \(n = 7\): \(3+4+5+6+7 = 25 = \frac{10 \cdot 5}{2}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Perturbációval: \(\sum_{k=0}^{n} 3^k\).</span></summary>
+      <div class="ans">
+        <p>\(S_n + 3^{n+1} = 1 + 3S_n\), ezért \(2S_n = 3^{n+1} - 1\), azaz \(S_n = \dfrac{3^{n+1}-1}{2}\).</p>
+        <p>Próba: \(n = 3\): \(1+3+9+27 = 40 = \frac{81-1}{2}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Add meg a \(\sum_{k=0}^{n} (k+1)\,2^k\) értékét az összevonás és a fenti zárt alakok segítségével.</span></summary>
+      <div class="ans">
+        <p>Az összevonással:</p>
+        <div class="eq">\[\sum k\,2^k + \sum 2^k = \bigl[(n-1)2^{n+1}+2\bigr] + \bigl[2^{n+1}-1\bigr] = n\,2^{n+1} + 1.\]</div>
+        <p>Próba: \(n = 2\): \(1 + 4 + 12 = 17 = 2 \cdot 8 + 1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Bontsd részlettörtekre, és számold ki: \(\sum_{k=1}^{n} \dfrac{1}{k(k+1)}\).</span></summary>
+      <div class="ans">
+        <p>\(\dfrac{1}{k(k+1)} = \dfrac{1}{k} - \dfrac{1}{k+1}\). Az összevonás és az eltolás szerint a tagok páronként kiesnek (teleszkópos összeg): marad \(1 - \dfrac{1}{n+1} = \dfrac{n}{n+1}\).</p>
+        <p>Próba: \(n = 3\): \(\frac12+\frac16+\frac1{12} = \frac{9}{12} = \frac34\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat teleszkópos összege a 2.7-ben visszatér, végtelen változatban.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="c-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Az eszköztár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Eszköz</th><th>Képlet</th><th>Mikor</th></tr>
+      <tr><th>Elosztás</th><td>\(\sum c\,a_k = c\sum a_k\)</td><td>állandó kiemelése</td></tr>
+      <tr><th>Összevonás</th><td>\(\sum (a_k+b_k)=\sum a_k+\sum b_k\)</td><td>összeg szétbontása</td></tr>
+      <tr><th>Átrendezés</th><td>\(\sum_{K} a_k=\sum_{p(k)\in K} a_{p(k)}\)</td><td>permutációnál</td></tr>
+      <tr><th>Tükrözés</th><td>\(2S=\sum (a_k+a_{n-k})\)</td><td>számtani sor</td></tr>
+      <tr><th>Perturbáció</th><td>\(S_n+a_{n+1}=a_0+\sum a_{k+1}\)</td><td>mértani jellegű sor</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Szabály</b><span>Elosztás, összevonás, átrendezés: mindig érvényes.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Trükk</b><span>Tükrözés vagy perturbáció, az összeg alakja szerint.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Kis \(n\)-re behelyettesíteni.</span></div>
+    </div>
+    <p>A következő téma (2.4) a kétszeres összegeket tárgyalja, ahol az átrendezési szabály új szerepet kap: a két index sorrendje felcserélhető.</p>
+  </div>
+  <aside class="margo">
+    <p>A perturbáció jól működik, ha az összeg „önhasonló”. A négyzetek összegéhez a következő fejezet a módszereit gyűjti össze.</p>
+  </aside>
+</section>

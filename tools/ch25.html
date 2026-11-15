@@ -1,0 +1,157 @@
+
+<!-- ================= 2.5 ÁLTALÁNOS MÓDSZEREK ================= -->
+<header class="hero page" id="f-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.5</div>
+    <h1>Általános módszerek</h1>
+    <p class="lead">Ugyanazt az összeget öt módszerrel számoljuk ki: \(\sum k^2\). A cél nem az eredmény (azt ismerjük), hanem az, hogy mikor melyik módszer használható.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{n}k^2=\frac{n(n+1)(2n+1)}{6}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="f-hero" role="img" aria-label="A négyzetszámok részletösszegei oszlopokként"></svg>
+    <div class="counter"><span id="f-hero-a">n = 0</span><span>Σk² = <b id="f-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az \(1+2+\dots+n\) összeg képletét mindenki ismeri, a négyzetek összegéhez viszont már nincs ilyen egyszerű trükk. A négyzetek összegének képlete régóta ismert, de a bizonyítási módszerek számítanak: az egyik csak igazolja a képletet, ha már megvan, a másik meg is találja. Ez a téma öt útját mutatja ugyanannak a feladatnak: sejtés és indukció, perturbáció, a repertoár módszere, integrálás, és az összeg kibontása majd összevonása. Mindegyik más helyzetben a legjobb, és az egyik módszer kudarca (a perturbáció a négyzetekre, ahogy a 2.3-ban láttuk) a következőhöz vezet. <i>Saját bevezető, a Konkrét matematika 2.5 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="f-sejtes">
+  <div class="body">
+    <div class="eyebrow">§1 · Sejtés és indukció</div>
+    <h2>Kitalálni, majd bizonyítani</h2>
+    <p>A legrégebbi módszer: kiszámoljuk az első értékeket, sejtünk egy alakot, és teljes indukcióval igazoljuk. A sejtést a <i>véges differenciák</i> [az egymást követő tagok különbsége, a különbségek különbsége, és így tovább] segítik: egy \(d\)-ed fokú polinomnál a \(d\)-edik különbségek állandók. A \(\sum k^2\) értékeinél a harmadik különbség állandó, tehát harmadfokú a polinom, és főegyütthatója \(\Delta^3/3! = 2/6 = 1/3\).</p>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="f-s-tbl"></table></div>
+      <div class="info" id="f-s-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="f-s-n">n legfeljebb <input type="range" id="f-s-n" min="4" max="12" value="8"> <span class="mono" id="f-s-nv">8</span></label>
+      </div>
+    </div>
+    <p>A Newton-féle előre-differenciás alak (a differenciák az \(n = 0\) helyen: \(0, 1, 3, 2\)) megadja a sejtést: \(S_n = 0 + 1\binom n1 + 3\binom n2 + 2\binom n3\), ami átrendezve \(\frac{n(n+1)(2n+1)}{6}\). Az indukciós lépés:</p>
+    <div class="eq">\[\frac{(n-1)n(2n-1)}{6}+n^2=\frac{n(n+1)(2n+1)}{6}.\]</div>
+  </div>
+  <aside class="margo">
+    <p>A módszer gyenge pontja: a sejtés alakját előre kell tudni, és az indukció csak igazol, nem magyaráz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-perturbacio">
+  <div class="body">
+    <div class="eyebrow">§2 · Perturbáció</div>
+    <h2>Magasabb hatvány, alacsonyabb összeg</h2>
+    <p>A 2.3 perturbációját a \(k^{p+1}\) összegre alkalmazzuk: \(\sum_{k=0}^{n}\bigl[(k+1)^{p+1}-k^{p+1}\bigr]\) teleszkópos, értéke \((n+1)^{p+1}\), a binomiális tétellel kifejtve pedig \(\sum_{i=0}^{p}\binom{p+1}{i}S_i\). Így</p>
+    <div class="eq gold">\[(n+1)^{p+1}=\sum_{i=0}^{p}\binom{p+1}{i}S_i,\qquad S_i=\sum_{k=0}^{n}k^i\ \ (S_0=n+1).\]</div>
+    <p>A jobb oldalon \(S_p\) egyszer szerepel (együtthatója \(p+1\)), az összes többi alacsonyabb hatvány. Így \(S_p\)-t az előzőekből kapjuk meg:</p>
+    <div class="eq">\[S_p=\frac{1}{p+1}\Bigl[(n+1)^{p+1}-\sum_{i=0}^{p-1}\binom{p+1}{i}S_i\Bigr].\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="f-p-p">p <input type="range" id="f-p-p" min="1" max="6" value="2"> <span class="mono" id="f-p-pv">2</span></label>
+        <label class="rng" for="f-p-n">n <input type="range" id="f-p-n" min="1" max="15" value="8"> <span class="mono" id="f-p-nv">8</span></label>
+      </div>
+      <div class="info" id="f-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A rekurzió minden \(p\)-re működik, de egyre több tagot igényel. A képletek (Faulhaber-képletek, a Bernoulli-számokkal) ugyanezt zárt alakban adják meg, ezt itt nem használjuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-repertoar">
+  <div class="body">
+    <div class="eyebrow">§3 · A repertoár módszere</div>
+    <h2>Ismert megoldásokból építkezünk</h2>
+    <p>Tekintsük az egész rekurziócsaládot:</p>
+    <div class="eq">\[R_0=\alpha,\qquad R_n=R_{n-1}+\beta+\gamma n+\delta n^2.\]</div>
+    <p>A megoldás lineáris az \((\alpha,\beta,\gamma,\delta)\) paraméterekben, ezért elég néhány <i>alapesetet</i> megoldani. A repertoár: \(R_n = 1\) megoldja az \((1,0,0,0)\) esetet; \(R_n = n\) az \((0,1,0,0)\)-t; \(R_n = n^2\) a \((0,-1,2,0)\)-t; \(R_n = n^3\) a \((0,1,-3,3)\)-t (mert \(n^3-(n-1)^3=3n^2-3n+1\)). Bármilyen paraméterhármas ezek kombinációja:</p>
+    <div class="eq gold">\[A=\frac{\delta}{3},\quad B=\frac{\gamma+3A}{2},\quad C=\beta-A+B,\quad D=\alpha\ \Longrightarrow\ R_n=An^3+Bn^2+Cn+D.\]</div>
+    <p>A \(\sum k^2\) esete \((0,0,0,1)\): \(A = 1/3\), \(B = 1/2\), \(C = 1/6\). Adj meg tetszőleges paramétereket, a program megoldja és ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="f-r-a">α <input type="number" id="f-r-a" value="0" min="-9" max="9"></label>
+        <label class="rng" for="f-r-b">β <input type="number" id="f-r-b" value="0" min="-9" max="9"></label>
+        <label class="rng" for="f-r-c">γ <input type="number" id="f-r-c" value="0" min="-9" max="9"></label>
+        <label class="rng" for="f-r-d">δ <input type="number" id="f-r-d" value="1" min="-9" max="9"></label>
+      </div>
+      <div class="ctrl" id="f-r-pre">
+        <button data-p="0,0,0,1" class="primary">Σk²</button><button data-p="0,0,1,0">Σk</button><button data-p="0,-1,2,0">n²</button><button data-p="0,1,-3,3">n³</button><button data-p="5,2,-1,1">5, 2, −1, 1</button>
+      </div>
+      <div class="info" id="f-r-info"></div>
+      <div class="tbl-wrap"><table class="vals" id="f-r-tbl"></table></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A módszer ereje: a megoldás struktúráját használja, nem a sejtésre támaszkodik. Gyenge pontja: csak a családon belül működik, és az alapesetek megtalálása ötlet kérdése.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-integral">
+  <div class="body">
+    <div class="eyebrow">§4 · Integrálás</div>
+    <h2>A terület és a hiba</h2>
+    <p>A \(\sum_{k=1}^{n}k^2\) az \(x^2\) görbe alatti terület lépcsős közelítése. A terület \(\int_0^n x^2\,dx = n^3/3\), ez az összeg főtagja. A maradékot (a hibát) sorra becsüljük: ha a \(S_n - n^3/3\) kb. \(c\,n^2\), a \(c\) a következő együttható, és így tovább.</p>
+    <div class="fig">
+      <svg id="f-i-svg" role="img" aria-label="A maradék értékei oszlopokként"></svg>
+      <div class="info" id="f-i-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="f-i-s">levont tagok <select id="f-i-s">
+          <option value="0">0: S<sub>n</sub> maga</option>
+          <option value="1">1: − n³/3</option>
+          <option value="2">2: − n³/3 − n²/2</option>
+          <option value="3">3: − n³/3 − n²/2 − n/6</option>
+        </select></label>
+        <label class="rng" for="f-i-n">n <input type="range" id="f-i-n" min="3" max="30" value="12"> <span class="mono" id="f-i-nv">12</span></label>
+      </div>
+    </div>
+    <p>Az utolsó maradék minden \(n\)-re pontosan nulla, ez azonban <b>nem bizonyítás</b>: véges sok \(n\)-re ellenőrizzük. A módszer a sejtést adja meg (a tagok alakját), az igazolást az indukció (§1) vagy a repertoár (§3) végzi.</p>
+  </div>
+  <aside class="margo">
+    <p>Az \(n^2/2\) tag a „fél oszlop” korrekciója: a lépcső átlagosan fél oszloppal a görbe fölött van.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-kibontas">
+  <div class="body">
+    <div class="eyebrow">§5 · Kibontás és összevonás</div>
+    <h2>A \(k \cdot k\) felbontása</h2>
+    <p>A trükk: \(k^2 = k\cdot k = \sum_{j=1}^{k}k\), így a négyzetek összege kétszeres összeg, amelynek sorrendjét a 2.4 szerint cserélhetjük. Utána az összevonásnál a keresett összeg újra megjelenik, de más előjellel, és egyenletként megoldható.</p>
+    <div class="eq gold">\[S=\sum_{k=1}^{n}\sum_{j=1}^{k}k=\sum_{j=1}^{n}\sum_{k=j}^{n}k=\sum_{j=1}^{n}\frac{(n+j)(n+1-j)}{2}=\frac12\Bigl[n^2(n+1)+\frac{n(n+1)}{2}-S\Bigr].\]</div>
+    <p>A harmadik egyenlőségnél a \((n+j)(n+1-j) = n(n+1) + j - j^2\) átalakítást használjuk. Az \(S\)-re rendezés: \(3S = n(n+1)(n+\tfrac12)\).</p>
+    <div class="fig">
+      <div class="info" id="f-k-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="f-k-n">n <input type="range" id="f-k-n" min="1" max="15" value="6"> <span class="mono" id="f-k-nv">6</span></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az „önmagára visszaható” egyenlet (az összeg mindkét oldalon szerepel) gyakori technika: elég egyenletként megoldani.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="f-osszevetes">
+  <div class="body">
+    <div class="eyebrow">§6 · Összevetés</div>
+    <h2>Öt út, egy eredmény</h2>
+    <p>Az öt módszer eredménye minden \(n\)-re ugyanaz. Állítsd be \(n\)-t: a táblázat mindegyik módszerrel kiszámolja a \(\sum_{k=0}^{n} k^2\) értékét, és az egyenesen kiszámolt összeggel veti össze.</p>
+    <div class="fig">
+      <div class="tbl-wrap"><table class="vals" id="f-o-tbl"></table></div>
+      <div class="ctrl">
+        <label class="rng" for="f-o-n">n <input type="range" id="f-o-n" min="1" max="40" value="10"> <span class="mono" id="f-o-nv">10</span></label>
+      </div>
+    </div>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Módszer</th><th>Előre kell tudni</th><th>Általánosítható?</th></tr>
+      <tr><th>Sejtés + indukció</th><td>a képlet alakja</td><td>nem: minden \(p\)-re új sejtés</td></tr>
+      <tr><th>Perturbáció</th><td>az alacsonyabb hatványok összege</td><td>igen, rekurzívan</td></tr>
+      <tr><th>Repertoár</th><td>a megoldható alapesetek</td><td>a lineáris családon belül</td></tr>
+      <tr><th>Integrálás</th><td>a polinom foka</td><td>igen, a maradék becslése nem bizonyítás</td></tr>
+      <tr><th>Kibontás</th><td>az összeg szerkezete</td><td>részben, ötlet kell</td></tr>
+    </table></div>
+    <p>A következő téma (2.6) az összegzést a deriválás és integrálás párhuzamos „véges” változatával oldja meg: a differenciaoperátorral és az eséspolinomokkal.</p>
+  </div>
+  <aside class="margo">
+    <p>Ha sejtés, perturbáció és repertoár is ugyanazt adja, az ellenőrzés elég: egyik módszer sem függ a többitől.</p>
+  </aside>
+</section>

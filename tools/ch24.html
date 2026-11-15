@@ -1,0 +1,165 @@
+
+<!-- ================= 2.4 TÖBBSZÖRÖS ÖSSZEGEK ================= -->
+<header class="hero page" id="d-bevezeto">
+  <div>
+    <div class="eyebrow">2. fejezet · Összegek · 2.4</div>
+    <h1>Többszörös összegek</h1>
+    <p class="lead">Egy kétszeres összeg egy rács celláinak összege. A rácsot sorokban vagy oszlopokban is bejárhatjuk, és a kettő sosem tér el.</p>
+    <div class="formula">\(\displaystyle\sum_{j}\sum_{k} a_{jk}=\sum_{k}\sum_{j} a_{jk}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="d-hero" role="img" aria-label="A szorzótábla sorai egyenként kerülnek az összegbe"></svg>
+    <div class="counter"><span id="d-hero-a">sorok: 0</span><span>összeg: <b id="d-hero-b">0</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az iskolai szorzótábla az első kétszeres összeg, amellyel mindenki találkozik: 10 × 10 szám, és a „mennyi az összes szám összege?” kérdésre két út vezet. Összeadhatjuk soronként, majd a sorok összegeit, vagy oszloponként. A két út ugyanoda vezet, és ez nem véletlen, hanem az összeadás felcserélhetőségének következménye. A téma két kérdést tisztáz: hogyan néz ki az összeg, ha a rácsnak nem minden cellája számít (például csak az átló feletti háromszög), és hogyan lehet a felcserélést kihasználni egy nehéz összeg átalakítására. <i>Saját bevezető, a Konkrét matematika 2.4 fejezetének gondolatmenete szerint.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="d-racs">
+  <div class="body">
+    <div class="eyebrow">§1 · A rács</div>
+    <h2>Cellák és feltételek</h2>
+    <p>A kétszeres összeg \(\sum_{j,k} a_{jk}\) egy kétindexes táblázat celláinak összege. Szorzatalaknál (\(a_{jk} = x_j y_k\)) az összeg szorzattá esik szét:</p>
+    <div class="eq">\[\sum_{j=1}^{m}\sum_{k=1}^{n} x_j y_k=\Bigl(\sum_{j=1}^{m} x_j\Bigr)\Bigl(\sum_{k=1}^{n} y_k\Bigr).\]</div>
+    <p>A szorzótáblán (\(x_j = j\), \(y_k = k\)) próbáld ki. Az Iverson-zárójelek (2.1) itt is működnek: a „feltétel” kiválasztja, mely cellák számítanak.</p>
+    <div class="fig">
+      <div class="cellrow" id="d-r-grid"></div>
+      <div class="info" id="d-r-info"></div>
+      <div class="ctrl">
+        <label class="rng" for="d-r-n">n <input type="range" id="d-r-n" min="2" max="9" value="6"> <span class="mono" id="d-r-nv">6</span></label>
+        <label class="rng" for="d-r-c">tartomány <select id="d-r-c">
+          <option value="all">1 ≤ j, k ≤ n (teljes)</option>
+          <option value="lt">j &lt; k (átló felett)</option>
+          <option value="le">j ≤ k (átlóval)</option>
+          <option value="anti">j + k ≤ n + 1 (sarok)</option>
+          <option value="div">j osztja k-t</option>
+        </select></label>
+      </div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A teljes rácson \(\bigl(n(n+1)/2\bigr)^2\) az összeg, a \(j<k\) feltételnél a fele mínusz az átló fele: \(\tfrac12\bigl[(\sum k)^2-\sum k^2\bigr]\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-csere">
+  <div class="body">
+    <div class="eyebrow">§2 · Sorrendcsere</div>
+    <h2>Háromszög-tartomány, két bejárás</h2>
+    <p>Ha a tartomány háromszög, a belső összeg határai a külsőtől függnek. A sorrend felcserélésekor a határokat újra kell írni:</p>
+    <div class="eq gold">\[\sum_{j=1}^{n}\sum_{k=1}^{j} a_{jk}=\sum_{1\le k\le j\le n} a_{jk}=\sum_{k=1}^{n}\sum_{j=k}^{n} a_{jk}.\]</div>
+    <p>A középső alak a „tartományalak”, amelyből mindkét sorrend leolvasható. Válassz egy \(a_{jk}\)-t, és számold ki mindkét módon, pontos törtekkel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="d-c-f">a(j,k) <select id="d-c-f">
+          <option value="inv">1/j</option>
+          <option value="jk">j·k</option>
+          <option value="k">k</option>
+          <option value="diff">j − k</option>
+          <option value="inv2">1/(j·k)</option>
+        </select></label>
+        <label class="rng" for="d-c-n">n <input type="range" id="d-c-n" min="1" max="12" value="6"> <span class="mono" id="d-c-nv">6</span></label>
+      </div>
+      <div class="info" id="d-c-info"></div>
+    </div>
+    <p>Az \(a_{jk} = 1/j\) esetben az első sorrendben a belső összeg \(j \cdot \frac1j = 1\), így az egész \(n\). A másik sorrend ugyanazt \(\sum_{k=1}^{n} (H_n - H_{k-1})\) alakban adja, ahonnan a harmonikus számok ismert összege adódik:</p>
+    <div class="eq">\[\sum_{k=0}^{n-1} H_k = nH_n - n.\]</div>
+  </div>
+  <aside class="margo">
+    <p>A csere előtt mindig rajzold le a tartományt (j a vízszintes, k a függőleges tengelyen). A határokat a rajzról olvasd le, ne a képletből találgasd.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-szimmetria">
+  <div class="body">
+    <div class="eyebrow">§3 · A szimmetria-trükk</div>
+    <h2>A különbségek négyzetes összege</h2>
+    <p>Legyen \(a_1, \dots, a_n\) és \(b_1, \dots, b_n\) két sorozat. Tekintsük az összes párra vett kifejezést, és bontsuk ki:</p>
+    <div class="eq gold">\[\sum_{j=1}^{n}\sum_{k=1}^{n}(a_j-a_k)(b_j-b_k)=2n\sum_{k=1}^{n}a_kb_k-2\Bigl(\sum_{k=1}^{n}a_k\Bigr)\Bigl(\sum_{k=1}^{n}b_k\Bigr).\]</div>
+    <p>A kifejtésben a négy szorzat közül \(a_jb_j\) és \(a_kb_k\) külön-külön \(n\sum a_kb_k\)-t ad, a két vegyes tag pedig \(-(\sum a)(\sum b)\)-t. Ha \(a\) és \(b\) mindketten növekvők (vagy mindketten csökkenők), minden tag \(\ge 0\), ezért \(n\sum a_kb_k \ge (\sum a_k)(\sum b_k)\): ez Csebisev összeg-egyenlőtlensége. Ellentétes monotonitásnál az egyenlőtlenség megfordul.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="d-s-a">a(k) = <input type="text" id="d-s-a" value="k" style="width:6em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="d-s-b">b(k) = <input type="text" id="d-s-b" value="k^2" style="width:6em;font-family:var(--f-mono);padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)"></label>
+        <label class="rng" for="d-s-n">n <input type="range" id="d-s-n" min="2" max="12" value="6"> <span class="mono" id="d-s-nv">6</span></label>
+      </div>
+      <div class="ctrl" id="d-s-pre">
+        <button data-a="k" data-b="k^2" class="primary">k, k²</button>
+        <button data-a="k" data-b="12-k">k, 12 − k</button>
+        <button data-a="k" data-b="(-1)^k">k, (−1)ᵏ</button>
+      </div>
+      <div class="info" id="d-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A trükk lényege: ugyanazt az összeget kétféleképpen indexeljük (\(j\) és \(k\) szerepe felcserélhető), és a szimmetria egy szép négyzetes alakot ad.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Rácson számolni</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi \(\sum_{j=1}^{n}\sum_{k=1}^{n}\min(j,k)\)?</span></summary>
+      <div class="ans">
+        <p>\(\min(j,k)=\sum_{i\ge 1}[i\le j][i\le k]\), tehát az összeg:</p>
+        <div class="eq">\[\sum_{i=1}^{n}(n-i+1)^2=\sum_{m=1}^{n}m^2=\frac{n(n+1)(2n+1)}{6}.\]</div>
+        <p>Próba: \(n = 2\): \(1 + 1 + 1 + 2 = 5 = \frac{2 \cdot 3 \cdot 5}{6}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány cella tartozik a \(1 \le j < k \le n\) tartományba?</span></summary>
+      <div class="ans">
+        <p>\(\sum_{k=1}^{n}(k-1)=\dfrac{n(n-1)}{2}\), vagyis a négyzetrács fele az átló nélkül.</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Fejezd ki \((\sum a_k)^2\)-et \(\sum a_k^2\) és \(\sum_{j<k}a_ja_k\) segítségével.</span></summary>
+      <div class="ans">
+        <p>A teljes rács az átlóra és a két háromszögre bomlik, a két háromszög szimmetrikus:</p>
+        <div class="eq">\[\Bigl(\sum_k a_k\Bigr)^2=\sum_k a_k^2+2\sum_{j<k}a_ja_k.\]</div>
+        <p>Próba: \(a = (1,2,3)\): \(36 = 14 + 2(2+3+6) = 14 + 22\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi \(\sum_{j=1}^{n}\sum_{k=1}^{n}|j-k|\)?</span></summary>
+      <div class="ans">
+        <p>A \(d = k - j > 0\) eltérésű párok száma \(n - d\), és a szimmetria miatt a másik irányt még egyszer számoljuk:</p>
+        <div class="eq">\[2\sum_{d=1}^{n-1}d\,(n-d)=\frac{(n-1)\,n\,(n+1)}{3}.\]</div>
+        <p>Próba: \(n = 3\): \(2(1\cdot2+2\cdot1)=8=\frac{2\cdot3\cdot4}{3}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat megoldása szép példa arra, hogyan lesz a „min” Iverson-zárójelek összegévé.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="d-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Rács-eszköztár</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Helyzet</th><th>Eszköz</th></tr>
+      <tr><th>\(a_{jk}=x_jy_k\), téglalap</th><td>\(\bigl(\sum x\bigr)\bigl(\sum y\bigr)\)</td></tr>
+      <tr><th>feltételes tartomány</th><td>Iverson-zárójel a tagban</td></tr>
+      <tr><th>háromszög</th><td>sorrendcsere, a határok újraírása</td></tr>
+      <tr><th>szimmetrikus kifejezés</th><td>\(j\leftrightarrow k\), a négyzetes alak</td></tr>
+      <tr><th>\(\min\), \(\max\), \(|j-k|\)</th><td>Iverson-zárójelek összege, vagy eltérés szerinti csoportosítás</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Rajz</b><span>A tartomány a \(j\)–\(k\) síkon.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Sorrend</b><span>Válaszd azt a bejárást, ahol a belső összeg ismert.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Kis \(n\)-re kézzel.</span></div>
+    </div>
+    <p>A következő téma (2.5) a négyzetek összegét öt különböző módszerrel számolja ki, és megmutatja, melyik mikor használható.</p>
+  </div>
+  <aside class="margo">
+    <p>Végtelen kétszeres összegnél a sorrendcsere nem mindig szabad: a 2.7-ben látjuk, mikor az.</p>
+  </aside>
+</section>
