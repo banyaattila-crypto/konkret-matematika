@@ -534,6 +534,12 @@ a.spine:hover .dots i.on{transform:scaleY(1.7)}
 .land-float{display:none}
 @media (prefers-reduced-motion:reduce){#mrain{opacity:.35}}
 
+/* ---- hero: 3D összefüggés-gráf ---- */
+.land-art canvas#hgraph{touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.land-art figcaption b{color:var(--ink);font-weight:600}
+.land-art figcaption span{display:inline}
+.side>.ver{text-align:center;margin-top:18px;font-family:var(--f-mono);font-size:.68rem;color:var(--muted);opacity:.8;letter-spacing:.04em}
+
 </style>
 <script>
 window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{typeset:true}};
@@ -564,8 +570,8 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
       <div class="land-stats" id="land-stats"></div>
     </div>
     <figure class="land-art">
-      <canvas id="pascal" role="img" aria-label="A Pascal-háromszög binomiális együtthatói adott modulus szerint színezve: páratlan helyeken a Sierpiński-háromszög rajzolódik ki"></canvas>
-      <figcaption><span id="pas-cap"></span><span class="pas-chips" id="pas-chips" role="group" aria-label="Modulus"></span></figcaption>
+      <canvas id="hgraph" role="img" aria-label="A kötet összefüggés-gráfja: tíz fejezet és az ötven téma forgatható háromdimenziós hálózatban; a csomópontokra kattintva az adott fejezetre vagy témára ugrasz"></canvas>
+      <figcaption><span id="h3-cap"></span></figcaption>
     </figure>
   </section>
   <section class="land-pillars">
@@ -8918,64 +8924,98 @@ function applyCh(r){
   d.setAttribute("data-ch",String(n));d.style.setProperty("--chnum",'"'+n+'"');
 }
 
-/* A Pascal-háromszög binomiális együtthatói mod m. Mod 2: Sierpiński-háromszög (Lucas tétele). */
-const pascal=(()=>{
-  const N=64,MODS=[2,3,4,5,7];
-  const cv=$("#pascal"),cap=$("#pas-cap"),chips=$("#pas-chips"),ctx=cv.getContext("2d");
+/* Hero: a kötet 3D-s összefüggés-gráfja. Hubok = fejezetek (a 10.1 térkép 13 éle), kis csomópontok = témák. */
+const hero3d=(()=>{
+  const cv=$("#hgraph"),cap=$("#h3-cap"),ctx=cv.getContext("2d");
   const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  let m=2,rows=[],shown=0,raf=0,holdT=0,W=0,H=0,dpr=1,running=false,auto=!reduce,last=0;
-  const NOTE={2:"C(n,k) mod 2: a páratlan helyek a Sierpiński-háromszöget adják, mert 64 = 2⁶.",
-    3:"C(n,k) mod 3: a nullától különböző maradékok színezve, ugyanaz az önhasonlóság.",
-    4:"C(n,k) mod 4: összetett modulusnál a minta bonyolultabb, de így is szabályos.",
-    5:"C(n,k) mod 5: prímmodulusnál Lucas tétele miatt a kép 5-ös léptékben ismétlődik.",
-    7:"C(n,k) mod 7: a nagyobb prím nagyobb, ritkább mintát rajzol."};
+  const E=[[1,2],[1,7],[2,6],[2,9],[3,4],[4,5],[5,7],[5,8],[5,9],[6,8],[6,9],[7,8],[8,9]];
+  let nodes=[],edges=[],cols=[],W=0,H=0,dpr=1,running=false,raf=0,last=0;
+  let yaw=.6,pit=.38,vy=reduce?0:.00018,vp=0,drag=null,moved=0,hover=null,idleT=0,proj=[];
   function build(){
-    rows=[];let prev=[1%m];rows.push(prev);
-    for(let n=1;n<N;n++){const r=new Array(n+1);for(let k=0;k<=n;k++)r[k]=((prev[k-1]||0)+(prev[k]||0))%m;rows.push(r);prev=r;}
+    nodes=[];edges=[];const hub={};
+    const G=Math.PI*(3-Math.sqrt(5));
+    for(let c=1;c<=9;c++){const y=1-2*(c-.5)/9,r=Math.sqrt(1-y*y),t=(c-1)*G;
+      const v=[r*Math.cos(t),y,r*Math.sin(t)];hub[c]=nodes.length;nodes.push({x:v[0],y:v[1],z:v[2],c,hub:true,label:c+". "+CH[c-1].t,href:"#fejezet-"+c,r:9});}
+    hub[10]=nodes.length;nodes.push({x:0,y:0,z:0,c:10,hub:true,label:"10. "+CH[9].t,href:"#fejezet-10",r:11});
+    CH.forEach(ch=>{const c=ch.n,ts=(ch.topics||[]).filter(t=>t.ready);if(!ts.length)return;
+      const h=nodes[hub[c]],L=Math.hypot(h.x,h.y,h.z)||1;
+      let n=[h.x/L,h.y/L,h.z/L];if(c===10)n=[0,1,0];
+      let u=Math.abs(n[1])>.9?[1,0,0]:[0,1,0];
+      let e1=[n[1]*u[2]-n[2]*u[1],n[2]*u[0]-n[0]*u[2],n[0]*u[1]-n[1]*u[0]];const l1=Math.hypot(...e1);e1=e1.map(q=>q/l1);
+      const e2=[n[1]*e1[2]-n[2]*e1[1],n[2]*e1[0]-n[0]*e1[2],n[0]*e1[1]-n[1]*e1[0]];
+      ts.forEach((tp,i)=>{const a=2*Math.PI*i/ts.length+c,rr=.30+.04*(i%2),k=c===10?.0:.12;
+        const x=h.x+k*n[0]+rr*(Math.cos(a)*e1[0]+Math.sin(a)*e2[0]),y=h.y+k*n[1]+rr*(Math.cos(a)*e1[1]+Math.sin(a)*e2[1]),z=h.z+k*n[2]+rr*(Math.cos(a)*e1[2]+Math.sin(a)*e2[2]);
+        const id=nodes.length;nodes.push({x,y,z,c,hub:false,label:tp.n+" "+tp.t,href:"#"+tp.id+"-"+TOPICS[tp.id].pages[0][0],r:3.6});
+        edges.push({a:hub[c],b:id,k:0});});});
+    E.forEach(([a,b])=>edges.push({a:hub[a],b:hub[b],k:1}));
+    for(let c=1;c<=9;c++)edges.push({a:hub[10],b:hub[c],k:2});
   }
+  function colors(){const cs=getComputedStyle(document.documentElement);cols=[""];for(let c=1;c<=10;c++)cols.push(cs.getPropertyValue("--cc"+c).trim()||"#7c8cff");}
   function size(){
-    dpr=Math.min(2,window.devicePixelRatio||1);W=Math.max(220,cv.clientWidth||320);
-    const pad=10,w=(W-2*pad)/N;H=Math.round(2*pad+N*w*.866+w);
+    dpr=Math.min(2,window.devicePixelRatio||1);W=Math.max(240,cv.clientWidth||320);H=Math.round(W*(W<500?1.0:.94));
     cv.style.height=H+"px";cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
   }
-  function col(n,v){
-    const dark=isDarkTheme(),hue=m===2?(228+n*4.4)%360:(214+v*(300/m)+n*1.2)%360;
-    return `hsl(${hue} ${dark?88:76}% ${dark?68:44}%)`;
+  function project(){
+    const cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pit),sp=Math.sin(pit),D=3.3,sc=Math.min(W,H)*.44;
+    proj=nodes.map(n=>{
+      const x1=n.x*cy+n.z*sy,z1=-n.x*sy+n.z*cy,y1=n.y*cp-z1*sp,z2=n.y*sp+z1*cp;
+      const f=D/(D-z2);return {x:W/2+x1*sc*f/1.45,y:H/2+y1*sc*f/1.45,z:z2,f,n};});
   }
   function draw(){
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
-    const pad=10,w=(W-2*pad)/N,hh=w*.866,rad=Math.max(1.1,w*.4),dark=isDarkTheme();
-    const full=Math.min(N,Math.floor(shown)),frac=shown-Math.floor(shown);
-    for(let n=0;n<=Math.min(N-1,full);n++){
-      const a=n===full?frac:1;if(a<=0)continue;
-      for(let k=0;k<=n;k++){
-        const v=rows[n][k],x=W/2+(k-n/2)*w,y=pad+w*.5+n*hh;
-        if(v===0){ctx.globalAlpha=.10*a;ctx.fillStyle=dark?"#9aa6b6":"#5a6471";ctx.beginPath();ctx.arc(x,y,Math.max(.6,rad*.28),0,6.2832);ctx.fill();continue;}
-        ctx.globalAlpha=a;ctx.fillStyle=col(n,v);ctx.beginPath();ctx.arc(x,y,rad,0,6.2832);ctx.fill();
-      }
-    }
+    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);project();
+    const dark=isDarkTheme(),ink=dark?"#c9d3e3":"#33405a";
+    edges.forEach(e=>{const p=proj[e.a],q=proj[e.b],dz=(p.z+q.z)/2,al=Math.max(.04,.5+.4*dz);
+      const on=hover!==null&&(hover===e.a||hover===e.b);
+      ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+      if(e.k===1){ctx.strokeStyle=ink;ctx.globalAlpha=Math.min(1,(on?.9:.42*al+.12));ctx.lineWidth=on?2:1.3;ctx.setLineDash([]);}
+      else if(e.k===2){ctx.strokeStyle=ink;ctx.globalAlpha=on?.6:.07*al+.02;ctx.lineWidth=.8;ctx.setLineDash([2,4]);}
+      else{ctx.strokeStyle=cols[p.n.c];ctx.globalAlpha=on?.9:.35*al+.1;ctx.lineWidth=on?1.6:1;ctx.setLineDash([]);}
+      ctx.stroke();});
+    ctx.setLineDash([]);
+    const ord=proj.map((p,i)=>i).sort((a,b)=>proj[a].z-proj[b].z);
+    ord.forEach(i=>{const p=proj[i],n=p.n,al=Math.max(.35,.72+.4*p.z),r=n.r*p.f*(W<500?.9:1.05),on=hover===i;
+      ctx.globalAlpha=Math.min(1,al);ctx.fillStyle=cols[n.c];ctx.beginPath();ctx.arc(p.x,p.y,on?r*1.35:r,0,6.2832);ctx.fill();
+      if(n.hub){ctx.globalAlpha=1;ctx.fillStyle="#fff";ctx.font=`700 ${Math.round(r*1.15)}px 'Fraunces',Georgia,serif`;ctx.textAlign="center";ctx.textBaseline="middle";ctx.fillText(String(n.c),p.x,p.y+.5);}
+      if(on){ctx.globalAlpha=1;ctx.strokeStyle=dark?"#fff":"#111";ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(p.x,p.y,r*1.35+3,0,6.2832);ctx.stroke();}
+    });
     ctx.globalAlpha=1;
   }
-  function setMod(x,byUser){
-    clearTimeout(holdT);holdT=0;m=x;if(byUser)auto=false;build();shown=reduce?N:0;cap.textContent=NOTE[m]||"";
-    chips.querySelectorAll("button").forEach(b=>{const on=+b.dataset.m===m;b.classList.toggle("on",on);b.setAttribute("aria-pressed",on)});
-    draw();if(running&&!raf)raf=requestAnimationFrame(tick);
+  function pick(ev){
+    const r=cv.getBoundingClientRect(),x=ev.clientX-r.left,y=ev.clientY-r.top;let best=null,bd=1e9;
+    proj.forEach((p,i)=>{const d=Math.hypot(p.x-x,p.y-y),lim=Math.max(14,p.n.r*p.f*1.6);if(d<lim&&d-p.z*4<bd){bd=d-p.z*4;best=i;}});
+    return best;
   }
+  function setHover(h){
+    if(h===hover)return;hover=h;cv.style.cursor=h===null?(drag?"grabbing":"grab"):"pointer";
+    cap.innerHTML=h===null?HINT:`<b>${nodes[h].label}</b> <span>${nodes[h].hub?"fejezet":"téma"} · kattints a megnyitáshoz</span>`;
+    if(!running||reduce)draw();
+  }
+  let HINT="";
   function tick(t){
-    raf=0;if(!running)return;
-    const dt=Math.min(60,t-(last||t));last=t;
-    if(shown<N){shown=Math.min(N,shown+dt*.026);draw();}
-    if(shown<N)raf=requestAnimationFrame(tick);
-    else if(auto&&!holdT)holdT=setTimeout(()=>{holdT=0;if(running&&auto)setMod(MODS[(MODS.indexOf(m)+1)%MODS.length]);},6500);
+    raf=0;if(!running)return;const dt=Math.min(50,t-(last||t));last=t;
+    if(!drag){yaw+=vy*dt*(hover!==null?.15:1);pit+=vp*dt;vp*=.94;pit=Math.max(-1.2,Math.min(1.2,pit));if(Math.abs(vy)>.00018)vy=vy*.96+(reduce?0:.00018)*.04;}
+    draw();raf=requestAnimationFrame(tick);
   }
-  chips.innerHTML=MODS.map(x=>`<button type="button" data-m="${x}" aria-pressed="false">mod ${x}</button>`).join("");
-  chips.addEventListener("click",e=>{const b=e.target.closest("button");if(b)setMod(+b.dataset.m,true);});
+  cv.addEventListener("pointerdown",e=>{drag={x:e.clientX,y:e.clientY,yaw,pit};moved=0;try{cv.setPointerCapture(e.pointerId)}catch(_){}cv.style.cursor="grabbing";});
+  cv.addEventListener("pointermove",e=>{
+    if(drag){const dx=e.clientX-drag.x,dy=e.clientY-drag.y;moved=Math.max(moved,Math.abs(dx)+Math.abs(dy));
+      const ny=drag.yaw+dx*.008,np=Math.max(-1.2,Math.min(1.2,drag.pit+dy*.006));vy=(ny-yaw)/16;yaw=ny;pit=np;if(reduce||!running)draw();return;}
+    if(e.pointerType==="mouse")setHover(pick(e));
+  });
+  cv.addEventListener("pointerup",e=>{
+    const was=drag;drag=null;cv.style.cursor="grab";
+    if(was&&moved<6){const h=pick(e);if(h!==null){setHover(h);if(e.pointerType==="mouse")location.hash=nodes[h].href;else{ if(cv.dataset.last===String(h))location.hash=nodes[h].href;cv.dataset.last=String(h);}}}
+  });
+  cv.addEventListener("pointercancel",()=>{drag=null;});
+  cv.addEventListener("pointerleave",()=>{if(!drag)setHover(null);});
   let rt=0;window.addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if(!running)return;size();draw();},120);});
-  document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;}else if(running&&!raf&&shown<N){last=0;raf=requestAnimationFrame(tick);}});
+  document.addEventListener("visibilitychange",()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;}else if(running&&!raf&&!reduce){last=0;raf=requestAnimationFrame(tick);}});
   return {
-    start(){if(running)return;running=true;size();setMod(m);last=0;if(!raf)raf=requestAnimationFrame(tick);},
-    stop(){running=false;cancelAnimationFrame(raf);raf=0;clearTimeout(holdT);holdT=0;},
-    redraw(){if(running){size();draw();}}
+    start(){if(running)return;running=true;if(!nodes.length){build();}colors();size();
+      HINT=`<b>${CH.filter(c=>c.topics&&c.topics.some(t=>t.ready)).length} fejezet, ${Object.keys(TOPICS).length} téma, 13 összefüggés.</b> <span>Húzd el a forgatáshoz; kattints egy csomópontra (érintésnél kétszer).</span>`;
+      if(hover===null)cap.innerHTML=HINT;draw();last=0;if(!reduce&&!raf)raf=requestAnimationFrame(tick);},
+    stop(){running=false;cancelAnimationFrame(raf);raf=0;},
+    redraw(){if(running){colors();size();draw();}}
   };
 })();
 
@@ -9046,6 +9086,10 @@ const mrain=(()=>{
   setTimeout(go,300);
   return {go};
 })();
+
+/* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
+const APP_VERSION="1.1.0";
+(function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* ================= 2. FEJEZET: KÖZÖS ESZKÖZÖK ================= */
 const rgcd=(a,b)=>{if(a<0n)a=-a;if(b<0n)b=-b;while(b){[a,b]=[b,a%b];}return a;};
@@ -11265,7 +11309,7 @@ function route(keep){
     $("#foot").innerHTML=`<div>${T.foot}</div><div>Interaktív tananyag · Konkrét Matematika sorozat · ${T.n} modul</div>`;
   }else{curPage="";curTopic="";}
   if(r.ch&&!r.topic)chapterView(CH.find(c=>c.n===r.ch));
-  renderTree(r);crumb(r);if(keep!==true)window.scrollTo(0,0);if(!r.ch&&!r.topic)pascal.start();else pascal.stop();
+  renderTree(r);crumb(r);if(keep!==true)window.scrollTo(0,0);if(!r.ch&&!r.topic)hero3d.start();else hero3d.stop();
 }
 document.addEventListener("keydown",e=>{
   if(!curTopic||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName||""))return;
@@ -11274,7 +11318,7 @@ document.addEventListener("keydown",e=>{
   if(e.key==="ArrowLeft"&&i>0)location.hash=curTopic+"-"+P[i-1][0];
 });
 window.addEventListener("hashchange",()=>route());
-$("#themeBtn").addEventListener("click",()=>{const t=isDarkTheme()?"light":"dark";document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("km-theme",t)}catch(e){}route(true);pascal.redraw();});
+$("#themeBtn").addEventListener("click",()=>{const t=isDarkTheme()?"light":"dark";document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("km-theme",t)}catch(e){}route(true);hero3d.redraw();});
 $("#goChap").addEventListener("click",()=>$("#fejezetek").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}));
 homeCards();route();
 })();

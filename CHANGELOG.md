@@ -7,6 +7,15 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-11-15
+
+### Hozzáadva
+- Főoldali hero: forgatható 3D összefüggés-gráf (10 fejezeti hub, 50 téma, a 10.1 térkép 13 kapcsolata); húzásra forog, kattintásra az adott fejezetre vagy témára ugrik.
+- Verziószám az oldalsáv alján (`VERSION` fájl, `APP_VERSION`).
+
+### Módosítva
+- A főoldali hero a Pascal-háromszög helyett a 3D gráfot mutatja.
+
 ## [1.0.0] - 2026-11-15
 
 ### Hozzáadva

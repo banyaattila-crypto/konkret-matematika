@@ -316,8 +316,8 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
       <div class="land-stats" id="land-stats"></div>
     </div>
     <figure class="land-art">
-      <canvas id="pascal" role="img" aria-label="A Pascal-háromszög binomiális együtthatói adott modulus szerint színezve: páratlan helyeken a Sierpiński-háromszög rajzolódik ki"></canvas>
-      <figcaption><span id="pas-cap"></span><span class="pas-chips" id="pas-chips" role="group" aria-label="Modulus"></span></figcaption>
+      <canvas id="hgraph" role="img" aria-label="A kötet összefüggés-gráfja: tíz fejezet és az ötven téma forgatható háromdimenziós hálózatban; a csomópontokra kattintva az adott fejezetre vagy témára ugrasz"></canvas>
+      <figcaption><span id="h3-cap"></span></figcaption>
     </figure>
   </section>
   <section class="land-pillars">
@@ -2037,7 +2037,7 @@ function route(keep){
     $("#foot").innerHTML=`<div>${T.foot}</div><div>Interaktív tananyag · Konkrét Matematika sorozat · ${T.n} modul</div>`;
   }else{curPage="";curTopic="";}
   if(r.ch&&!r.topic)chapterView(CH.find(c=>c.n===r.ch));
-  renderTree(r);crumb(r);if(keep!==true)window.scrollTo(0,0);if(!r.ch&&!r.topic)pascal.start();else pascal.stop();
+  renderTree(r);crumb(r);if(keep!==true)window.scrollTo(0,0);if(!r.ch&&!r.topic)hero3d.start();else hero3d.stop();
 }
 document.addEventListener("keydown",e=>{
   if(!curTopic||/INPUT|SELECT|TEXTAREA/.test(e.target.tagName||""))return;
@@ -2046,7 +2046,7 @@ document.addEventListener("keydown",e=>{
   if(e.key==="ArrowLeft"&&i>0)location.hash=curTopic+"-"+P[i-1][0];
 });
 window.addEventListener("hashchange",()=>route());
-$("#themeBtn").addEventListener("click",()=>{const t=isDarkTheme()?"light":"dark";document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("km-theme",t)}catch(e){}route(true);pascal.redraw();});
+$("#themeBtn").addEventListener("click",()=>{const t=isDarkTheme()?"light":"dark";document.documentElement.setAttribute("data-theme",t);try{localStorage.setItem("km-theme",t)}catch(e){}route(true);hero3d.redraw();});
 $("#goChap").addEventListener("click",()=>$("#fejezetek").scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}));
 homeCards();route();
 })();
