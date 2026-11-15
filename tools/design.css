@@ -165,3 +165,36 @@ a.spine:hover{transform:translateY(-4px);box-shadow:0 22px 40px -26px var(--cn)}
     radial-gradient(110% 50% at 100% 100%,hsl(var(--hue2,160) 90% 55%/.16),transparent 62%),
     radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--ink) 12%,transparent) 1px,transparent 1.6px) 0 0/16px 16px,
     var(--paper)}}
+
+/* ================= NYITÓOLDAL: mozgás és élénkség ================= */
+.land-hero{position:relative;overflow:hidden}
+.land-hero>.land-copy,.land-hero>.land-art{position:relative;z-index:1}
+.land-float{position:absolute;inset:0;pointer-events:none;z-index:0}
+.land-float span{position:absolute;left:var(--x);top:var(--y);font:italic 600 var(--s)/1 var(--f-display);color:var(--accent);opacity:.08;animation:lfloat var(--d) ease-in-out var(--dl) infinite alternate;white-space:nowrap}
+@keyframes lfloat{from{transform:translate3d(0,0,0) rotate(-6deg)}to{transform:translate3d(14px,-26px,0) rotate(7deg)}}
+.land-title{background-size:220% 100%;animation:lshine 9s ease-in-out infinite alternate}
+@keyframes lshine{from{background-position:0 0}to{background-position:100% 0}}
+.land-cta .btn{transition:transform .15s,box-shadow .15s}
+.land-cta .btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -14px var(--accent)}
+.pillar{transition:transform .2s,border-color .2s}
+.pillar:hover{transform:translateY(-4px);border-color:var(--accent)}
+.pillar .pi{display:inline-block;transition:transform .35s}
+.pillar:hover .pi{transform:rotate(18deg) scale(1.2)}
+.land-ticker{overflow:hidden;margin:6px 0 4px;padding:13px 0;border-block:1px solid var(--line);background:color-mix(in srgb,var(--accent) 5%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.tk-track{display:flex;gap:46px;width:max-content;animation:ltk 55s linear infinite}
+.land-ticker:hover .tk-track{animation-play-state:paused}
+.tk-track span{font:italic 500 1.12rem var(--f-display);white-space:nowrap;color:var(--muted)}
+.tk-track span:nth-child(3n+1){color:var(--accent)}.tk-track span:nth-child(3n+2){color:var(--accent-2-ink)}
+@keyframes ltk{to{transform:translateX(-50%)}}
+.spine{overflow:hidden;animation:lrise .65s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,1)*55ms)}
+@keyframes lrise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.spine::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--cn) 24%,transparent),transparent 70%)}
+a.spine:hover::after{opacity:1}
+.spine .sig{font:.74rem var(--f-mono);color:var(--cn);margin-top:6px;padding-top:9px;border-top:1px dashed color-mix(in srgb,var(--cn) 38%,transparent);max-width:100%;overflow-wrap:anywhere}
+.spine .sn{transition:transform .35s,-webkit-text-stroke-color .25s}
+a.spine:hover .sn{transform:translateY(4px) scale(1.06)}
+.spine .dots i{transition:transform .2s}
+a.spine:hover .dots i.on{transform:scaleY(1.7)}
+@media (prefers-reduced-motion:reduce){.land-float span,.land-title,.tk-track,.spine{animation:none}.land-ticker{overflow-x:auto}.pillar:hover,.land-cta .btn:hover{transform:none}}
+
+.land-cta{gap:10px}.land-cta .btn{padding:10px 15px;font-size:.95rem}

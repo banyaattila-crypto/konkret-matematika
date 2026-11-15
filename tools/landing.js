@@ -1,6 +1,6 @@
 /* ================= TÉMA + NYITÓOLDAL ================= */
 function applyCh(r){
-  const n=Math.min(9,Math.max(1,r&&r.ch?r.ch:1)),d=document.documentElement;
+  const n=Math.min(10,Math.max(1,r&&r.ch?r.ch:1)),d=document.documentElement;
   d.setAttribute("data-ch",String(n));d.style.setProperty("--chnum",'"'+n+'"');
 }
 

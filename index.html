@@ -494,6 +494,39 @@ a.spine:hover{transform:translateY(-4px);box-shadow:0 22px 40px -26px var(--cn)}
     radial-gradient(circle at 1px 1px,color-mix(in srgb,var(--ink) 12%,transparent) 1px,transparent 1.6px) 0 0/16px 16px,
     var(--paper)}}
 
+/* ================= NYITÓOLDAL: mozgás és élénkség ================= */
+.land-hero{position:relative;overflow:hidden}
+.land-hero>.land-copy,.land-hero>.land-art{position:relative;z-index:1}
+.land-float{position:absolute;inset:0;pointer-events:none;z-index:0}
+.land-float span{position:absolute;left:var(--x);top:var(--y);font:italic 600 var(--s)/1 var(--f-display);color:var(--accent);opacity:.08;animation:lfloat var(--d) ease-in-out var(--dl) infinite alternate;white-space:nowrap}
+@keyframes lfloat{from{transform:translate3d(0,0,0) rotate(-6deg)}to{transform:translate3d(14px,-26px,0) rotate(7deg)}}
+.land-title{background-size:220% 100%;animation:lshine 9s ease-in-out infinite alternate}
+@keyframes lshine{from{background-position:0 0}to{background-position:100% 0}}
+.land-cta .btn{transition:transform .15s,box-shadow .15s}
+.land-cta .btn:hover{transform:translateY(-2px);box-shadow:0 12px 24px -14px var(--accent)}
+.pillar{transition:transform .2s,border-color .2s}
+.pillar:hover{transform:translateY(-4px);border-color:var(--accent)}
+.pillar .pi{display:inline-block;transition:transform .35s}
+.pillar:hover .pi{transform:rotate(18deg) scale(1.2)}
+.land-ticker{overflow:hidden;margin:6px 0 4px;padding:13px 0;border-block:1px solid var(--line);background:color-mix(in srgb,var(--accent) 5%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)}
+.tk-track{display:flex;gap:46px;width:max-content;animation:ltk 55s linear infinite}
+.land-ticker:hover .tk-track{animation-play-state:paused}
+.tk-track span{font:italic 500 1.12rem var(--f-display);white-space:nowrap;color:var(--muted)}
+.tk-track span:nth-child(3n+1){color:var(--accent)}.tk-track span:nth-child(3n+2){color:var(--accent-2-ink)}
+@keyframes ltk{to{transform:translateX(-50%)}}
+.spine{overflow:hidden;animation:lrise .65s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,1)*55ms)}
+@keyframes lrise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+.spine::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .25s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--cn) 24%,transparent),transparent 70%)}
+a.spine:hover::after{opacity:1}
+.spine .sig{font:.74rem var(--f-mono);color:var(--cn);margin-top:6px;padding-top:9px;border-top:1px dashed color-mix(in srgb,var(--cn) 38%,transparent);max-width:100%;overflow-wrap:anywhere}
+.spine .sn{transition:transform .35s,-webkit-text-stroke-color .25s}
+a.spine:hover .sn{transform:translateY(4px) scale(1.06)}
+.spine .dots i{transition:transform .2s}
+a.spine:hover .dots i.on{transform:scaleY(1.7)}
+@media (prefers-reduced-motion:reduce){.land-float span,.land-title,.tk-track,.spine{animation:none}.land-ticker{overflow-x:auto}.pillar:hover,.land-cta .btn:hover{transform:none}}
+
+.land-cta{gap:10px}.land-cta .btn{padding:10px 15px;font-size:.95rem}
+
 </style>
 <script>
 window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg:{fontCache:'global'},startup:{typeset:true}};
@@ -515,11 +548,12 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 </div>
 <div class="view" id="view-home">
   <section class="land-hero">
+    <div class="land-float" aria-hidden="true"><span style="--x:47%;--y:4%;--s:3.4rem;--d:16s;--dl:-2s">∑</span><span style="--x:55%;--y:72%;--s:2.8rem;--d:19s;--dl:-5s">∫</span><span style="--x:70%;--y:3%;--s:3.2rem;--d:17s;--dl:-9s">π</span><span style="--x:62%;--y:86%;--s:3.6rem;--d:21s;--dl:-3s">φ</span><span style="--x:90%;--y:10%;--s:3.8rem;--d:18s;--dl:-7s">∞</span><span style="--x:2%;--y:92%;--s:2.4rem;--d:20s;--dl:-11s">⌊x⌋</span><span style="--x:78%;--y:40%;--s:1.7rem;--d:15s;--dl:-4s">mod</span><span style="--x:84%;--y:76%;--s:2.2rem;--d:22s;--dl:-8s">n!</span><span style="--x:93%;--y:50%;--s:3rem;--d:19s;--dl:-1s">√</span><span style="--x:50%;--y:45%;--s:2rem;--d:17s;--dl:-6s">Hₙ</span><span style="--x:20%;--y:95%;--s:2.2rem;--d:23s;--dl:-10s">C(n,k)</span><span style="--x:96%;--y:86%;--s:3.2rem;--d:16s;--dl:-12s">≡</span></div>
     <div class="land-copy">
       <div class="eyebrow">Graham – Knuth – Patashnik nyomán</div>
       <h1 class="land-title">Konkrét<br>Matematika</h1>
       <p class="lead">Matematikai érdekességek és stílusos feladatok, fejezetről fejezetre. Minden téma interaktív ábrákkal és a levezetés minden lépésével: mi igaz, és miért.</p>
-      <div class="land-cta"><a class="btn primary" href="#fejezet-1">Kezdjük az 1. fejezettel</a><button class="btn" type="button" id="goChap">Fejezetek ↓</button></div>
+      <div class="land-cta"><a class="btn primary" href="#fejezet-1">Kezdjük az 1. fejezettel</a><button class="btn" type="button" id="goChap">Fejezetek ↓</button><button class="btn" type="button" id="goRand" title="Ugrás egy véletlen oldalra">Véletlen oldal ⚄</button></div>
       <div class="land-stats" id="land-stats"></div>
     </div>
     <figure class="land-art">
@@ -532,6 +566,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
     <div class="pillar"><span class="pi">◐</span><b>Mozgatható</b><span>Csúszkák, szimulációk, kísérletek: az állítást kipróbálhatod.</span></div>
     <div class="pillar"><span class="pi">✓</span><b>Ellenőrizve</b><span>Az oldalak ellenőrző sorai élőben vetik össze a képletet a számolással.</span></div>
   </section>
+  <div class="land-ticker" aria-hidden="true"><div class="tk-track"><span>Tₙ = 2ⁿ − 1</span><span>Σ k = n(n+1)/2</span><span>⌊x⌋ ≤ x &lt; ⌊x⌋ + 1</span><span>a ≡ b (mod m)</span><span>C(n,k) = n! / (k!(n−k)!)</span><span>Hₙ ≈ ln n + γ</span><span>F(x) = x / (1 − x − x²)</span><span>E[X] = Σ x·P(X = x)</span><span>n! ~ √(2πn)(n/e)ⁿ</span><span>C(2n,n) ~ 4ⁿ/√(πn)</span><span>Tₙ = 2ⁿ − 1</span><span>Σ k = n(n+1)/2</span><span>⌊x⌋ ≤ x &lt; ⌊x⌋ + 1</span><span>a ≡ b (mod m)</span><span>C(n,k) = n! / (k!(n−k)!)</span><span>Hₙ ≈ ln n + γ</span><span>F(x) = x / (1 − x − x²)</span><span>E[X] = Σ x·P(X = x)</span><span>n! ~ √(2πn)(n/e)ⁿ</span><span>C(2n,n) ~ 4ⁿ/√(πn)</span></div></div>
   <section class="land-chapters" id="fejezetek">
     <h2>Fejezetek</h2>
     <div class="spines" id="home-cards"></div>
@@ -8872,7 +8907,7 @@ jGenDraw();
 /* ---- router ---- */
 /* ================= TÉMA + NYITÓOLDAL ================= */
 function applyCh(r){
-  const n=Math.min(9,Math.max(1,r&&r.ch?r.ch:1)),d=document.documentElement;
+  const n=Math.min(10,Math.max(1,r&&r.ch?r.ch:1)),d=document.documentElement;
   d.setAttribute("data-ch",String(n));d.style.setProperty("--chnum",'"'+n+'"');
 }
 
@@ -11130,10 +11165,14 @@ function homeCards(){
     const tp=c.topics||[],ready=tp.filter(t=>t.ready),pages=ready.reduce((a,t)=>a+TOPICS[t.id].pages.length,0);
     const dots=tp.map(t=>`<i class="${t.ready?"on":""}"></i>`).join("");
     const st=c.topics?`<span class="st ok">${ready.length} / ${tp.length} téma · ${pages} oldal</span>`:`<span class="st">hamarosan</span>`;
-    const inner=`<span class="sn">${c.n}</span><span class="ct">${c.t}</span><span class="cd">${c.d}</span><span class="dots">${dots}</span>${st}`;
-    return c.topics?`<a class="spine" data-c="${c.n}" href="#fejezet-${c.n}">${inner}</a>`:`<div class="spine dis" data-c="${c.n}">${inner}</div>`;}).join("");
+    const SIG=["Tₙ = 2Tₙ₋₁ + 1","Σ k = n(n+1)/2","⌊x⌋ ≤ x < ⌊x⌋+1","a ≡ b (mod m)","C(n,k) = C(n−1,k) + C(n−1,k−1)","Hₙ = 1 + ½ + … + 1/n","1/(1−x−x²) = Σ Fₙxⁿ","E[X] = Σ x·P(X=x)","n! ~ √(2πn)(n/e)ⁿ","Σ → G(x) → E[X] → O(·)"];
+    const inner=`<span class="sn">${c.n}</span><span class="ct">${c.t}</span><span class="cd">${c.d}</span><span class="dots">${dots}</span>${st}<span class="sig">${SIG[c.n-1]||""}</span>`;
+    return c.topics?`<a class="spine" style="--i:${c.n}" data-c="${c.n}" href="#fejezet-${c.n}">${inner}</a>`:`<div class="spine dis" style="--i:${c.n}" data-c="${c.n}">${inner}</div>`;}).join("");
+  $("#home-cards").onpointermove=e=>{const t=e.target.closest(".spine");if(!t)return;const r=t.getBoundingClientRect();t.style.setProperty("--mx",(e.clientX-r.left)+"px");t.style.setProperty("--my",(e.clientY-r.top)+"px");};
   const nTop=Object.keys(TOPICS).length,nPg=Object.values(TOPICS).reduce((a,t)=>a+t.pages.length,0),nEx=document.querySelectorAll("#view-topic details").length,nCh=CH.filter(c=>c.topics&&c.topics.some(t=>t.ready)).length;
-  $("#land-stats").innerHTML=[[nCh+" / 9","fejezet"],[nTop,"téma"],[nPg,"oldal"],[nEx,"feladat megoldással"]].map(([v,k])=>`<span class="ls"><b>${v}</b>${k}</span>`).join("");
+  $("#land-stats").innerHTML=[[nCh+" / "+CH.length,"fejezet"],[nTop,"téma"],[nPg,"oldal"],[nEx,"feladat megoldással"]].map(([v,k])=>`<span class="ls"><b data-v="${v}">${v}</b>${k}</span>`).join("");
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.querySelectorAll("#land-stats b").forEach(b=>{const tx=String(b.dataset.v),m=tx.match(/^(\d+)(.*)$/);if(!m)return;const N=+m[1],t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/1100),v=Math.round(N*(1-Math.pow(1-k,3)));b.textContent=v+m[2];if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);});
+  const gr=$("#goRand");if(gr)gr.onclick=()=>{const ids=Object.keys(TOPICS),id=ids[Math.floor(Math.random()*ids.length)],pg=TOPICS[id].pages;location.hash="#"+id+"-"+pg[Math.floor(Math.random()*pg.length)][0];};
 }
 function chapterView(c){
   $("#ch-eyebrow").textContent=`${c.n}. fejezet`;$("#ch-title").textContent=c.t;$("#ch-lead").textContent=c.lead||c.d;

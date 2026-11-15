@@ -307,11 +307,12 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
 </div>
 <div class="view" id="view-home">
   <section class="land-hero">
+    <div class="land-float" aria-hidden="true"><span style="--x:47%;--y:4%;--s:3.4rem;--d:16s;--dl:-2s">∑</span><span style="--x:55%;--y:72%;--s:2.8rem;--d:19s;--dl:-5s">∫</span><span style="--x:70%;--y:3%;--s:3.2rem;--d:17s;--dl:-9s">π</span><span style="--x:62%;--y:86%;--s:3.6rem;--d:21s;--dl:-3s">φ</span><span style="--x:90%;--y:10%;--s:3.8rem;--d:18s;--dl:-7s">∞</span><span style="--x:2%;--y:92%;--s:2.4rem;--d:20s;--dl:-11s">⌊x⌋</span><span style="--x:78%;--y:40%;--s:1.7rem;--d:15s;--dl:-4s">mod</span><span style="--x:84%;--y:76%;--s:2.2rem;--d:22s;--dl:-8s">n!</span><span style="--x:93%;--y:50%;--s:3rem;--d:19s;--dl:-1s">√</span><span style="--x:50%;--y:45%;--s:2rem;--d:17s;--dl:-6s">Hₙ</span><span style="--x:20%;--y:95%;--s:2.2rem;--d:23s;--dl:-10s">C(n,k)</span><span style="--x:96%;--y:86%;--s:3.2rem;--d:16s;--dl:-12s">≡</span></div>
     <div class="land-copy">
       <div class="eyebrow">Graham – Knuth – Patashnik nyomán</div>
       <h1 class="land-title">Konkrét<br>Matematika</h1>
       <p class="lead">Matematikai érdekességek és stílusos feladatok, fejezetről fejezetre. Minden téma interaktív ábrákkal és a levezetés minden lépésével: mi igaz, és miért.</p>
-      <div class="land-cta"><a class="btn primary" href="#fejezet-1">Kezdjük az 1. fejezettel</a><button class="btn" type="button" id="goChap">Fejezetek ↓</button></div>
+      <div class="land-cta"><a class="btn primary" href="#fejezet-1">Kezdjük az 1. fejezettel</a><button class="btn" type="button" id="goChap">Fejezetek ↓</button><button class="btn" type="button" id="goRand" title="Ugrás egy véletlen oldalra">Véletlen oldal ⚄</button></div>
       <div class="land-stats" id="land-stats"></div>
     </div>
     <figure class="land-art">
@@ -324,6 +325,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
     <div class="pillar"><span class="pi">◐</span><b>Mozgatható</b><span>Csúszkák, szimulációk, kísérletek: az állítást kipróbálhatod.</span></div>
     <div class="pillar"><span class="pi">✓</span><b>Ellenőrizve</b><span>Az oldalak ellenőrző sorai élőben vetik össze a képletet a számolással.</span></div>
   </section>
+  <div class="land-ticker" aria-hidden="true"><div class="tk-track"><span>Tₙ = 2ⁿ − 1</span><span>Σ k = n(n+1)/2</span><span>⌊x⌋ ≤ x &lt; ⌊x⌋ + 1</span><span>a ≡ b (mod m)</span><span>C(n,k) = n! / (k!(n−k)!)</span><span>Hₙ ≈ ln n + γ</span><span>F(x) = x / (1 − x − x²)</span><span>E[X] = Σ x·P(X = x)</span><span>n! ~ √(2πn)(n/e)ⁿ</span><span>C(2n,n) ~ 4ⁿ/√(πn)</span><span>Tₙ = 2ⁿ − 1</span><span>Σ k = n(n+1)/2</span><span>⌊x⌋ ≤ x &lt; ⌊x⌋ + 1</span><span>a ≡ b (mod m)</span><span>C(n,k) = n! / (k!(n−k)!)</span><span>Hₙ ≈ ln n + γ</span><span>F(x) = x / (1 − x − x²)</span><span>E[X] = Σ x·P(X = x)</span><span>n! ~ √(2πn)(n/e)ⁿ</span><span>C(2n,n) ~ 4ⁿ/√(πn)</span></div></div>
   <section class="land-chapters" id="fejezetek">
     <h2>Fejezetek</h2>
     <div class="spines" id="home-cards"></div>
@@ -1986,10 +1988,14 @@ function homeCards(){
     const tp=c.topics||[],ready=tp.filter(t=>t.ready),pages=ready.reduce((a,t)=>a+TOPICS[t.id].pages.length,0);
     const dots=tp.map(t=>`<i class="${t.ready?"on":""}"></i>`).join("");
     const st=c.topics?`<span class="st ok">${ready.length} / ${tp.length} téma · ${pages} oldal</span>`:`<span class="st">hamarosan</span>`;
-    const inner=`<span class="sn">${c.n}</span><span class="ct">${c.t}</span><span class="cd">${c.d}</span><span class="dots">${dots}</span>${st}`;
-    return c.topics?`<a class="spine" data-c="${c.n}" href="#fejezet-${c.n}">${inner}</a>`:`<div class="spine dis" data-c="${c.n}">${inner}</div>`;}).join("");
+    const SIG=["Tₙ = 2Tₙ₋₁ + 1","Σ k = n(n+1)/2","⌊x⌋ ≤ x < ⌊x⌋+1","a ≡ b (mod m)","C(n,k) = C(n−1,k) + C(n−1,k−1)","Hₙ = 1 + ½ + … + 1/n","1/(1−x−x²) = Σ Fₙxⁿ","E[X] = Σ x·P(X=x)","n! ~ √(2πn)(n/e)ⁿ","Σ → G(x) → E[X] → O(·)"];
+    const inner=`<span class="sn">${c.n}</span><span class="ct">${c.t}</span><span class="cd">${c.d}</span><span class="dots">${dots}</span>${st}<span class="sig">${SIG[c.n-1]||""}</span>`;
+    return c.topics?`<a class="spine" style="--i:${c.n}" data-c="${c.n}" href="#fejezet-${c.n}">${inner}</a>`:`<div class="spine dis" style="--i:${c.n}" data-c="${c.n}">${inner}</div>`;}).join("");
+  $("#home-cards").onpointermove=e=>{const t=e.target.closest(".spine");if(!t)return;const r=t.getBoundingClientRect();t.style.setProperty("--mx",(e.clientX-r.left)+"px");t.style.setProperty("--my",(e.clientY-r.top)+"px");};
   const nTop=Object.keys(TOPICS).length,nPg=Object.values(TOPICS).reduce((a,t)=>a+t.pages.length,0),nEx=document.querySelectorAll("#view-topic details").length,nCh=CH.filter(c=>c.topics&&c.topics.some(t=>t.ready)).length;
-  $("#land-stats").innerHTML=[[nCh+" / 9","fejezet"],[nTop,"téma"],[nPg,"oldal"],[nEx,"feladat megoldással"]].map(([v,k])=>`<span class="ls"><b>${v}</b>${k}</span>`).join("");
+  $("#land-stats").innerHTML=[[nCh+" / "+CH.length,"fejezet"],[nTop,"téma"],[nPg,"oldal"],[nEx,"feladat megoldással"]].map(([v,k])=>`<span class="ls"><b data-v="${v}">${v}</b>${k}</span>`).join("");
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.querySelectorAll("#land-stats b").forEach(b=>{const tx=String(b.dataset.v),m=tx.match(/^(\d+)(.*)$/);if(!m)return;const N=+m[1],t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/1100),v=Math.round(N*(1-Math.pow(1-k,3)));b.textContent=v+m[2];if(k<1)requestAnimationFrame(f);};requestAnimationFrame(f);});
+  const gr=$("#goRand");if(gr)gr.onclick=()=>{const ids=Object.keys(TOPICS),id=ids[Math.floor(Math.random()*ids.length)],pg=TOPICS[id].pages;location.hash="#"+id+"-"+pg[Math.floor(Math.random()*pg.length)][0];};
 }
 function chapterView(c){
   $("#ch-eyebrow").textContent=`${c.n}. fejezet`;$("#ch-title").textContent=c.t;$("#ch-lead").textContent=c.lead||c.d;
