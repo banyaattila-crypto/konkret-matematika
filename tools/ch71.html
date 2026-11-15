@@ -1,0 +1,131 @@
+
+<!-- ================= 7.1 ALAPFOGALMAK ================= -->
+<header class="hero page" id="ai-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.1</div>
+    <h1>Alapfogalmak</h1>
+    <p class="lead">Egy sorozat és egy hatványsor ugyanaz az információ két alakban. A hatványsoron viszont algebrai műveleteket lehet végezni, és ezek a sorozaton fontos átalakításoknak felelnek meg.</p>
+    <div class="formula">\(\displaystyle A(x)=\sum_{n\ge0}a_nx^n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ai-hero" role="img" aria-label="Néhány sorozat első tagjai oszlopokon"></svg>
+    <div class="counter"><span id="ai-hero-a">1/(1−x)</span><span>együtthatók: <b id="ai-hero-b">1, 1, 1, …</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A generátorfüggvény a klasszikus hasonlat szerint egy kötél, amelyre a sorozat tagjait felfűzzük. A sorra formálisan tekintünk, vagyis nem kérdezzük, hol konvergál, csak az együtthatókat követjük. A lényeg a szótár: az eltolás \(x\)-szel szorzás, a részletösszeg \(1/(1-x)\)-szel szorzás, az \(n\)-nel szorzás \(x\frac{d}{dx}\). A képen néhány ismert sorozat első tagjai láthatók a generátorfüggvényükkel.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ai-muveletek">
+  <div class="body">
+    <div class="eyebrow">§1 · Szótár</div>
+    <h2>Műveletek sorokkal, átalakítások sorozatokon</h2>
+    <p>Az alábbi táblázat a legfontosabb megfeleltetéseket gyűjti össze. Mindegyik az együtthatók összehasonlításával igazolható.</p>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Sorokon</th><th>Sorozaton</th></tr>
+      <tr><td>\(xA(x)\)</td><td>eltolás: \(0,a_0,a_1,\dots\)</td></tr>
+      <tr><td>\(A(x)/(1-x)\)</td><td>részletösszeg: \(\sum_{k\le n}a_k\)</td></tr>
+      <tr><td>\((1-x)A(x)\)</td><td>különbség: \(a_n-a_{n-1}\)</td></tr>
+      <tr><td>\(A'(x)\)</td><td>\((n+1)a_{n+1}\)</td></tr>
+      <tr><td>\(xA'(x)\)</td><td>\(na_n\)</td></tr>
+      <tr><td>\(A(cx)\)</td><td>\(c^na_n\)</td></tr>
+      <tr><td>\(A(x)B(x)\)</td><td>konvolúció: \(\sum_ka_kb_{n-k}\)</td></tr>
+    </table></div>
+    <p>A kísérlet egy kiinduló sorozaton végrehajtja a kiválasztott műveletet a sorozat tagjain (a sorokra ható szabály szerint), és összeveti a definíció szerinti közvetlen számolással.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ai-m-s">sorozat <select id="ai-m-s"><option value="0">1, 1, 1, …</option><option value="1">n</option><option value="2">n²</option><option value="3">2ⁿ</option><option value="4">Fibonacci F(n)</option></select></label>
+        <label class="rng" for="ai-m-o">művelet <select id="ai-m-o"><option value="0">x·A (eltolás)</option><option value="1">A/(1−x) (részletösszeg)</option><option value="2">(1−x)·A (különbség)</option><option value="3">A′ (derivált)</option><option value="4">x·A′ (n-nel szorzás)</option><option value="5">A(3x) (skálázás)</option></select></label>
+      </div>
+      <div class="info" id="ai-m-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Formális hatványsorokban az \(A(x)\) pontosan akkor invertálható, ha \(a_0\ne0\). Az \(1/(1-x)\) inverze \(1-x\), ami az összegzés és a különbség kapcsolatának az algebrai alakja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ai-alapsorok">
+  <div class="body">
+    <div class="eyebrow">§2 · Az alapsorok</div>
+    <h2>Néhány generátorfüggvény zárt alakja</h2>
+    <p>A mértani sorból \(\dfrac1{1-x}=\sum x^n\) a táblázat többi sora a szótár műveleteivel következik. Például \(x\dfrac{d}{dx}\dfrac1{1-x}=\dfrac x{(1-x)^2}\) az \(n\)-ek generátorfüggvénye, és újabb \(x\dfrac d{dx}\) a négyzetekét adja:</p>
+    <div class="eq gold">\[\sum_{n\ge0}n^2x^n=\frac{x(1+x)}{(1-x)^3}.\]</div>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Generátorfüggvény</th><th>\(a_n\)</th></tr>
+      <tr><td>\(\dfrac1{1-x}\)</td><td>\(1\)</td></tr>
+      <tr><td>\(\dfrac1{1-cx}\)</td><td>\(c^n\)</td></tr>
+      <tr><td>\(\dfrac1{(1-x)^{r}}\)</td><td>\(\binom{n+r-1}n\)</td></tr>
+      <tr><td>\(\dfrac x{(1-x)^2}\)</td><td>\(n\)</td></tr>
+      <tr><td>\(\dfrac{x(1+x)}{(1-x)^3}\)</td><td>\(n^2\)</td></tr>
+      <tr><td>\(\dfrac1{1-x-x^2}\)</td><td>\(F_{n+1}\)</td></tr>
+    </table></div>
+    <p>A kísérlet a törtet hatványsorrá fejti (hosszú osztással) és összeveti a képlet értékeivel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ai-a-g">függvény <select id="ai-a-g"><option value="0">1/(1−x)</option><option value="1">1/(1−2x)</option><option value="2">1/(1−x)³</option><option value="3">x/(1−x)²</option><option value="4">x(1+x)/(1−x)³</option><option value="5">1/(1−x−x²)</option><option value="6">1/(1+x)</option></select></label>
+      </div>
+      <div class="info" id="ai-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A hosszú osztás az együtthatókra az \(a_n=p_n-\sum_{k\ge1}q_ka_{n-k}\) rekurziót adja (a nevező \(q_0=1\)). Ez a következő téma, a 7.2 kiindulópontja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ai-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Szótár a gyakorlatban</h2>
+    <details>
+      <summary><span class="sq">1. Mennyi az \(x^5\) együtthatója \(\dfrac{x(1+x)}{(1-x)^3}\)-ban?</span></summary>
+      <div class="ans">
+        <p>A sor az \(n^2\) sorozatot generálja, tehát az együttható \(5^2=25\).</p>
+        <p><b>Ellenőrzés:</b> \(x(1+x)=x+x^2\), és \(\tfrac1{(1-x)^3}\) együtthatói \(\binom{n+2}2\): \(\binom{6}2+\binom52=15+10=25\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Add meg az \(1+2+\dots+10\) összeget generátorfüggvénnyel.</span></summary>
+      <div class="ans">
+        <p>Az \(n\) sorozat generátorfüggvénye \(\tfrac x{(1-x)^2}\), a részletösszegé \(\tfrac x{(1-x)^3}\), amelynek együtthatója \(\binom{n+1}2\). Az \(n=10\)-re \(\binom{11}2=55\).</p>
+        <p><b>Ellenőrzés:</b> \(1+2+\dots+10=55\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Add meg az \(1,3,7,15,31,\dots\) sorozat \(n\). tagját.</span></summary>
+      <div class="ans">
+        <p>A tagok \(2^{n+1}-1\). A generátorfüggvény a \(2^n\) sor részletösszege, azaz \(\dfrac1{(1-x)(1-2x)}\), és az \(n=10\)-edik tag \(2^{11}-1=2047\).</p>
+        <p><b>Ellenőrzés:</b> \(1+2+4+\dots+1024=2047\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi az \(x^6\) együtthatója \(\dfrac1{(1-x)^4}\)-ben?</span></summary>
+      <div class="ans">
+        <p>A \(\binom{n+r-1}{n}\) képlettel \(r=4\), \(n=6\): \(\binom{9}6=\binom93=84\).</p>
+        <p><b>Ellenőrzés:</b> \(\tfrac1{(1-x)^3}\) együtthatóinak részletösszege \(\sum_{k\le6}\binom{k+2}2=84\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a „két sor szorzata” szabály egy gyakori alakja: a \(\tfrac1{1-x}\)-szel szorzás részletösszeget képez.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ai-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Generátorfüggvény-szótár</h2>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Csomagold</b><span>A sorozatot sorrá írjuk.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Alakítsd</b><span>Szorzás, osztás, deriválás.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Bontsd ki</b><span>Az együtthatók a keresett értékek.</span></div>
+    </div>
+    <p>Következik a 7.2: a lineáris rekurziók megoldása generátorfüggvényekkel.</p>
+  </div>
+  <aside class="margo">
+    <p>A könyv e fejezete a konvergencia kérdését is érinti. Ez a feldolgozás a formális sorokra korlátozódik. A kölcsönösen egyértelmű megfeleltetés ilyenkor trivialitás: két sor akkor egyenlő, ha minden együtthatója egyenlő.</p>
+  </aside>
+</section>

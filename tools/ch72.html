@@ -1,0 +1,141 @@
+
+<!-- ================= 7.2 REKURZIÓK MEGOLDÁSA ================= -->
+<header class="hero page" id="aj-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.2</div>
+    <h1>Rekurziók megoldása</h1>
+    <p class="lead">A lineáris rekurzióból a generátorfüggvény egy racionális tört lesz. A résztörtekre bontás ebből zárt képletet ad, és a nevező gyökei mondják meg a növekedés ütemét.</p>
+    <div class="formula">\(\displaystyle a_n=5a_{n-1}-6a_{n-2}\ \Rightarrow\ A(x)=\frac{x}{(1-2x)(1-3x)}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="aj-hero" role="img" aria-label="A szomszédos tagok hányadosa a domináns gyökhöz tart"></svg>
+    <div class="counter"><span id="aj-hero-a">n = 1</span><span>a<sub>n+1</sub>/a<sub>n</sub> = <b id="aj-hero-b">5</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A hagyományos módszer a karakterisztikus egyenletből indul, és a gyökök alapján próbál megoldást találni. A generátorfüggvényes út ugyanide vezet, de nem kell előre sejteni a megoldás alakját: a rekurzió és a kezdeti értékek egyaránt a számlálóba és a nevezőbe kerülnek, és a résztörtekre bontás eredménye pontos képlet. A képen az \(a_n=3^n-2^n\) sorozat tagjainak hányadosa látható: a kisebb gyök hatása gyorsan eltűnik, és a hányados a nagyobb gyökhöz, a 3-hoz tart.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="aj-racionalis">
+  <div class="body">
+    <div class="eyebrow">§1 · A racionális tört</div>
+    <h2>Rekurzióból generátorfüggvény</h2>
+    <p>Legyen \(a_n=c_1a_{n-1}+c_2a_{n-2}\) \(n\ge2\)-re, a kezdeti értékek \(a_0,a_1\). Az \(A(x)\) sort szorozzuk a nevezővel:</p>
+    <div class="eq">\[(1-c_1x-c_2x^2)A(x)=a_0+(a_1-c_1a_0)x.\]</div>
+    <p>Az \(x^n\) együtthatója \(n\ge2\)-re \(a_n-c_1a_{n-1}-c_2a_{n-2}=0\), így csak a két első együttható marad. Tehát</p>
+    <div class="eq gold">\[A(x)=\frac{a_0+(a_1-c_1a_0)x}{1-c_1x-c_2x^2}.\]</div>
+    <p>A kísérlet a törtet sorrá fejti, és összeveti a rekurzióból közvetlenül számolt tagokkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aj-r-c1">c₁ <input type="range" id="aj-r-c1" min="-3" max="6" value="5"> <span class="mono" id="aj-r-c1v">5</span></label>
+        <label class="rng" for="aj-r-c2">c₂ <input type="range" id="aj-r-c2" min="-6" max="6" value="-6"> <span class="mono" id="aj-r-c2v">−6</span></label>
+        <label class="rng" for="aj-r-a0">a₀ <input type="range" id="aj-r-a0" min="-3" max="5" value="0"> <span class="mono" id="aj-r-a0v">0</span></label>
+        <label class="rng" for="aj-r-a1">a₁ <input type="range" id="aj-r-a1" min="-3" max="5" value="1"> <span class="mono" id="aj-r-a1v">1</span></label>
+      </div>
+      <div class="info" id="aj-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A nevező \(1-c_1x-c_2x^2\) gyökei a karakterisztikus polinom gyökeinek reciprokai: \(1-c_1x-c_2x^2=(1-r_1x)(1-r_2x)\), ahol \(r_1+r_2=c_1\), \(r_1r_2=-c_2\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aj-reszlet">
+  <div class="body">
+    <div class="eyebrow">§2 · Résztörtek</div>
+    <h2>Zárt képlet a gyökökből</h2>
+    <p>Ha a nevező \((1-r_1x)(1-r_2x)\) és \(r_1\ne r_2\), akkor</p>
+    <div class="eq">\[A(x)=\frac{\alpha}{1-r_1x}+\frac{\beta}{1-r_2x}\ \Rightarrow\ a_n=\alpha r_1^n+\beta r_2^n,\]</div>
+    <p>ahol \(\alpha+\beta=a_0\) és \(\alpha r_1+\beta r_2=a_1\), vagyis</p>
+    <div class="eq">\[\alpha=\frac{a_1-r_2a_0}{r_1-r_2},\qquad \beta=\frac{r_1a_0-a_1}{r_1-r_2}.\]</div>
+    <p>A Fibonacci-számokra \(r_{1,2}=\varphi,\psi=\tfrac{1\pm\sqrt5}2\), és \(a_0=0\), \(a_1=1\) mellett \(\alpha=-\beta=\tfrac1{\sqrt5}\), ez a Binet-képlet. Ha a két gyök egyenlő (\(r_1=r_2=r\)), akkor a megoldás \((\alpha+\beta n)r^n\) alakú.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aj-p-r1">r₁ <input type="range" id="aj-p-r1" min="-3" max="5" value="3"> <span class="mono" id="aj-p-r1v">3</span></label>
+        <label class="rng" for="aj-p-r2">r₂ <input type="range" id="aj-p-r2" min="-3" max="5" value="2"> <span class="mono" id="aj-p-r2v">2</span></label>
+        <label class="rng" for="aj-p-a0">a₀ <input type="range" id="aj-p-a0" min="-3" max="5" value="0"> <span class="mono" id="aj-p-a0v">0</span></label>
+        <label class="rng" for="aj-p-a1">a₁ <input type="range" id="aj-p-a1" min="-3" max="5" value="1"> <span class="mono" id="aj-p-a1v">1</span></label>
+      </div>
+      <div class="info" id="aj-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet egész gyököket enged meg, ezért \(\alpha,\beta\) tört lehet. A számolás pontos (törtekkel) történik. Ha \(r_1=r_2\), a kísérlet a kettős gyök esetét jelzi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aj-catalan">
+  <div class="body">
+    <div class="eyebrow">§3 · Nemlineáris eset</div>
+    <h2>A Catalan-számok generátorfüggvénye</h2>
+    <p>A Catalan-számokra \(C_0=1\) és \(C_{n}=\sum_{k=0}^{n-1}C_kC_{n-1-k}\) (az 5.3-ban láttuk). A konvolúció a sorok szorzata, ezért \(C(x)=1+xC(x)^2\). Ez \(C\)-re másodfokú egyenlet:</p>
+    <div class="eq">\[xC^2-C+1=0\ \Rightarrow\ C(x)=\frac{1-\sqrt{1-4x}}{2x},\]</div>
+    <p>a negatív gyökjel azért, mert csak ez ad \(C(0)=1\)-et. A \(\sqrt{1-4x}\) binomiális sorából (5.3) a \(C_n=\tfrac1{n+1}\binom{2n}n\) zárt alak adódik. A kísérlet az \(C=1+xC^2\) egyenletet iterálja, és a kapott együtthatókat összeveti a zárt alakkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aj-c-n">iterációk <input type="range" id="aj-c-n" min="0" max="12" value="6"> <span class="mono" id="aj-c-nv">6</span></label>
+      </div>
+      <div class="info" id="aj-c-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(k\). iteráció az első \(k\) együtthatót már helyesen adja, mert a \(C\)-be \(x\) szorzóval kerül vissza. Ezt a kísérlet is mutatja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aj-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Rekurzióból zárt alak</h2>
+    <details>
+      <summary><span class="sq">1. Oldd meg: \(a_n=5a_{n-1}-6a_{n-2}\), \(a_0=0\), \(a_1=1\). Mennyi \(a_{10}\)?</span></summary>
+      <div class="ans">
+        <p>A nevező \(1-5x+6x^2=(1-2x)(1-3x)\), és \(r_1=3\), \(r_2=2\). Ekkor \(\alpha=\tfrac{1-0}{3-2}=1\), \(\beta=-1\), így \(a_n=3^n-2^n\) és \(a_{10}=59049-1024=58025\).</p>
+        <p><b>Ellenőrzés:</b> a rekurzió közvetlen számolása is 58 025-öt ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Oldd meg: \(a_n=2a_{n-1}+1\), \(a_0=0\). Mennyi \(a_{10}\)?</span></summary>
+      <div class="ans">
+        <p>Az \(n\ge1\) esetben \(A=2xA+\tfrac x{1-x}\), vagyis \(A(x)=\dfrac x{(1-x)(1-2x)}\). Résztörtekre bontva \(a_n=2^n-1\), így \(a_{10}=1023\).</p>
+        <p><b>Ellenőrzés:</b> \(0,1,3,7,15,\dots\) a rekurzióval is, és \(a_{10}=1023\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Oldd meg: \(a_n=4a_{n-1}-4a_{n-2}\), \(a_0=0\), \(a_1=1\). Mennyi \(a_{10}\)?</span></summary>
+      <div class="ans">
+        <p>A nevező \(1-4x+4x^2=(1-2x)^2\), a számláló \(x\), így \(A(x)=\dfrac x{(1-2x)^2}\). Az \(\tfrac1{(1-2x)^2}\) együtthatói \((n+1)2^n\), az \(x\)-szel szorzás eltolja: \(a_n=n\,2^{n-1}\).</p>
+        <p><b>Ellenőrzés:</b> \(a_{10}=10\cdot512=5120\), és a rekurzió ugyanezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki \(C_6\)-ot a konvolúciós rekurzióval.</span></summary>
+      <div class="ans">
+        <div class="eq">\[C_6=C_0C_5+C_1C_4+C_2C_3+C_3C_2+C_4C_1+C_5C_0=42+14+10+10+14+42=132.\]</div>
+        <p><b>Ellenőrzés:</b> \(\tfrac17\binom{12}6=\tfrac{924}7=132\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a kettős gyök esete: az \(n\,2^{n-1}\) tag a derivált-szabály (\(x\,d/dx\)) következménye.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aj-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A módszer lépései</h2>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Szorozz a nevezővel</b><span>A rekurzió kioltja a tagokat.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Bontsd résztörtekre</b><span>\(\alpha/(1-r_1x)+\beta/(1-r_2x)\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Olvasd le</b><span>\(a_n=\alpha r_1^n+\beta r_2^n\).</span></div>
+    </div>
+    <p>Következik a 7.3: az egész számok partíciói, ahol a generátorfüggvény végtelen szorzat.</p>
+  </div>
+  <aside class="margo">
+    <p>A módszer tetszőleges rendű lineáris rekurzióra működik. A gyökök kiszámítása magasabb fokon nehéz lehet, de a racionális generátorfüggvény így is pontos tagszámítást ad.</p>
+  </aside>
+</section>

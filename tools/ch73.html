@@ -1,0 +1,142 @@
+
+<!-- ================= 7.3 PARTÍCIÓK ================= -->
+<header class="hero page" id="ak-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.3</div>
+    <h1>Partíciók</h1>
+    <p class="lead">Hányféleképpen írható fel \(n\) pozitív egészek összegeként, ha a sorrend nem számít? A válasz egy végtelen szorzat együtthatója, és a szorzat átalakításából szép tételek következnek.</p>
+    <div class="formula">\(\displaystyle\sum_{n\ge0}p(n)x^n=\prod_{k\ge1}\frac1{1-x^k}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ak-hero" role="img" aria-label="A 6 partíciói Young-diagramként"></svg>
+    <div class="counter"><span id="ak-hero-a">1. partíció</span><span>p(6) = <b>11</b> · <b id="ak-hero-b">6</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A partíciószám gyorsan nő: \(p(10)=42\), \(p(100)=190\,569\,292\). Zárt képlet nincs ilyen egyszerű alakban, de a generátorfüggvény pontos számolást tesz lehetővé, és a szorzat algebrai átalakításai bizonyításokká válnak. A képen a 6 összes partíciója Young-diagramként: minden sor egy tag, a sorok hossza csökkenő.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ak-szorzat">
+  <div class="body">
+    <div class="eyebrow">§1 · A végtelen szorzat</div>
+    <h2>Minden tagfajta egy tényező</h2>
+    <p>A \(k\) nagyságú tagot tetszőleges számú példányban használhatjuk. Ennek a generátorfüggvénye \(1+x^k+x^{2k}+\dots=\dfrac1{1-x^k}\). A különböző nagyságú tagok választásai függetlenek, ezért a szorzat együtthatója \(x^n\)-nél pontosan az \(n\) partícióinak száma. Ha a tagokat egy \(S\) halmazra korlátozzuk, csak az \(S\)-beli \(k\)-kra írjuk fel a tényezőt.</p>
+    <div class="eq gold">\[\prod_{k\ge1}\frac1{1-x^k}=1+x+2x^2+3x^3+5x^4+7x^5+11x^6+\dots\]</div>
+    <p>A kísérlet a szorzatot tagonként építi fel (dinamikus számolással, ez ugyanazt jelenti, mint a szorzat együtthatóit kiszámolni). A kapott értékeket összeveti az Euler-féle ötszögszám-rekurzióval:</p>
+    <div class="eq">\[p(n)=\sum_{k\ge1}(-1)^{k+1}\Bigl[p\bigl(n-\tfrac{k(3k-1)}2\bigr)+p\bigl(n-\tfrac{k(3k+1)}2\bigr)\Bigr].\]</div>
+    <p style="margin:0"></p</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ak-s-n">n <input type="range" id="ak-s-n" min="1" max="100" value="20"> <span class="mono" id="ak-s-nv">20</span></label>
+      </div>
+      <div class="info" id="ak-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az ötszögszám-rekurzió az \(\prod(1-x^k)\) sorfejtéséből jön (Euler ötszögszám-tétele). Ezt itt nem bizonyítjuk, a kísérlet csak numerikusan ellenőrzi \(n\le100\)-ig.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ak-euler">
+  <div class="body">
+    <div class="eyebrow">§2 · Euler tétele</div>
+    <h2>Páratlan tagok és különböző tagok</h2>
+    <p><b>Tétel (Euler).</b> Az \(n\) partícióinak száma páratlan tagokkal megegyezik a páronként különböző tagokkal vett partíciók számával. A bizonyítás a generátorfüggvényeken múlik: a különböző tagok generátorfüggvénye \(\prod(1+x^k)\), és</p>
+    <div class="eq">\[\prod_{k\ge1}(1+x^k)=\prod_{k\ge1}\frac{1-x^{2k}}{1-x^k}=\prod_{k\ge1}\frac1{1-x^{2k-1}},\]</div>
+    <p>mert a számlálóban minden páros kitevőjű \(1-x^{2k}\) tényezőt a nevezőben szereplő megfelelője kioltja, és csak a páratlan kitevők maradnak. A jobb oldal a páratlan tagos partíciók generátorfüggvénye. \(\square\)</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ak-e-n">n <input type="range" id="ak-e-n" min="1" max="60" value="9"> <span class="mono" id="ak-e-nv">9</span></label>
+      </div>
+      <div class="info" id="ak-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kísérlet \(n\le12\)-ig felsorolja a partíciókat is. Az egyenlő számosság ellenére a két halmaz elemei között nem „látható” kölcsönös megfeleltetés, ezt (Glaisher) külön konstrukció adja. Itt csak a generátorfüggvényes bizonyítást használjuk.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ak-penz">
+  <div class="body">
+    <div class="eyebrow">§3 · Pénzváltás</div>
+    <h2>Hányféleképpen fizethető ki egy összeg?</h2>
+    <p>Ha csak adott címletek használhatók, a generátorfüggvény a megfelelő tényezők szorzata. Például a \(\{1,5,10,25,50\}\) címletekkel:</p>
+    <div class="eq">\[\frac1{(1-x)(1-x^5)(1-x^{10})(1-x^{25})(1-x^{50})}.\]</div>
+    <p>Az \(x^{100}\) együtthatója 292, vagyis a 100 egységet 292 módon lehet kifizetni. A kísérlet a kiválasztott címletkészletre és összegre kiszámolja a lehetőségek számát.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ak-p-c">címletek <select id="ak-p-c"><option value="0">1, 5, 10, 25, 50</option><option value="1">1, 2, 3</option><option value="2">5, 10, 20, 50, 100, 200 (forint)</option><option value="3">1, 2, 5, 10, 20, 50, 100</option></select></label>
+        <label class="rng" for="ak-p-n">összeg <input type="range" id="ak-p-n" min="1" max="500" value="100"> <span class="mono" id="ak-p-nv">100</span></label>
+      </div>
+      <div class="info" id="ak-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Egy címlet tényezője mindig \(1/(1-x^c)\). Ha egy címletből legfeljebb \(m\) darab használható, a tényező \(1+x^c+\dots+x^{mc}=\tfrac{1-x^{(m+1)c}}{1-x^c}\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ak-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Partíciók és címletek</h2>
+    <details>
+      <summary><span class="sq">1. Add meg a 7 partícióinak számát.</span></summary>
+      <div class="ans">
+        <p>A sorfejtés együtthatója \(p(7)=15\). A partíciók: 7; 6+1; 5+2; 5+1+1; 4+3; 4+2+1; 4+1+1+1; 3+3+1; 3+2+2; 3+2+1+1; 3+1+1+1+1; 2+2+2+1; 2+2+1+1+1; 2+1+1+1+1+1; 1+1+1+1+1+1+1.</p>
+        <p><b>Ellenőrzés:</b> a felsorolás 15 elemű, és a dinamikus számolás is 15-öt ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány partíciója van a 12-nek, ha minden tag legfeljebb 3?</span></summary>
+      <div class="ans">
+        <p>A generátorfüggvény \(\dfrac1{(1-x)(1-x^2)(1-x^3)}\), a \(x^{12}\) együtthatója 19.</p>
+        <p><b>Ellenőrzés:</b> a 3-asok száma \(c=0,\dots,4\), a maradék \(12-3c\) pedig 1-esekből és 2-esekből áll: \(\lfloor(12-3c)/2\rfloor+1\) mód, ami \(7+5+4+2+1=19\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány partíciója van a 10-nek különböző tagokkal? Hány páratlan tagokkal?</span></summary>
+      <div class="ans">
+        <p>Euler tétele szerint a két szám egyenlő. A kísérlet mindkettőt 10-nek találja.</p>
+        <p><b>Ellenőrzés:</b> különböző tagokkal: 10; 9+1; 8+2; 7+3; 6+4; 7+2+1; 6+3+1; 5+4+1; 5+3+2; 4+3+2+1. Ez 10 darab. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hányféleképpen fizethető ki 100 egység az \(1,5,10,25,50\) címletekkel?</span></summary>
+      <div class="ans">
+        <p>A generátorfüggvény \(x^{100}\) együtthatója 292.</p>
+        <p><b>Ellenőrzés:</b> a kísérlet a 100-as összegre 292-t ad. Ha a 100-as címlet is megengedett, az érték eggyel nő (293). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat „legfeljebb 3 nagyságú tag” és a „legfeljebb 3 tagból álló” partíciók száma megegyezik (konjugálás, a Young-diagram transzponálása).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ak-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>Partíciók és generátorfüggvények</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Megszorítás</th><th>Generátorfüggvény</th></tr>
+      <tr><td>tetszőleges tagok</td><td>\(\prod_{k\ge1}\frac1{1-x^k}\)</td></tr>
+      <tr><td>különböző tagok</td><td>\(\prod_{k\ge1}(1+x^k)\)</td></tr>
+      <tr><td>páratlan tagok</td><td>\(\prod_{k\ge1}\frac1{1-x^{2k-1}}\)</td></tr>
+      <tr><td>tagok \(\le m\)</td><td>\(\prod_{k=1}^m\frac1{1-x^k}\)</td></tr>
+      <tr><td>adott címletek</td><td>\(\prod_{c}\frac1{1-x^c}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Tényező tagonként</b><span>Mit szabad használni, és hányszor?</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorozz</b><span>Az együttható a megszámolt módok száma.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Alakíts</b><span>Tényezőket egyszerűsítve tételek.</span></div>
+    </div>
+    <p>Következik a 7.4: az exponenciális generátorfüggvény, amelynél a szorzás nem konvolúciót, hanem binomiális konvolúciót jelent.</p>
+  </div>
+  <aside class="margo">
+    <p>A partíciók elmélete messze túlmutat ezen. Hardy és Ramanujan aszimptotikus képlete \(p(n)\)-re például \(\tfrac1{4n\sqrt3}e^{\pi\sqrt{2n/3}}\) alakú. Ezt itt nem használjuk, és nem ellenőriztük.</p>
+  </aside>
+</section>

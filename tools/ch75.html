@@ -1,0 +1,138 @@
+
+<!-- ================= 7.5 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="am-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.5</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a generátorfüggvényekről, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\displaystyle\sum_na_nx^n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="am-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="am-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A generátorfüggvényes feladatok jellemző lépése: felismerni, hogy a keresett mennyiség egy szorzat vagy egy rekurzióból kapott racionális tört együtthatója. A bemelegítő feladatok egy-egy sorfejtést kérnek, az alapszinten rekurziókat és címleteket kell kezelni, a haladó szinten bizonyítani kell, a kutatásiakban pedig a számítógép ad sejtést, és az indoklás a tiéd. A feladatok sajátok, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="am-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors sorfejtés</h2>
+    <p>Együttható, partíciószám és derangement.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Mennyi az \(x^7\) együtthatója \(\dfrac1{(1-x)^3}\)-ban?</span></summary>
+      <div class="ans">
+        <p>A \(\binom{n+2}2\) képlettel \(n=7\)-re \(\binom92=36\).</p>
+        <p><b>Ellenőrzés:</b> a sorfejtés \(1,3,6,10,15,21,28,36,\dots\), a 8. tag 36. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Hány partíciója van a 8-nak?</span></summary>
+      <div class="ans">
+        <p>A \(\prod\tfrac1{1-x^k}\) sorfejtésében az \(x^8\) együtthatója \(p(8)=22\).</p>
+        <p><b>Ellenőrzés:</b> \(p(7)=15\) és \(p(8)=15+7=22\) (a 8 partíciói: legalább egy 1-est tartalmazók, azaz \(p(7)=15\) darab, plusz az 1-es nélküliek, amelyek száma \(p(8)-p(7)=7\)). A program is 22-t ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Számold ki \(D_5\)-öt a képletből.</span></summary>
+      <div class="ans">
+        <div class="eq">\[D_5=120\Bigl(1-1+\tfrac12-\tfrac16+\tfrac1{24}-\tfrac1{120}\Bigr)=60-20+5-1=44.\]</div>
+        <p><b>Ellenőrzés:</b> a rekurzió \(4\,(D_4+D_3)=4\,(9+2)=44\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladatban \(p(8)-p(7)=7\) a 8 olyan partícióinak a száma, amelyekben nincs 1-es. Ez azért igaz, mert egy 1-est tartalmazó partícióból az 1-es elhagyása kölcsönösen egyértelműen vezet a 7 partícióihoz.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="am-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Rekurziók, címletek, bizonyítások</h2>
+    <p>Három alapfeladat, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Oldd meg: \(a_n=3a_{n-1}-2a_{n-2}\), \(a_0=1\), \(a_1=3\). Mennyi \(a_8\)?</span></summary>
+      <div class="ans">
+        <p>A nevező \(1-3x+2x^2=(1-x)(1-2x)\), a számláló \(1+(3-3)x=1\), így \(A(x)=\dfrac1{(1-x)(1-2x)}\). Ennek együtthatója \(2^{n+1}-1\), tehát \(a_8=511\).</p>
+        <p><b>Ellenőrzés:</b> a rekurzió: \(1,3,7,15,31,63,127,255,511\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Hányféleképpen fizethető ki 20 egység az \(1,2,5\) címletekkel?</span></summary>
+      <div class="ans">
+        <p>Az \(x^{20}\) együtthatója \(\dfrac1{(1-x)(1-x^2)(1-x^5)}\)-ben. Az 5-ösök száma \(c=0,\dots,4\), a maradék \(20-5c\) pedig 1-esekből és 2-esekből áll: \(\lfloor(20-5c)/2\rfloor+1\) mód, ami \(11+8+6+3+1=29\).</p>
+        <p><b>Ellenőrzés:</b> a dinamikus számolás is 29-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Számold ki \(B_7\)-et a \(B_{n+1}=\sum\binom nkB_k\) rekurzióval.</span></summary>
+      <div class="ans">
+        <p>A \(B_0,\dots,B_6=1,1,2,5,15,52,203\) értékekkel:</p>
+        <div class="eq">\[B_7=1+6\cdot1+15\cdot2+20\cdot5+15\cdot15+6\cdot52+203=877.\]</div>
+        <p><b>Ellenőrzés:</b> a 6.1 Stirling-táblázat 7. sorának összege is 877. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: \(\sum_{k}\binom nkD_{n-k}=n!\). Mennyi ez \(n=6\)-ra?</span></summary>
+      <div class="ans">
+        <p>Az \(n\) elemű halmaz permutációit a fixpontok halmaza szerint csoportosítjuk. A \(k\) fixpont \(\binom nk\) módon választható, a maradék \(n-k\) elemen pedig fixpontmentes permutáció áll (\(D_{n-k}\) darab). Így minden permutációt pontosan egyszer számolunk: \(\sum_k\binom nkD_{n-k}=n!\). \(\square\) Generátorfüggvényekkel ez az \(e^x\widehat D(x)=\tfrac1{1-x}\) azonosság.</p>
+        <p>Az \(n=6\)-ra:</p>
+        <div class="eq">\[\sum_k\binom6kD_{6-k}=265+264+135+40+15+0+1=720.\]</div>
+        <p><b>Ellenőrzés:</b> \(720=6!\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Igazold: az \(n\) partícióinak száma legfeljebb \(k\) taggal egyenlő az \(n\) olyan partícióinak számával, ahol minden tag legfeljebb \(k\). Mennyi ez \(n=10\), \(k=3\)-ra?</span></summary>
+      <div class="ans">
+        <p>A partíció Young-diagramját tükrözzük az átlóra (transzponálás). A sorok és oszlopok szerepet cserélnek: a „legfeljebb \(k\) sor” a „legfeljebb \(k\) oszlop” lesz, vagyis a legnagyobb tag legfeljebb \(k\). A transzponálás önmaga inverze, tehát kölcsönösen egyértelmű megfeleltetés. \(\square\) Az \(n=10\), \(k=3\) esetén a \(\tfrac1{(1-x)(1-x^2)(1-x^3)}\) \(x^{10}\) együtthatója 14.</p>
+        <p><b>Ellenőrzés:</b> a program mindkét számot 14-nek találja. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 7. feladat az \(e^x\) és \(\widehat D\) szorzatának binomiális konvolúciós alakja. A 7.4-ben szerepelt a generátorfüggvényes bizonyítása.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="am-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Kongruenciák és Euler-tétel általánosítása</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Nézd meg a \(p(n)\) maradékait 5-tel, 7-tel és 11-gyel osztva az \(n=5m+4\), \(7m+5\), \(11m+6\) helyeken. Mit sejtesz?</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint \(p(5m+4)\equiv0\pmod5\), \(p(7m+5)\equiv0\pmod7\) és \(p(11m+6)\equiv0\pmod{11}\) minden vizsgált \(m\)-re. Ez Ramanujan híres kongruenciáinak numerikus megerősítése.</p>
+        <p>A bizonyítás nem triviális, és itt nem adom meg. A kísérlet csak az \(n\le100\) tartományban ellenőriz, ez nem bizonyítás. Az első értékek: \(p(4)=5\), \(p(9)=30\), \(p(14)=135\).</p>
+        <p><b>Ellenőrzés:</b> a három kongruencia az összes \(n\le100\) helyen igaz. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="am-r-n">n <input type="range" id="am-r-n" min="0" max="100" value="9"> <span class="mono" id="am-r-nv">9</span></label>
+      </div>
+      <div class="info" id="am-r-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Hasonlítsd össze azon partíciók számát, amelyekben egyik tag sem szerepel 3-nál többször, azokkal, amelyekben nincs 3-mal osztható tag. Mit sejtesz, és mivel indokolnád?</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint a két szám minden \(n\le60\)-ra egyenlő, ez Euler tételének általánosítása (a különböző tagok esete a \(2\)-nél többször nem ismétlődő tagoké, a páratlan tagoké a 2-vel nem osztható tagoké).</p>
+        <p>Indoklás: a „legfeljebb kétszer szereplő” tagok generátorfüggvénye \(\prod(1+x^k+x^{2k})=\prod\dfrac{1-x^{3k}}{1-x^k}\), és a számlálóban minden \(3\)-mal osztható kitevőjű tényezőt a nevezőben kioltunk. Marad \(\prod_{3\nmid k}\dfrac1{1-x^k}\), ez a 3-mal nem osztható tagokból álló partíciók generátorfüggvénye. \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \(n\le60\)-ig a két sor együtthatói megegyeznek. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="am-e-n">n <input type="range" id="am-e-n" min="1" max="60" value="10"> <span class="mono" id="am-e-nv">10</span></label>
+      </div>
+      <div class="info" id="am-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat általánosítása: a legfeljebb \(m-1\)-szer ismétlődő tagok partíciói megegyeznek az \(m\)-mel nem osztható tagokból állókéval (\(m=2\)-re Euler tétele). A bizonyítás azonos.</p>
+  </aside>
+</section>

@@ -1,0 +1,132 @@
+
+<!-- ================= 7.4 EXPONENCIÁLIS GENERÁTORFÜGGVÉNYEK ================= -->
+<header class="hero page" id="al-bevezeto">
+  <div>
+    <div class="eyebrow">7. fejezet · Generátorfüggvények · 7.4</div>
+    <h1>Exponenciális generátorfüggvények</h1>
+    <p class="lead">Ha az \(n\)-edik tagot \(n!\)-sal osztjuk, a sorok szorzása binomiális konvolúciót ad. Ez a természetes eszköz a címkézett szerkezetek, például a permutációk megszámlálásához.</p>
+    <div class="formula">\(\displaystyle\widehat A(x)=\sum_{n\ge0}a_n\frac{x^n}{n!}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="al-hero" role="img" aria-label="A fixpontmentes permutációk aránya az 1/e értékhez tart"></svg>
+    <div class="counter"><span id="al-hero-a">n = 2</span><span>D<sub>n</sub>/n! = <b id="al-hero-b">0,5</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A „kalapos feladat” szerint \(n\) vendég kalapot ad le, és a kalapokat véletlenül kapják vissza. Annak az esélye, hogy senki sem a sajátját kapja, \(n\) növekedésével gyorsan \(1/e\approx0{,}3679\)-hez tart. A pontos szám a fixpontmentes permutációk (derangementek) \(D_n\) száma. A képen \(D_n/n!\) látható: már \(n=7\)-nél a negyedik tizedesjegyig \(1/e\)-t kapjuk.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="al-szorzat">
+  <div class="body">
+    <div class="eyebrow">§1 · A binomiális konvolúció</div>
+    <h2>Sorok szorzása</h2>
+    <p>Ha \(\widehat A=\sum a_n\tfrac{x^n}{n!}\) és \(\widehat B=\sum b_n\tfrac{x^n}{n!}\), akkor</p>
+    <div class="eq gold">\[\widehat A(x)\widehat B(x)=\sum_n c_n\frac{x^n}{n!},\qquad c_n=\sum_k\binom nka_kb_{n-k}.\]</div>
+    <p>Kombinatorikai jelentés: ha az \(n\) elemű halmaz elemeit két részre osztjuk (\(\binom nk\) módon \(k\) és \(n-k\) elemű részre), és az első részen az \(a\)-, a másodikon a \(b\)-szerkezetet építjük, akkor \(c_n\) az összes építés száma. A kísérlet két alapsorozatra összeveti a sorszorzat és a binomiális konvolúció eredményét.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="al-s-a">A <select id="al-s-a"><option value="0">1, 1, 1, … (eˣ)</option><option value="1">2ⁿ (e²ˣ)</option><option value="2">n! (1/(1−x))</option><option value="3">(−1)ⁿ (e⁻ˣ)</option></select></label>
+        <label class="rng" for="al-s-b">B <select id="al-s-b"><option value="0">1, 1, 1, … (eˣ)</option><option value="1" selected>2ⁿ (e²ˣ)</option><option value="2">n! (1/(1−x))</option><option value="3">(−1)ⁿ (e⁻ˣ)</option></select></label>
+      </div>
+      <div class="info" id="al-s-info"></div>
+    </div>
+    <p>A <b>Bell-számok</b> (a halmaz partícióinak száma) generátorfüggvénye \(\exp(e^x-1)\), mert egy halmaz partíciója nemüres blokkok halmaza (\(e^x-1\) a nemüres blokk). A \(B_{n+1}=\sum_k\binom nkB_k\) rekurzió ennek a deriváltjából következik: \(\widehat B'=e^x\widehat B\). Hasonlóan az \(n\) elemű halmaz \(k\) nemüres blokkra bontásainak (a szürjekciók) generátorfüggvénye \(\tfrac1{k!}(e^x-1)^k\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="al-b-n">n <input type="range" id="al-b-n" min="1" max="12" value="6"> <span class="mono" id="al-b-nv">6</span></label>
+        <label class="rng" for="al-b-k">k <input type="range" id="al-b-k" min="1" max="12" value="3"> <span class="mono" id="al-b-kv">3</span></label>
+      </div>
+      <div class="info" id="al-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(e^x-1\) hatványai a másodfajú Stirling-számokat adják: \(\tfrac1{k!}(e^x-1)^k=\sum_n\genfrac\{\}{0pt}{}nk\tfrac{x^n}{n!}\). A kísérlet ezt számolja ki pontosan.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="al-derang">
+  <div class="body">
+    <div class="eyebrow">§2 · Derangementek</div>
+    <h2>Fixpontmentes permutációk</h2>
+    <p>Minden permutáció egy fixpontok halmazának és egy fixpontmentes permutációnak az egyesítése. Ez a szerkezet a generátorfüggvényekben szorzat: az összes permutáció generátorfüggvénye \(\tfrac1{1-x}\) (mert \(n!\) darab van), a fixpontoké \(e^x\). Tehát \(\tfrac1{1-x}=e^x\widehat D(x)\), vagyis</p>
+    <div class="eq gold">\[\widehat D(x)=\frac{e^{-x}}{1-x},\qquad D_n=n!\sum_{k=0}^{n}\frac{(-1)^k}{k!}.\]</div>
+    <p>A második képlet a szorzat együtthatóiból adódik (részletösszeg: \(\tfrac1{1-x}\)-szel szorzás). A kísérlet több módszert hasonlít össze: a képletet, a \(D_n=(n-1)(D_{n-1}+D_{n-2})\) rekurziót és az összes permutáció végigszámolását (\(n\le8\)). Az involúciók (olyan permutációk, amelyek négyzete az identitás: csak 1 és 2 hosszú ciklusok) generátorfüggvénye \(e^{x+x^2/2}\), számuk \(I_n=I_{n-1}+(n-1)I_{n-2}\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="al-d-n">n <input type="range" id="al-d-n" min="1" max="20" value="8"> <span class="mono" id="al-d-nv">8</span></label>
+      </div>
+      <div class="info" id="al-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(D_n=\mathrm{round}(n!/e)\) is igaz \(n\ge1\)-re: az alternáló sor maradéka kisebb \(\tfrac1{(n+1)!}\)-nál, ezért \(n!/e\) és \(D_n\) különbsége kisebb \(\tfrac12\)-nél. A kísérlet ezt is ellenőrzi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="al-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Címkézett szerkezetek</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(D_6\)-ot a képletből.</span></summary>
+      <div class="ans">
+        <div class="eq">\[D_6=720\Bigl(1-1+\tfrac12-\tfrac16+\tfrac1{24}-\tfrac1{120}+\tfrac1{720}\Bigr)=360-120+30-6+1=265.\]</div>
+        <p><b>Ellenőrzés:</b> a rekurzió \(5\,(D_5+D_4)=5\,(44+9)=265\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Add meg \(B_6\)-ot a \(B_{n+1}=\sum\binom nkB_k\) rekurzióval.</span></summary>
+      <div class="ans">
+        <p>A \(B_0,\dots,B_5=1,1,2,5,15,52\) értékekkel:</p>
+        <div class="eq">\[B_6=1\cdot1+5\cdot1+10\cdot2+10\cdot5+5\cdot15+1\cdot52=203.\]</div>
+        <p><b>Ellenőrzés:</b> a 6.1-ben a másodfajú Stirling-számok 6. sorának összege is 203. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány involúció van a 7 elemű halmazon?</span></summary>
+      <div class="ans">
+        <div class="eq">\[I_7=I_6+6\,I_5=76+6\cdot26=232.\]</div>
+        <p><b>Ellenőrzés:</b> közvetlenül: \(\sum_j\binom7{2j}(2j-1)!!=1+21+105+105=232\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány szürjekció van egy 5 elemű halmazból egy 3 elemű halmazra? Használd az \(e^x-1\) generátorfüggvényt.</span></summary>
+      <div class="ans">
+        <p>Az \(n\) elemű halmaz szürjekcióinak száma a 3 elemű halmazra \(n![x^n](e^x-1)^3\), és \((e^x-1)^3=e^{3x}-3e^{2x}+3e^x-1\), amelynek \(x^5/5!\)-nál az együtthatója \(3^5-3\cdot2^5+3\):</p>
+        <div class="eq">\[243-96+3=150.\]</div>
+        <p><b>Ellenőrzés:</b> a 6.1-ből \(3!\genfrac\{\}{0pt}{}53=6\cdot25=150\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladatban \((2j-1)!!\) a \(2j\) elem párosításainak száma: \(1,1,3,15\) rendre \(j=0..3\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="al-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Az exponenciális generátorfüggvény szótára</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Szerkezet</th><th>EGF</th></tr>
+      <tr><td>halmaz (1 minden \(n\)-re)</td><td>\(e^x\)</td></tr>
+      <tr><td>permutáció (\(n!\))</td><td>\(\tfrac1{1-x}\)</td></tr>
+      <tr><td>fixpontmentes permutáció</td><td>\(\tfrac{e^{-x}}{1-x}\)</td></tr>
+      <tr><td>halmazpartíció (Bell)</td><td>\(e^{e^x-1}\)</td></tr>
+      <tr><td>involúció</td><td>\(e^{x+x^2/2}\)</td></tr>
+      <tr><td>szürjekció \(k\)-elemű halmazra</td><td>\((e^x-1)^k\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Bontsd részekre</b><span>Halmaz = diszjunkt részek uniója.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Szorzat</b><span>Binomiális konvolúció.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Olvasd le</b><span>\(a_n=n!\,[x^n]\).</span></div>
+    </div>
+    <p>A fejezet témái itt véget érnek. A fejezetvégi feladatok a 7.5-ben következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A „halmaz = részek halmaza” szerkezet az exponenciális formulához vezet: ha a részek EGF-je \(g\), akkor a halmazé \(e^{g}\), a ciklusoké \(\ln\tfrac1{1-x}\). A permutáció így \(e^{\ln\frac1{1-x}}=\tfrac1{1-x}\). Ez a könyv e fejezetének legszebb szemlélete, de itt csak a példákon mutatom meg.</p>
+  </aside>
+</section>
