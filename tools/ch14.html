@@ -1,0 +1,145 @@
+
+<!-- ================= 1.4 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="w-bevezeto">
+  <div>
+    <div class="eyebrow">1. fejezet · Rekurziós problémák · 1.4</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Kilenc saját feladat a három témához, négy nehézségi szinten. Mindegyik megoldása teljes levezetés, és minden számszerű eredményt programmal is ellenőriztünk.</p>
+    <div class="formula">\(T_n,\ L_n,\ J(n)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="w-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>9 feladat · 4 szint</span><span>megoldással: <b id="w-hero-k">0</b> / 9</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A matematikát nem olvasva, hanem számolva tanulja meg az ember: egy képlet addig csak a könyv képlete, amíg egy új helyzetben nem kellett használnod. Ezért a fejezet végére feladatok kerültek, a könnyű bemelegítéstől a nyitott kérdésig. A feladatok sajátok, a könyv szellemében íródtak: a könyv feladatait és megoldásait nem másoljuk. Érdemes először magadnak próbálkozni, és csak utána kinyitni a megoldást. A kutatási szint feladatainál nincs „kész” válasz: kísérletezni kell, és a megoldás csak megmutatja, merre van a kérdés folytatása. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="w-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>A három téma alapképleteit kell alkalmazni: \(T_n=2^n-1\) a Hanoi tornyaira, \(L_n=1+\tfrac{n(n+1)}2\) az egyenesekre, és a \(J(2^m+\ell)=2\ell+1\) a Josephus-problémára.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Egy lépés egy másodperc. Mennyi ideig tart 12 korong átrakása? És a legendabeli 64 koronggal?</span></summary>
+      <div class="ans">
+        <p>A 12 korongnál \(T_{12}=2^{12}-1=4095\) lépés, azaz 4095 másodperc, ami 68 perc 15 másodperc.</p>
+        <p>A 64 korongnál \(T_{64}=2^{64}-1\approx1{,}845\cdot10^{19}\) másodperc. Egy év \(\approx3{,}156\cdot10^{7}\) másodperc, ezért az idő körülbelül \(5{,}85\cdot10^{11}\) év, vagyis mintegy 585 milliárd év. Ez a világegyetem becsült korának (kb. 13,8 milliárd év) negyvenkétszerese.</p>
+        <p><b>Ellenőrzés:</b> \(2^{12}-1=4095\), és \(4095/60=68{,}25\) perc. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Legalább hány egyenes kell ahhoz, hogy általános helyzetben 1000-nél több tartományt hozhassanak létre?</span></summary>
+      <div class="ans">
+        <p>A legtöbb tartomány \(L_n=1+\tfrac{n(n+1)}2\). Az \(L_n>1000\) feltétel \(n(n+1)>1998\), vagyis \(n^2+n-1998>0\). A pozitív gyök \(\tfrac{-1+\sqrt{7993}}2\approx44{,}2\), tehát \(n\ge45\).</p>
+        <p><b>Ellenőrzés:</b> \(L_{44}=1+990=991\) (kevés), \(L_{45}=1+1035=1036\) (elég). Tehát 45 egyenes kell. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Körben 1000 ember áll, minden második esik ki. Hányadik helyen áll a túlélő?</span></summary>
+      <div class="ans">
+        <p>Az \(1000=2^9+488\), tehát \(m=9\) és \(\ell=488\). A túlélő helye \(J(1000)=2\cdot488+1=977\).</p>
+        <p><b>Ellenőrzés:</b> a rekurzió \(J(1)=1\), \(J(m)=((J(m-1)+1)\bmod m)+1\) szimulációja is 977-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat a legendát is hozzá méri: a 64 korongos torony átrakása reménytelenül hosszú, és ez a \(2^n\) exponenciális növekedésének tipikus következménye.</p>
+    <p>A 3. feladatnál az \(n=2^m+\ell\) felbontás az egész trükk: keresd meg a legnagyobb 2-hatványt, ami még nem haladja meg \(n\)-et.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="w-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Szerkezet a számok mögött</h2>
+    <p>Itt már nem képletbehelyettesítés a feladat: meg kell találni, <i>miért</i> igaz valami. Az első kettő alap, a következő kettő haladó.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Az optimális Hanoi-megoldásban melyik korongot kell mozgatni a \(k\)-adik lépésben? Melyiket az 1000. és melyiket a 2048. lépésben, 12 korongnál?</span></summary>
+      <div class="ans">
+        <p>A megoldás szerkezete \(M_n=M_{n-1},\ n,\ M_{n-1}\): a középső lépés az \(n\)-edik korongé, a két fél ugyanaz a sorozat. A \(k\)-adik lépésben a mozgatott korong sorszáma \(\nu_2(k)+1\), ahol \(\nu_2(k)\) a \(k\)-t osztó 2-hatvány kitevője (a legkisebb bináris egyes helye).</p>
+        <p><i>Indukció:</i> az \(n=1\) esetben az egyetlen lépés \(k=1\), \(\nu_2=0\), tehát az 1-es korong. Az \(n\)-ben a középső lépés \(k=2^{n-1}\), \(\nu_2=n-1\), vagyis az \(n\)-es korong. A \(k\lt2^{n-1}\) lépések az \(M_{n-1}\)-ből jönnek. A \(k\gt2^{n-1}\) lépések a \(k-2^{n-1}\) lépéssel egyeznek meg, és mivel \(k-2^{n-1}\lt2^{n-1}\), a \(\nu_2\) értéke változatlan.</p>
+        <p>Az \(1000=8\cdot125\), \(\nu_2=3\), tehát a <b>4-es korong</b> mozog. A \(2048=2^{11}\), \(\nu_2=11\), tehát a <b>12-es korong</b> (a legnagyobb, a középső lépés).</p>
+        <p><b>Ellenőrzés:</b> a 12 korongos megoldás mind a 4095 lépését legenerálva a szabály minden lépésre teljesül. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. \(n\) egyenes általános helyzetű (nincs két párhuzamos, nincs három közös ponton). Hány tartomány <i>korlátos</i>? Mennyi ez \(n=10\)-re?</span></summary>
+      <div class="ans">
+        <p>Minden egyenespár egy csúcsot ad: \(V=\binom n2\). Minden egyenesen \(n-1\) csúcs van, ezek \(n-2\) korlátos szakaszt határolnak, így \(E=n(n-2)\) korlátos él. A véges gráf összefüggő, ezért az Euler-formula szerint a belső tartományok száma</p>
+        <div class="eq">\[F=E-V+1=n(n-2)-\frac{n(n-1)}2+1=\frac{(n-1)(n-2)}2.\]</div>
+        <p>Az \(n=10\) esetén \(F=36\). A 10 egyenes összesen \(L_{10}=56\) tartományt ad, tehát a nem korlátosak száma \(56-36=20=2n\).</p>
+        <p><b>Ellenőrzés:</b> véletlen egész együtthatós egyenesekkel (\(n=3\ldots8\)) a csúcsokat és éleket megszámolva az \(E-V+1\) mindig \(\tfrac{(n-1)(n-2)}2\)-t adott. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 6. Josephus-probléma (minden második esik ki). (a) Igazold, hogy \(J(n)\) mindig páratlan. (b) Mely \(n\)-re igaz \(J(n)=n-1\)?</span></summary>
+      <div class="ans">
+        <p>(a) Az \(n=2^m+\ell\) (\(0\le\ell\lt2^m\)) felbontással \(J(n)=2\ell+1\), ami páratlan.</p>
+        <p>(b) A \(J(n)=n-1\) egyenlet \(2\ell+1=2^m+\ell-1\), vagyis \(\ell=2^m-2\). Ez megengedett (\(0\le\ell\lt2^m\)), ha \(m\ge1\). Ekkor</p>
+        <div class="eq">\[n=2^m+\ell=2^{m+1}-2,\qquad n=2,\ 6,\ 14,\ 30,\ 62,\ \dots\]</div>
+        <p><b>Ellenőrzés:</b> szimulációval \(n\lt5000\)-ig a \(J(n)\) mindig páratlan volt, és a \(J(n)=n-1\) pontosan a \(2,6,14,30,\dots,2046,4094\) értékeknél teljesült. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Legfeljebb hány tartományra osztja a síkot \(n\) kör? Mikor több ez, mint az \(n\) egyenes által adott \(L_n\)?</span></summary>
+      <div class="ans">
+        <p>Az \(n\)-edik kör az előző \(n-1\) kört legfeljebb \(2(n-1)\) pontban metszi. Ezek a pontok a kört \(2(n-1)\) ívre bontják, és mindegyik ív egy-egy meglévő tartományt vág ketté. Tehát \(R_n=R_{n-1}+2(n-1)\), \(R_1=2\), ebből</p>
+        <div class="eq gold">\[R_n=n^2-n+2.\]</div>
+        <p>A különbség az egyenesekkel: \(R_n-L_n=\tfrac{n^2-3n+2}2=\tfrac{(n-1)(n-2)}2\). Ez \(n=1,2\) esetén nulla (egyforma), \(n\ge3\) esetén pozitív, tehát a körök több tartományt adnak: \(n=10\)-re \(R_{10}=92\), \(L_{10}=56\).</p>
+        <p>A különbség pontosan az 5. feladat eredménye, a korlátos tartományok száma. Ez nem véletlen: \(\binom n2=\binom{n-1}2+(n-1)\) (a Pascal-azonosság), és ebből \(R_n-L_n=1+\binom n2-n=\binom{n-1}2\).</p>
+        <p><b>Ellenőrzés:</b> a rekurzió \(n=1\ldots11\)-re egyezik a \(n^2-n+2\) képlettel, és véletlen körrendszerekkel (\(n=2\ldots6\)) meggyőződtünk arról, hogy minden pár két pontban metszi egymást. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt mutatja, hogy a Hanoi-megoldás mögött a bináris számrendszer áll: a mozgatott korong a lépésszám „kettővel való oszthatósága”.</p>
+    <p>Az 5. és a 7. feladat összekapcsolja az egyeneseket és a köröket: ugyanaz a binomiális azonosság adja mindkettő különbségét.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="w-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Kísérlet, sejtés, nyitott kérdés</h2>
+    <p>A következő két feladatnál a megoldás nem képlet-alkalmazás. Először gyűjts adatot a kísérlettel, fogalmazz meg sejtést, és csak utána nézd meg, mit tudunk.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 8. Hanoi négy (vagy öt) rúddal: legalább hány lépés kell \(n\) korongra? Gyűjts adatot a kísérlettel.</span></summary>
+      <div class="ans">
+        <p>A Frame–Stewart-stratégia (1941): az első \(k\) korongot négy rúddal egy segédrúdra tesszük, a maradék \(n-k\) korongot három rúddal átrakjuk, majd az első \(k\) koronggal visszük a célra:</p>
+        <div class="eq">\[T_4(n)=\min_{1\le k\lt n}\bigl(2\,T_4(k)+2^{\,n-k}-1\bigr).\]</div>
+        <p>Az értékek \(1,3,5,9,13,17,25,33,\dots\) Ha a lépésszámot tagok összegeként írjuk (\(1+2+2+4+4+4+8+8+8+8+\dots\)), a \(2^j\) pontosan \(j+1\)-szer szerepel, így a lépésszám \(T_4(n)=\sum_{i=0}^{n-1}2^{\nabla i}\), ahol \(\nabla i\) az a legnagyobb \(j\), amelyre \(\tfrac{j(j+1)}2\le i\).</p>
+        <p>Négy rúdra a stratégia optimalitását Bousch bizonyította be 2014-ben (<i>Bull. Belg. Math. Soc. Simon Stevin</i> 21, 895–912). Öt vagy több rúdra a sejtés tudomásunk szerint ma is nyitott.</p>
+        <p><b>Ellenőrzés:</b> az alábbi kísérlet szélességi kereséssel (BFS) kiszámolja az igazi minimumot, és összeveti a stratégia lépésszámával: négy rúdra \(n\le7\), öt rúdra \(n\le6\) esetén egyezik. Ez nem bizonyítás, csak a sejtés ellenőrzése kis esetekre.</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="w-p">rudak <select id="w-p"><option value="3">3 rúd</option><option value="4" selected>4 rúd</option><option value="5">5 rúd</option></select></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="w-t"></table></div>
+      <div class="info" id="w-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. A Josephus-probléma, de minden \(k\)-adik esik ki (\(k=3,4,\dots\)). Keress szabályt a túlélő helyére.</span></summary>
+      <div class="ans">
+        <p>A \(k=2\) esetben \(J(n)=2\ell+1\). Más \(k\)-ra nincs ilyen egyszerű alak, de van zárt kifejezés egy segédsorozattal: \(D_0=1\), \(D_{j+1}=\lceil\tfrac k{k-1}D_j\rceil\), és</p>
+        <div class="eq gold">\[J_k(n)=kn+1-D_j,\qquad j=\min\{j:\ D_j>(k-1)n\}.\]</div>
+        <p>A levezetést a <b>3.3 Rekurziók</b> témában találod. A \(k=2\) esetben \(D_j=2^j\), és a képlet visszaadja az ismert alakot.</p>
+        <p><b>Ellenőrzés:</b> a képletet \(k=2\ldots7\) és \(n\lt500\) esetén a szimulációval összevetettük. Az alábbi kísérlet \(n\)-re és \(k\)-ra élőben is megteszi. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="w-k">k <input type="range" id="w-k" min="2" max="7" value="3"> <span class="mono" id="w-kv">3</span></label>
+      </div>
+      <div class="jt" id="w-j" aria-label="A túlélő helye n = 1…40 esetén"></div>
+      <div class="info" id="w-jinfo"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A kutatási feladatok célja nem a gyors válasz, hanem a gyakorlat: adatot gyűjteni, mintát keresni, és megkülönböztetni a bizonyított állítást a sejtéstől.</p>
+  </aside>
+</section>

@@ -12,8 +12,9 @@ MODS=[
  ("veges","2.6","Véges analízis","g-","ch26",[["bevezeto","Bevezető"],["kulonbseg","A differenciaoperátor"],["esespoli","Eséspolinomok"],["osszegzes","Összegzés"],["reszleges","Összegzés részenként"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Differencia az derivált helyett, eséspolinomok, az összegzés alaptétele."),
  ("vegtelen","2.7","Végtelen összegek","h-","ch27",[["bevezeto","Bevezető"],["geometria","A geometriai sor"],["teleszkop","Teleszkopikus összegek"],["atrendezes","Átrendezés"],["abszolut","Abszolút konvergencia"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Konvergencia, teleszkópos összegek, az átrendezés tétele."),
 ]
+MODS1=[("feladatok","1.4","Feladatok","w-","ch14",[["bevezeto","Bevezető"],["bemelegito","Bemelegítő"],["halado","Alap és haladó"],["kutatas","Kutatás"]],"Kilenc saját feladat négy szinten: bemelegítő, alap, haladó, kutatási. Minden megoldás levezetve és programmal ellenőrizve.")]
 exec(open('tools/mods3.py',encoding='utf-8').read())
-MODS=MODS+MODS3
+MODS=MODS+MODS3+MODS1
 built=[m for m in MODS if os.path.exists(T+m[4]+'.html') and os.path.exists(T+m[4]+'.js')]
 css=open(T+'ch2.css',encoding='utf-8').read()
 s=base
@@ -22,6 +23,8 @@ def rep(a,b):
     assert s.count(a)==1,a[:60]
     s=s.replace(a,b)
 rep('/* ---- animált háttér',css+'\n/* ---- animált háttér')
+rep('</style>\n<script>\nwindow.MathJax=',open(T+'design.gen.css',encoding='utf-8').read()+open(T+'design.css',encoding='utf-8').read()+'\n</style>\n<script>\nwindow.MathJax=')
+rep('{id:"josephus",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."}]},','{id:"josephus",d:"Körben állók, minden második kiesik: ki marad utoljára? Bináris forgatás és repertoármódszer."},{id:"feladatok",d:"Kilenc saját feladat négy szinten, a fejezet végén: számolás, bizonyítás, kísérlet. Teljes megoldásokkal."}]},')
 # router: fejezetszám témánként
 rep('return {ch:1,topic:m[1],page:m[2]};','return {ch:TOPICS[m[1]].ch||1,topic:m[1],page:m[2]};')
 rep(':"fejezet-1";}',':"fejezet-"+(TOPICS[curTopic].ch||1);}')
@@ -42,7 +45,7 @@ for (tid,n,t,pre,fn,pages,d) in MODS3:
 ch3={k:v for k,v in CH3.items() if k!='old'};ch3['topics']=tops3
 rep(CH3['old'],' '+json.dumps(ch3,ensure_ascii=False)+',')
 html="".join(open(T+m[4]+'.html',encoding='utf-8').read() for m in built)
-js=open(T+'ch2common.js',encoding='utf-8').read()+"\n"+"\n".join(open(T+m[4]+'.js',encoding='utf-8').read() for m in built)
+js=open(T+'landing.js',encoding='utf-8').read()+"\n"+open(T+'ch2common.js',encoding='utf-8').read()+"\n"+"\n".join(open(T+m[4]+'.js',encoding='utf-8').read() for m in built)
 rep('<footer id="foot"></footer>',html+'\n<footer id="foot"></footer>')
 rep('const side=$("#side"),mb=$("#menuBtn");',js+'\n/* ---- router ---- */\nconst side=$("#side"),mb=$("#menuBtn");')
 open('index.html','w',encoding='utf-8').write(s)
