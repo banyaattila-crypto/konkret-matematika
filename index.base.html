@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>try{var __t=localStorage.getItem("km-theme")}catch(e){}document.documentElement.setAttribute("data-theme",__t||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));document.documentElement.setAttribute("data-ch","1");</script>
 <title>Konkrét Matematika</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0b0f1d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Konkrét Mat.">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -312,7 +320,7 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
       <div class="eyebrow">Graham – Knuth – Patashnik nyomán</div>
       <h1 class="land-title">Konkrét<br>Matematika</h1>
       <p class="lead">Matematikai érdekességek és stílusos feladatok, fejezetről fejezetre. Minden téma interaktív ábrákkal és a levezetés minden lépésével: mi igaz, és miért.</p>
-      <div class="land-cta"><a class="btn primary" href="#fejezet-1">Kezdjük az 1. fejezettel</a><button class="btn" type="button" id="goChap">Fejezetek ↓</button><button class="btn" type="button" id="goRand" title="Ugrás egy véletlen oldalra">Véletlen oldal ⚄</button></div>
+      <div class="land-cta"><a class="btn primary" href="#fejezet-1">Kezdjük az 1. fejezettel</a><button class="btn" type="button" id="goChap">Fejezetek ↓</button><button class="btn" type="button" id="goRand" title="Ugrás egy véletlen oldalra">Véletlen oldal ⚄</button><button class="btn" type="button" id="goInstall" hidden title="Telepítés az eszközre (offline is működik)">Telepítés ⤓</button></div>
       <div class="land-stats" id="land-stats"></div>
     </div>
     <figure class="land-art">

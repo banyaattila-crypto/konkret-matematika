@@ -7,6 +7,15 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-11-15
+
+### Hozzáadva
+- PWA: `manifest.webmanifest`, ikonok (192, 512, maszkolható, Apple touch), `sw.js` service worker; telepíthető, offline is megnyílik. A külső erőforrásokat (MathJax, betűtípusok) futás közben gyorsítótárazza.
+- „Telepítés” gomb a főoldalon, ha a böngésző felajánlja a telepítést.
+
+### Módosítva
+- A főoldali háttér: a szimbólum-oszlopok helyett lassan (5–12 px/s) lehulló, egész képletek; kisebb forgalom, jobb olvashatóság.
+
 ## [1.1.0] - 2026-11-15
 
 ### Hozzáadva

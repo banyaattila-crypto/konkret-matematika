@@ -200,8 +200,8 @@ a.spine:hover .dots i.on{transform:scaleY(1.7)}
 .land-cta{gap:10px}.land-cta .btn{padding:10px 15px;font-size:.95rem}
 
 /* ---- matematikai eső a főoldalon ---- */
-#mrain{position:fixed;top:0;left:0;z-index:0;pointer-events:none;opacity:.42}
-:root[data-theme="light"] #mrain{opacity:.34}
+#mrain{position:fixed;top:0;left:0;z-index:0;pointer-events:none;opacity:1}
+:root[data-theme="light"] #mrain{opacity:.6}
 #view-home>section,#view-home>.land-ticker{position:relative;z-index:1}
 .land-float{display:none}
 @media (prefers-reduced-motion:reduce){#mrain{opacity:.35}}
@@ -211,3 +211,4 @@ a.spine:hover .dots i.on{transform:scaleY(1.7)}
 .land-art figcaption b{color:var(--ink);font-weight:600}
 .land-art figcaption span{display:inline}
 .side>.ver{text-align:center;margin-top:18px;font-family:var(--f-mono);font-size:.68rem;color:var(--muted);opacity:.8;letter-spacing:.04em}
+#goInstall[hidden]{display:none!important}

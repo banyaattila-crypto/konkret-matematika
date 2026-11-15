@@ -123,43 +123,34 @@ const hero3d=(()=>{
   const T0=performance.now();(function f(t){draw(((t-T0)/1000)*(2*Math.PI/20));requestAnimationFrame(f);})(T0);
 })();
 
-/* ================= MATEMATIKAI ESŐ A FŐOLDALON ================= */
+/* ================= LASSAN LEHULLÓ KÉPLETEK A FŐOLDALON ================= */
 const mrain=(()=>{
   const cv=$("#mrain");if(!cv)return;const ctx=cv.getContext("2d"),home=$("#view-home");
   const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const G="∑∫π φ∞√≡⌊⌋∂∇ℵζθλΔ≈≤≥∈∀∃ℤℝ∏0123456789!+=".replace(/ /g,"").split("");
-  const FM=["e^(iπ) + 1 = 0","Σ k = n(n+1)/2","ζ(2) = π²/6","φ = (1+√5)/2","Fₙ₊₂ = Fₙ₊₁ + Fₙ","Tₙ = 2ⁿ − 1","⌊x⌋ ≤ x < ⌊x⌋ + 1","a ≡ b (mod m)","C(n,k) = C(n,n−k)","Hₙ ≈ ln n + γ","n! ~ √(2πn)(n/e)ⁿ","1+2+4+…+2ⁿ = 2ⁿ⁺¹ − 1","gcd(a,b) = gcd(b, a mod b)","(a+b)² = a² + 2ab + b²","∫₀^∞ e^(−x²) dx = √π/2","Σ 1/k² = π²/6","E[X] = Σ x·P(X=x)","1/(1−x) = Σ xⁿ"];
-  const CELL=20;let W=0,H=0,dpr=1,cols=[],items=[],raf=0,last=0,acc=0,col="#888",fc=0,left=0;
+  const FM=["e^(iπ) + 1 = 0","Σ k = n(n+1)/2","ζ(2) = π²/6","φ = (1+√5)/2","Fₙ₊₂ = Fₙ₊₁ + Fₙ","Tₙ = 2Tₙ₋₁ + 1","Tₙ = 2ⁿ − 1","⌊x⌋ ≤ x < ⌊x⌋ + 1","a ≡ b (mod m)","C(n,k) = C(n,n−k)","C(n,k) = n!/(k!(n−k)!)","Hₙ ≈ ln n + γ","n! ~ √(2πn)(n/e)ⁿ","1+2+4+…+2ⁿ = 2ⁿ⁺¹ − 1","gcd(a,b) = gcd(b, a mod b)","(a+b)² = a² + 2ab + b²","∫₀^∞ e^(−x²) dx = √π/2","Σ 1/k² = π²/6","E[X] = Σ x·P(X=x)","1/(1−x) = Σ xⁿ","(1+x)ⁿ = Σ C(n,k)xᵏ","Σ C(n,k) = 2ⁿ","C(n,k) = C(n−1,k) + C(n−1,k−1)","φ(n) = n Π(1 − 1/p)","Σ_{d|n} φ(d) = n","⌊n/2⌋ + ⌈n/2⌉ = n","J(n) = 2L + 1","Var X = E[X²] − (E X)²","Fₙ = (φⁿ − ψⁿ)/√5","C(2n,n) ~ 4ⁿ/√(πn)","Σ Hₖ = (n+1)Hₙ − n","ln n! = n ln n − n + ½ ln(2πn)","a·b = gcd(a,b)·lcm(a,b)","Σ_{k=1}^{n} (2k−1) = n²","x = ⌊x⌋ + {x}","e = Σ 1/n!","lim (1+1/n)ⁿ = e","Cₙ = C(2n,n)/(n+1)","Σ_{p} 1/p → ∞","aᵖ ≡ a (mod p)"];
+  let W=0,H=0,dpr=1,items=[],raf=0,last=0,col="#888",fc=0,left=0,bag=[];
   const rnd=(a,b)=>a+Math.random()*(b-a);
+  function next(){if(!bag.length){bag=FM.slice();for(let i=bag.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[bag[i],bag[j]]=[bag[j],bag[i]];}}return bag.pop();}
+  function place(it,top){it.t=next();it.fs=rnd(W<700?14:16,W<700?19:26);ctx.font=`italic 500 ${it.fs}px 'Fraunces',Georgia,serif`;it.w=ctx.measureText(it.t).width;
+    it.x=rnd(-it.w*.1,Math.max(10,W-it.w*.9));it.y=top?rnd(-60,-20):rnd(0,H);it.v=rnd(5,12);it.a=rnd(.17,.32);}
   function size(){
     const r=home.getBoundingClientRect();left=r.left;W=Math.max(1,Math.round(r.width));H=innerHeight;dpr=Math.min(1.5,devicePixelRatio||1);
     cv.style.left=left+"px";cv.style.width=W+"px";cv.style.height=H+"px";cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);
-    const n=Math.floor(W/CELL);cols=Array.from({length:n},(_,i)=>({y:rnd(-H/CELL,0),sp:rnd(.12,.42),on:Math.random()<.55,tr:[]}));
-    const k=W<700?5:10;items=Array.from({length:k},()=>({t:FM[Math.floor(Math.random()*FM.length)],x:rnd(0,W-120),y:rnd(0,H),v:rnd(14,34),fs:rnd(15,24),a:rnd(.10,.2)}));
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
+    const k=W<700?7:13;items=Array.from({length:k},()=>({}));items.forEach((it,i)=>{place(it,false);it.y=(i+rnd(.1,.9))*H/k;});
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
+  function paint(){ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);ctx.fillStyle=col;ctx.textBaseline="top";
+    items.forEach(it=>{const edge=Math.min(1,it.y/90,(H-it.y)/90);ctx.globalAlpha=Math.max(0,it.a*Math.min(1,edge+.15));ctx.font=`italic 500 ${it.fs}px 'Fraunces',Georgia,serif`;ctx.fillText(it.t,it.x,it.y);});ctx.globalAlpha=1;}
   function frame(t){
-    raf=0;if(!home.classList.contains("on")||document.hidden){return;}
+    raf=0;if(!home.classList.contains("on")||document.hidden)return;
     raf=requestAnimationFrame(frame);
-    const dt=Math.min(80,t-(last||t));last=t;acc+=dt;if(acc<40)return;const step=acc;acc=0;
+    const dt=Math.min(80,t-(last||t));last=t;if(dt<33)return;
     if(++fc%40===1)col=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#888";
-    ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,W,H);
-    ctx.fillStyle=col;ctx.font="600 15px 'Fraunces',Georgia,serif";ctx.textBaseline="top";
-    cols.forEach((c,i)=>{
-      if(!c.on){if(Math.random()<.002)c.on=true;return;}
-      const prev=Math.floor(c.y);c.y+=c.sp*step/40;const cy=Math.floor(c.y);
-      if(cy!==prev&&cy>=0){c.tr.push({r:cy,ch:G[Math.floor(Math.random()*G.length)]});if(c.tr.length>9)c.tr.shift();}
-      const n=c.tr.length;for(let k=0;k<n;k++){const t=c.tr[k];ctx.globalAlpha=.08+.82*Math.pow((k+1)/n,2.2);ctx.fillText(t.ch,i*CELL+3,t.r*CELL);}
-      if(c.y*CELL>H+rnd(0,H*.6)){c.y=rnd(-12,-1);c.sp=rnd(.12,.42);c.on=Math.random()<.8;c.tr=[];}
-    });
-    items.forEach(it=>{
-      it.y+=it.v*step/1000;if(it.y>H+30){it.y=-30;it.x=rnd(0,Math.max(10,W-140));it.t=FM[Math.floor(Math.random()*FM.length)];}
-      ctx.globalAlpha=it.a;ctx.font=`italic 500 ${it.fs}px 'Fraunces',Georgia,serif`;ctx.fillText(it.t,it.x,it.y);
-    });
-    ctx.globalAlpha=1;
+    items.forEach(it=>{it.y+=it.v*dt/1000;if(it.y>H+10)place(it,true);});
+    paint();
   }
-  function stat(){size();col=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#888";ctx.fillStyle=col;ctx.font="600 16px 'Fraunces',Georgia,serif";ctx.textBaseline="top";for(let i=0;i<70;i++){ctx.globalAlpha=rnd(.06,.16);ctx.fillText(G[Math.floor(Math.random()*G.length)],rnd(0,W),rnd(0,H));}ctx.globalAlpha=1;}
-  function go(){if(!home.classList.contains("on")){cancelAnimationFrame(raf);raf=0;return;}if(reduce){stat();return;}size();if(!raf){last=0;raf=requestAnimationFrame(frame);}}
+  function go(){if(!home.classList.contains("on")){cancelAnimationFrame(raf);raf=0;return;}size();col=getComputedStyle(document.documentElement).getPropertyValue("--accent").trim()||"#888";
+    if(reduce){paint();return;}if(!raf){last=0;raf=requestAnimationFrame(frame);}}
   addEventListener("hashchange",()=>setTimeout(go,60));addEventListener("resize",()=>{clearTimeout(go.t);go.t=setTimeout(go,150);});
   document.addEventListener("visibilitychange",()=>{if(!document.hidden)go();});
   new MutationObserver(go).observe(home,{attributes:true,attributeFilter:["class"]});
@@ -168,5 +159,16 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.1.0";
+const APP_VERSION="1.2.0";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
+
+/* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
+(function(){
+  let dp=null;const btn=document.getElementById("goInstall");
+  addEventListener("beforeinstallprompt",e=>{e.preventDefault();dp=e;if(btn)btn.hidden=false;});
+  if(btn)btn.addEventListener("click",async()=>{if(!dp)return;dp.prompt();try{await dp.userChoice}catch(_){}dp=null;btn.hidden=true;});
+  addEventListener("appinstalled",()=>{if(btn)btn.hidden=true;});
+  if("serviceWorker" in navigator&&/^https?:$/.test(location.protocol)){
+    addEventListener("load",()=>{try{navigator.serviceWorker.register("sw.js").catch(()=>{});}catch(_){}});
+  }
+})();
