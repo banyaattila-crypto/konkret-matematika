@@ -1,9 +1,9 @@
 MODS9=[
  ("nagyo","9.1–9.2","Hierarchia és az O jelölés","as-","ch91",[["bevezeto","Bevezető"],["definicio","Definíciók"],["hierarchia","Növekedési rend"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."),
  ("stirfej","9.3","Műveletek az O szimbólummal","at-","ch92",[["bevezeto","Bevezető"],["algebra","Számolás az O-val"],["stirling","A Stirling-formula"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."),
- ("ph9_4","9.4","Két aszimptotikával kapcsolatos fogás","","ph9_4",[],"Csavaró és perturbációs módszerek az aszimptotikában."),
+ ("ketfogas","9.4","Két aszimptotikával kapcsolatos fogás","bp-","ch9_4",[["bevezeto","Bevezető"],["csizma","Csizmahúzás"],["implicit","Implicit egyenlet"],["farok","Az összeg két vége"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Csavaró és perturbációs módszerek az aszimptotikában."),
  ("eulermac","9.5","Euler-féle szummációs formula","au-","ch93",[["bevezeto","Bevezető"],["trapez","Összeg és integrál"],["formula","Az Euler–Maclaurin-formula"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."),
- ("ph9_6","9.6","Véges összegzés","","ph9_6",[],"Véges összegek aszimptotikus becslése."),
+ ("aszveges","9.6","Véges összegzés","bq-","ch9_6",[["bevezeto","Bevezető"],["konvergens","Konvergens sorok"],["divergens","Divergens sorok"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Véges összegek aszimptotikus becslése."),
  ("aszalk","9.7","Alkalmazások (kiegészítés)","av-","ch94",[["bevezeto","Bevezető"],["binom","A központi binomiális együttható"],["qsort","A gyorsrendezés átlagos költsége"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."),
  ("feladatokasz","9.8","Feladatok","aw-","ch95",[["bevezeto","Bevezető"],["bemelegito","Bemelegítő"],["halado","Alap és haladó"],["kutatas","Kutatás"]],"Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."),
 ]

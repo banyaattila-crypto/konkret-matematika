@@ -1,0 +1,119 @@
+
+<!-- ================= 9.6 VÉGES ÖSSZEGZÉS ================= -->
+<header class="hero page" id="bq-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.6</div>
+    <h1>Véges összegzés</h1>
+    <p class="lead">Egy véges összeg aszimptotikus fejtése két részből áll: a főtagból, amelyet integrállal vagy egy ismert összeggel kapunk, és egy állandóból, amely a sor „elejének” járuléka. Konvergens sornál az állandó a végtelen összeg, a hiba pedig a farok.</p>
+    <div class="formula">\(\displaystyle\sum_{k=1}^n\frac1{k^2}=\frac{\pi^2}6-\frac1n+O\!\left(\frac1{n^2}\right)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bq-hero" role="img" aria-label="Az n szorozva ζ(2) mínusz a részletösszeg értéke n függvényében, 1-hez tart"></svg>
+    <div class="counter"><span id="bq-hero-a">n·(ζ(2) − H<sub>n</sub><sup>(2)</sup>)</span><span id="bq-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A \(\sum1/k^2\) részletösszegei \(\pi^2/6\)-hoz tartanak, de mennyire gyorsan? A hiba a farok \(\sum_{k>n}1/k^2\), és ezt két teleszkopikus összeg közé lehet szorítani. Ha a sor divergens, mint a \(\sum\sqrt k\), akkor nincs „végtelen összeg”, de az Euler–Maclaurin-formula (9.5) megadja a főtagokat, a hibatagot és egy állandót.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bq-konvergens">
+  <div class="body">
+    <div class="eyebrow">§1 · Konvergens sorok</div>
+    <h2>A farok becslése</h2>
+    <p>Mivel \(\frac1{k(k+1)}\le\frac1{k^2}\le\frac1{k(k-1)}\) és \(\frac1{k(k+1)}=\frac1k-\frac1{k+1}\), a farok teleszkopikus összegek közé szorul:</p>
+    <div class="eq gold">\[\frac1{n+1}\le\sum_{k>n}\frac1{k^2}\le\frac1n.\]</div>
+    <p>Tehát \(\sum_{k=1}^n\frac1{k^2}=\frac{\pi^2}6-\frac1n+O(n^{-2})\), mert a farok \(\frac1n-\frac1{n+1}=\frac1{n(n+1)}\)-nél nem tér el \(\frac1n\)-től. Más példa: a \(\sum_{k\ge1}k2^{-k}\) sor tagjainak részletösszege pontosan</p>
+    <div class="eq">\[\sum_{k=1}^nk\,2^{-k}=2-(n+2)2^{-n},\]</div>
+    <p>ezért a farok \((n+2)2^{-n}\), amely a hatványsoroknál exponenciálisan gyors. A kísérlet a két farkat méri.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bq-k-n">n <input type="range" id="bq-k-n" min="1" max="2000" value="100"> <span class="mono" id="bq-k-nv">100</span></label>
+      </div>
+      <div class="info" id="bq-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\zeta(2)=\pi^2/6\) értékét itt ismertnek vesszük (Euler); a kísérlet lebegőpontosan számol, a ✓ az alsó és felső korlát teljesülését jelzi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bq-divergens">
+  <div class="body">
+    <div class="eyebrow">§2 · Divergens sorok</div>
+    <h2>Főtag, hibatag és állandó</h2>
+    <p>Az Euler–Maclaurin-formula (9.5) szerint az \(f(x)=\sqrt x\) függvényre</p>
+    <div class="eq">\[\sum_{k=1}^n\sqrt k=\frac23n^{3/2}+\frac12\sqrt n+C+\frac1{24\sqrt n}+O\!\left(n^{-3/2}\right).\]</div>
+    <p>Az \(\frac23n^{3/2}\) az integrálból, a \(\frac12\sqrt n\) a \(\frac12f(n)\) tagból, az \(\frac1{24\sqrt n}=\frac{B_2}{2!}f'(n)\) a Bernoulli-tagból jön. A \(C\) állandó nem olvasható le a formula tagjaiból, az a maradéktag határértéke; ismert, hogy \(C=\zeta(-\tfrac12)\approx-0{,}2078862\). Hasonlóan \(\sum k^{-1/2}=2\sqrt n+\zeta(\tfrac12)+\frac1{2\sqrt n}-\frac1{24n^{3/2}}+\cdots\) és \(\zeta(\tfrac12)\approx-1{,}4603545\). A két állandó értékét itt nem vezettük le, a kísérlet számolja ki a különbségeket, és mutatja a hibatagok viselkedését.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bq-d-e">log<sub>10</sub> n <input type="range" id="bq-d-e" min="2" max="5" value="4"> <span class="mono" id="bq-d-ev">4</span></label>
+      </div>
+      <div class="info" id="bq-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A felső határ \(10^5\), mert a lebegőpontos összegzés rontja a pontosságot: a ✓ csak a durva egyezést jelzi (a skálázott hibatag 1/24 körül, 1%-on belül).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bq-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Mekkora a \(\sum_{k>10}1/k^2\) farok két korlátja?</span></summary>
+      <div class="ans">
+        <div class="eq">\[\frac1{11}\approx0{,}0909\le\text{farok}\le\frac1{10}=0{,}1.\]</div>
+        <p><b>Ellenőrzés:</b> a tényleges farok</p>
+        <div class="eq">\[\zeta(2)-H^{(2)}_{10}\approx1{,}644934-1{,}549768=0{,}095166.\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mekkora \(n\) kell, hogy a \(\sum_{k=1}^n k2^{-k}\) hibája 2-től kisebb legyen \(10^{-6}\)-nál?</span></summary>
+      <div class="ans">
+        <p>A hiba \((n+2)2^{-n}<10^{-6}\). \(n=30\): \(32\cdot2^{-30}\approx2{,}98\cdot10^{-8}\); \(n=25\): \(27\cdot2^{-25}\approx8{,}0\cdot10^{-7}\), ez már kisebb; \(n=24\): \(26\cdot2^{-24}\approx1{,}55\cdot10^{-6}\), nagyobb. <b>Ellenőrzés:</b> a legkisebb ilyen \(n=25\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Add meg \(\sum_{k=1}^{100}\sqrt k\) közelítését a három főtaggal.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\begin{aligned}&\tfrac23\cdot1000+\tfrac12\cdot10-0{,}20789\\&\quad=666{,}6667+5-0{,}2079=671{,}4588.\end{aligned}\]</div>
+        <p>A hibatag \(\frac1{24\cdot10}\approx0{,}0042\), így \(\approx671{,}4630\). <b>Ellenőrzés:</b> a pontos összeg \(671{,}46295\) (közvetlen összegzés). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Miért nem tudjuk a \(\sum\sqrt k\) állandóját az Euler–Maclaurin-formula tagjaiból leolvasni?</span></summary>
+      <div class="ans">
+        <p>A formula véges összeget ad egy maradéktaggal, amely \(f\)-től és \(n\)-től függ, és a határértéke az állandó. Ez a maradék egy integrál \(\int_1^\infty B_2(\{x\})f''(x)\,dx\) alakú, amelyet zárt alakban nem kapunk meg, csak a \(\zeta\)-függvény analitikus folytatásából. <b>Ellenőrzés:</b> a kísérlet is csak numerikusan közelíti. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a tankönyvi gyakorlat: a legfontosabb tagok összege, és a következő hibatag nagyságrendje.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bq-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Konvergens és divergens összegek</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Összeg</th><th>Fejtés</th></tr>
+      <tr><th>\(\sum1/k^2\)</th><td>\(\zeta(2)-\frac1n+O(n^{-2})\)</td></tr>
+      <tr><th>\(\sum k2^{-k}\)</th><td>\(2-(n+2)2^{-n}\)</td></tr>
+      <tr><th>\(\sum\sqrt k\)</th><td>\(\frac23n^{3/2}+\frac12\sqrt n+\zeta(-\frac12)+\cdots\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Főtag</b><span>Integrállal.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Hibatagok</b><span>Euler–Maclaurin.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Állandó</b><span>Határérték, számolva.</span></div>
+    </div>
+    <p>A következő téma a 9.7, az alkalmazások.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>

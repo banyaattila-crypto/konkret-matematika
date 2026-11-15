@@ -9870,6 +9870,149 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </aside>
 </section>
 
+<!-- ================= 9.4 KÉT ASZIMPTOTIKUS FOGÁS ================= -->
+<header class="hero page" id="bp-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.4</div>
+    <h1>Két aszimptotikus fogás</h1>
+    <p class="lead">Az első fogás a csizmahúzás: egy durva becslést visszahelyettesítünk a pontos összefüggésbe, és így finomabbat kapunk. A második az összeg két végének külön kezelése: a nagy tagokat pontosan számoljuk, a többit felülről becsüljük.</p>
+    <div class="formula">\(\displaystyle a_n^2=2n+\tfrac12\ln n+O(1)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bp-hero" role="img" aria-label="Az a_n négyzete mínusz 2n mínusz fél ln n értéke n függvényében"></svg>
+    <div class="counter"><span id="bp-hero-a">a<sub>n</sub>² − 2n − ½ ln n</span><span id="bp-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>Az \(a_{n+1}=a_n+1/a_n\), \(a_0=1\) sorozatról azt sejtjük, hogy \(a_n\approx\sqrt{2n}\). Négyzetre emelve \(a_{n+1}^2=a_n^2+2+1/a_n^2\), tehát \(a_n^2\) olyan, mint \(2n\) plusz a \(\sum1/a_k^2\) összeg. Ha \(a_k^2\approx2k\), akkor az összeg \(\approx\frac12\ln n\). A sejtést magából a sorozatból bizonyítjuk, majd a bizonyítás eredményével finomítjuk.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bp-csizma">
+  <div class="body">
+    <div class="eyebrow">§1 · Csizmahúzás</div>
+    <h2>A becslés finomítása önmagából</h2>
+    <p>Az \(a_{n+1}^2=a_n^2+2+1/a_n^2\) egyenletből összegzéssel</p>
+    <div class="eq">\[a_n^2=a_0^2+2n+\sum_{k=0}^{n-1}\frac1{a_k^2}.\]</div>
+    <p>1. lépés (durva alsó becslés). Az összeg tagjai pozitívak, ezért \(a_n^2\ge1+2n\). 2. lépés (ezt visszahelyettesítve): \(\frac1{a_k^2}\le\frac1{2k+1}\), tehát</p>
+    <div class="eq">\[a_n^2\le2n+1+1+\sum_{k=1}^{n-1}\frac1{2k+1}\le2n+2+\tfrac12H_{n-1}\le2n+\tfrac52+\tfrac12\ln n.\]</div>
+    <p>Itt a \(k=0\) tag \(1/a_0^2=1\), a többire \(\frac1{2k+1}\le\frac1{2k}\), és \(H_{n-1}\le1+\ln n\). Így \(a_n^2=2n+O(\ln n)\). 3. lépés (újabb behelyettesítés): ebből \(\frac1{a_k^2}=\frac1{2k}\cdot\frac1{1+O(\ln k/k)}=\frac1{2k}+O\!\left(\frac{\ln k}{k^2}\right)\). A hibatagok összege konvergens, a főtagok összege \(\frac12H_{n-1}=\frac12\ln n+O(1)\). Tehát</p>
+    <div class="eq gold">\[a_n^2=2n+\tfrac12\ln n+O(1),\qquad a_n=\sqrt{2n}\Bigl(1+O\!\left(\tfrac{\ln n}{n}\right)\Bigr).\]</div>
+    <p>A kísérlet az \(a_n^2-2n-\frac12\ln n\) értékét számolja nagy \(n\)-ekre: a sejtés szerint korlátos, sőt konvergál (az \(a_0=1\) esetben \(\approx1{,}7231\)-hez; ezt a határértéket nem bizonyítottuk).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bp-a-e">log<sub>10</sub> n <input type="range" id="bp-a-e" min="1" max="7" value="5"> <span class="mono" id="bp-a-ev">5</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="bp-a-t"></table></div>
+      <div class="info" id="bp-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A csizmahúzás lényege: minden menet egy rosszabb becslést használ egy jobb előállítására, és közben a hibatag kisebb rendű lesz. Itt két menet elég.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bp-implicit">
+  <div class="body">
+    <div class="eyebrow">§2 · Implicit egyenlet</div>
+    <h2>Az \(x\ln x=n\) megoldása</h2>
+    <p>A \(x\ln x=n\) egyenlet \(x>1\) megoldása nem fejezhető ki elemi függvényekkel. Átrendezve \(x=n/\ln x\). Az \(x=O(n)\) durva becslésből \(\ln x=\ln n+O(1)\), és így \(x=\frac n{\ln n}\bigl(1+O(\frac1{\ln n})\bigr)\). Ezt visszahelyettesítve \(\ln x=\ln n-\ln\ln n+o(1)\), tehát</p>
+    <div class="eq gold">\[x=\frac n{\ln n-\ln\ln n+o(1)}=\frac n{\ln n}\Bigl(1+\frac{\ln\ln n}{\ln n}+\cdots\Bigr).\]</div>
+    <p>Az iteráció \(x_{j+1}=n/\ln x_j\), \(x_0=n\), pontosan ez a lépéssorozat. A kísérlet megmutatja az \(x_j\) relatív hibáját a Newton-módszerrel kapott gyökhöz képest. Az iteráció konvergenciáját itt nem bizonyítjuk, csak mérjük: \(n=10^6\)-nál a relatív hiba \(1038\%\), \(-17{,}6\%\), \(1{,}7\%\), \(-0{,}15\%\) és így tovább, vagyis lépésenként nagyjából \(\ln x\)-edére csökken. A zárt közelítések (\(\ln\ln n\) tagokkal) ennél lassabban javulnak.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bp-x-e">log<sub>10</sub> n <input type="range" id="bp-x-e" min="2" max="15" value="6"> <span class="mono" id="bp-x-ev">6</span></label>
+        <label class="rng" for="bp-x-j">lépések <input type="range" id="bp-x-j" min="0" max="12" value="6"> <span class="mono" id="bp-x-jv">6</span></label>
+      </div>
+      <div class="info" id="bp-x-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\frac n{\ln n}\) főtag \(n=10^6\)-nál még 18 százalékkal téved. Az aszimptotikus sorok lassan javulnak, mert a kis paraméter \(\ln\ln n/\ln n\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bp-farok">
+  <div class="body">
+    <div class="eyebrow">§3 · Az összeg két vége</div>
+    <h2>Nagy tagok pontosan, a farok becsléssel</h2>
+    <p>Legyen \(S_n=\sum_{k=0}^n1/\binom nk\). A szélső tagok nagyok (\(1\), \(1/n\), \(2/(n(n-1))\)), a középsők nagyon kicsik. A \(k=0,1,2\) és \(k=n-2,n-1,n\) tagokat pontosan összeadjuk:</p>
+    <div class="eq">\[2+\frac2n+\frac4{n(n-1)}.\]</div>
+    <p>A maradék \(n\ge6\)-ra \(n-5\) tag, mindegyik legfeljebb \(1/\binom n3\) (a binomiális együttható a közepe felé nő). Ezért \(0\le S_n-2-\frac2n-\frac4{n(n-1)}\le\frac{6(n-5)}{n(n-1)(n-2)}\), és így</p>
+    <div class="eq gold">\[S_n=2+\frac2n+O\!\left(\frac1{n^2}\right).\]</div>
+    <p>A kísérlet pontos törtekkel számol, ellenőrzi a két korlátot, és kiírja az \(n^2(S_n-2-\frac2n)\) értéket, amely a sejtés szerint 4-hez tart (ezt a határértéket nem bizonyítottuk, a korlátokból csak a korlátosság következik).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bp-t-n">n <input type="range" id="bp-t-n" min="6" max="80" value="20"> <span class="mono" id="bp-t-nv">20</span></label>
+      </div>
+      <div class="info" id="bp-t-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A fogás ugyanaz, mint a konvergens sorok farokbecslésénél: a sorozat „szerkezetét” a nagy tagok hordozzák, a többit hibatagba tesszük.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bp-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(a_3^2-2\cdot3-\frac12\ln3\)-at (\(a_0=1\)).</span></summary>
+      <div class="ans">
+        <p>\(a_1=2\), \(a_2=2{,}5\), \(a_3=2{,}9\), \(a_3^2=8{,}41\). A kivonandó \(6+\frac12\ln3\approx6{,}549\). A különbség \(\approx1{,}861\). <b>Ellenőrzés:</b> kicsit nagyobb a \(\approx1{,}723\) határértéknél, mint ahogy a \(O(\ln n/n)\) hiba után várható. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki pontosan az \(S_6\) összeget, és ellenőrizd a korlátokat.</span></summary>
+      <div class="ans">
+        <p>A tagok \(1,\frac16,\frac1{15},\frac1{20},\frac1{15},\frac16,1\), az összeg \(2+\frac13+\frac2{15}+\frac1{20}=\frac{151}{60}\). Ekkor \(S_6-2-\frac26=\frac{11}{60}\). <b>Ellenőrzés:</b> az alsó korlát \(\frac4{30}=\frac8{60}\), a felső \(\frac8{60}+\frac{6}{120}=\frac{11}{60}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Mekkora az \(x\ln x=1000\) gyöke, és mit ad a \(\frac n{\ln n-\ln\ln n}\) közelítés?</span></summary>
+      <div class="ans">
+        <p>Számítással \(x\approx190{,}49\). A közelítés \(\frac{1000}{6{,}908-1{,}933}\approx201{,}0\), a főtag \(\frac n{\ln n}\approx144{,}8\). <b>Ellenőrzés:</b> \(190{,}49\cdot\ln190{,}49\approx190{,}49\cdot5{,}2494\approx1000{,}0\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mutasd meg, hogy \(\sum_{k=1}^n k2^{-k}=2-(n+2)2^{-n}\).</span></summary>
+      <div class="ans">
+        <p>Indukcióval. Az \(n=1\) érték \(2-3\cdot\frac12=\frac12\), ez egyezik a bal oldallal. A lépés:</p>
+        <div class="eq">\[\begin{aligned}&2-(n+2)2^{-n}+(n+1)2^{-(n+1)}\\&\quad=2-(n+3)2^{-(n+1)}.\end{aligned}\]</div>
+        <p><b>Ellenőrzés:</b> \(n=2\): \(\frac12+\frac12=1=2-4\cdot\frac14\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat azt is megmutatja, hogy a konvergens \(\sum k2^{-k}=2\) sor farka \((n+2)2^{-n}\), pontos zárt alakkal.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bp-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A két fogás</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Fogás</th><th>Példa</th><th>Eredmény</th></tr>
+      <tr><th>csizmahúzás</th><td>\(a_{n+1}=a_n+\frac1{a_n}\)</td><td>\(2n+\frac12\ln n+O(1)\)</td></tr>
+      <tr><th>csizmahúzás</th><td>\(x\ln x=n\)</td><td>\(\frac n{\ln n-\ln\ln n}\)</td></tr>
+      <tr><th>végek</th><td>\(\sum1/\binom nk\)</td><td>\(2+\frac2n+O(n^{-2})\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Durva becslés</b><span>Alsó vagy felső korlát.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Visszahelyettesítés</b><span>Finomabb hibatag.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Ellenőrzés</b><span>Számolás nagy \(n\)-re.</span></div>
+    </div>
+    <p>A következő téma a 9.5, az Euler-féle szummációs formula.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
+  </aside>
+</section>
+
 <!-- ================= 9.5 EULER–MACLAURIN-ÖSSZEGZÉS ================= -->
 <header class="hero page" id="au-bevezeto">
   <div>
@@ -9991,6 +10134,125 @@ window.MathJax={tex:{inlineMath:[['\\(','\\)']],displayMath:[['\\[','\\]']]},svg
   </div>
   <aside class="margo">
     <p>Az állandók (\(\gamma\), \(\pi^2/6\), \(\tfrac12\ln2\pi\)) az Euler–Maclaurin-formulából önmagában nem adódnak. Ezeket külön kell meghatározni, és ez a legnehezebb része az egész elemzésnek.</p>
+  </aside>
+</section>
+
+<!-- ================= 9.6 VÉGES ÖSSZEGZÉS ================= -->
+<header class="hero page" id="bq-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.6</div>
+    <h1>Véges összegzés</h1>
+    <p class="lead">Egy véges összeg aszimptotikus fejtése két részből áll: a főtagból, amelyet integrállal vagy egy ismert összeggel kapunk, és egy állandóból, amely a sor „elejének” járuléka. Konvergens sornál az állandó a végtelen összeg, a hiba pedig a farok.</p>
+    <div class="formula">\(\displaystyle\sum_{k=1}^n\frac1{k^2}=\frac{\pi^2}6-\frac1n+O\!\left(\frac1{n^2}\right)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="bq-hero" role="img" aria-label="Az n szorozva ζ(2) mínusz a részletösszeg értéke n függvényében, 1-hez tart"></svg>
+    <div class="counter"><span id="bq-hero-a">n·(ζ(2) − H<sub>n</sub><sup>(2)</sup>)</span><span id="bq-hero-b">–</span></div>
+  </div>
+  <aside class="story">
+    <p class="tag">Történet</p>
+    <p>A \(\sum1/k^2\) részletösszegei \(\pi^2/6\)-hoz tartanak, de mennyire gyorsan? A hiba a farok \(\sum_{k>n}1/k^2\), és ezt két teleszkopikus összeg közé lehet szorítani. Ha a sor divergens, mint a \(\sum\sqrt k\), akkor nincs „végtelen összeg”, de az Euler–Maclaurin-formula (9.5) megadja a főtagokat, a hibatagot és egy állandót.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="bq-konvergens">
+  <div class="body">
+    <div class="eyebrow">§1 · Konvergens sorok</div>
+    <h2>A farok becslése</h2>
+    <p>Mivel \(\frac1{k(k+1)}\le\frac1{k^2}\le\frac1{k(k-1)}\) és \(\frac1{k(k+1)}=\frac1k-\frac1{k+1}\), a farok teleszkopikus összegek közé szorul:</p>
+    <div class="eq gold">\[\frac1{n+1}\le\sum_{k>n}\frac1{k^2}\le\frac1n.\]</div>
+    <p>Tehát \(\sum_{k=1}^n\frac1{k^2}=\frac{\pi^2}6-\frac1n+O(n^{-2})\), mert a farok \(\frac1n-\frac1{n+1}=\frac1{n(n+1)}\)-nél nem tér el \(\frac1n\)-től. Más példa: a \(\sum_{k\ge1}k2^{-k}\) sor tagjainak részletösszege pontosan</p>
+    <div class="eq">\[\sum_{k=1}^nk\,2^{-k}=2-(n+2)2^{-n},\]</div>
+    <p>ezért a farok \((n+2)2^{-n}\), amely a hatványsoroknál exponenciálisan gyors. A kísérlet a két farkat méri.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bq-k-n">n <input type="range" id="bq-k-n" min="1" max="2000" value="100"> <span class="mono" id="bq-k-nv">100</span></label>
+      </div>
+      <div class="info" id="bq-k-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\zeta(2)=\pi^2/6\) értékét itt ismertnek vesszük (Euler); a kísérlet lebegőpontosan számol, a ✓ az alsó és felső korlát teljesülését jelzi.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bq-divergens">
+  <div class="body">
+    <div class="eyebrow">§2 · Divergens sorok</div>
+    <h2>Főtag, hibatag és állandó</h2>
+    <p>Az Euler–Maclaurin-formula (9.5) szerint az \(f(x)=\sqrt x\) függvényre</p>
+    <div class="eq">\[\sum_{k=1}^n\sqrt k=\frac23n^{3/2}+\frac12\sqrt n+C+\frac1{24\sqrt n}+O\!\left(n^{-3/2}\right).\]</div>
+    <p>Az \(\frac23n^{3/2}\) az integrálból, a \(\frac12\sqrt n\) a \(\frac12f(n)\) tagból, az \(\frac1{24\sqrt n}=\frac{B_2}{2!}f'(n)\) a Bernoulli-tagból jön. A \(C\) állandó nem olvasható le a formula tagjaiból, az a maradéktag határértéke; ismert, hogy \(C=\zeta(-\tfrac12)\approx-0{,}2078862\). Hasonlóan \(\sum k^{-1/2}=2\sqrt n+\zeta(\tfrac12)+\frac1{2\sqrt n}-\frac1{24n^{3/2}}+\cdots\) és \(\zeta(\tfrac12)\approx-1{,}4603545\). A két állandó értékét itt nem vezettük le, a kísérlet számolja ki a különbségeket, és mutatja a hibatagok viselkedését.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="bq-d-e">log<sub>10</sub> n <input type="range" id="bq-d-e" min="2" max="5" value="4"> <span class="mono" id="bq-d-ev">4</span></label>
+      </div>
+      <div class="info" id="bq-d-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A felső határ \(10^5\), mert a lebegőpontos összegzés rontja a pontosságot: a ✓ csak a durva egyezést jelzi (a skálázott hibatag 1/24 körül, 1%-on belül).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bq-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Számolás és ellenőrzés</h2>
+    <details>
+      <summary><span class="sq">1. Mekkora a \(\sum_{k>10}1/k^2\) farok két korlátja?</span></summary>
+      <div class="ans">
+        <div class="eq">\[\frac1{11}\approx0{,}0909\le\text{farok}\le\frac1{10}=0{,}1.\]</div>
+        <p><b>Ellenőrzés:</b> a tényleges farok</p>
+        <div class="eq">\[\zeta(2)-H^{(2)}_{10}\approx1{,}644934-1{,}549768=0{,}095166.\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mekkora \(n\) kell, hogy a \(\sum_{k=1}^n k2^{-k}\) hibája 2-től kisebb legyen \(10^{-6}\)-nál?</span></summary>
+      <div class="ans">
+        <p>A hiba \((n+2)2^{-n}<10^{-6}\). \(n=30\): \(32\cdot2^{-30}\approx2{,}98\cdot10^{-8}\); \(n=25\): \(27\cdot2^{-25}\approx8{,}0\cdot10^{-7}\), ez már kisebb; \(n=24\): \(26\cdot2^{-24}\approx1{,}55\cdot10^{-6}\), nagyobb. <b>Ellenőrzés:</b> a legkisebb ilyen \(n=25\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Add meg \(\sum_{k=1}^{100}\sqrt k\) közelítését a három főtaggal.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\begin{aligned}&\tfrac23\cdot1000+\tfrac12\cdot10-0{,}20789\\&\quad=666{,}6667+5-0{,}2079=671{,}4588.\end{aligned}\]</div>
+        <p>A hibatag \(\frac1{24\cdot10}\approx0{,}0042\), így \(\approx671{,}4630\). <b>Ellenőrzés:</b> a pontos összeg \(671{,}46295\) (közvetlen összegzés). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Miért nem tudjuk a \(\sum\sqrt k\) állandóját az Euler–Maclaurin-formula tagjaiból leolvasni?</span></summary>
+      <div class="ans">
+        <p>A formula véges összeget ad egy maradéktaggal, amely \(f\)-től és \(n\)-től függ, és a határértéke az állandó. Ez a maradék egy integrál \(\int_1^\infty B_2(\{x\})f''(x)\,dx\) alakú, amelyet zárt alakban nem kapunk meg, csak a \(\zeta\)-függvény analitikus folytatásából. <b>Ellenőrzés:</b> a kísérlet is csak numerikusan közelíti. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat a tankönyvi gyakorlat: a legfontosabb tagok összege, és a következő hibatag nagyságrendje.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="bq-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Konvergens és divergens összegek</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Összeg</th><th>Fejtés</th></tr>
+      <tr><th>\(\sum1/k^2\)</th><td>\(\zeta(2)-\frac1n+O(n^{-2})\)</td></tr>
+      <tr><th>\(\sum k2^{-k}\)</th><td>\(2-(n+2)2^{-n}\)</td></tr>
+      <tr><th>\(\sum\sqrt k\)</th><td>\(\frac23n^{3/2}+\frac12\sqrt n+\zeta(-\frac12)+\cdots\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Főtag</b><span>Integrállal.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Hibatagok</b><span>Euler–Maclaurin.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Állandó</b><span>Határérték, számolva.</span></div>
+    </div>
+    <p>A következő téma a 9.7, az alkalmazások.</p>
+  </div>
+  <aside class="margo">
+    <p>A szakaszok címei a magyar kiadás tartalomjegyzékéből valók, a tartalom saját feldolgozás.</p>
   </aside>
 </section>
 
@@ -11129,7 +11391,9 @@ const TOPICS={
   feladatokval:{"n": "8.7", "t": "Feladatok", "ch": 8, "prefix": "ar-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 8. fejezet, 8.7 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   nagyo:{"n": "9.1–9.2", "t": "Hierarchia és az O jelölés", "ch": 9, "prefix": "as-", "pages": [["bevezeto", "Bevezető"], ["definicio", "Definíciók"], ["hierarchia", "Növekedési rend"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.1–9.2 Hierarchia és az O jelölés. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   stirfej:{"n": "9.3", "t": "Műveletek az O szimbólummal", "ch": 9, "prefix": "at-", "pages": [["bevezeto", "Bevezető"], ["algebra", "Számolás az O-val"], ["stirling", "A Stirling-formula"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.3 Műveletek az O szimbólummal. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  ketfogas:{"n": "9.4", "t": "Két aszimptotikával kapcsolatos fogás", "ch": 9, "prefix": "bp-", "pages": [["bevezeto", "Bevezető"], ["csizma", "Csizmahúzás"], ["implicit", "Implicit egyenlet"], ["farok", "Az összeg két vége"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.4 Két aszimptotikával kapcsolatos fogás. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   eulermac:{"n": "9.5", "t": "Euler-féle szummációs formula", "ch": 9, "prefix": "au-", "pages": [["bevezeto", "Bevezető"], ["trapez", "Összeg és integrál"], ["formula", "Az Euler–Maclaurin-formula"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.5 Euler-féle szummációs formula. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
+  aszveges:{"n": "9.6", "t": "Véges összegzés", "ch": 9, "prefix": "bq-", "pages": [["bevezeto", "Bevezető"], ["konvergens", "Konvergens sorok"], ["divergens", "Divergens sorok"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.6 Véges összegzés. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   aszalk:{"n": "9.7", "t": "Alkalmazások (kiegészítés)", "ch": 9, "prefix": "av-", "pages": [["bevezeto", "Bevezető"], ["binom", "A központi binomiális együttható"], ["qsort", "A gyorsrendezés átlagos költsége"], ["gyak", "Gyakorlatok"], ["modszer", "Összefoglalás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.7 Alkalmazások (kiegészítés). A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   feladatokasz:{"n": "9.8", "t": "Feladatok", "ch": 9, "prefix": "aw-", "pages": [["bevezeto", "Bevezető"], ["bemelegito", "Bemelegítő"], ["halado", "Alap és haladó"], ["kutatas", "Kutatás"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 9. fejezet, 9.8 Feladatok. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
   osszegzes:{"n": "10.1", "t": "A kötet térképe", "ch": 10, "prefix": "ax-", "pages": [["bevezeto", "Bevezető"], ["terkep", "Hogyan kapcsolódnak?"], ["szam", "Ugyanaz a szám"], ["gyak", "Gyakorlatok"], ["modszer", "Eszköztár"]], "foot": "R. L. Graham – D. E. Knuth – O. Patashnik: <i>Konkrét matematika</i>, 10. fejezet, 10.1 A kötet térképe. A szöveg saját feldolgozás, a magyar kiadás szövege nélkül."},
@@ -11148,7 +11412,7 @@ const CH=[
   {"n": 6, "t": "Speciális számok", "d": "Stirling-, harmonikus, Fibonacci- és Bernoulli-számok.", "lead": "Néhány számsorozat újra meg újra felbukkan a diszkrét matematikában. A fejezet a Stirling-számokat, a harmonikus számokat, a Fibonacci-számokat és a Bernoulli-számokat vizsgálja: hogyan születnek, milyen azonosságok kötik össze őket, és mire jók.", "topics": [{"id": "stirling", "d": "Másodfajú és elsőfajú Stirling-számok, hatványok kifejtése, szürjekciók."}, {"id": "eulerszam", "d": "Az eulerian-számok és a permutációk emelkedései."}, {"id": "harmonikus", "d": "H_n növekedése, részleges összegzés, kapcsolat a Stirling-számokkal."}, {"id": "harmosszeg", "d": "Abel-féle részleges összegzés, a Σ C(k,m)·H_k képlet, binomiális inverzió."}, {"id": "bernoulli", "d": "Hatványösszegek zárt alakja, Bernoulli-számok rekurziója."}, {"id": "fibonacci", "d": "Cassini-azonosság, gcd-tulajdonság, Zeckendorf-tétel."}, {"id": "kontinuans", "d": "A kontinuáns rekurziója, az Euler-szabály, lánctörtek és az Euklideszi-algoritmus."}, {"id": "feladatokspec", "d": "Tíz saját feladat négy szinten a speciális számokról, megoldással, programmal ellenőrizve."}]},
   {"n": 7, "t": "Generátorfüggvények", "d": "Hatványsorok, rekurziók, partíciók, exponenciális generátorfüggvények.", "lead": "A generátorfüggvény egy sorozatot egyetlen hatványsorba csomagol. A fejezet azt mutatja meg, hogyan lesz a sorozatok közti rekurzióból algebrai egyenlet, és hogyan olvashatók le a megoldások és a megszámolási feladatok válaszai.", "topics": [{"id": "dominok", "d": "Dominólefedések és pénzváltás generátorfüggvénnyel; a pénzváltás részben a 7.8-ban szerepel."}, {"id": "gfalap", "d": "Hatványsorok mint sorozatok, eltolás, deriválás, részletösszeg."}, {"id": "gfrek", "d": "Lineáris rekurzió megoldása, résztörtek, Catalan-számok generátorfüggvénye."}, {"id": "gfspec", "d": "Híres generátorfüggvények gyűjteménye."}, {"id": "konvolucio", "d": "Konvolúciók és a belőlük adódó azonosságok."}, {"id": "gfexp", "d": "Exponenciális generátorfüggvény, Bell-számok, derangementek, involúciók."}, {"id": "dirichlet", "d": "Dirichlet-sorok és a számelméleti függvények szorzata."}, {"id": "gfparticio", "d": "Partíciószámok, páratlan és különböző részek, pénzváltás."}, {"id": "feladatokgf", "d": "Tíz saját feladat négy szinten a generátorfüggvényekről, megoldással, programmal ellenőrizve."}]},
   {"n": 8, "t": "Diszkrét valószínűség", "d": "Eseménytér, várható érték, szórás, generáló függvények, klasszikus feladatok.", "lead": "A diszkrét valószínűség megszámlálásra épül, ezért a korábbi fejezetek eszközei itt természetesen kerülnek elő: a binomiális együtthatók, a harmonikus számok és a generátorfüggvények. A fejezet a valószínűségi térből indul, és a klasszikus feladatokig vezet.", "topics": [{"id": "valalap", "d": "Eseménytér, kockák összege, feltételes valószínűség, Bayes-tétel."}, {"id": "varhato", "d": "Várható érték, indikátorváltozók, variancia, függetlenek összege."}, {"id": "valgf", "d": "G(x), a deriváltak, binomiális és geometriai eloszlás, összegek."}, {"id": "penzfeldobas", "d": "Mintázatok pénzfeldobásban, várható várakozási idő."}, {"id": "hasitas", "d": "Hash-táblák és ütközések valószínűségi elemzése."}, {"id": "klasszikus", "d": "Születésnap-paradoxon, kupongyűjtő feladat, a játékos csődje."}, {"id": "feladatokval", "d": "Tíz saját feladat négy szinten a diszkrét valószínűségről, megoldással, programmal ellenőrizve."}]},
-  {"n": 9, "t": "Aszimptotika", "d": "Nagy O, Stirling-formula, Euler–Maclaurin-összegzés, alkalmazások.", "lead": "Ha egy összegnek vagy sorozatnak nincs zárt alakja, még mindig megkérdezhetjük, hogyan viselkedik nagy n-re. A fejezet a nagy O jelöléssel kezdődik, és az Euler–Maclaurin-összegzésen át a Stirling-formuláig és a gyorsrendezés elemzéséig jut.", "topics": [{"id": "nagyo", "d": "O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."}, {"id": "stirfej", "d": "Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."}, {"n": "9.4", "t": "Két aszimptotikával kapcsolatos fogás", "d": "Csavaró és perturbációs módszerek az aszimptotikában."}, {"id": "eulermac", "d": "Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."}, {"n": "9.6", "t": "Véges összegzés", "d": "Véges összegek aszimptotikus becslése."}, {"id": "aszalk", "d": "C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."}, {"id": "feladatokasz", "d": "Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."}]},
+  {"n": 9, "t": "Aszimptotika", "d": "Nagy O, Stirling-formula, Euler–Maclaurin-összegzés, alkalmazások.", "lead": "Ha egy összegnek vagy sorozatnak nincs zárt alakja, még mindig megkérdezhetjük, hogyan viselkedik nagy n-re. A fejezet a nagy O jelöléssel kezdődik, és az Euler–Maclaurin-összegzésen át a Stirling-formuláig és a gyorsrendezés elemzéséig jut.", "topics": [{"id": "nagyo", "d": "O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."}, {"id": "stirfej", "d": "Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."}, {"id": "ketfogas", "d": "Csavaró és perturbációs módszerek az aszimptotikában."}, {"id": "eulermac", "d": "Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."}, {"id": "aszveges", "d": "Véges összegek aszimptotikus becslése."}, {"id": "aszalk", "d": "C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."}, {"id": "feladatokasz", "d": "Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."}]},
  {"n": 10, "t": "Összegzés", "d": "Saját záró rész: a fejezetek közötti kapcsolatok és a visszatérő eszközök.", "lead": "A Konkrét matematika kilenc fejezetes, ez a rész nem a könyv fejezete, hanem saját összegzés. Megmutatja, hogyan kapcsolódik egymáshoz a kilenc fejezet, és hogy ugyanaz a néhány eszköz hányféle helyzetben tér vissza.", "topics": [{"id": "osszegzes", "d": "A kilenc fejezet kapcsolatai, visszatérő eszközök, egy szám öt helyen."}]}];
 CH.forEach(c=>c.topics&&c.topics.forEach(tp=>{if(tp.id){tp.n=TOPICS[tp.id].n;tp.t=TOPICS[tp.id].t;tp.ready=true;}}));
 /* ================= 1.3 A JOSEPHUS-PROBLÉMA ================= */
@@ -11524,7 +11788,7 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.8.0";
+const APP_VERSION="1.9.0";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
@@ -14356,6 +14620,40 @@ function atS(){
 }
 $("#at-s-n").addEventListener("input",atS);atS();
 
+/* ================= 9.4 KÉT ASZIMPTOTIKUS FOGÁS ================= */
+function bpA(n){let a=1;for(let i=0;i<n;i++)a=a+1/a;return a*a-2*n-0.5*Math.log(n);}
+c2hero("ketfogas-bevezeto",900,12,fr=>{
+  const s=c2svg("#bp-hero",420,250),ns=[10,30,100,300,1000,3000,10000,30000,1e5,3e5,1e6,3e6],N=Math.min(fr+1,12),w=30,x0=30;
+  const vals=ns.map(bpA),mx=2.1;
+  ns.forEach((n,i)=>{const h=vals[i]/mx*170;el("rect",{x:x0+i*w+3,y:205-h,width:w-6,height:h,rx:2,style:`fill:var(--accent);opacity:${i<N?.6:.14}`},s);if(i%2===0)txt(s,x0+i*w+w/2,222,n>=1e4?"1e"+Math.round(Math.log10(n)):n,"","middle");});
+  $("#bp-hero-b").textContent=`n = ${ns[N-1]}: ${vals[N-1].toFixed(5)}`;
+});
+function bpAA(){
+  const e=+$("#bp-a-e").value;$("#bp-a-ev").textContent=e;
+  const hd=[],vals=[];for(let k=1;k<=e;k++){hd.push(`<td>10<sup>${k}</sup></td>`);vals.push(`<td>${bpA(10**k).toFixed(5)}</td>`);}
+  $("#bp-a-t").innerHTML="<tr><th>n</th>"+hd.join("")+"</tr><tr><th>a<sub>n</sub>² − 2n − ½ ln n</th>"+vals.join("")+"</tr>";
+  const n=10**e,a2=(()=>{let a=1;for(let i=0;i<n;i++)a=a+1/a;return a*a;})();
+  $("#bp-a-info").innerHTML=`n = 10<sup>${e}</sup>: a<sub>n</sub>² = ${a2.toFixed(4)}, 2n + ½ ln n = ${(2*n+0.5*Math.log(n)).toFixed(4)}<br>a<sub>n</sub>² ≥ 2n+1: ${ok(a2>=2*n+1)}, a<sub>n</sub>² ≤ 2n + 5/2 + ½ ln n: ${ok(a2<=2*n+2.5+0.5*Math.log(n))}`;
+}
+$("#bp-a-e").addEventListener("input",bpAA);bpAA();
+function bpX(){
+  const e=+$("#bp-x-e").value,J=+$("#bp-x-j").value;$("#bp-x-ev").textContent=e;$("#bp-x-jv").textContent=J;
+  const n=10**e;let r=Math.max(n/Math.log(n),3);for(let i=0;i<200;i++){r=r-(r*Math.log(r)-n)/(Math.log(r)+1);}
+  const rel=x=>((x-r)/r*100).toFixed(2)+" %";
+  let x=n;const rows=[`x<sub>0</sub> = n: ${rel(x)}`];for(let j=1;j<=J;j++){x=n/Math.log(x);if(j===J||j<=3)rows.push(`x<sub>${j}</sub>: ${rel(x)}`);}
+  const l=Math.log(n),ll=Math.log(l);
+  $("#bp-x-info").innerHTML=`n = 10<sup>${e}</sup>, gyök (Newton) = ${r.toPrecision(8)}, ellenőrzés x·ln x = ${(r*Math.log(r)).toPrecision(8)} ${ok(Math.abs(r*Math.log(r)/n-1)<1e-9)}<br>iteráció x<sub>j+1</sub> = n/ln x<sub>j</sub>: ${rows.join(" · ")}<br>n/ln n: ${rel(n/l)} · n/(ln n − ln ln n): ${rel(n/(l-ll))} · (n/ln n)(1+ln ln n/ln n): ${rel(n/l*(1+ll/l))}`;
+}
+["#bp-x-e","#bp-x-j"].forEach(i=>$(i).addEventListener("input",bpX));bpX();
+function bpT(){
+  const n=+$("#bp-t-n").value;$("#bp-t-nv").textContent=n;
+  let S=rat(0),c=1n;for(let k=0;k<=n;k++){S=S.add(rat(1n,c));c=c*BigInt(n-k)/BigInt(k+1);}
+  const d=S.sub(rat(2)).sub(rat(2,n)),lo=rat(4,n*(n-1)),hi=lo.add(rat(6*(n-5),n*(n-1)*(n-2)));
+  const geq=(a,b)=>a.sub(b).num()>=0n;
+  $("#bp-t-info").innerHTML=`S<sub>n</sub> = Σ 1/C(n,k) ${n<=20?"= "+S+" ":""}≈ ${Number(S.num()).toPrecision(8)}<br>alsó korlát 4/(n(n−1)) ≤ S<sub>n</sub> − 2 − 2/n ≤ felső korlát: ${ok(geq(d,lo)&&geq(hi,d))}<br>n²(S<sub>n</sub> − 2 − 2/n) = ${(n*n*Number(d.num())).toFixed(4)}`;
+}
+$("#bp-t-n").addEventListener("input",bpT);bpT();
+
 /* ================= 9.5 EULER–MACLAURIN ================= */
 const auG=0.5772156649015329;
 c2hero("eulermac-bevezeto",700,12,fr=>{
@@ -14386,6 +14684,32 @@ function auE(){
   $("#au-e-info").innerHTML=`n = ${n}: ${d.nm} = <b>${fm(+S.toFixed(12))}</b> (közvetlen összegezés)<div class="tbl-wrap"><table class="vals cmp"><tr><th>új tag</th><th>közelítés</th><th>hiba</th></tr>${rows}</table></div>`;
 }
 $("#au-e-f").addEventListener("input",auE);$("#au-e-n").addEventListener("input",auE);auE();
+
+/* ================= 9.6 VÉGES ÖSSZEGZÉS ================= */
+const bqZ2=Math.PI*Math.PI/6,bqZm=-0.2078862249773545,bqZh=-1.4603545088095868;
+const bqH2=n=>{let s=0;for(let k=n;k>=1;k--)s+=1/(k*k);return s;};
+c2hero("aszveges-bevezeto",800,10,fr=>{
+  const s=c2svg("#bq-hero",420,250),N=Math.min(fr+1,10),ns=[1,2,3,4,5,6,8,10,15,20],w=34,x0=40;
+  ns.forEach((n,i)=>{const v=n*(bqZ2-bqH2(n)),h=v*170;el("rect",{x:x0+i*w+3,y:205-h,width:w-6,height:h,rx:2,style:`fill:var(--accent);opacity:${i<N?.6:.14}`},s);txt(s,x0+i*w+w/2,222,n,"","middle");});
+  el("line",{x1:x0,x2:x0+10*w,y1:205-170,y2:205-170,style:"stroke:var(--accent);stroke-dasharray:4 4;opacity:.7"},s);
+  const n=ns[N-1];$("#bq-hero-b").textContent=`n = ${n}: ${(n*(bqZ2-bqH2(n))).toFixed(5)}`;
+});
+function bqK(){
+  const n=+$("#bq-k-n").value;$("#bq-k-nv").textContent=n;
+  const t=bqZ2-bqH2(n);
+  const m=Math.min(n,40);let S=rat(0);for(let k=1;k<=m;k++)S=S.add(rat(k,2n**BigInt(k)));
+  const ex=rat(2).sub(rat(m+2,2n**BigInt(m)));
+  $("#bq-k-info").innerHTML=`ζ(2) − Σ<sub>k≤${n}</sub> 1/k² = ${t.toExponential(5)}<br>1/(n+1) = ${(1/(n+1)).toExponential(5)} ≤ farok ≤ 1/n = ${(1/n).toExponential(5)}: ${ok(t>=1/(n+1)-1e-12&&t<=1/n+1e-12)}<br>n·farok = ${(n*t).toFixed(5)}<br>Σ<sub>k≤${m}</sub> k·2<sup>−k</sup> = 2 − (${m}+2)·2<sup>−${m}</sup>: ${ok(S.eq(ex))}, farok = ${((m+2)/2**m).toExponential(3)}`;
+}
+$("#bq-k-n").addEventListener("input",bqK);bqK();
+function bqD(){
+  const e=+$("#bq-d-e").value,n=10**e;$("#bq-d-ev").textContent=e;
+  let s1=0,s2=0;for(let k=n;k>=1;k--){s1+=Math.sqrt(k);s2+=1/Math.sqrt(k);}
+  const D1=s1-(2/3)*n**1.5-0.5*Math.sqrt(n),D2=s2-2*Math.sqrt(n)-0.5/Math.sqrt(n);
+  const r1=(D1-bqZm)*Math.sqrt(n);
+  $("#bq-d-info").innerHTML=`n = 10<sup>${e}</sup><br>Σ√k − ⅔n<sup>3/2</sup> − ½√n = ${D1.toFixed(7)}, ζ(−½) ≈ ${bqZm.toFixed(7)}, √n·különbség = ${r1.toFixed(5)} (1/24 = ${(1/24).toFixed(5)}) ${ok(Math.abs(r1*24-1)<0.01)}<br>Σ1/√k − 2√n − ½/√n = ${D2.toFixed(7)}, ζ(½) ≈ ${bqZh.toFixed(7)}, különbség = ${(D2-bqZh).toExponential(2)}`;
+}
+$("#bq-d-e").addEventListener("input",bqD);bqD();
 
 /* ================= 9.7 ALKALMAZÁSOK ================= */
 const avBin=n=>{let r=1n;for(let k=1n;k<=BigInt(n);k++)r=r*(BigInt(n)+k)/k;return r;};

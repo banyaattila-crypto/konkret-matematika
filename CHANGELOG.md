@@ -7,6 +7,15 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-11-15
+
+### Hozzáadva
+- 9.4 Két aszimptotikával kapcsolatos fogás: csizmahúzás az a<sub>n+1</sub>=a<sub>n</sub>+1/a<sub>n</sub> rekurzióra, implicit egyenlet (x ln x = n) iterációja, farok-trükk a Σ1/C(n,k) összegre; interaktív kísérletekkel és gyakorlatokkal.
+- 9.6 Véges összegzés: konvergens sorok farokbecslése (ζ(2), Σk·2^−k), divergens összegek (Σ√k, Σ1/√k) főtagja, hibatagja és állandója; kísérletekkel és gyakorlatokkal.
+
+### Módosítva
+- A 9. fejezet teljes: minden szakasz tartalommal rendelkezik.
+
 ## [1.8.0] - 2026-11-15
 
 ### Hozzáadva
