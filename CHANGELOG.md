@@ -7,6 +7,11 @@ A publikus interfész az oldalak hash-útvonala (`#téma-oldal`, `#fejezet-N`).
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-11-15
+
+### Módosítva
+- Címek a könyv szóhasználatához igazítva: 2.6 „Véges és végtelen analízis”, 3.1 „Alsó és felső egész”, 3.4 „A „mod” bináris művelet”. A hash-azonosítók változatlanok.
+
 ## [1.2.0] - 2026-11-15
 
 ### Hozzáadva

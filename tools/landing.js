@@ -159,7 +159,7 @@ const mrain=(()=>{
 })();
 
 /* Verziószám (SemVer, lásd VERSION és CHANGELOG.md) */
-const APP_VERSION="1.2.0";
+const APP_VERSION="1.2.1";
 (function(){const t=document.getElementById("tree");if(t){const v=document.createElement("div");v.className="ver";v.textContent="v"+APP_VERSION;v.title="Verzió: "+APP_VERSION;t.after(v);}})();
 
 /* PWA: szolgáltatásmunkás (offline) és telepítés gomb. Csak http(s) alól, csendes hibakezeléssel. */
