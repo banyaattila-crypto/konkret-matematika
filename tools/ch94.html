@@ -1,0 +1,123 @@
+
+<!-- ================= 9.4 ALKALMAZÁSOK ================= -->
+<header class="hero page" id="av-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.4</div>
+    <h1>Alkalmazások</h1>
+    <p class="lead">Két ismerős mennyiség nagy \(n\)-re: a középső binomiális együttható és a gyorsrendezés átlagos költsége. Mindkettő a Stirling-formulából, illetve a harmonikus számok fejtéséből olvasható le.</p>
+    <div class="formula">\(\displaystyle\binom{2n}n\sim\frac{4^n}{\sqrt{\pi n}},\qquad C_n=2(n+1)H_n-4n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="av-hero" role="img" aria-label="A C(2n,n) és a 4ⁿ/√(πn) hányadosa n=1-től"></svg>
+    <div class="counter"><span id="av-hero-a">n = 1</span><span>C(2n,n) · √(πn) / 4<sup>n</sup> = <b id="av-hero-b">0,8862</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A \(2n\) érmefeldobásból pontosan \(n\) fej esélye \(\binom{2n}n/4^n\). Az első látásra meglepő, hogy ez az esély nem tart 1/2-hez vagy más állandóhoz, hanem 0-hoz, a \(1/\sqrt{\pi n}\) ütemében. A képen a pontos és a közelítő érték hányadosa látható: \(n=1\)-nél 0,886, és gyorsan az 1 felé tart. A gyorsrendezés másik típusú alkalmazás: ott az átlagos összehasonlítások száma pontos zárt alakban kiszámítható, és az aszimptotika a kapott kifejezés nagyságrendjét adja meg.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="av-binom">
+  <div class="body">
+    <div class="eyebrow">§1 · A \(\binom{2n}n\)</div>
+    <h2>Stirling-formulával</h2>
+    <p>A \(\binom{2n}n=\tfrac{(2n)!}{(n!)^2}\) törtben a 9.2 szerint \((2n)!\sim\sqrt{4\pi n}\,(2n/e)^{2n}\bigl(1+\tfrac1{24n}\bigr)\) és \(n!^2\sim2\pi n\,(n/e)^{2n}\bigl(1+\tfrac1{12n}\bigr)^2\). Az \(e\) hatványai és az \(n^{2n}\) kiesnek:</p>
+    <div class="eq gold">\[\binom{2n}n=\frac{4^n}{\sqrt{\pi n}}\Bigl(1-\frac1{8n}+\frac1{128n^2}+O\Bigl(\frac1{n^3}\Bigr)\Bigr).\]</div>
+    <p>A \(-\tfrac1{8n}\) a korrekciós tényezők hányadosából jön: \(\tfrac{1+1/(24n)}{(1+1/(12n))^2}=1+\tfrac1{24n}-\tfrac2{12n}+\dots=1-\tfrac1{8n}+\dots\). A \(\tfrac1{128n^2}\) tagot a Stirling-sor következő tagjából kapjuk, és ezt a kísérlet számszerűen ellenőrzi.</p>
+    <p>A \(C_n=\tfrac1{n+1}\binom{2n}n\) Catalan-számra így \(C_n\sim\tfrac{4^n}{\sqrt\pi\,n^{3/2}}\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="av-b-n">n <input type="range" id="av-b-n" min="1" max="200" value="10"> <span class="mono" id="av-b-nv">10</span></label>
+      </div>
+      <div class="info" id="av-b-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(2n\) érmefeldobás pontosan \(n\) fejének esélye \(n=50\)-re 0,0796, vagyis nagyjából 8%. A sima \(1/\sqrt{\pi n}=0{,}0798\) is jó közelítés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="av-qsort">
+  <div class="body">
+    <div class="eyebrow">§2 · Gyorsrendezés</div>
+    <h2>Átlagos összehasonlításszám</h2>
+    <p>Véletlen sorrendű, páronként különböző \(n\) elemet rendezünk úgy, hogy egy véletlen elemet választunk főelemnek, mindent összehasonlítunk vele (\(n-1\) összehasonlítás), majd a két részt rekurzívan rendezzük. A várható összehasonlításszám \(C_0=0\) mellett</p>
+    <div class="eq">\[C_n=n-1+\frac2n\sum_{k=0}^{n-1}C_k.\]</div>
+    <p>Szorozzuk \(n\)-nel, és vonjuk ki az \(n-1\)-re felírt egyenletet: \(nC_n-(n-1)C_{n-1}=2(n-1)+2C_{n-1}\), vagyis \(nC_n=(n+1)C_{n-1}+2(n-1)\). Osztva \(n(n+1)\)-gyel:</p>
+    <div class="eq">\[\frac{C_n}{n+1}=\frac{C_{n-1}}n+\frac{4}{n+1}-\frac2n.\]</div>
+    <p>Összegezve (a 2. fejezet teleszkópos módszere): \(\tfrac{C_n}{n+1}=4(H_{n+1}-1)-2H_n\), azaz</p>
+    <div class="eq gold">\[C_n=2(n+1)H_n-4n=2n\ln n+(2\gamma-4)\,n+2\ln n+2\gamma+1+O\Bigl(\frac1n\Bigr).\]</div>
+    <p>A főtag \(2n\ln n\approx1{,}386\,n\log_2n\), vagyis kb. 39%-kal több a \(n\log_2 n\) elvi alsó korlátnál. A legrosszabb eset viszont \(\tfrac{n(n-1)}2\).</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="av-q-n">n <input type="range" id="av-q-n" min="2" max="2000" value="100"> <span class="mono" id="av-q-nv">100</span></label>
+      </div>
+      <div class="info" id="av-q-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(2\gamma-4=-2{,}8456\) tag miatt a \(2n\ln n\) főtag nagyságrendileg jelentősen túlbecsül: \(n=100\)-nál 921 helyett a valódi érték 648. Aszimptotikus formulát kis \(n\)-re csak a következő tagokkal együtt érdemes használni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="av-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Központi binomiális, rendezés</h2>
+    <details>
+      <summary><span class="sq">1. Közelítsd a \(\binom{20}{10}\)-et a \(4^n/\sqrt{\pi n}\) alakkal és a két korrekcióval.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\frac{4^{10}}{\sqrt{10\pi}}=187\,079,\quad\times\Bigl(1-\frac1{80}\Bigr)=184\,740,\quad\times\Bigl(1-\frac1{80}+\frac1{12800}\Bigr)=184\,755.\]</div>
+        <p><b>Ellenőrzés:</b> a pontos érték \(\binom{20}{10}=184\,756\), a hiba 0,0005%. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mekkora az esélye, hogy 100 érmefeldobásból pontosan 50 fej lesz?</span></summary>
+      <div class="ans">
+        <div class="eq">\[\frac{\binom{100}{50}}{2^{100}}\approx\frac1{\sqrt{50\pi}}\Bigl(1-\frac1{400}\Bigr)=0{,}07979\cdot0{,}9975=0{,}07959.\]</div>
+        <p><b>Ellenőrzés:</b> a pontos érték 0,079589. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Számítsd ki a gyorsrendezés várható összehasonlításszámát \(n=10\)-re pontosan.</span></summary>
+      <div class="ans">
+        <p>\(C_{10}=2\cdot11\cdot H_{10}-40\), és \(H_{10}=\tfrac{7381}{2520}\), tehát \(C_{10}=\tfrac{81191}{1260}-40=\tfrac{30791}{1260}\approx24{,}437\).</p>
+        <p><b>Ellenőrzés:</b> a rekurzió \(C_n=n-1+\tfrac2n\sum C_k\) közvetlen iterációja is 24,437-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mennyi a \(C_{10}\) Catalan-szám, és mit ad a \(\tfrac{4^n}{\sqrt\pi\,n^{3/2}}\) közelítés?</span></summary>
+      <div class="ans">
+        <p>\(C_{10}=\tfrac1{11}\binom{20}{10}=16\,796\), a közelítés \(\tfrac{4^{10}}{\sqrt\pi\cdot10^{3/2}}=18\,708\), vagyis 11%-kal nagyobb.</p>
+        <p><b>Ellenőrzés:</b> az első korrekcióval, a \(\bigl(1-\tfrac9{8n}\bigr)\) tényezővel 16 603, hibája már csak 1,1%. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat korrekciós tényezője \((1-\tfrac1{8n})(1-\tfrac1n+\dots)\): a \(\tfrac1{n+1}\) tényező fejtése is hozzájárul, ezért a Catalan-számokra a korrekció nagyobb, mint a középső binomiálisra.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="av-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Pontos képlet, aszimptotika</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Mennyiség</th><th>Pontos</th><th>Aszimptotikus</th></tr>
+      <tr><td>\(\binom{2n}n\)</td><td>\(\tfrac{(2n)!}{n!^2}\)</td><td>\(\tfrac{4^n}{\sqrt{\pi n}}(1-\tfrac1{8n}+\dots)\)</td></tr>
+      <tr><td>Catalan \(C_n\)</td><td>\(\tfrac1{n+1}\binom{2n}n\)</td><td>\(\tfrac{4^n}{\sqrt\pi n^{3/2}}\)</td></tr>
+      <tr><td>gyorsrendezés</td><td>\(2(n+1)H_n-4n\)</td><td>\(2n\ln n+(2\gamma-4)n+\dots\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Pontos képlet</b><span>Rekurzió vagy hányados.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Sorfejtés</b><span>Stirling vagy Euler–Maclaurin.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Hibatag</b><span>Add meg a rendet, és ellenőrizd számmal.</span></div>
+    </div>
+    <p>A fejezetvégi feladatok a 9.5-ben következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A gyorsrendezés elemzésénél feltételeztük, hogy a főelem egyenletesen véletlen, és az elemek páronként különbözők. Más feltételekkel (például sok egyenlő elemmel vagy rosszul választott főelemmel) a költség eltérhet.</p>
+  </aside>
+</section>

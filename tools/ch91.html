@@ -1,0 +1,123 @@
+
+<!-- ================= 9.1 NAGY O ÉS TÁRSAI ================= -->
+<header class="hero page" id="as-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.1</div>
+    <h1>Nagy O és társai</h1>
+    <p class="lead">Az aszimptotikus jelölés azt mondja meg, hogyan viselkedik egy függvény nagy \(n\)-re, a konstansok és az alacsonyabb rendű tagok részletei nélkül.</p>
+    <div class="formula">\(\displaystyle f(n)=O\bigl(g(n)\bigr)\iff|f(n)|\le C\,|g(n)|\ \ (n\ge n_0)\)</div>
+  </div>
+  <div class="stage">
+    <svg id="as-hero" role="img" aria-label="Az n²+100n görbe és a 2n² görbe: n=100 után az első a második alatt marad"></svg>
+    <div class="counter"><span id="as-hero-a">n = 20</span><span id="as-hero-b">f ≤ 2g: nem</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az \(n^2+100n\) kis \(n\)-re egészen más, mint az \(n^2\): \(n=10\)-nél a másodrendű tag csak százada az elsőnek. A képen a két görbe \(f=n^2+100n\) és \(2g=2n^2\). Az \(n=100\) előtt \(f\) a nagyobb, onnan kezdve \(2g\), és ez már így is marad. Ezt a „valahonnan kezdve mindig” viselkedést fogja meg a nagy O: egy \(C\) konstans és egy \(n_0\) küszöb adja a bizonyítékot. A jelölés a számítástudományban lett mindennapos, de a számelméletben már a 19. század végén használták.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="as-definicio">
+  <div class="body">
+    <div class="eyebrow">§1 · Definíciók</div>
+    <h2>Öt jelölés</h2>
+    <p>Legyen \(g\) pozitív, és az állítások \(n\to\infty\)-re vonatkozzanak.</p>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Jelölés</th><th>Jelentés</th><th>Példa</th></tr>
+      <tr><td>\(f=O(g)\)</td><td>\(\lvert f\rvert\le Cg\) valahonnan kezdve</td><td>\(3n^2+n=O(n^2)\)</td></tr>
+      <tr><td>\(f=\Omega(g)\)</td><td>\(f\ge cg\) valahonnan kezdve, \(c>0\)</td><td>\(n^2=\Omega(n)\)</td></tr>
+      <tr><td>\(f=\Theta(g)\)</td><td>mindkettő: \(f=O(g)\) és \(f=\Omega(g)\)</td><td>\(3n^2+n=\Theta(n^2)\)</td></tr>
+      <tr><td>\(f=o(g)\)</td><td>\(f/g\to0\)</td><td>\(n\ln n=o(n^2)\)</td></tr>
+      <tr><td>\(f\sim g\)</td><td>\(f/g\to1\)</td><td>\(n^2+100n\sim n^2\)</td></tr>
+    </table></div>
+    <p>A kapcsolat: \(f\sim g\) erősebb, mint \(f=\Theta(g)\), és az \(f=o(g)\) erősebb, mint \(f=O(g)\). Az \(f=O(g)\) jelölésben az egyenlőségjel egyirányú: \(O(g)\) függvények egy halmazát jelöli, ezért \(n=O(n^2)\) igaz, de \(O(n^2)=n\) nem.</p>
+    <p>Az \(f=O(g)\) bizonyításához elég megadni egy \(C\)-t és egy \(n_0\)-t. Az \(n^2+100n\le2n^2\) pontosan akkor igaz, ha \(100n\le n^2\), vagyis \(n\ge100\), tehát \(C=2\), \(n_0=100\) megfelel.</p>
+  </div>
+  <aside class="margo">
+    <p>A \(\Theta\) és az \(O\) különbsége gyakorlati: az \(O\) csak felső korlát, ezért „az algoritmus \(O(n^3)\)” igaz akkor is, ha valójában \(\Theta(n)\). Alsó és felső becslést együtt a \(\Theta\) ad.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="as-hierarchia">
+  <div class="body">
+    <div class="eyebrow">§2 · Növekedési rend</div>
+    <h2>Mi nő gyorsabban?</h2>
+    <p>A gyakori függvények növekedési sorrendje (mindegyik \(o\) a következőhöz képest):</p>
+    <div class="eq">\[1\ \prec\ \ln n\ \prec\ n^{\varepsilon}\ \prec\ n\ \prec\ n\ln n\ \prec\ n^2\ \prec\ n^k\ \prec\ 2^n\ \prec\ n!\ \prec\ n^n.\]</div>
+    <p>Az \(n^k=o(2^n)\) minden rögzített \(k\)-ra igaz. A binomiális tételből (5. fejezet) \(2^n=\sum_j\binom nj\ge\binom n{k+1}\), és a szorzatban minden tényező legalább \(n-k\), tehát \(\binom n{k+1}=\tfrac{n(n-1)\cdots(n-k)}{(k+1)!}\ge\tfrac{(n-k)^{k+1}}{(k+1)!}\), így</p>
+    <div class="eq">\[\frac{n^k}{2^n}\le\frac{(k+1)!\,n^k}{(n-k)^{k+1}}\xrightarrow[n\to\infty]{}0,\]</div>
+    <p>mert a nevező fokszáma eggyel nagyobb. A kísérlet hét \(f/g\) hányadost követ \(n=10\)-től \(10^6\)-ig.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="as-r-p">pár <select id="as-r-p"></select></label>
+      </div>
+      <div class="info" id="as-r-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(2^n\) és az \(n^{10}\) esete tanulságos: \(n=2,\dots,58\)-ra az \(n^{10}\) a nagyobb, \(n=59\)-től a \(2^n\). Az aszimptotikus állítás tehát csak „valahonnan kezdve” igaz, a küszöb nagy is lehet.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="as-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Konstansok és küszöbök</h2>
+    <details>
+      <summary><span class="sq">1. Mutasd meg, hogy \(n^2+100n=O(n^2)\), és add meg \(C\)-t és \(n_0\)-t.</span></summary>
+      <div class="ans">
+        <p>\(100n\le n^2\) pontosan akkor, ha \(n\ge100\); ekkor \(n^2+100n\le2n^2\), tehát \(C=2\), \(n_0=100\).</p>
+        <p><b>Ellenőrzés:</b> \(n=100\)-nál \(10000+10000=20000=2\cdot10^4\); \(n=99\)-nél \(19701>19602=2\cdot99^2\), a küszöb éles. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Melyik a legkisebb \(n\), amelyre \(n!>3^n\)?</span></summary>
+      <div class="ans">
+        <p>\(6!=720<729=3^6\), de \(7!=5040>2187=3^7\), és onnan minden lépésben a bal oldal 8-cal vagy többel szorzódik, a jobb 3-mal. Tehát \(n=7\).</p>
+        <p><b>Ellenőrzés:</b> \(n=1,\dots,6\)-ra \(n!<3^n\) (a legközelebbi az \(n=6\)), \(n=7\)-től igaz. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Igaz-e, hogy \(2^{n+1}=O(2^n)\)? És hogy \(2^{2n}=O(2^n)\)?</span></summary>
+      <div class="ans">
+        <p>Az első igaz, \(C=2\). A második hamis: \(2^{2n}/2^n=2^n\to\infty\), tehát nincs olyan \(C\), amely minden nagy \(n\)-re korlátozná.</p>
+        <p><b>Ellenőrzés:</b> \(n=10\)-nél \(2^{2n}/2^n=1024\), \(n=20\)-nál \(1048576\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Igazold, hogy \(\ln n!=\Theta(n\ln n)\).</span></summary>
+      <div class="ans">
+        <p>Felső becslés: \(n!\le n^n\), tehát \(\ln n!\le n\ln n\). Alsó becslés: a szorzat felső fele legalább \(n/2\) tényezőt tartalmaz, mindegyik legalább \(n/2\), tehát \(n!\ge(n/2)^{n/2}\), és \(\ln n!\ge\tfrac n2\ln\tfrac n2\), ami \(n\ge4\)-re legalább \(\tfrac14n\ln n\). \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \(n=100\)-nál \(\ln100!=363{,}74\), \(100\ln100=460{,}52\), \(50\ln50=195{,}60\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 4. feladat csak a nagyságrendet adja. A pontos viselkedést a Stirling-formula adja a 9.2-ben.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="as-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Mit mond az egyes jelölés?</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Állítás</th><th>Bizonyítás módja</th></tr>
+      <tr><td>\(f=O(g)\)</td><td>adj meg \(C\)-t és \(n_0\)-t</td></tr>
+      <tr><td>\(f=o(g)\)</td><td>mutasd meg, hogy \(f/g\to0\)</td></tr>
+      <tr><td>\(f\sim g\)</td><td>mutasd meg, hogy \(f/g\to1\)</td></tr>
+      <tr><td>\(f\ne O(g)\)</td><td>mutasd meg, hogy \(f/g\) nem korlátos</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Hányados</b><span>Vizsgáld meg \(f/g\)-t.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Konstans, küszöb</b><span>Ha korlátos, add meg \(C\)-t, \(n_0\)-t.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Számolj vele</b><span>Az O-algebra a 9.2-ben.</span></div>
+    </div>
+    <p>Következő: a hibatagok kezelése és a Stirling-formula (9.2).</p>
+  </div>
+  <aside class="margo">
+    <p>A számítógépes kísérlet az aszimptotikus állítást soha nem bizonyítja, mert véges \(n\)-ig néz. Egy hányados \(10^6\)-ig mutathat 1-hez közeli értéket, és később mégis eltérhet.</p>
+  </aside>
+</section>

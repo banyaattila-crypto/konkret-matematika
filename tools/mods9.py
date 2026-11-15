@@ -1,0 +1,8 @@
+MODS9=[
+ ("nagyo","9.1","Nagy O és társai","as-","ch91",[["bevezeto","Bevezető"],["definicio","Definíciók"],["hierarchia","Növekedési rend"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"O, o, Ω, Θ és ~, a növekedési rendek hierarchiája."),
+ ("stirfej","9.2","Az O algebrája és a Stirling-formula","at-","ch92",[["bevezeto","Bevezető"],["algebra","Számolás az O-val"],["stirling","A Stirling-formula"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Hibatagok kezelése, aszimptotikus fejtések, n! közelítése."),
+ ("eulermac","9.3","Euler–Maclaurin-összegzés","au-","ch93",[["bevezeto","Bevezető"],["trapez","Összeg és integrál"],["formula","Az Euler–Maclaurin-formula"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"Összegek közelítése integrállal és Bernoulli-számos korrekciókkal."),
+ ("aszalk","9.4","Alkalmazások","av-","ch94",[["bevezeto","Bevezető"],["binom","A központi binomiális együttható"],["qsort","A gyorsrendezés átlagos költsége"],["gyak","Gyakorlatok"],["modszer","Összefoglalás"]],"C(2n,n), Catalan-számok és a gyorsrendezés várható összehasonlításszáma."),
+ ("feladatokasz","9.5","Feladatok","aw-","ch95",[["bevezeto","Bevezető"],["bemelegito","Bemelegítő"],["halado","Alap és haladó"],["kutatas","Kutatás"]],"Tíz saját feladat négy szinten az aszimptotikáról, megoldással, programmal ellenőrizve."),
+]
+CH9={"n":9,"t":"Aszimptotika","d":"Nagy O, Stirling-formula, Euler–Maclaurin-összegzés, alkalmazások.","lead":"Ha egy összegnek vagy sorozatnak nincs zárt alakja, még mindig megkérdezhetjük, hogyan viselkedik nagy n-re. A fejezet a nagy O jelöléssel kezdődik, és az Euler–Maclaurin-összegzésen át a Stirling-formuláig és a gyorsrendezés elemzéséig jut.","old":'{n:9,t:"Aszimptotika",d:"Nagy O, Euler–Maclaurin-összegzés."}'}

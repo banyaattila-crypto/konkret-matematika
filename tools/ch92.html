@@ -1,0 +1,130 @@
+
+<!-- ================= 9.2 AZ O ALGEBRÁJA ÉS A STIRLING-FORMULA ================= -->
+<header class="hero page" id="at-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.2</div>
+    <h1>Az O algebrája és a Stirling-formula</h1>
+    <p class="lead">A hibatagot nem kell kiszámolni, elég a nagyságrendjét követni. Ezzel a szemlélettel az \(n!\) szinte pontosan megadható.</p>
+    <div class="formula">\(\displaystyle n!\sim\sqrt{2\pi n}\Bigl(\frac ne\Bigr)^{n}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="at-hero" role="img" aria-label="Az n! és a Stirling-közelítés hányadosa n=1-től"></svg>
+    <div class="counter"><span id="at-hero-a">n = 1</span><span>n! / Stirling = <b id="at-hero-b">1,0844</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A faktoriális gyorsan nő: \(10!\) már 3,6 millió, \(100!\) pedig 158 jegyű. A Stirling-formula szerint ez a szám egy \(\sqrt{2\pi n}\,(n/e)^n\) alakú kifejezéssel áll közel, és a hányados már \(n=10\)-nél 1,008. A képen a pontos és a közelítő érték hányadosa látható \(n=1,2,\dots\)-re: egyre szorosabban simul az 1-hez. A formula nevét James Stirlingről kapta, az \(\sqrt{2\pi}\) állandót ő találta meg, a nagyságrendet de Moivre már korábban ismerte; ezek a történeti részletek emlékezetből vannak, a forrást nem ellenőriztem.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="at-algebra">
+  <div class="body">
+    <div class="eyebrow">§1 · Számolás az O-val</div>
+    <h2>Szabályok a hibatagokra</h2>
+    <p>Az \(O(\cdot)\) egy ismeretlen, de korlátos nagyságrendű mennyiséget jelöl. A leggyakoribb szabályok, \(n\to\infty\)-re:</p>
+    <div class="eq">\[O(f)+O(g)=O\bigl(\max(|f|,|g|)\bigr),\qquad O(f)\cdot O(g)=O(fg),\qquad f\cdot O(g)=O(fg).\]</div>
+    <p>Kis \(x\)-re a \(\ln(1+x)=x-\tfrac{x^2}2+\tfrac{x^3}3-\dots\) sorból \(\ln(1+x)=x-\tfrac{x^2}2+O(x^3)\), és \(e^x=1+x+\tfrac{x^2}2+O(x^3)\). Ezekkel kiszámítható az \(\bigl(1+\tfrac1n\bigr)^n\) fejtése:</p>
+    <div class="eq">\[n\ln\Bigl(1+\frac1n\Bigr)=1-\frac1{2n}+\frac1{3n^2}+O\Bigl(\frac1{n^3}\Bigr),\]</div>
+    <p>és az exponenciálisba helyettesítve \(x=-\tfrac1{2n}+\tfrac1{3n^2}+O(n^{-3})\) mellett \(x^2=\tfrac1{4n^2}+O(n^{-3})\):</p>
+    <div class="eq gold">\[\Bigl(1+\frac1n\Bigr)^n=e\Bigl(1-\frac1{2n}+\frac{11}{24n^2}+O\Bigl(\frac1{n^3}\Bigr)\Bigr).\]</div>
+    <p>A \(\tfrac{11}{24}\) értéke \(\tfrac13+\tfrac18\) (a \(\tfrac13\) a \(\ln\)-ból, a \(\tfrac18=\tfrac12\cdot\tfrac14\) az \(e^x\) négyzetes tagjából). A kísérlet egymás után tartalmazza a közelítések hibáját.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="at-a-n">n <input type="range" id="at-a-n" min="2" max="200" value="100"> <span class="mono" id="at-a-nv">100</span></label>
+      </div>
+      <div class="info" id="at-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Egy tag elhagyása megadható hibatagként is: „\(e\bigl(1-\tfrac1{2n}\bigr)\)” helyett „\(e\bigl(1-\tfrac1{2n}+O(n^{-2})\bigr)\)”. Az utóbbi állítás, az előbbi csak közelítés.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="at-stirling">
+  <div class="body">
+    <div class="eyebrow">§2 · Stirling</div>
+    <h2>Az \(n!\) fejtése</h2>
+    <p>A pontosabb alak, amelyet a 9.3 Euler–Maclaurin-formulájából is megkapunk (az \(\sqrt{2\pi}\) állandóval együtt nem, azt külön érvvel, a Wallis-szorzattal szokás megadni):</p>
+    <div class="eq gold">\[n!=\sqrt{2\pi n}\Bigl(\frac ne\Bigr)^{n}\Bigl(1+\frac1{12n}+\frac1{288n^2}-\frac{139}{51840n^3}+O\Bigl(\frac1{n^4}\Bigr)\Bigr).\]</div>
+    <p>Amit itt be tudunk látni: \(n\ln n-n+1\le\ln n!\le n\ln n-n+1+\ln n\), vagyis \(\ln n!=n\ln n-n+O(\ln n)\) (ez a 9.5 egyik feladata). Az \(\tfrac12\ln n\) és az állandó pontos értéke a finomabb elemzésből jön, amelyet a 9.3-ban az Euler–Maclaurin-formula ad meg. A \(\sqrt{2\pi}\) levezetését nem közöljük.</p>
+    <p>A kísérlet az \(n!\) pontos értékét BigInt-tel számolja, és a Stirling-közelítések hibáját mutatja 0, 1 és 2 korrekciós taggal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="at-s-n">n <input type="range" id="at-s-n" min="1" max="100" value="10"> <span class="mono" id="at-s-nv">10</span></label>
+      </div>
+      <div class="info" id="at-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(n=1\)-nél is használható: a közelítés \(\sqrt{2\pi}/e=0{,}9221\), a pontos érték 1. Az első korrekció (\(1+\tfrac1{12}\)) \(0{,}9990\)-et ad, 0,1% hibával. A sorfejtés aszimptotikus, nem konvergens: rögzített \(n\)-re a tagok végül nőnek.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="at-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Közelítések számolása</h2>
+    <details>
+      <summary><span class="sq">1. Közelítsd a \(10!\)-t a Stirling-formulával, és add meg a relatív hibát.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\sqrt{20\pi}\Bigl(\frac{10}e\Bigr)^{10}\approx3\,598\,696.\]</div>
+        <p>A pontos érték 3 628 800, a relatív hiba 0,83%, ami éppen \(\tfrac1{12n}\).</p>
+        <p><b>Ellenőrzés:</b> egy korrekciós taggal a közelítés 3 628 685, a hiba 0,003%.</p>
+        <div class="eq">\[3\,598\,696\cdot\Bigl(1+\frac1{120}\Bigr)\approx3\,628\,685\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány jegyű a \(100!\)?</span></summary>
+      <div class="ans">
+        <div class="eq">\[\log_{10}100!\approx\frac{100\ln100-100+\tfrac12\ln(200\pi)}{\ln10}=157{,}9696.\]</div>
+        <p>Az \(\tfrac1{12n}\) korrekció \(\tfrac{1}{1200\ln10}\approx0{,}0004\)-et ad, így 157,970. A jegyek száma \(\lfloor157{,}97\rfloor+1=158\).</p>
+        <p><b>Ellenőrzés:</b> a pontos \(100!\) 158 jegyű, \(\log_{10}100!=157{,}9700\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Add meg az \(\bigl(1+\tfrac1n\bigr)^n\) közelítését \(n=100\)-ra a 9.2 fejtés három tagjával, és vesd össze a pontos értékkel.</span></summary>
+      <div class="ans">
+        <div class="eq">\[e\Bigl(1-\frac1{200}+\frac{11}{240000}\Bigr)\approx2{,}704815,\qquad 1{,}01^{100}\approx2{,}704814.\]</div>
+        <p>A hiba \(\approx10^{-6}\), ami \(O(n^{-3})=10^{-6}\) nagyságrendű.</p>
+        <p><b>Ellenőrzés:</b> két taggal 2,70469, a hiba \(1{,}2\cdot10^{-4}\), és ennyi a következő tag:</p>
+        <div class="eq">\[\frac{11e}{24n^2}=1{,}2\cdot10^{-4}\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Mutasd meg, hogy \(\sqrt{n^2+n}=n+\tfrac12-\tfrac1{8n}+O(n^{-2})\).</span></summary>
+      <div class="ans">
+        <p>\(\sqrt{n^2+n}=n\sqrt{1+\tfrac1n}\), és \(\sqrt{1+x}=1+\tfrac x2-\tfrac{x^2}8+O(x^3)\) \(x=\tfrac1n\)-nél:</p>
+        <div class="eq">\[n\Bigl(1+\frac1{2n}-\frac1{8n^2}+O(n^{-3})\Bigr)=n+\frac12-\frac1{8n}+O(n^{-2}).\ \square\]</div>
+        <p><b>Ellenőrzés:</b> \(n=100\)-ra \(\sqrt{10100}=100{,}498756\), a képlet \(100{,}49875\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>Az 1. feladat hibája majdnem pontosan \(\tfrac1{12n}\), ami a Stirling-sor első korrekciója. Ezért érdemes az első korrekciós taggal számolni, mert olcsó, és a hibát két nagyságrenddel csökkenti.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="at-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Hibatagok kezelése</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Mennyiség</th><th>Fejtés</th></tr>
+      <tr><td>\(\ln(1+x)\)</td><td>\(x-\tfrac{x^2}2+\tfrac{x^3}3-\dots\)</td></tr>
+      <tr><td>\((1+\tfrac1n)^n\)</td><td>\(e\bigl(1-\tfrac1{2n}+\tfrac{11}{24n^2}+O(n^{-3})\bigr)\)</td></tr>
+      <tr><td>\(n!\)</td><td>\(\sqrt{2\pi n}(n/e)^n\bigl(1+\tfrac1{12n}+\tfrac1{288n^2}+\dots\bigr)\)</td></tr>
+      <tr><td>\(\sqrt{n^2+n}\)</td><td>\(n+\tfrac12-\tfrac1{8n}+O(n^{-2})\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Emelj ki</b><span>Hozd az alakot \(1+\text{kicsi}\)-re.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Fejts sorba</b><span>Tartsd meg a szükséges rendet.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Írd a hibát O-ba</b><span>A maradékot nem számoljuk ki.</span></div>
+    </div>
+    <p>Következő: összegek közelítése integrálokkal, az Euler–Maclaurin-formula (9.3).</p>
+  </div>
+  <aside class="margo">
+    <p>A fejtésnél a rendet előre döntsd el: ha a végeredményben \(1/n^2\) pontosság kell, a közbenső lépésekben is legalább ilyen rendig kell követni a tagokat.</p>
+  </aside>
+</section>

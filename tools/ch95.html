@@ -1,0 +1,139 @@
+
+<!-- ================= 9.5 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="aw-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.5</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat az aszimptotikáról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\displaystyle O,\ \Theta,\ \sim,\quad n!,\quad H_n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="aw-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="aw-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az aszimptotikus feladatok két dolgot kérnek: egy állítást (melyik függvény nő gyorsabban, mekkora a hiba), és egy indoklást, amely nem ér véget egy táblázatban. A bemelegítő feladatokban egy-egy definíciót kell alkalmazni, az alapszinten számolni kell a Stirling-formulával és az Euler–Maclaurin-sorral, a haladó szinten bizonyítani, a kutatásiakban pedig a számítógép sejtést ad, és az indoklás a tiéd. A feladatok sajátok, a könyv feladatait nem másoljuk.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="aw-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors állítás</h2>
+    <p>Nagyságrend, küszöb, sorrend.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Igazold, hogy \(5n^3+2n^2\ln n=\Theta(n^3)\).</span></summary>
+      <div class="ans">
+        <p>Alsó becslés: \(\ln n\ge0\), tehát az érték legalább \(5n^3\). Felső: \(\ln n\le n\), így \(2n^2\ln n\le2n^3\), és az érték legfeljebb \(7n^3\). Tehát \(5n^3\le f\le7n^3\) minden \(n\ge1\)-re. \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \(n=10\)-nél \(5000+200\cdot2{,}3026=5460{,}5\), és \(5000\le5460{,}5\le7000\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Melyik \(n\)-től igaz minden \(n\)-re, hogy \(2^n>n^3\)?</span></summary>
+      <div class="ans">
+        <p>\(n=9\)-re \(512<729\), \(n=10\)-re \(1024>1000\). Innen kezdve az egyenlőtlenség öröklődik, mert \(\tfrac{(n+1)^3}{n^3}=\bigl(1+\tfrac1n\bigr)^3\le1{,}331<2\), tehát a jobb oldal lassabban nő, mint a bal. A küszöb \(n_0=10\).</p>
+        <p><b>Ellenőrzés:</b> \(n=11\)-re \(2048>1331\), \(n=12\)-re \(4096>1728\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Rendezd növekvő növekedési rendbe: \(n^2\), \(2^n\), \(n\ln n\), \(\ln n\), \(n!\), \(n^{3/2}\).</span></summary>
+      <div class="ans">
+        <p>\(\ln n\prec n\ln n\prec n^{3/2}\prec n^2\prec2^n\prec n!\). Az \(n\ln n=o(n^{3/2})\) azért, mert \(\ln n/\sqrt n\to0\); a többi lépés a 9.1 hierarchiájából következik.</p>
+        <p><b>Ellenőrzés:</b> \(n=100\)-nál az értékek 4,6; 460,5; 1000; 10 000; \(1{,}27\cdot10^{30}\); \(9{,}3\cdot10^{157}\), vagyis növekvő sorrendben. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat sorrendje csak „nagy \(n\)-re” igaz. Kis \(n\)-re egyes tagok felcserélődhetnek: az \(n=2\) esetben \(2^n=n^2\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aw-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Közelítések és integrálbecslések</h2>
+    <p>Három alapfeladat, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Közelítsd a \(20!\)-t a Stirling-formulával, és add meg a relatív hibát az első korrekció nélkül és vele.</span></summary>
+      <div class="ans">
+        <p>\(\sqrt{40\pi}\,(20/e)^{20}\approx2{,}4228\cdot10^{18}\), a pontos érték \(2{,}4329\cdot10^{18}\), a relatív hiba 0,416%, ami \(\tfrac1{12n}=0{,}417\%\). Az \(1+\tfrac1{240}\) tényezővel a hiba \(8{,}3\cdot10^{-6}\).</p>
+        <p><b>Ellenőrzés:</b> \(20!=2\,432\,902\,008\,176\,640\,000\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Számítsd ki \(H_{1000}\)-et az \(\ln n+\gamma+\tfrac1{2n}-\tfrac1{12n^2}\) összeggel.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\ln1000+\gamma+\frac1{2000}-\frac1{12\cdot10^6}=6{,}907755+0{,}577216+0{,}0005-0{,}00000008=7{,}485471.\]</div>
+        <p><b>Ellenőrzés:</b> a közvetlen összegzés 7,485471 (9 jegyig 7,485470861). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Mennyi a gyorsrendezés várható összehasonlításszáma \(n=10^6\) elemre?</span></summary>
+      <div class="ans">
+        <p>A \(C_n=2(n+1)H_n-4n\) képletbe a \(H_n\)-et a 9.3 sorából írjuk be:</p>
+        <div class="eq">\[C_{10^6}\approx2{,}4785\cdot10^{7}.\]</div>
+        <p>A \(2n\ln n=2{,}763\cdot10^7\) főtag 11%-kal nagyobb, \(n\log_2n=1{,}993\cdot10^7\) pedig kisebb.</p>
+        <p><b>Ellenőrzés:</b> a közvetlenül összegzett \(H_{10^6}\)-ból kapott érték 24 785 482,23, és a három tagos aszimptotikus formula is ennyit ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: \(n\ln n-n+1\le\ln n!\le n\ln n-n+1+\ln n\).</span></summary>
+      <div class="ans">
+        <p>A \(\ln x\) növekvő, ezért \([k-1,k]\)-n \(\ln k\ge\int_{k-1}^k\ln x\,dx\), és \(k=2,\dots,n\)-re összegezve \(\ln n!\ge\int_1^n\ln x\,dx=n\ln n-n+1\). Másrészt \(\ln k\le\int_k^{k+1}\ln x\,dx\), így \(\ln(n-1)!\le\int_1^n\ln x\,dx=n\ln n-n+1\), és \(\ln n!=\ln n+\ln(n-1)!\). \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \(n=10\)-re \(14{,}03\le15{,}10\le16{,}33\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Igazold: \(\ln(n+1)\le H_n\le1+\ln n\). Mit jelent ez a nagyságrendre?</span></summary>
+      <div class="ans">
+        <p>A \(\tfrac1x\) csökkenő, ezért \(\tfrac1k\ge\int_k^{k+1}\tfrac{dx}x\), és \(k=1,\dots,n\)-re összegezve \(H_n\ge\ln(n+1)\). Másrészt \(k\ge2\)-re \(\tfrac1k\le\int_{k-1}^k\tfrac{dx}x\), így \(H_n\le1+\ln n\). \(\square\) A két korlát miatt \(H_n=\Theta(\ln n)\).</p>
+        <p><b>Ellenőrzés:</b> \(n=10\)-re \(2{,}398\le2{,}929\le3{,}303\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 7. és 8. feladat az integrálbecslés két alapformája. Az Euler–Maclaurin-formula ugyanezt az ötletet finomítja: a lépcső és a görbe eltérését nem becsli, hanem sorba fejti.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="aw-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Küszöbök és hibatagok</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Jelölje \(n_0(k)\) azt a legkisebb \(n_0\)-t, amelytől kezdve \(2^n>n^k\) minden \(n\ge n_0\)-ra. Hogyan függ \(n_0(k)\) a \(k\)-tól?</span></summary>
+      <div class="ans">
+        <p>A kísérlet értékei: \(n_0(2)=5\), \(n_0(3)=10\), \(n_0(4)=17\), \(n_0(5)=23\), \(n_0(10)=59\), \(n_0(20)=144\), \(n_0(50)=439\), \(n_0(100)=997\). A \(k\log_2k\) értékhez képest az arány \(2{,}5\)-ről \(1{,}5\)-ig csökken, lassan.</p>
+        <p>Sejtés és indoklás: a \(2^x>x^k\) egyenlőtlenség \(x>k\log_2x\)-szel egyenértékű. Az \(x=k\log_2x\) egyenlet nagyobbik gyöke \(x^*\), és innen kezdve a jobb oldal lassabban nő, mint a bal. A kísérlet szerint \(n_0=\lfloor x^*\rfloor+1\) minden vizsgált \(k\)-ra. A gyök az \(x_{j+1}=k\log_2x_j\) iterációval kapható \(x_0=4k\)-ból, és \(x^*\sim k\log_2k\) a főtag. Ezt az aszimptotikus állítást itt vázlatosan indokoltam, nem bizonyítottam.</p>
+        <p><b>Ellenőrzés:</b> a program BigInt-tel, pontos egész összehasonlítással számolja \(n_0(k)\)-t, és külön az iterációt is. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aw-c-k">k <input type="range" id="aw-c-k" min="2" max="100" value="10"> <span class="mono" id="aw-c-kv">10</span></label>
+      </div>
+      <div class="info" id="aw-c-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. Mit sejtesz az \(n\bigl(\ln n!-n\ln n+n-\tfrac12\ln2\pi n\bigr)\) határértékéről, és milyen gyorsan közelít hozzá?</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint az érték \(\tfrac1{12}=0{,}08333\)-hoz közelít, és \(\bigl(\tfrac1{12}-\text{érték}\bigr)n^2\approx0{,}00278\), ami \(\tfrac1{360}\).</p>
+        <p>Indoklás: a 9.3 sora szerint</p>
+        <div class="eq">\[\ln n!-n\ln n+n-\tfrac12\ln2\pi n=\frac1{12n}-\frac1{360n^3}+\frac1{1260n^5}-\cdots\]</div>
+        <p>Szorozva \(n\)-nel: \(\tfrac1{12}-\tfrac1{360n^2}+O(n^{-4})\). A határérték \(\tfrac1{12}\), a hiba \(\tfrac1{360n^2}\).</p>
+        <p><b>Ellenőrzés:</b> \(n=100\)-ra a program 0,0833330556-ot ad, és ennyi a \(\tfrac1{12}-\tfrac1{360\cdot10^4}\) is. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="aw-s-n">n <input type="range" id="aw-s-n" min="10" max="1000" value="100"> <span class="mono" id="aw-s-nv">100</span></label>
+      </div>
+      <div class="info" id="aw-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 10. feladat kísérlete \(n\le1000\)-ig megbízható. Nagyobb \(n\)-re a \(\ln k\) értékek lebegőpontos összegzése már annyi kerekítési hibát gyűjt, hogy a \(\tfrac1{360n^2}\) hibatag elvész a zajban. Ez jó példa arra, hogy a numerikus kísérletnek is van aszimptotikus határa.</p>
+  </aside>
+</section>

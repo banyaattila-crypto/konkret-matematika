@@ -1,0 +1,124 @@
+
+<!-- ================= 9.3 EULER–MACLAURIN-ÖSSZEGZÉS ================= -->
+<header class="hero page" id="au-bevezeto">
+  <div>
+    <div class="eyebrow">9. fejezet · Aszimptotika · 9.3</div>
+    <h1>Euler–Maclaurin-összegzés</h1>
+    <p class="lead">Egy összeg és az integrálja nem ugyanaz, de a különbség szabályos sorfejtést követ, amelynek együtthatói a Bernoulli-számok.</p>
+    <div class="formula">\(\displaystyle\sum_{k=1}^nf(k)=\int_1^nf+\frac{f(1)+f(n)}2+\sum_{j\ge1}\frac{B_{2j}}{(2j)!}\bigl(f^{(2j-1)}(n)-f^{(2j-1)}(1)\bigr)+\cdots\)</div>
+  </div>
+  <div class="stage">
+    <svg id="au-hero" role="img" aria-label="Az 1/k lépcső és az 1/x görbe alatti terület különbsége"></svg>
+    <div class="counter"><span id="au-hero-a">n = 1</span><span>H<sub>n</sub> − ln n = <b id="au-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A harmonikus számok \(H_n=\sum1/k\) egy lépcsős területet adnak, a \(\ln n=\int_1^n dx/x\) a simán görbe alatti területet. A különbségük nagyon gyorsan megáll egy állandónál. A képen \(H_n-\ln n\) értéke látható \(n=1,2,\dots\)-re: 1-ről indul, és a 0,5772… felé tart. Ezt az állandót Euler-állandónak nevezik, és \(\gamma\)-val jelölik. Az Euler–Maclaurin-formula azt mondja meg, hogy a lépcső és a görbe különbsége milyen tagokból áll, és mekkora a hiba, ha néhány tagnál megállunk. Euler és Maclaurin a 18. század első felében, egymástól függetlenül találta meg; a pontos évszámokat nem ellenőriztem.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="au-trapez">
+  <div class="body">
+    <div class="eyebrow">§1 · Összeg és integrál</div>
+    <h2>A trapézszabály hibájából</h2>
+    <p>Az \([k,k+1]\) szakaszon a trapézszabály \(\tfrac{f(k)+f(k+1)}2\), és kétszer differenciálható \(f\)-re a hibája \(\tfrac{f''(\xi)}{12}\), tehát a trapéz a konvex függvényt túlbecsüli. Összegezve az \(1\le k<n\) szakaszokra, a belső pontokat kétszer számolva:</p>
+    <div class="eq">\[\sum_{k=1}^nf(k)-\frac{f(1)+f(n)}2=\int_1^nf\,dx+\sum_{k=1}^{n-1}\frac{f''(\xi_k)}{12}\approx\int_1^nf\,dx+\frac1{12}\bigl(f'(n)-f'(1)\bigr).\]</div>
+    <p>A közelítés azért írható így, mert \(\sum f''(\xi_k)\approx\int f''=f'(n)-f'(1)\). Az \(\tfrac1{12}=\tfrac{B_2}{2!}\) az Euler–Maclaurin-formula első korrekciója. A következő korrekciók ugyanígy jönnek, de pontos levezetésük a Bernoulli-polinomokat használja, amit itt nem közlök.</p>
+    <p>A kísérlet az \(f=1/x\) esetre mutatja, hogyan kerül egymáshoz közelebb az összeg és az integrál korrekcióval.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="au-t-n">n <input type="range" id="au-t-n" min="2" max="200" value="10"> <span class="mono" id="au-t-nv">10</span></label>
+      </div>
+      <div class="info" id="au-t-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A trapézszabály hibáját az \(f''\) adja, ezért az egyenes szakaszokra (\(f''=0\)) pontos. Polinomra a sor véges: az \(\sum k^m\) esetén lezárul, és a 6.4 Bernoulli-számos Faulhaber-képletét adja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="au-formula">
+  <div class="body">
+    <div class="eyebrow">§2 · A formula</div>
+    <h2>Három fontos alkalmazás</h2>
+    <p>A \(B_2=\tfrac16\), \(B_4=-\tfrac1{30}\), \(B_6=\tfrac1{42}\), \(B_8=-\tfrac1{30}\) értékekkel a három leggyakoribb eset (az \(n\to\infty\) határérték állandóit a \(\gamma\), \(\pi^2/6\) és \(\tfrac12\ln2\pi\) adja, ezek értékét itt a formula nem határozza meg):</p>
+    <div class="eq gold">\[H_n=\ln n+\gamma+\frac1{2n}-\frac1{12n^2}+\frac1{120n^4}-\frac1{252n^6}+\cdots\]</div>
+    <div class="eq gold">\[\ln n!=n\ln n-n+\frac12\ln(2\pi n)+\frac1{12n}-\frac1{360n^3}+\frac1{1260n^5}-\cdots\]</div>
+    <div class="eq gold">\[\sum_{k=1}^n\frac1{k^2}=\frac{\pi^2}6-\frac1n+\frac1{2n^2}-\frac1{6n^3}+\frac1{30n^5}-\cdots\]</div>
+    <p>Az általános tag: \(\tfrac{B_{2j}}{(2j)!}f^{(2j-1)}(n)\). A \(1/x\) esetén \(f^{(2j-1)}(x)=-(2j-1)!\,x^{-2j}\), tehát a tag \(-\tfrac{B_{2j}}{2j\,n^{2j}}\). Az \(\ln n!\) esetén ugyanígy \(\tfrac{B_{2j}}{2j(2j-1)n^{2j-1}}\)-et. A sor aszimptotikus: rögzített \(n\)-re egy ponttól kezdve a tagok nőnek, a hiba pedig általában kisebb, mint az első elhagyott tag.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="au-e-f">összeg <select id="au-e-f"><option value="0">H(n) = Σ 1/k</option><option value="1">ln n!</option><option value="2">Σ 1/k²</option></select></label>
+        <label class="rng" for="au-e-n">n <input type="range" id="au-e-n" min="3" max="500" value="10"> <span class="mono" id="au-e-nv">10</span></label>
+      </div>
+      <div class="info" id="au-e-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A táblázat hibái egymás után csökkennek, amíg a sor tagjai kisebbek lesznek a lebegőpontos pontosságnál (kb. \(10^{-13}\)); utána a hiba zajszerű, és ez nem a formula hibája.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="au-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Összegek számolás nélkül</h2>
+    <details>
+      <summary><span class="sq">1. Közelítsd \(H_{100}\)-at az \(\ln n+\gamma\) főtaggal és az első korrekcióval, és add meg a hibát.</span></summary>
+      <div class="ans">
+        <div class="eq">\[H_{100}\approx\ln100+\gamma+\frac1{200}=5{,}187386.\]</div>
+        <p>A pontos érték 5,187378, a hiba \(8{,}3\cdot10^{-6}\), ami az elhagyott \(\tfrac1{12n^2}=8{,}3\cdot10^{-6}\) tag.</p>
+        <p><b>Ellenőrzés:</b> a következő tag levonása után a hiba \(8\cdot10^{-11}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számítsd ki az \(\sum_{k=1}^{1000}1/k^2\) értékét a \(\pi^2/6\) és két korrekciós tag segítségével.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\frac{\pi^2}6-\frac1{1000}+\frac1{2\cdot10^6}=1{,}6439345668.\]</div>
+        <p>A pontos érték 1,6439345667 (a különbség \(\tfrac1{6n^3}=1{,}7\cdot10^{-10}\) nagyságrendű).</p>
+        <p><b>Ellenőrzés:</b> a harmadik taggal a közelítés 1,64393456668, ami a pontos értékkel 10 jegyig egyezik. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Melyik a legkisebb \(n\), amelyre \(H_n>10\)?</span></summary>
+      <div class="ans">
+        <p>A \(\ln n+\gamma+\tfrac1{2n}=10\) egyenletből \(\ln n\approx10-0{,}5772157-\tfrac1{2n}\approx9{,}42274\), vagyis \(n\approx e^{9{,}42274}\approx12366{,}5\). Tehát a legkisebb egész \(n=12367\).</p>
+        <p><b>Ellenőrzés:</b> közvetlen összegzéssel \(H_{12366}=9{,}999962\) és \(H_{12367}=10{,}000043\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számítsd ki az \(\ln100!\)-t az \(\ln n!\) sorával, két korrekciós taggal, és hasonlítsd a pontos értékhez.</span></summary>
+      <div class="ans">
+        <div class="eq">\[100\ln100-100+\tfrac12\ln(200\pi)+\frac1{1200}-\frac1{360\cdot10^6}=363{,}7393755556.\]</div>
+        <p><b>Ellenőrzés:</b> a pontos érték 363,7393755556 (10 tizedesig), egy korrekciós taggal a hiba \(2{,}8\cdot10^{-9}\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat jó példa arra, hogy az aszimptotika eredménye nemcsak közelítés: az \(n\)-et előre megkaptuk, és a közvetlen összegezés csak megerősítette. Közvetlenül 12 ezer tagot kellett volna összeadni.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="au-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>Összeg helyett integrál</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Összeg</th><th>Főtag</th><th>Első korrekciók</th></tr>
+      <tr><td>\(H_n\)</td><td>\(\ln n+\gamma\)</td><td>\(\tfrac1{2n}-\tfrac1{12n^2}\)</td></tr>
+      <tr><td>\(\ln n!\)</td><td>\(n\ln n-n+\tfrac12\ln2\pi n\)</td><td>\(\tfrac1{12n}-\tfrac1{360n^3}\)</td></tr>
+      <tr><td>\(\sum1/k^2\)</td><td>\(\pi^2/6\)</td><td>\(-\tfrac1n+\tfrac1{2n^2}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd fel \(f\)-et</b><span>Az összeg tagja \(f(k)\) legyen.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Integrálj, deriválj</b><span>\(\int f\), majd az \(f^{(2j-1)}(n)\) értékek.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Add össze</b><span>Tagok \(B_{2j}/(2j)!\) súllyal, állandó külön.</span></div>
+    </div>
+    <p>Következő: alkalmazások (9.4).</p>
+  </div>
+  <aside class="margo">
+    <p>Az állandók (\(\gamma\), \(\pi^2/6\), \(\tfrac12\ln2\pi\)) az Euler–Maclaurin-formulából önmagában nem adódnak. Ezeket külön kell meghatározni, és ez a legnehezebb része az egész elemzésnek.</p>
+  </aside>
+</section>
