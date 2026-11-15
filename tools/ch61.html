@@ -1,0 +1,147 @@
+
+<!-- ================= 6.1 STIRLING-SZÁMOK ================= -->
+<header class="hero page" id="ad-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.1</div>
+    <h1>Stirling-számok</h1>
+    <p class="lead">Hányféleképpen osztható szét \(n\) elem \(k\) nemüres csoportba, illetve \(k\) ciklusba? Két háromszög válaszol, és mindkettő a Pascal-háromszög közeli rokona.</p>
+    <div class="formula">\(\displaystyle\genfrac\{\}{0pt}{}nk=k\genfrac\{\}{0pt}{}{n-1}k+\genfrac\{\}{0pt}{}{n-1}{k-1}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ad-hero" role="img" aria-label="A másodfajú Stirling-számok háromszöge"></svg>
+    <div class="counter"><span id="ad-hero-a">n = 1</span><span>sorösszeg (Bell-szám): <b id="ad-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A Pascal-szabály azt mondja, hogy az \(n\)-edik elem vagy benne van a kiválasztott halmazban, vagy nincs. A Stirling-számoknál az \(n\)-edik elem vagy egyedül alkot egy új csoportot, vagy beáll valamelyik meglévő csoportba. Az utóbbi esetben \(k\) választási lehetőség van, ezért a rekurzióban \(k\) szorzó jelenik meg. A másodfajú számok (partíciók) a hatványokat kötik a „fogyó faktoriálisokhoz”, az elsőfajúak (ciklusok) a permutációk szerkezetét számolják.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ad-partician">
+  <div class="body">
+    <div class="eyebrow">§1 · Két háromszög</div>
+    <h2>Partíciók és ciklusok</h2>
+    <p>A <b>másodfajú Stirling-szám</b> \(\genfrac\{\}{0pt}{}nk\) az \(n\) elemű halmaz \(k\) nemüres, megkülönböztethetetlen részre bontásainak száma. Az <b>elsőfajú</b> \(\genfrac[]{0pt}{}nk\) az \(n\) elem \(k\) ciklusba rendezéseié (a ciklus körbeforgatása nem számít másnak). Mindkettő rekurziója az utolsó elem helyét vizsgálja:</p>
+    <div class="eq">\[\genfrac\{\}{0pt}{}nk=k\genfrac\{\}{0pt}{}{n-1}k+\genfrac\{\}{0pt}{}{n-1}{k-1},\qquad
+    \genfrac[]{0pt}{}nk=(n-1)\genfrac[]{0pt}{}{n-1}k+\genfrac[]{0pt}{}{n-1}{k-1}.\]</div>
+    <p>Az elsőfajú esetben az \(n\)-edik elem vagy új egyelemű ciklus, vagy az előző \(n-1\) elem valamelyike mögé fűzzük be, ez \(n-1\) hely. A kezdőfeltétel mindkettőnél \(\genfrac\{\}{0pt}{}00=\genfrac[]{0pt}{}00=1\), és \(k=0\) vagy \(k>n\) esetén 0.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ad-p-t">fajta <select id="ad-p-t"><option value="2">másodfajú {n k}</option><option value="1">elsőfajú [n k]</option></select></label>
+        <label class="rng" for="ad-p-n">n <input type="range" id="ad-p-n" min="1" max="11" value="7"> <span class="mono" id="ad-p-nv">7</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="ad-p-tb"></table></div>
+      <div class="info" id="ad-p-info"></div>
+    </div>
+    <p>A másodfajú sorok összege a <b>Bell-szám</b> (az összes partíció száma): \(1,1,2,5,15,52,203,\dots\) Az elsőfajú soroké \(n!\), mert minden permutációnak pontosan egy ciklusfelbontása van.</p>
+  </div>
+  <aside class="margo">
+    <p>A másodfajú számok az \(n\) elemű halmaz részhalmazfelbontásai, ezért a sorösszegek a Bell-számok. Az elsőfajúaknál a sorösszeg \(n!\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ad-hatvany">
+  <div class="body">
+    <div class="eyebrow">§2 · Hatványok</div>
+    <h2>Hatvány és fogyó faktoriális</h2>
+    <p>Jelölje \(x^{\underline k}=x(x-1)\cdots(x-k+1)\) a fogyó faktoriálist. A másodfajú számok pontosan az átváltás együtthatói:</p>
+    <div class="eq gold">\[x^n=\sum_k\genfrac\{\}{0pt}{}nk\,x^{\underline k}.\]</div>
+    <p>Indoklás: ha \(x\) egész, akkor \(x^n\) azon \(n\) hosszú függvények száma, amelyek egy \(n\) elemű halmazból egy \(x\) elemű halmazba képeznek. A függvény értékkészletének mérete \(k\), és a nyilak a halmazt \(k\) nemüres osztályra bontják (\(\genfrac\{\}{0pt}{}nk\) mód), az osztályokhoz pedig \(x^{\underline k}\) módon rendelhetők különböző képek.</p>
+    <p>Ugyanez a gondolat a szürjekciók számát is megadja: az \(n\) elemű halmazból \(k\) elemű halmazra \(k!\genfrac\{\}{0pt}{}nk\) szürjekció van, és a közvetlen (szita-) számolás szerint</p>
+    <div class="eq">\[k!\genfrac\{\}{0pt}{}nk=\sum_{j=0}^{k}(-1)^j\binom kj(k-j)^n.\]</div>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ad-h-n">n <input type="range" id="ad-h-n" min="1" max="9" value="5"> <span class="mono" id="ad-h-nv">5</span></label>
+        <label class="rng" for="ad-h-x">x <input type="range" id="ad-h-x" min="0" max="12" value="7"> <span class="mono" id="ad-h-xv">7</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="ad-h-tb"></table></div>
+      <div class="info" id="ad-h-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A szita-képlet a 2. fejezet alternáló összegeinek tipikus alkalmazása. Az előjelek miatt nagy \(n\)-re számítógépen pontos (egész) aritmetika kell.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ad-ciklus">
+  <div class="body">
+    <div class="eyebrow">§3 · Permutációk</div>
+    <h2>Ciklusok megszámlálása</h2>
+    <p>Egy permutáció ciklusfelbontása a „kinek hova mutat” nyilak által alkotott körök. Az \(n\) elem összes permutációját végigsorolva a ciklusszám szerinti hisztogram az elsőfajú Stirling-számok \(n\). sora. A kísérlet minden permutációt előállít (\(n\le7\)) és megszámolja a ciklusait.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ad-c-n">n <input type="range" id="ad-c-n" min="1" max="7" value="5"> <span class="mono" id="ad-c-nv">5</span></label>
+      </div>
+      <svg id="ad-c-svg" role="img" aria-label="Permutációk száma ciklusszám szerint"></svg>
+      <div class="info" id="ad-c-info"></div>
+    </div>
+    <p>Egy különösen szép eset a két ciklus:</p>
+    <div class="eq gold">\[\genfrac[]{0pt}{}n2=(n-1)!\,H_{n-1},\]</div>
+    <p>ahol \(H_m=1+\tfrac12+\dots+\tfrac1m\) a harmonikus szám (a 6.2 témája). Például \(n=6\)-ra \(5!\,H_5=120\cdot\tfrac{137}{60}=274\).</p>
+  </div>
+  <aside class="margo">
+    <p>A permutációk ciklusszáma szerepel a kombinatorikus számelmélet és a csoportelmélet számos tételében. Az átlagos ciklusszám \(H_n\), és ez a 6.2-ben tér vissza.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ad-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Partíciók, szürjekciók, ciklusok</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki a \(\genfrac\{\}{0pt}{}53\) értékét a rekurzióval.</span></summary>
+      <div class="ans">
+        <div class="eq">\[\genfrac\{\}{0pt}{}53=3\genfrac\{\}{0pt}{}43+\genfrac\{\}{0pt}{}42=3\cdot6+7=25.\]</div>
+        <p><b>Ellenőrzés:</b> a kísérlet táblázata az 5. sorban 25-öt mutat. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Hány szürjekció van egy 5 elemű halmazból egy 3 elemű halmazra?</span></summary>
+      <div class="ans">
+        <div class="eq">\[3!\genfrac\{\}{0pt}{}53=6\cdot25=150.\]</div>
+        <p><b>Ellenőrzés:</b> a szita-képlet \(3^5-3\cdot2^5+3\cdot1^5=243-96+3=150\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Fejezd ki \(7^4\)-t fogyó faktoriálisokkal.</span></summary>
+      <div class="ans">
+        <p>A negyedik sor \(1,7,6,1\), ezért \(x^4=x^{\underline4}+6x^{\underline3}+7x^{\underline2}+x^{\underline1}\). Az \(x=7\) esetén:</p>
+        <div class="eq">\[7^4=840+6\cdot210+7\cdot42+7=840+1260+294+7=2401.\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki \(\genfrac[]{0pt}{}62\)-t két módon.</span></summary>
+      <div class="ans">
+        <p>A képlettel \(5!\,H_5=120\cdot\tfrac{137}{60}=274\). A rekurzióval \(\genfrac[]{0pt}{}62=5\genfrac[]{0pt}{}52+\genfrac[]{0pt}{}51=5\cdot50+24=274\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladatban a sor értékei \(\genfrac\{\}{0pt}{}4k\), \(k=1..4\): \(1,7,6,1\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ad-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A két Stirling-háromszög</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th></th><th>másodfajú \(\genfrac\{\}{0pt}{}nk\)</th><th>elsőfajú \(\genfrac[]{0pt}{}nk\)</th></tr>
+      <tr><th>jelentés</th><td>partíciók \(k\) részre</td><td>permutációk \(k\) ciklussal</td></tr>
+      <tr><th>rekurzió</th><td>\(k\genfrac\{\}{0pt}{}{n-1}k+\genfrac\{\}{0pt}{}{n-1}{k-1}\)</td><td>\((n-1)\genfrac[]{0pt}{}{n-1}k+\genfrac[]{0pt}{}{n-1}{k-1}\)</td></tr>
+      <tr><th>sorösszeg</th><td>Bell-szám</td><td>\(n!\)</td></tr>
+      <tr><th>kapcsolat</th><td>\(x^n=\sum\genfrac\{\}{0pt}{}nk x^{\underline k}\)</td><td>\(x^{\underline n}=\sum(-1)^{n-k}\genfrac[]{0pt}{}nk x^k\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Vizsgáld az utolsó elemet</b><span>Egyedül áll, vagy beáll.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Írd fel a rekurziót</b><span>A szorzó a lehetőségek száma.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Váltsd át</b><span>Hatvány ↔ fogyó faktoriális.</span></div>
+    </div>
+    <p>Következik a 6.2: a harmonikus számok, amelyekkel a kétciklusú permutációk száma is kifejezhető.</p>
+  </div>
+  <aside class="margo">
+    <p>A könyv e fejezete az Euler-féle (eulerian) számokat is tárgyalja. Ezt a feldolgozás kihagyja. A táblázat második sorbeli képletét programmal ellenőriztem \(n\le8\)-ra.</p>
+  </aside>
+</section>

@@ -1,0 +1,143 @@
+
+<!-- ================= 6.3 FIBONACCI-SZÁMOK ================= -->
+<header class="hero page" id="af-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.3</div>
+    <h1>Fibonacci-számok</h1>
+    <p class="lead">Egy egyszerű rekurzió, és mégis: determináns-azonosság, az Euklidész-algoritmus legrosszabb esete és egy egyértelmű számábrázolás.</p>
+    <div class="formula">\(\displaystyle F_{n+1}=F_n+F_{n-1},\quad F_0=0,\ F_1=1\)</div>
+  </div>
+  <div class="stage">
+    <svg id="af-hero" role="img" aria-label="A szomszédos Fibonacci-számok hányadosa az aranymetszéshez tart"></svg>
+    <div class="counter"><span id="af-hero-a">n = 2</span><span>F<sub>n+1</sub>/F<sub>n</sub> = <b id="af-hero-b">2</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A sorozatot a nyugati irodalom Fibonacci nyúlpéldájából ismeri, de az indiai prozódiában már jóval korábban megjelent. A rekurzió lineáris, ezért mátrixhatványként írható, és innen sok azonosság egy-egy mátrixtulajdonság. A szomszédos tagok hányadosa a \(\varphi=\tfrac{1+\sqrt5}2\) aranymetszéshez tart, és az Euklidész-algoritmus pontosan a szomszédos Fibonacci-számokra lassú (ld. 4.1).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="af-azonossagok">
+  <div class="body">
+    <div class="eyebrow">§1 · Azonosságok</div>
+    <h2>Cassini és a mátrixhatvány</h2>
+    <p>A rekurzió mátrixalakban: \(\begin{pmatrix}F_{n+1}\\F_n\end{pmatrix}=Q\begin{pmatrix}F_n\\F_{n-1}\end{pmatrix}\), ahol \(Q=\begin{pmatrix}1&1\\1&0\end{pmatrix}\). Indukcióval</p>
+    <div class="eq">\[Q^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}.\]</div>
+    <p>A \(\det Q=-1\), és a determináns multiplikatív, ezért \(\det Q^n=(-1)^n\). A bal oldalon kiolvasható a <b>Cassini-azonosság</b>:</p>
+    <div class="eq gold">\[F_{n-1}F_{n+1}-F_n^2=(-1)^n.\]</div>
+    <p>A \(Q^{m+n}=Q^mQ^n\) szorzat jobb felső eleme az összeadási tételt adja: \(F_{m+n}=F_mF_{n+1}+F_{m-1}F_n\). A kísérlet pontos (BigInt) számokkal ellenőriz.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="af-a-n">n <input type="range" id="af-a-n" min="1" max="60" value="12"> <span class="mono" id="af-a-nv">12</span></label>
+        <label class="rng" for="af-a-m">m <input type="range" id="af-a-m" min="1" max="60" value="9"> <span class="mono" id="af-a-mv">9</span></label>
+      </div>
+      <div class="info" id="af-a-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A Cassini-azonosság a híres „eltűnő négyzet” geometriai csalás alapja: egy \(8\times8\) négyzetet \(5\times13\) téglalappá rendezve a terület eggyel nő (\(64\) és \(65\)), az átlón vékony rés marad.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="af-oszthatosag">
+  <div class="body">
+    <div class="eyebrow">§2 · Oszthatóság</div>
+    <h2>A Fibonacci-számok legnagyobb közös osztója</h2>
+    <p>Az \(F_n\) és \(F_{n+1}\) relatív prím (különben a rekurzióval minden előző tag, \(F_1=1\) is osztható lenne a közös osztóval). Az összeadási tételből \(\gcd(F_{m+n},F_n)=\gcd(F_mF_{n+1},F_n)=\gcd(F_m,F_n)\), mert \(F_{n+1}\) és \(F_n\) relatív prím. Ez az Euklidész-algoritmus lépése az indexeken, ezért</p>
+    <div class="eq gold">\[\gcd(F_m,F_n)=F_{\gcd(m,n)}.\]</div>
+    <p>Következmény: ha \(m\mid n\), akkor \(F_m\mid F_n\), mert ekkor \(\gcd(m,n)=m\). Például \(F_6=8\) osztja \(F_{12}=144\)-et.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="af-o-m">m <input type="range" id="af-o-m" min="1" max="90" value="24"> <span class="mono" id="af-o-mv">24</span></label>
+        <label class="rng" for="af-o-n">n <input type="range" id="af-o-n" min="1" max="90" value="36"> <span class="mono" id="af-o-nv">36</span></label>
+      </div>
+      <div class="info" id="af-o-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(\gcd(F_{n+1},F_n)\) kiszámítása Euklidész algoritmusával pontosan \(n-1\) osztást igényel, mert minden maradék a két előző Fibonacci-szám különbsége. Ez a 4.1-beli Lamé-tétel alapja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="af-zeckendorf">
+  <div class="body">
+    <div class="eyebrow">§3 · Számábrázolás</div>
+    <h2>Zeckendorf-felbontás</h2>
+    <p><b>Zeckendorf tétele:</b> minden pozitív egész szám egyértelműen előáll nem szomszédos, \(F_2,F_3,\dots\) indexű Fibonacci-számok összegeként. Az algoritmus mohó: mindig a legnagyobb, a még hátralévő összegnél nem nagyobb Fibonacci-számot választjuk. Utána a maradék kisebb, mint az előző kiválasztott előtti szám, ezért a következő választás nem lehet szomszédos az előzővel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="af-z-n">n <input type="range" id="af-z-n" min="1" max="1596" value="100"> <span class="mono" id="af-z-nv">100</span></label>
+      </div>
+      <div class="info" id="af-z-info"></div>
+    </div>
+    <p>Az egyértelműséget a kísérlet számítással ellenőrzi: az \(F_2,\dots,F_{16}\) számokból képezhető összes nem szomszédos részhalmazt előállítja, és megnézi, hogy a \(0,\dots,F_{17}-1=1596\) tartomány minden számát pontosan egyszer kapjuk-e.</p>
+  </div>
+  <aside class="margo">
+    <p>A felbontást 0 és 1 jegyekkel írva egy olyan számrendszert kapunk, amelyben nincs két szomszédos 1-es. A helyiértékek a Fibonacci-számok, a „számjegyek” között tehát nincs két egymás melletti egyes.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="af-gyak">
+  <div class="body">
+    <div class="eyebrow">§4 · Gyakorlatok</div>
+    <h2>Cassini, gcd, Zeckendorf</h2>
+    <details>
+      <summary><span class="sq">1. Számold ki \(F_{20}\)-at a mátrixhatvány elemeiből, és ellenőrizd a Cassini-azonosságot \(n=10\)-re.</span></summary>
+      <div class="ans">
+        <p>\(F_{20}=6765\). A Cassini-azonosság \(n=10\)-re:</p>
+        <div class="eq">\[F_9F_{11}-F_{10}^2=34\cdot89-55^2=3026-3025=1=(-1)^{10}.\]</div>
+        <p><b>Ellenőrzés:</b> a kísérlet is 1-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Mennyi \(\gcd(F_{24},F_{36})\)?</span></summary>
+      <div class="ans">
+        <p>A tétel szerint \(F_{\gcd(24,36)}=F_{12}=144\).</p>
+        <p><b>Ellenőrzés:</b> \(F_{24}=46368=144\cdot322\) és \(F_{36}=14930352=144\cdot103683\), és a két hányados relatív prím. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Add meg a 100 Zeckendorf-felbontását.</span></summary>
+      <div class="ans">
+        <p>A legnagyobb \(\le100\) Fibonacci-szám \(F_{11}=89\), a maradék 11, abból \(F_6=8\), a maradék 3, ami \(F_4\). Tehát \(100=F_{11}+F_6+F_4=89+8+3\), az indexek nem szomszédosak.</p>
+        <p><b>Ellenőrzés:</b> \(89+8+3=100\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Igazold: \(F_1+F_2+\dots+F_n=F_{n+2}-1\). Mennyi ez \(n=10\)-re?</span></summary>
+      <div class="ans">
+        <p>Indukcióval: \(n=1\)-re \(1=F_3-1\). Ha igaz \(n\)-re, akkor \(\sum_{k\le n+1}F_k=F_{n+2}-1+F_{n+1}=F_{n+3}-1\). \(\square\) Az \(n=10\) esetén \(F_{12}-1=143\).</p>
+        <p><b>Ellenőrzés:</b> \(1+1+2+3+5+8+13+21+34+55=143\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladatban a mohó választás lépései: \(89,\ 8,\ 3\). A kísérlet \(n=100\)-ra ugyanezt mutatja.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="af-modszer">
+  <div class="body">
+    <div class="eyebrow">§5 · Összefoglalás</div>
+    <h2>A Fibonacci-számok szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Tulajdonság</th><th>Képlet</th></tr>
+      <tr><th>mátrixhatvány</th><td>\(Q^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}\)</td></tr>
+      <tr><th>Cassini</th><td>\(F_{n-1}F_{n+1}-F_n^2=(-1)^n\)</td></tr>
+      <tr><th>összeadási tétel</th><td>\(F_{m+n}=F_mF_{n+1}+F_{m-1}F_n\)</td></tr>
+      <tr><th>gcd</th><td>\(\gcd(F_m,F_n)=F_{\gcd(m,n)}\)</td></tr>
+      <tr><th>részletösszeg</th><td>\(\sum_{k\le n}F_k=F_{n+2}-1\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Mátrix</b><span>A rekurzió egy lineáris leképezés.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Determináns, szorzat</b><span>Azonosságok a hatványból.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Euklidész</b><span>Az oszthatóság az indexeken.</span></div>
+    </div>
+    <p>Következik a 6.4: Bernoulli-számok és a hatványösszegek zárt alakja.</p>
+  </div>
+  <aside class="margo">
+    <p>A könyv a Fibonacci-számokat a „continuant” polinomokkal és a számrendszerekkel is összekapcsolja. Ezt a feldolgozás kihagyja.</p>
+  </aside>
+</section>

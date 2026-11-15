@@ -1,0 +1,142 @@
+
+<!-- ================= 6.5 FELADATOK (a fejezet végén) ================= -->
+<header class="hero page" id="ah-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.5</div>
+    <h1>Feladatok</h1>
+    <p class="lead">Tíz saját feladat a Stirling-, harmonikus, Fibonacci- és Bernoulli-számokról, négy nehézségi szinten. A megoldások levezetettek, a számok programmal ellenőrzöttek.</p>
+    <div class="formula">\(\displaystyle\genfrac\{\}{0pt}{}nk,\quad H_n,\quad F_n,\quad B_n\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ah-hero" role="img" aria-label="Négy oszlop: a feladatok száma nehézségi szintenként"></svg>
+    <div class="counter"><span>10 feladat · 4 szint</span><span>megoldással: <b id="ah-hero-k">0</b> / 10</span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A speciális számoknál a siker a megfelelő azonosság felismerésén múlik: a rekurzió lépésén, a szummák felcserélésén vagy a mátrix determinánsán. A bemelegítő feladatok a rekurziókat gyakoroltatják, az alapfeladatok az azonosságokat, a haladók bizonyítást kérnek, a kutatásiakban pedig a számítógép sejtést ad, és az indoklás a tiéd. A feladatok sajátok, a könyv feladatait nem másoljuk. <i>A szintek: bemelegítő, alap, haladó, kutatási.</i></p>
+  </aside>
+</header>
+
+<section class="sec page" id="ah-bemelegito">
+  <div class="body">
+    <div class="eyebrow">§1 · Bemelegítő</div>
+    <h2>Három gyors számolás</h2>
+    <p>Stirling-rekurzió, harmonikus szám és Fibonacci-összeg.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 1. Számold ki \(\genfrac\{\}{0pt}{}63\)-at a rekurzióval.</span></summary>
+      <div class="ans">
+        <p>Az 5. sor értékei \(\genfrac\{\}{0pt}{}52=15\) és \(\genfrac\{\}{0pt}{}53=25\), ezért</p>
+        <div class="eq">\[\genfrac\{\}{0pt}{}63=3\genfrac\{\}{0pt}{}53+\genfrac\{\}{0pt}{}52=3\cdot25+15=90.\]</div>
+        <p><b>Ellenőrzés:</b> a 6.1 kísérlet 6. sora \(1,31,90,65,15,1\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 2. Add meg \(H_8\) pontos értékét.</span></summary>
+      <div class="ans">
+        <div class="eq">\[H_8=1+\tfrac12+\tfrac13+\tfrac14+\tfrac15+\tfrac16+\tfrac17+\tfrac18=\frac{761}{280}.\]</div>
+        <p><b>Ellenőrzés:</b> a közös nevező 840, a számláló 2283, és \(2283/840=761/280\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l1">bemelegítő</span> 3. Számold ki: \(F_1+F_2+\dots+F_{12}\).</span></summary>
+      <div class="ans">
+        <p>A \(\sum_{k\le n}F_k=F_{n+2}-1\) azonossággal \(F_{14}-1=377-1=376\).</p>
+        <p><b>Ellenőrzés:</b></p>
+        <div class="eq">\[1+1+2+3+5+8+13+21+34+55+89+144=376.\ \checkmark\]</div>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat az indukciós azonosság egy konkrét esete. Az általános bizonyítás a 6.3 negyedik gyakorlata.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ah-halado">
+  <div class="body">
+    <div class="eyebrow">§2 · Alap és haladó</div>
+    <h2>Azonosságok és bizonyítások</h2>
+    <p>Három alapfeladat, majd két bizonyítás.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 4. Hány szürjekció van egy 6 elemű halmazból egy 4 elemű halmazra?</span></summary>
+      <div class="ans">
+        <div class="eq">\[4!\genfrac\{\}{0pt}{}64=24\cdot65=1560.\]</div>
+        <p><b>Ellenőrzés:</b> a szita-képlet:</p>
+        <div class="eq">\[4^6-4\cdot3^6+6\cdot2^6-4\cdot1^6=4096-2916+384-4=1560.\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 5. Számold ki: \(\sum_{k=1}^{6}H_k\).</span></summary>
+      <div class="ans">
+        <p>A \((n+1)H_n-n\) képlettel \(n=6\)-ra, \(H_6=\tfrac{49}{20}\):</p>
+        <div class="eq">\[7\cdot\frac{49}{20}-6=\frac{343}{20}-\frac{120}{20}=\frac{223}{20}.\]</div>
+        <p><b>Ellenőrzés:</b> a közvetlen összeadás is \(223/20\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l2">alap</span> 6. Mennyi \(\gcd(F_{30},F_{42})\)?</span></summary>
+      <div class="ans">
+        <p>\(\gcd(30,42)=6\), tehát az érték \(F_6=8\).</p>
+        <p><b>Ellenőrzés:</b> \(F_{30}=832\,040=8\cdot104\,005\) és \(F_{42}=267\,914\,296=8\cdot33\,489\,287\), a két hányados páratlan, és a program is 8-at ad. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 7. Igazold: \(\sum_{k=1}^{n}F_k^2=F_nF_{n+1}\). Mennyi ez \(n=10\)-re?</span></summary>
+      <div class="ans">
+        <p>Indukcióval. \(n=1\)-re \(1=F_1F_2\). Ha igaz \(n\)-re, akkor</p>
+        <div class="eq">\[\sum_{k\le n+1}F_k^2=F_nF_{n+1}+F_{n+1}^2=F_{n+1}(F_n+F_{n+1})=F_{n+1}F_{n+2}.\ \square\]</div>
+        <p>Az \(n=10\) esetén \(F_{10}F_{11}=55\cdot89=4895\).</p>
+        <p><b>Ellenőrzés:</b></p>
+        <div class="eq">\[1+1+4+9+25+64+169+441+1156+3025=4895.\ \checkmark\]</div>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq"><span class="lvl l3">haladó</span> 8. Igazold: \(\genfrac\{\}{0pt}{}n2=2^{n-1}-1\). Mennyi ez \(n=8\)-ra?</span></summary>
+      <div class="ans">
+        <p>Legyen \(A\) az a rész, amelyik az \(n\)-edik elemet tartalmazza, azaz \(A=\{n\}\cup S\) valamely \(S\subseteq\{1,\dots,n-1\}\) részhalmazzal. A másik rész az \(A\) komplementere, ami pontosan akkor nemüres, ha \(S\) nem az összes \(n-1\) elem. Az \(S\) választásainak száma \(2^{n-1}-1\), és minden partíciót egyszer számoltunk. \(\square\) Az \(n=8\)-ra \(2^7-1=127\).</p>
+        <p><b>Ellenőrzés:</b> a rekurzió \(\genfrac\{\}{0pt}{}82=2\genfrac\{\}{0pt}{}72+\genfrac\{\}{0pt}{}71=2\cdot63+1=127\). \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 7. feladat geometriai bizonyítása: az \(F_k\) oldalú négyzetek egymás mellé rakva egy \(F_n\times F_{n+1}\) téglalapot töltenek ki.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ah-kutatas">
+  <div class="body">
+    <div class="eyebrow">§3 · Kutatás</div>
+    <h2>Nevezők és periódusok</h2>
+    <p>A két utolsó feladatban a számítógép sejtést ad, az indoklás a te dolgod.</p>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 9. Lehet-e \(H_n\) egész szám \(n>1\)-re? Nézd meg a nevezők kettes kitevőjét.</span></summary>
+      <div class="ans">
+        <p>A kísérlet szerint \(H_n\) nevezőjében a 2 kitevője pontosan \(\lfloor\log_2n\rfloor\), ezért a nevező \(n\ge2\)-re páros, a szám nem egész.</p>
+        <p>Indoklás: legyen \(a=\lfloor\log_2n\rfloor\). Az \(1,\dots,n\) között a \(2^a\) az egyetlen szám, amelyben a 2 kitevője \(a\): a következő ilyen szám \(3\cdot2^a\) lenne, de ha \(3\cdot2^a\le n\), akkor \(2^{a+1}\le n\) is teljesülne, ellentétben \(a\) definíciójával. Írjuk \(H_n=\tfrac1{2^a}+R\) alakban, ahol \(R\) a többi tag összege. Az \(R\) minden tagjának nevezőjében a 2 kitevője legfeljebb \(a-1\), ezért \(R\) nevezőjében is legfeljebb \(a-1\). Az \(\tfrac1{2^a}\) tag 2-adikus nagysága nagyobb, ezért az összeg nevezőjében a 2 kitevője pontosan \(a\). Ha \(n\ge2\), akkor \(a\ge1\), vagyis a nevező páros, és a szám nem egész. \(\square\)</p>
+        <p><b>Ellenőrzés:</b> \(n\le300\)-ig a program egyezést talál. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ah-h-n">n <input type="range" id="ah-h-n" min="1" max="200" value="30"> <span class="mono" id="ah-h-nv">30</span></label>
+      </div>
+      <div class="info" id="ah-h-info"></div>
+    </div>
+    <details>
+      <summary><span class="sq"><span class="lvl l4">kutatási</span> 10. A Fibonacci-számok maradéka \(m\)-mel osztva periodikus. Keress becslést a periódus hosszára.</span></summary>
+      <div class="ans">
+        <p>A \((F_n\bmod m,\ F_{n+1}\bmod m)\) párok száma legfeljebb \(m^2\), ezért a sorozat előbb-utóbb ismétlődik. A rekurzió visszafelé is egyértelmű (\(F_{n-1}=F_{n+1}-F_n\)), így a sorozat tiszta periodikus, \((0,1)\)-ről indulva. A periódus a <b>Pisano-periódus</b> \(\pi(m)\). Néhány érték: \(\pi(2)=3\), \(\pi(3)=8\), \(\pi(5)=20\), \(\pi(7)=16\), \(\pi(10)=60\).</p>
+        <p>A kísérlet \(2\le m\le200\)-ra azt mutatja, hogy \(\pi(m)\le6m\), és egyenlőség csak \(m=10\) és \(m=50\) esetén áll fenn. A \(\pi(m)\le 6m\) ismert tétel, a bizonyítást itt nem adom meg.</p>
+        <p><b>Ellenőrzés:</b> a program a \(2\ldots200\) tartományban mindenhol \(\pi(m)\le6m\)-et talál. \(\checkmark\)</p>
+      </div>
+    </details>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ah-p-m">m <input type="range" id="ah-p-m" min="2" max="200" value="10"> <span class="mono" id="ah-p-mv">10</span></label>
+      </div>
+      <div class="info" id="ah-p-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 9. feladat 2-adikus gondolata a 4.3 Legendre–Kummer-gondolatához hasonló: a kitevők összehasonlítása dönti el, hogy egy tört egész-e.</p>
+  </aside>
+</section>

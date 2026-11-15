@@ -1,0 +1,126 @@
+
+<!-- ================= 6.4 BERNOULLI-SZÁMOK ================= -->
+<header class="hero page" id="ag-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.4</div>
+    <h1>Bernoulli-számok</h1>
+    <p class="lead">Az \(1^p+2^p+\dots+n^p\) összeg \(n\)-ben \(p+1\)-edfokú polinom. Az együtthatóit egyetlen számsorozat, a Bernoulli-számok adják meg.</p>
+    <div class="formula">\(\displaystyle\sum_{k=0}^{n-1}k^p=\frac1{p+1}\sum_{j=0}^{p}\binom{p+1}jB_jn^{p+1-j}\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ag-hero" role="img" aria-label="Az első Bernoulli-számok előjeles oszlopokon"></svg>
+    <div class="counter"><span id="ag-hero-a">m = 0</span><span>B<sub>m</sub> = <b id="ag-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>Az első néhány hatványösszeg régóta ismert: \(\tfrac{n(n+1)}2\), \(\tfrac{n(n+1)(2n+1)}6\), \(\left(\tfrac{n(n+1)}2\right)^2\). Jacob Bernoulli megmutatta, hogy a mintázat általános, és az együtthatók egyetlen sorozatból származnak. A sorozatban a páratlan indexű tagok (az \(B_1\) kivételével) nullák, a többi előjele váltakozik, és a nagyságuk gyorsan nő: \(B_{12}=-\tfrac{691}{2730}\).</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ag-hatvanyosszeg">
+  <div class="body">
+    <div class="eyebrow">§1 · Hatványösszegek</div>
+    <h2>Összegzés fogyó faktoriálisokkal</h2>
+    <p>A 6.1 szerint \(k^p=\sum_j\genfrac\{\}{0pt}{}pjk^{\underline j}\), és a fogyó faktoriális összegzése éppen a derivált-szabály diszkrét megfelelője:</p>
+    <div class="eq">\[\sum_{k=0}^{n-1}k^{\underline j}=\frac{n^{\underline{j+1}}}{j+1}.\]</div>
+    <p>Ezt kombinálva kapjuk, hogy</p>
+    <div class="eq gold">\[\sum_{k=0}^{n-1}k^p=\sum_{j}\genfrac\{\}{0pt}{}pj\frac{n^{\underline{j+1}}}{j+1}.\]</div>
+    <p>Például \(p=2\)-re \(k^2=k^{\underline2}+k^{\underline1}\), így \(\sum_{k<n}k^2=\tfrac{n^{\underline3}}3+\tfrac{n^{\underline2}}2=\tfrac{n(n-1)(2n-1)}6\). A kísérlet három módszert hasonlít össze: a közvetlen összeadást, a Stirling-szám alapú összegzést és a Bernoulli-számos (Faulhaber) képletet.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ag-h-p">p <input type="range" id="ag-h-p" min="1" max="10" value="4"> <span class="mono" id="ag-h-pv">4</span></label>
+        <label class="rng" for="ag-h-n">n <input type="range" id="ag-h-n" min="1" max="1000" value="100"> <span class="mono" id="ag-h-nv">100</span></label>
+      </div>
+      <div class="info" id="ag-h-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A két képlet ugyanazt a polinomot adja, csak más bázisban: a Stirling-féle a fogyó faktoriálisok, a Faulhaber-féle a hatványok szerint.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ag-szamok">
+  <div class="body">
+    <div class="eyebrow">§2 · A számok</div>
+    <h2>A Bernoulli-számok rekurziója</h2>
+    <p>A \(B_j\) számokat az alábbi rekurzió határozza meg:</p>
+    <div class="eq gold">\[\sum_{k=0}^{m}\binom{m+1}kB_k=0\quad(m\ge1),\qquad B_0=1.\]</div>
+    <p>Ez azt fejezi ki, hogy a hatványösszeg képlete a \(p=m\), \(n=1\) esetben 0-t ad (az összeg egyetlen \(0^m\) tagból áll). Az első értékek \(1,-\tfrac12,\tfrac16,0,-\tfrac1{30},0,\tfrac1{42},0,-\tfrac1{30},0,\tfrac5{66},0,-\tfrac{691}{2730}\). A generátorfüggvény \(\dfrac x{e^x-1}=\sum_nB_n\dfrac{x^n}{n!}\); a kísérlet ezt numerikusan is ellenőrzi.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ag-s-m">m <input type="range" id="ag-s-m" min="1" max="20" value="12"> <span class="mono" id="ag-s-mv">12</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="ag-s-tb"></table></div>
+      <div class="info" id="ag-s-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>Az \(n=1\)-es helyettesítés miatt a rekurzióban \(B_1=-\tfrac12\) adódik. A másik elterjedt jelölésben \(B_1=+\tfrac12\), ilyenkor az összeg \(1\)-től \(n\)-ig fut.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ag-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Hatványösszegek és Bernoulli-számok</h2>
+    <details>
+      <summary><span class="sq">1. Add meg \(1^2+2^2+\dots+10^2\) értékét a Stirling-módszerrel.</span></summary>
+      <div class="ans">
+        <p>\(\sum_{k=0}^{10}k^2\) az \(n=11\) esettel: \(\tfrac{11^{\underline3}}3+\tfrac{11^{\underline2}}2=\tfrac{990}3+\tfrac{110}2=330+55=385\).</p>
+        <p><b>Ellenőrzés:</b> \(\tfrac{10\cdot11\cdot21}6=385\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(1^3+\dots+10^3\)-t, és hasonlítsd \((1+\dots+10)^2\)-hez.</span></summary>
+      <div class="ans">
+        <p>A Faulhaber-képlet \(p=3\), \(n=11\) mellett, a \(B_0,B_1,B_2=1,-\tfrac12,\tfrac16\) értékekkel:</p>
+        <div class="eq">\[\frac14\Bigl(11^4-2\cdot11^3+11^2\Bigr)=\frac{11^2\cdot10^2}4=\Bigl(\frac{10\cdot11}2\Bigr)^2=55^2=3025.\]</div>
+        <p><b>Ellenőrzés:</b> a tagonkénti összeg 3025. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Határozd meg \(B_4\)-et a rekurzióból.</span></summary>
+      <div class="ans">
+        <p>Az \(m=4\) esetben:</p>
+        <div class="eq">\[B_0+5B_1+10B_2+10B_3+5B_4=0\ \Rightarrow\ 1-\tfrac52+\tfrac53+5B_4=0\ \Rightarrow\ B_4=-\tfrac1{30}.\]</div>
+        <p><b>Ellenőrzés:</b> \(1-\tfrac52+\tfrac53=\tfrac16\), és \(5\cdot(-\tfrac1{30})=-\tfrac16\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Számold ki \(1^4+\dots+10^4\)-t.</span></summary>
+      <div class="ans">
+        <p>A zárt alak \(\tfrac{n(n+1)(2n+1)(3n^2+3n-1)}{30}\), \(n=10\)-re:</p>
+        <div class="eq">\[\frac{10\cdot11\cdot21\cdot329}{30}=\frac{759\,990}{30}=25\,333.\]</div>
+        <p><b>Ellenőrzés:</b> a tagonkénti összeg is 25 333. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 2. feladat egyik szép következménye: \(\sum k^3=(\sum k)^2\). Ez minden \(n\)-re igaz, az első eset \(n=2\): \(1+8=9=3^2\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ag-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A hatványösszegek szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>\(p\)</th><th>\(\sum_{k=1}^nk^p\)</th></tr>
+      <tr><td>1</td><td>\(\tfrac{n(n+1)}2\)</td></tr>
+      <tr><td>2</td><td>\(\tfrac{n(n+1)(2n+1)}6\)</td></tr>
+      <tr><td>3</td><td>\(\tfrac{n^2(n+1)^2}4\)</td></tr>
+      <tr><td>4</td><td>\(\tfrac{n(n+1)(2n+1)(3n^2+3n-1)}{30}\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Stirling</b><span>Hatvány → fogyó faktoriálisok.</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Összegezz</b><span>\(n^{\underline{j+1}}/(j+1)\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Bernoulli</b><span>Hatványok szerinti alak.</span></div>
+    </div>
+    <p>A fejezet témái itt véget érnek. A fejezetvégi feladatok a 6.5-ben következnek.</p>
+  </div>
+  <aside class="margo">
+    <p>A Bernoulli-számok az Euler–Maclaurin-formulában és a \(\zeta\)-függvény páros értékeiben is megjelennek, például \(\zeta(2)=\pi^2/6\). Ezekre itt nem térünk ki.</p>
+  </aside>
+</section>

@@ -1,0 +1,130 @@
+
+<!-- ================= 6.2 HARMONIKUS SZÁMOK ================= -->
+<header class="hero page" id="ae-bevezeto">
+  <div>
+    <div class="eyebrow">6. fejezet · Speciális számok · 6.2</div>
+    <h1>Harmonikus számok</h1>
+    <p class="lead">Az \(1+\tfrac12+\tfrac13+\dots\) összeg minden határon túl nő, de csak logaritmikus ütemben: százezer tag után sem éri el a 12-t.</p>
+    <div class="formula">\(\displaystyle H_n=\sum_{k=1}^{n}\frac1k\approx\ln n+\gamma\)</div>
+  </div>
+  <div class="stage">
+    <svg id="ae-hero" role="img" aria-label="Az 1/k oszlopok halmozott összege"></svg>
+    <div class="counter"><span id="ae-hero-a">n = 1</span><span>H<sub>n</sub> = <b id="ae-hero-b">1</b></span></div>
+  </div>
+  <aside class="story">
+    <div class="tag">Történet</div>
+    <p>A harmonikus sor divergenciáját már a középkorban belátták: a tagokat kettőhatványos csoportokba rendezve minden csoport összege legalább \(\tfrac12\). A divergencia azonban rendkívül lassú. Az \(n\)-edik részletösszeg a természetes logaritmushoz közelít, és a különbségük az Euler–Mascheroni-állandóhoz tart, \(\gamma\approx0{,}5772\). A harmonikus számok a diszkrét matematikában ott jelennek meg, ahol a szumma „\(1/k\)”-szerű tagokat tartalmaz: például a permutációk ciklusszámánál vagy a quicksort átlagos lépésszámánál.</p>
+  </aside>
+</header>
+
+<section class="sec page" id="ae-novekedes">
+  <div class="body">
+    <div class="eyebrow">§1 · Növekedés</div>
+    <h2>Mennyire lassú a divergencia?</h2>
+    <p>A kettőhatványos csoportosításból \(H_{2^m}\ge1+\tfrac m2\), tehát \(H_n\) nem korlátos. A pontosabb becslés:</p>
+    <div class="eq gold">\[H_n=\ln n+\gamma+\frac1{2n}-\frac1{12n^2}+O\!\left(\frac1{n^4}\right).\]</div>
+    <p>A kísérlet \(n=10^e\) tagig összeadja az \(1/k\) tagokat (lebegőpontosan), és összeveti az aszimptotikus alakkal.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ae-n-e">e <input type="range" id="ae-n-e" min="1" max="6" value="3"> <span class="mono" id="ae-n-ev">3</span></label>
+      </div>
+      <div class="info" id="ae-n-info"></div>
+    </div>
+    <p>Az inverz kérdés: mennyi tag kell ahhoz, hogy \(H_n\) meghaladjon egy adott \(m\) értéket? Az \(\ln n+\gamma>m\) alapján \(n\approx e^{m-\gamma}\), vagyis a szükséges tagszám exponenciálisan nő \(m\)-mel.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ae-n-m">m <input type="range" id="ae-n-m" min="1" max="10" value="5"> <span class="mono" id="ae-n-mv">5</span></label>
+      </div>
+      <div class="info" id="ae-n-info2"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A \(\gamma\) értékét a kísérlet \(H_n-\ln n\) határértékeként közelíti. Az \(1/(2n)\) tag a trapézszabály hibájából jön, az \(1/(12n^2)\) tagot az Euler–Maclaurin-összegzés adja (ld. 6.4).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ae-osszegek">
+  <div class="body">
+    <div class="eyebrow">§2 · Összegek</div>
+    <h2>Harmonikus számok összegzése</h2>
+    <p>A fő trükk a szummák felcserélése. A \(\sum_{k=1}^nH_k\) összegben \(1/j\) minden \(k\ge j\)-re megjelenik, azaz \(n-j+1\) alkalommal:</p>
+    <div class="eq">\[\sum_{k=1}^{n}H_k=\sum_{k=1}^{n}\sum_{j=1}^{k}\frac1j=\sum_{j=1}^{n}\frac{n-j+1}{j}=(n+1)H_n-n.\]</div>
+    <p>Ugyanígy kapható, hogy</p>
+    <div class="eq gold">\[\sum_{k=1}^{n}kH_k=\frac{n(n+1)}2H_n-\frac{n(n-1)}4,\qquad
+    \sum_{k=1}^{n}\frac{H_k}k=\frac{H_n^2+H_n^{(2)}}2,\]</div>
+    <p>ahol \(H_n^{(2)}=\sum_{k\le n}1/k^2\). A kísérlet pontos (törtekkel számolt) értékeket hasonlít össze.</p>
+    <div class="fig">
+      <div class="ctrl">
+        <label class="rng" for="ae-o-n">n <input type="range" id="ae-o-n" min="1" max="20" value="10"> <span class="mono" id="ae-o-nv">10</span></label>
+      </div>
+      <div class="tbl-wrap"><table class="vals cmp" id="ae-o-tb"></table></div>
+      <div class="info" id="ae-o-info"></div>
+    </div>
+  </div>
+  <aside class="margo">
+    <p>A 6.1-ből: \(\genfrac[]{0pt}{}{n+1}2=n!\,H_n\). Az első eset \(n=1\): \(\genfrac[]{0pt}{}22=1=1!\cdot1\).</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ae-gyak">
+  <div class="body">
+    <div class="eyebrow">§3 · Gyakorlatok</div>
+    <h2>Számolás harmonikus számokkal</h2>
+    <details>
+      <summary><span class="sq">1. Add meg \(H_{10}\) pontos értékét.</span></summary>
+      <div class="ans">
+        <div class="eq">\[H_{10}=\frac{7381}{2520}\approx2{,}9290.\]</div>
+        <p><b>Ellenőrzés:</b> a törtekkel végzett összeadás ugyanezt adja. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">2. Számold ki \(\sum_{k=1}^{5}H_k\)-t.</span></summary>
+      <div class="ans">
+        <p>Az \((n+1)H_n-n\) képlettel \(n=5\)-re:</p>
+        <div class="eq">\[6\cdot\frac{137}{60}-5=\frac{137}{10}-5=\frac{87}{10}.\]</div>
+        <p><b>Ellenőrzés:</b> \(1+\tfrac32+\tfrac{11}6+\tfrac{25}{12}+\tfrac{137}{60}=\tfrac{87}{10}\). \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">3. Hány tag után haladja meg a \(H_n\) a 3-at?</span></summary>
+      <div class="ans">
+        <p>\(H_{10}\approx2{,}929\lt3\), és \(H_{11}=H_{10}+\tfrac1{11}\approx3{,}0199\gt3\), tehát \(n=11\). A durva becslés \(e^{3-\gamma}\approx11{,}3\); a pontos érték ettől kicsit eltér, mert az \(1/(2n)\) tag is számít. \(\checkmark\)</p>
+      </div>
+    </details>
+    <details>
+      <summary><span class="sq">4. Hány tag kell \(H_n>10\)-hez?</span></summary>
+      <div class="ans">
+        <p>A becslés \(n\approx e^{10-\gamma}\approx e^{9{,}4228}\approx12\,367\). A program pontos eredménye \(n=12\,367\).</p>
+        <p><b>Ellenőrzés:</b> a második kísérlet \(m=10\)-re szintén 12 367-et ad. \(\checkmark\)</p>
+      </div>
+    </details>
+  </div>
+  <aside class="margo">
+    <p>A 3. feladat durva becslése (\(11{,}3\)) és a pontos érték (11) kis mértékben eltér, mert a közelítés \(O(1/n)\) pontosságú. Ez a második kísérletben is látszik.</p>
+  </aside>
+</section>
+
+<section class="sec page" id="ae-modszer">
+  <div class="body">
+    <div class="eyebrow">§4 · Összefoglalás</div>
+    <h2>A harmonikus számok szerszámai</h2>
+    <div class="tbl-wrap"><table class="vals cmp">
+      <tr><th>Összeg</th><th>Zárt alak</th></tr>
+      <tr><th>\(\sum_{k=1}^nH_k\)</th><td>\((n+1)H_n-n\)</td></tr>
+      <tr><th>\(\sum_{k=1}^nkH_k\)</th><td>\(\tfrac{n(n+1)}2H_n-\tfrac{n(n-1)}4\)</td></tr>
+      <tr><th>\(\sum_{k=1}^nH_k/k\)</th><td>\(\tfrac12\bigl(H_n^2+H_n^{(2)}\bigr)\)</td></tr>
+      <tr><th>\(H_n\)</th><td>\(\ln n+\gamma+\tfrac1{2n}-\tfrac1{12n^2}+\dots\)</td></tr>
+    </table></div>
+    <div class="method">
+      <div class="m"><span class="n">1</span><b>Írd ki a kettős összeget</b><span>\(H_k\) helyett \(\sum_{j\le k}1/j\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">2</span><b>Cseréld fel a sorrendet</b><span>Számold meg, hányszor szerepel \(1/j\).</span></div>
+      <div class="ar" aria-hidden="true">→</div>
+      <div class="m"><span class="n">3</span><b>Olvasd le</b><span>Egyszerű összeg marad.</span></div>
+    </div>
+    <p>Következik a 6.3: a Fibonacci-számok, és velük az egész számok oszthatósági szerkezete.</p>
+  </div>
+  <aside class="margo">
+    <p>A \(\ln n+\gamma\) közelítést az Euler–Maclaurin-formula adja. A könyv a harmonikus összegzés általános elméletét is tárgyalja, ez itt kimarad.</p>
+  </aside>
+</section>
